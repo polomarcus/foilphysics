@@ -47,6 +47,9 @@
   header h1{font-size:1.55rem; font-weight:800; letter-spacing:-0.02em;}
   header h1 .hi{color:var(--sky);}
   header p{color:var(--muted); font-size:.92rem; margin-top:6px;}
+  header .hsimple{color:var(--txt); font-size:1rem; margin-top:12px; padding:10px 14px; display:inline-block;
+    background:rgba(14,165,233,.1); border:1px solid rgba(14,165,233,.25); border-radius:12px; max-width:640px;}
+  header .hsimple b{color:var(--sky);}
   .tag{display:inline-block; margin-top:10px; font-size:.72rem; letter-spacing:.08em;
     text-transform:uppercase; color:var(--sky); background:rgba(14,165,233,.12);
     border:1px solid rgba(14,165,233,.3); padding:4px 12px; border-radius:999px;}
@@ -284,6 +287,7 @@
   <header>
     <h1 data-i18n="h1">Le Choc des <span class="hi">Watts</span> en foil 🌊</h1>
     <p data-i18n="hsub">Pourquoi une aile de <b>longue distance</b> vous fait voler bien plus longtemps à effort réduit, là où une aile classique vous met dans le rouge en quelques minutes.</p>
+    <p class="hsimple" data-i18n="hsimple">👉 En clair : aile <b>longue &amp; fine</b> = voler des heures sans forcer. Aile <b>courte</b> = forcer, puis tomber.</p>
     <span class="tag" data-i18n="tag">Config Longue Distance · Vol stabilisé</span>
   </header>
 
@@ -1197,6 +1201,7 @@
     'h1':'The Foil <span class="hi">Watts</span> Showdown 🌊',
     'hsub':'Why a <b>High Aspect</b> wing lets you fly far longer for less effort, where a classic pump wing puts you in the red within minutes.',
     'tag':'Long-Distance Setup · Steady flight',
+    'hsimple':'👉 In short: a <b>long &amp; thin</b> wing = fly for hours without forcing. A <b>short</b> wing = force it, then drop.',
     'l-weight':'⚖️ Rider weight (kg)',
     'l-form':'🫀 Fitness level',
     'opt-cp1':'Occasional — sport a few times a year (~150 W)',
