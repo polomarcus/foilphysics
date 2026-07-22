@@ -523,6 +523,15 @@
     <p class="lede" data-i18n="choc-lede">Deux freinages s'additionnent. L'aile classique paie surtout le <b style="color:var(--induced)">freinage
       « portance »</b> : voler lentement avec une aile courte coûte cher juste pour rester en l'air.
       L'aile longue distance le divise par ~3 grâce à sa grande envergure.</p>
+    <div class="scale-note" style="line-height:1.55; margin-bottom:16px" data-i18n="why-hiar">
+      <div class="note-title">🪽 Pourquoi une grande aile fine (haut AR) économise ?</div>
+      Pour te maintenir en l'air, l'aile pousse de l'eau vers le bas. Une aile <b>longue</b> (grand allongement)
+      brasse une <b>grande nappe d'eau tout en douceur</b> → très peu d'énergie perdue. Une aile <b>courte</b>
+      pousse un <b>petit paquet d'eau violemment</b> → gros tourbillons de bout d'aile = énergie gaspillée.<br>
+      Résultat : la traînée « portance » varie en <b>1/envergure²</b> — <b>doubler l'envergure la divise par ~4</b>.
+      Et une <b>grande surface</b> te laisse voler <b>lentement</b>, ce qui réduit le frottement.
+      <b>Grande + fine + lente = effort minimal.</b>
+    </div>
     <div class="legend">
       <span data-i18n="leg-ind"><i class="i-ind"></i><b>🔴 Freinage « portance »</b> — le prix à payer juste pour rester en l'air. Explose si tu voles lentement ou avec une aile courte.</span>
       <span data-i18n="leg-pro"><i class="i-pro"></i><b>🟠 Freinage « frottement »</b> — l'eau que l'aile, le mât, le fuselage et le stab doivent écarter. Monte si tu accélères.</span>
@@ -1233,6 +1242,7 @@
     'note-profil':'<div class="note-title">🔧 Profile — the wing\'s shape in cross-section</div>The profile is the <b>slice of the wing</b> (as if cut front to back). Its key parameter is <b>thickness</b>, as a % of the chord:<br>• <b>Thin (~12 %)</b> → slices the water, <b>little friction</b>: glides and flies fast. But little lift at low speed, <b>stalls / ventilates more easily</b> (twitchy), and a more fragile/flexible profile.<br>• <b>Thick (~17 %)</b> → pushes more water → <b>more friction</b>, but <b>lots of lift at low speed</b> (easy takeoff and pump), more <b>forgiving</b> and stiffer/stronger.',
     'note-fus':'<div class="note-title">🔧 Fuselage — it\'s a lever arm</div>The stab acts at a distance <b>L</b> behind the wing (= the fuselage length). The <b>restoring moment</b> in pitch is proportional to this arm (<b>∝ L</b>), and <b>damping</b> (what slows rotation) rises even faster (<b>∝ L²</b>):<br>• <b>Long (70 cm)</b> → long arm → strong restoring + strong damping: the foil <b>self-corrects</b>, pitch is slow and smooth (stable, reassuring) — but you must <b>force</b> to pitch it, so pumping is softer, and more surface in the water = more drag.<br>• <b>Short (60 cm) / ultra short (52 cm)</b> → short arm → little restoring and damping: pitch <b>reacts instantly</b>, you trigger the pump with less effort and carve tighter — but the foil <b>no longer self-corrects</b> → twitchy, active piloting required.',
     'note-stab':'<div class="note-title">🔧 Stab — the rear lifting surface that balances the foil</div>Its (negative) lift counters the wing\'s nose-down moment. <b>Big (100)</b> = large stabilising force + big damping → forgiving, but more surface in the water = more drag. <b>Small (50)</b> = less drag and a livelier wing, but the balance is finer to hold (reduced error margin). Since the foil is <b>lightly damped</b>, you pump it at <b>higher cadence but with less force</b> each stroke; a big stab forces the opposite — bigger, harder strokes, less often.<br><span style="color:var(--muted)">In the pie, fuselage and stab weigh on the "friction" slice (purple / green) — efficiency is paid in stability, and vice versa.</span>',
+    'why-hiar':'<div class="note-title">🪽 Why does a big thin wing (high AR) save energy?</div>To stay airborne, the wing pushes water downward. A <b>long</b> wing (high aspect ratio) moves a <b>large sheet of water gently</b> → very little energy lost. A <b>short</b> wing pushes a <b>small parcel of water violently</b> → big wingtip vortices = wasted energy.<br>So "lift" drag scales as <b>1/span²</b> — <b>doubling the span cuts it ~4×</b>. And a <b>big area</b> lets you fly <b>slow</b>, which cuts friction. <b>Big + thin + slow = minimal effort.</b>',
     'choc-h3':'⚡ What slows you down (and burns your watts)',
     'choc-lede':'Two drags add up. The classic wing pays mostly the <b style="color:var(--induced)">"lift" drag</b>: slow + short span = big wingtip vortices. The long-distance wing cuts it ~3×.',
     'leg-ind':'<i class="i-ind"></i><b>🔴 "Lift" drag</b> — the price to pay just to stay airborne. Explodes if you fly slow or with a short span.',
