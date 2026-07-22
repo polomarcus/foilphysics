@@ -42,6 +42,9 @@
     border-radius:999px; padding:6px 12px; font-size:.78rem; font-weight:700; cursor:pointer; text-decoration:none;
     display:inline-flex; align-items:center; gap:5px;}
   .topbar button:hover, .topbar a:hover{border-color:var(--sky); color:var(--sky);}
+  @media(max-width:680px){
+    .topbar{position:static; max-width:none; justify-content:center; margin:0 0 6px; padding-top:2px;}
+  }
 
   header{text-align:center; padding:8px 0 20px;}
   header h1{font-size:1.55rem; font-weight:800; letter-spacing:-0.02em;}
