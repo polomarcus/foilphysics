@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Le Choc des Watts — Comparateur d'ailes de foil longue distance</title>
+<title>Le Choc des Watts — Comparateur d'ailes de pump foil longue distance</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<meta name="description" content="Comparateur d'ailes de foil : classique vs longue distance, où partent tes watts (AR, traînée, Wh/km). Foil wing comparator (FR/EN).">
+<meta name="description" content="Comparateur d'ailes de pump foil : classique vs longue distance, où partent tes watts (AR, traînée, Wh/km). Pump foil wing comparator (FR/EN).">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Le Choc des Watts · The Watts Showdown — foil wing comparator">
 <meta property="og:description" content="Classique vs longue distance : où partent tes watts ? · Classic vs long-distance: where do your watts go? AR, traînée/drag, Wh/km. FR/EN.">
@@ -1272,8 +1272,8 @@
     renderMental();
     document.getElementById('lang-btn').textContent = l==='fr' ? '🇬🇧 EN' : '🇫🇷 FR';
     document.title = l==='fr'
-      ? 'Le Choc des Watts — Comparateur d\'ailes de foil longue distance'
-      : 'The Watts Showdown — Long-distance foil wing comparator';
+      ? 'Le Choc des Watts — Comparateur d\'ailes de pump foil longue distance'
+      : 'The Watts Showdown — Long-distance pump foil wing comparator';
     try { history.replaceState(null, '', l==='en' ? '#en' : '#fr'); } catch(e){}
   }
   document.getElementById('lang-btn').addEventListener('click', ()=> applyLang(LANG==='fr'?'en':'fr'));
