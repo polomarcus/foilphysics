@@ -1,0 +1,3319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1024, user-scalable=yes">
+    <title>Pump Foil Simulator (Angle Telemetry)</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header id="main-header">
+        <div>
+            <div id="header-title">Pumpfoil Physics Simulator</div>
+        </div>
+        <button id="doc-toggle">Documentation & About</button>
+    </header>
+
+    <div id="main-container">
+        <div class="canvas-wrapper">
+            <canvas id="simCanvas" width="900" height="380"></canvas>
+            <div style="position: absolute; top: 10px; left: 10px; z-index: 100; font-size: 11px; color: #475569; background: rgba(255,255,255,0.8); padding: 2px 6px; border-radius: 4px;">
+                <a href="https://foilien.com/foilphysics/" target="_blank" style="color: #0369a1; text-decoration: none; font-weight: bold;"> > more foilphysics</a>
+            </div>
+            <div id="ui-overlay">
+                <strong>Live Telemetry</strong><br>
+                Time: <span id="val-time">0.00</span> s<br>
+                Reynolds Nr: <span id="val-re">0</span><br>
+                <hr>
+                Pitch (vs Horizon): <span id="val-pitch">0.0</span>°<br>
+                <span class="tooltip">AoA (vs Water flow)
+                    <span class="tooltip-text">
+                        The angle of the wing relative to the oncoming water flow (not the horizon).<br>
+                        • Positive AoA generates Lift.<br>
+                        • Too high (>12°) causes Drag and Stalling.<br>
+                        • In a pump, plunging down increases your AoA, while rising up decreases it.
+                    </span>
+                </span>: <span id="val-aoa">0.0</span>°<br>
+                <hr>
+                Instantaneous Power: <span id="val-watts">0</span> W<br>
+                Average Power: <span id="val-avg-watts">0</span> W<br>
+                Normalized Power: <span id="val-norm-watts">0</span> W<br>
+                Power/Weight: <span id="val-wkg">0.0</span> W/kg
+            </div>
+            <div id="slowmo-controls">
+                <div class="slowmo-row">
+                    <input type="checkbox" id="chk-slowmo">
+                    <label for="chk-slowmo" class="cursor-pointer user-select-none">Slow Motion</label>
+                </div>
+                <div class="slowmo-commands">
+                    <span id="cmd-pause" class="cmd-button" title="Toggle Pause"><kbd>SPACE</kbd> Pause</span>
+                    <span id="cmd-rewind" class="cmd-button" title="Step Back"><kbd>&larr;</kbd> Rewind</span>
+                    <span id="cmd-forward" class="cmd-button" title="Step Forward"><kbd>&rarr;</kbd> Forward</span>
+                </div>
+            </div>
+            <div id="visibility-controls">
+                <label class="legend-item"><input type="checkbox" id="chk-lift" checked><div class="dot dot-lift"></div> Lift</label>
+                <label class="legend-item"><input type="checkbox" id="chk-drag" checked><div class="dot dot-drag"></div> Drag</label>
+                <label class="legend-item" title="Force applied by the rider's feet on the board. Includes leg weight (visible even at 0 lift due to simulation rail)."><input type="checkbox" id="chk-rider" checked><div class="dot dot-rider"></div> Rider</label>
+                <label class="legend-item"><input type="checkbox" id="chk-thrust" checked><div class="dot dot-thrust"></div> Thrust</label>
+                <label class="legend-item"><input type="checkbox" id="chk-weight"><div class="dot dot-weight"></div> G-Force</label>
+                <label class="legend-item"><input type="checkbox" id="chk-assembly" checked><div class="dot dot-assembly"></div> Board+Rider</label>
+                <label class="legend-item"><input type="checkbox" id="chk-stab" checked><div class="dot dot-stab"></div> Stabilizer</label>
+                <label class="legend-item"><input type="checkbox" id="chk-net"><div class="dot dot-net"></div> Net Force</label>
+                <label class="legend-item" title="Toggle between accurate 1:1 scaling and exaggerated scaling for small forces"><input type="checkbox" id="chk-true-scale" checked> True Scale</label>
+            </div>
+        </div>
+
+        <div id="dashboard-row">
+            <div id="graphs-column">
+                <div class="canvas-wrapper">
+                    <canvas id="graphLift" width="1300" height="260"></canvas>
+                </div>
+                <div class="canvas-wrapper status-box status-box-lift" id="avgLiftStatus">
+                    Avg Lift: Balanced : <span id="val-avg-lift">0</span> N
+                </div>
+                <div class="canvas-wrapper">
+                    <canvas id="graphThrust" width="1300" height="260"></canvas>
+                </div>
+                <div class="canvas-wrapper status-box status-box-thrust" id="avgThrustStatus">
+                    Avg Thrust: Accelerating : <span id="val-avg-thrust">0</span> N
+                </div>
+                <div class="canvas-wrapper">
+                    <canvas id="graphGForce" width="1300" height="260"></canvas>
+                </div>
+                <div class="canvas-wrapper status-box status-box-gforce" id="avgGForceStatus">
+                    Avg Rider G-Force: <span id="val-avg-gforce">0</span> G
+                </div>
+                <div class="canvas-wrapper">
+                    <canvas id="graphPower" width="1300" height="260"></canvas>
+                </div>
+                <div class="canvas-wrapper">
+                    <canvas id="graphAvgPower" width="1300" height="260"></canvas>
+                </div>
+                <div class="canvas-wrapper">
+                    <canvas id="graphPowerComp" width="1300" height="260"></canvas>
+                </div>
+
+                <div id="airfoil-controls-wrapper" style="display: flex; flex-wrap: wrap; gap: 10px; row-gap: 8px; justify-content: center; align-items: flex-end; padding: 8px 12px; border: 1px solid #e2e8f0; background: #f8fafc; border-radius: 6px; margin-bottom: 10px;">
+                    <div class="control-group" title="Select a pre-defined NACA airfoil profile." style="margin-bottom: 0; min-width: auto;">
+                        <label style="margin-bottom: 2px;">Foil Section:</label>
+                        <select id="in-airfoil-select" style="width: 130px; font-size: 11px; padding: 2px;">
+                            <option value="">-- Select --</option>
+                        </select>
+                    </div>
+                    <div class="control-group" title="Upload Custom Polar CSV" style="margin-bottom: 0; min-width: auto;">
+                        <label style="margin-bottom: 2px;">Polar: <span id="disp-polar-name" style="font-weight:normal; font-size: 0.9em; color:#666;">Default</span></label>
+                        <div style="display:flex; gap:4px; align-items: center;"><input type="file" id="in-polar-file" accept=".csv,.txt" style="font-size: 10px; width: 140px;"><button id="btn-clear-polar" style="font-size:10px; padding: 1px 5px; cursor:pointer; border:1px solid #cbd5e1; background:#fff; border-radius:3px;" title="Revert to default model">✕</button></div>
+                    </div>
+                    <div class="control-group" title="Upload Airfoil Shape DAT/TXT" style="margin-bottom: 0; min-width: auto;">
+                        <label style="margin-bottom: 2px;">Shape: <span id="disp-foil-name" style="font-weight:normal; font-size: 0.9em; color:#666;">NACA 2408</span></label>
+                        <div style="display:flex; gap:4px; align-items: center;"><input type="file" id="in-foil-file" accept=".dat,.txt" style="font-size: 10px; width: 140px;"><button id="btn-reset-foil" style="font-size:10px; padding: 1px 5px; cursor:pointer; border:1px solid #cbd5e1; background:#fff; border-radius:3px;" title="Revert to NACA 2408">✕</button></div>
+                    </div>
+                    <div style="width: 100%; text-align: center; font-size: 10px; color: #64748b; margin-top: 2px;">
+                        Go to <a href="http://www.airfoiltools.com" target="_blank" style="color: #0369a1; text-decoration: underline;">www.airfoiltools.com</a> to download a specific profile
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 15px; width: 100%;">
+                    <div class="canvas-wrapper" style="flex: 0 0 35%;">
+                        <canvas id="graphFoil" width="450" height="350"></canvas>
+                    </div>
+                    <div class="canvas-wrapper" style="flex: 1;">
+                        <canvas id="graphPolar" width="850" height="350"></canvas>
+                    </div>
+                </div>
+
+                <div id="presets-section">
+                    <div class="control-group" title="Save and load configurations.">
+                        <label>Presets</label>
+                        <div class="preset-select-row">
+                            <select id="preset-select">
+                                <option value="">-- Select --</option>
+                            </select>
+                        </div>
+                        <div class="preset-buttons-row">
+                            <button id="btn-save-preset" class="preset-button">SAVE</button>
+                            <button id="btn-delete-preset" class="preset-button">DELETE</button>
+                            <button id="btn-download-preset" class="preset-button">DOWNLOAD</button>
+                            <button id="btn-upload-preset" class="preset-button">UPLOAD</button>
+                            <button id="btn-reset-presets" class="preset-button" title="Restore default presets">RESET</button>
+                        </div>
+                        <input type="file" id="file-upload-preset" accept=".json">
+                    </div>
+                </div>
+            </div>
+            
+            <div id="controls">
+            <div class="control-section control-section-step1">
+                <div class="step-label step-label-step1">Step 1: Set Your Gear</div>
+                <div class="control-group" title="Total weight of rider plus gear. Note: Changing mass requires re-optimization to see the true power cost (otherwise you just sink).">
+                    <label>Rider Mass: <span id="disp-mass">70</span> kg</label>
+                    <input type="range" id="in-mass" min="40" max="120" step="1" value="70">
+                </div>
+                <div class="control-group" title="Weight of the board and foil setup. This part is always considered 'Moving Mass'.">
+                    <label>Foil Setup Mass: <span id="disp-board-mass">6.0</span> kg</label>
+                    <input type="range" id="in-board-mass" min="2.0" max="15.0" step="0.5" value="6.0">
+                </div>
+                <div class="control-group" title="Surface area of the front wing. Larger wings lift more but drag more.">
+                    <label>Wing Area: <span id="disp-area">1350</span> cm²</label>
+                    <input type="range" id="in-area" min="600" max="2500" step="50" value="1350">
+                </div>
+                <div class="control-group" title="Ratio of span to chord. High AR is more efficient (glides better).">
+                    <label>Wing AR: <span id="disp-ar">13.9</span></label>
+                    <input type="range" id="in-ar" min="5.0" max="20.0" step="0.1" value="13.9">
+                </div>
+                <div class="control-group" title="Surface area of the stabilizer.">
+                    <label>Stab Area: <span id="disp-stab-area">120</span> cm²</label>
+                    <input type="range" id="in-stab-area" min="0" max="500" step="10" value="120">
+                </div>
+                <div class="control-group" title="Aspect Ratio of the stabilizer. Higher = More Damping (Harder to pump).">
+                    <label>Stab AR: <span id="disp-stab-ar">8.0</span></label>
+                    <input type="range" id="in-stab-ar" min="6.0" max="20.0" step="0.1" value="8.0">
+                </div>
+                <div class="control-group" title="Angle of the rear stabilizer. Negative values create downforce (stability).">
+                    <label>Stab Angle: <span id="disp-stab-angle">-1.0</span>°</label>
+                    <input type="range" id="in-stab-angle" min="-3.0" max="3.0" step="0.1" value="-1.0">
+                </div>
+                <div class="control-group" title="Distance from the mast/front wing to the stabilizer.">
+                    <label>Fuselage Length: <span id="disp-fuse-len">0.60</span> m</label>
+                    <input type="range" id="in-fuse-len" min="0.10" max="1.00" step="0.01" value="0.60">
+                </div>
+                <div class="control-group" title="Where the rider stands relative to the Front Wing Lift. Positive = Forward (Nose Down).">
+                    <label>Rider Offset: <span id="disp-offset">0.00</span> m</label>
+                    <input type="range" id="in-offset" min="-0.20" max="0.30" step="0.01" value="0.0">
+                </div>
+                <div class="control-group" title="Water Temperature in Celsius. Colder water is more viscous (more drag).">
+                    <label>Water Temp: <span id="disp-temp">20</span>°C</label>
+                    <input type="range" id="in-temp" min="5" max="30" step="1" value="20">
+                </div>
+            </div>
+
+            <div class="control-section control-section-speed">
+                <div class="control-group" title="Forward velocity of the rider.">
+                    <label>Speed: <span id="disp-speed">17.0</span> km/h</label>
+                    <input type="range" id="in-speed" min="10.0" max="30.0" step="1.0" value="17.0">
+                </div>
+            </div>
+
+            <div class="control-section control-section-step2">
+                <div class="step-label step-label-step2">Step 2: Adjust the Pump</div>
+                <div class="control-group" title="Pumping cadence in cycles per second (Hz).">
+                    <div class="control-label-row">
+                        <label>Frequency: <span id="disp-freq">1.49</span> Hz <span class="label-muted">(<span id="disp-ppm">89</span> ppm)</span></label>
+                        <div class="control-actions">
+                            <span class="range-toggle" data-target="range-freq" title="Set Optimization Limits">[LIMITS]</span>
+                            <label class="lock-label"><input type="checkbox" id="lock-freq"> LOCK</label>
+                        </div>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="in-freq" min="0.01" max="2.5" step="0.01" value="1.49">
+                        <div class="limit-handle min-handle" data-for="in-freq" data-type="min"></div>
+                        <div class="limit-handle max-handle" data-for="in-freq" data-type="max"></div>
+                    </div>
+                    <div id="range-freq" class="range-inputs">
+                        <label class="range-label">MIN</label><input type="number" id="min-freq" step="0.01" class="range-number-input">
+                        <label class="range-label">MAX</label><input type="number" id="max-freq" step="0.01" class="range-number-input">
+                    </div>
+                </div>
+                <div class="control-group" title="Vertical range of motion for the foil path.">
+                    <div class="control-label-row">
+                        <label>Amplitude: <span id="disp-amp">0.11</span> m</label>
+                        <div class="control-actions">
+                            <span class="range-toggle" data-target="range-amp" title="Set Optimization Limits">[LIMITS]</span>
+                            <label class="lock-label"><input type="checkbox" id="lock-amp"> LOCK</label>
+                        </div>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="in-amp" min="0.00" max="0.40" step="0.01" value="0.11">
+                        <div class="limit-handle min-handle" data-for="in-amp" data-type="min"></div>
+                        <div class="limit-handle max-handle" data-for="in-amp" data-type="max"></div>
+                    </div>
+                    <div id="range-amp" class="range-inputs">
+                        <label class="range-label">MIN</label><input type="number" id="min-amp" step="0.01" class="range-number-input">
+                        <label class="range-label">MAX</label><input type="number" id="max-amp" step="0.01" class="range-number-input">
+                    </div>
+                </div>
+                <div class="control-group" title="Controls the timing asymmetry. Positive values create a Quick Down / Slow Up rhythm.">
+                    <div class="control-label-row">
+                        <label>Asymmetry: <span id="disp-asym">0.00</span></label>
+                        <div class="control-actions">
+                            <span class="range-toggle" data-target="range-asym" title="Set Optimization Limits">[LIMITS]</span>
+                            <label class="lock-label"><input type="checkbox" id="lock-asym"> LOCK</label>
+                        </div>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="in-asym" min="0.0" max="0.8" step="0.01" value="0.0">
+                        <div class="limit-handle min-handle" data-for="in-asym" data-type="min"></div>
+                        <div class="limit-handle max-handle" data-for="in-asym" data-type="max"></div>
+                    </div>
+                    <div id="range-asym" class="range-inputs">
+                        <label class="range-label">MIN</label><input type="number" id="min-asym" step="0.01" class="range-number-input">
+                        <label class="range-label">MAX</label><input type="number" id="max-asym" step="0.01" class="range-number-input">
+                    </div>
+                </div>
+                <div class="control-group" title="Base pitch angle of the front wing relative to the fuselage.">
+                    <div class="control-label-row">
+                        <label>Front Wing Pitch: <span id="disp-trim">4.9</span>°</label>
+                        <div class="control-actions">
+                            <span class="range-toggle" data-target="range-trim" title="Set Optimization Limits">[LIMITS]</span>
+                            <label class="lock-label"><input type="checkbox" id="lock-trim"> LOCK</label>
+                        </div>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="in-trim" min="-2.0" max="10.0" step="0.1" value="4.9">
+                        <div class="limit-handle min-handle" data-for="in-trim" data-type="min"></div>
+                        <div class="limit-handle max-handle" data-for="in-trim" data-type="max"></div>
+                    </div>
+                    <div id="range-trim" class="range-inputs">
+                        <label class="range-label">MIN</label><input type="number" id="min-trim" step="0.1" class="range-number-input">
+                        <label class="range-label">MAX</label><input type="number" id="max-trim" step="0.1" class="range-number-input">
+                    </div>
+                </div>
+                <div class="control-group" title="Timing difference between heave and pitch. 90° is ideal (Pitch follows Velocity). Range: 80°-110°.">
+                    <div class="control-label-row">
+                        <label>Phase Shift: <span id="disp-phase">90</span>°</label>
+                        <div class="control-actions">
+                            <span class="range-toggle" data-target="range-phase" title="Set Optimization Limits">[LIMITS]</span>
+                            <label class="lock-label"><input type="checkbox" id="lock-phase" checked> LOCK</label>
+                        </div>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="in-phase" min="80" max="110" step="1" value="90">
+                        <div class="limit-handle min-handle" data-for="in-phase" data-type="min"></div>
+                        <div class="limit-handle max-handle" data-for="in-phase" data-type="max"></div>
+                    </div>
+                    <div id="range-phase" class="range-inputs">
+                        <label class="range-label">MIN</label><input type="number" id="min-phase" step="1" class="range-number-input">
+                        <label class="range-label">MAX</label><input type="number" id="max-phase" step="1" class="range-number-input">
+                    </div>
+                </div>
+                <div class="control-group" title="Average distance from the water surface to the wing. Lower = Less Drag but Risk of Breach.">
+                    <div class="control-label-row">
+                        <label>Riding Depth: <span id="disp-height">0.20</span> m</label>
+                        <div class="control-actions">
+                            <span class="range-toggle" data-target="range-height" title="Set Optimization Limits">[LIMITS]</span>
+                            <label class="lock-label"><input type="checkbox" id="lock-height" checked> LOCK</label>
+                        </div>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="in-height" min="0.10" max="0.80" step="0.01" value="0.20">
+                        <div class="limit-handle min-handle" data-for="in-height" data-type="min"></div>
+                        <div class="limit-handle max-handle" data-for="in-height" data-type="max"></div>
+                    </div>
+                    <div id="range-height" class="range-inputs">
+                        <label class="range-label">MIN</label><input type="number" id="min-height" step="0.01" class="range-number-input">
+                        <label class="range-label">MAX</label><input type="number" id="max-height" step="0.01" class="range-number-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="optimize-header">
+                <label class="optimize-label">OPTIMIZE FOR:</label>
+                <select id="opt-metric">
+                    <option value="avg">AVG POWER</option>
+                    <option value="norm">NORMALIZED POWER</option>
+                </select>
+            </div>
+
+            <div class="tooltip tooltip-full-width">
+                <button id="btn-optimize">🎯 FIND SETTINGS MAGICALLY</button>
+                <span class="tooltip-text tooltip-text-center">This might not result in the best absolute values wrt power efficiency (might be a local minimum)</span>
+            </div>
+            <div class="reset-limits-wrapper">
+                <button id="btn-reset-limits">↺ RESET RANGES</button>
+            </div>
+
+            <div class="control-section control-section-simulation">
+                <details>
+                    <summary style="font-size: 11px; font-weight: bold; color: #475569; cursor: pointer; margin-bottom: 5px; outline: none;">More System Configurations Parameters</summary>
+                    <div class="control-group" title="Percentage of body mass that moves with the board up and down.">
+                        <label>Swing Weight: <span id="disp-swing">40</span>%</label>
+                        <input type="range" id="in-swing" min="0.0" max="1.0" step="0.05" value="0.4">
+                    </div>
+                    <div class="control-group" title="Percentage of energy from system elasticity, helping to pump more efficiently.">
+                        <label>System Elasticity: <span id="disp-elastic">0</span>%</label>
+                        <input type="range" id="in-elastic" min="0" max="30" step="1" value="0">
+                    </div>
+                </details>
+            </div>
+            
+            <div class="action-buttons-row">
+                <button id="btn-reset" class="action-button">RESET</button>
+                <button id="btn-replay" class="action-button">REPLAY</button>
+                <button id="btn-tests" class="action-button" title="Run Validation Suite (Check Console)">TESTS</button>
+            </div>
+
+            <div class="control-section" style="background-color: #eef2ff; border: 1px solid #c7d2fe; margin-top: 10px;">
+                <div class="step-label" style="color: #3730a3;">Batch Analysis</div>
+                <div style="font-size: 10px; color: #3730a3; margin-bottom: 10px; line-height: 1.4; opacity: 0.9;">
+                    For reliable results, restrict the optimization ranges in Step 2 as much as possible. If the search space is too broad, the optimizer may fail to find the global power optimum. If no solution is found for a given parameter set and search range, no dot will appear on the graph.
+                </div>
+                <div class="control-group">
+                    <label>Primary Parameter</label>
+                    <select id="batch-p1-sel" style="font-size:10px; padding:2px;">
+                        <option value="mass">Rider Mass (kg)</option>
+                        <option value="board_mass">Board Mass (kg)</option>
+                        <option value="S" selected>Wing Area (cm²)</option>
+                        <option value="AR">Wing AR</option>
+                        <option value="S_stab">Stab Area (cm²)</option>
+                        <option value="fuselage_len">Fuselage Length (m)</option>
+                        <option value="rider_offset">Rider Offset (m)</option>
+                        <option value="water_temp">Water Temp (°C)</option>
+                        <option value="stab_angle">Stab Angle (°)</option>
+                        <option value="AR_stab">Stab AR</option>
+                        <option value="foil_profile">Foil Profile</option>
+                    </select>
+                    <div class="flex-gap-xs">
+                        <input type="text" id="batch-p1-v1" value="1300" class="range-number-input" style="width:33%">
+                        <input type="text" id="batch-p1-v2" value="1600" class="range-number-input" style="width:33%">
+                        <input type="text" id="batch-p1-v3" value="1900" class="range-number-input" style="width:33%">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>Secondary Parameter</label>
+                    <select id="batch-p2-sel" style="font-size:10px; padding:2px;">
+                        <option value="mass" selected>Rider Mass (kg)</option>
+                        <option value="board_mass">Board Mass (kg)</option>
+                        <option value="S">Wing Area (cm²)</option>
+                        <option value="AR">Wing AR</option>
+                        <option value="S_stab">Stab Area (cm²)</option>
+                        <option value="fuselage_len">Fuselage Length (m)</option>
+                        <option value="rider_offset">Rider Offset (m)</option>
+                        <option value="water_temp">Water Temp (°C)</option>
+                        <option value="stab_angle">Stab Angle (°)</option>
+                        <option value="AR_stab">Stab AR</option>
+                        <option value="foil_profile">Foil Profile</option>
+                    </select>
+                    <div class="flex-gap-xs">
+                        <input type="text" id="batch-p2-v1" value="70" class="range-number-input" style="width:33%">
+                        <input type="text" id="batch-p2-v2" value="80" class="range-number-input" style="width:33%">
+                        <input type="text" id="batch-p2-v3" value="90" class="range-number-input" style="width:33%">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="label-inline" style="font-weight:normal; text-transform:none; margin-top:4px; font-size:10px;"><input type="checkbox" id="batch-combine-graphs"> Combine all results in one graph</label>
+                </div>
+                <button id="btn-run-batch" class="action-button" style="background:#4f46e5; color:white; margin-top:5px;">RUN BATCH ANALYSIS</button>
+            </div>
+
+        </div>
+        </div>
+
+        <div id="doc-panel" class="doc-panel-hidden">
+            <button id="doc-close">×</button>
+            <div class="readme-content">
+                <h2>How to Use the App</h2>
+                <p>This tool is a theoretical simulator designed to help you visualize and optimize the physics of pump foiling.</p>
+
+                <p><strong>Set Your Gear:</strong> Scroll down to the bottom sections to input your Rider Mass, Wing Area, and Setup Mass etc.</p>
+
+                <p><strong>Adjust the Pump:</strong> Use the sliders in the middle to change the pumping motion. The most critical controls are:</p>
+                <ul>
+                    <li><strong>Frequency:</strong> How fast you are pumping (strokes per minute).</li>
+                    <li><strong>Amplitude:</strong> How big your up-and-down motion is (heave).</li>
+                    <li><strong>Front Wing Pitch:</strong> This sets the average angle of your foil. Increasing this gives you more lift (keeping you flying at lower speeds), but significantly increases drag. You need to find the sweet spot where you generate enough lift to stay up without stalling.</li>
+                    <li><strong>Phase Shift:</strong> This controls the timing between your vertical motion and the pitching of the board.
+                        <ul>
+                            <li><strong>90&deg; (Standard):</strong> You pitch the nose down exactly as you start pushing down.</li>
+                            <li><strong>Higher (&gt;90&deg;):</strong> You pitch the nose down early (before you start dropping), which is often required for high-efficiency pumping to "get over the hump."</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <p><strong>Analyze the Data:</strong> Watch the Live Telemetry at the top. Your goal is to keep Average Lift, Net Thrust and Rider G-Force "Balanced" (green) while keeping Average Power as low as possible.</p>
+
+                <p><strong>Auto-Tune:</strong> If you are unsure, click "Find Settings Magically" to let the app mathematically calculate the most viable technique for your chosen speed. It might be that the solver is not able to find a solution if too many parameters are "locked" or the setup is unsuitable for a given speed.</p>
+
+                <h2>Physics Model</h2>
+                <p>The simulation uses a custom quasi-steady solver that iterates through time steps (<i>dt</i>) to calculate forces and rider power.</p>
+
+                <h3>Simplifications</h3>
+                <ul>
+                    <li>Forces are calculated for the front wing, rear stabilizer, and mast</li>
+                    <li>The indication bars for average lift and thrust indicate whether the pumping motion is actually viable for the selected speed. If they're not balanced / on target, the selected parameters are not in steady state.</li>
+                    <li>The stickfigure is only there for your entertainment - the trajectory of the foil is defined by the frequency and amplitude input.</li>
+                </ul>
+
+                <h3>1. Kinematics (Motion)</h3>
+                <p>The rider's vertical motion (<strong>Heave</strong>) and the board's angle (<strong>Pitch</strong>) are driven by sinusoidal functions, linked by a configurable <strong>Phase Shift</strong>.</p>
+
+                <ul>
+                    <li><strong>Frequency:</strong> <i>&omega; = 2&pi;f</i></li>
+                    <li><strong>Vertical Position (<i>z</i>):</strong> <i>z(t) = A cos(&omega;t)</i></li>
+                    <li><strong>Vertical Velocity (<i>v<sub>z</sub></i>):</strong> <i>v<sub>z</sub>(t) = -A &omega; sin(&omega;t)</i></li>
+                    <li><strong>Vertical Acceleration (<i>a<sub>z</sub></i>):</strong> <i>a<sub>z</sub>(t) = -A &omega;<sup>2</sup> cos(&omega;t)</i></li>
+                    <li><strong>Pitch Angle (<i>&theta;</i>):</strong> <i>&theta;(t) = &theta;<sub>trim</sub> + &theta;<sub>amp</sub> cos(&omega;t + &phi;)</i><br>
+                    <em>(Where &phi; is the Phase Shift)</em></li>
+                    <li><strong>Physical Execution:</strong> The rider achieves this by shifting their weight (Center of Pressure) forward or backward relative to their vertical extension. A 90&deg; shift means pitching the nose down exactly when moving fastest downwards. A higher shift (&gt;90&deg;) means initiating the pitch change <em>early</em> (leading the motion).</li>
+                    <li><strong>Standard Phase:</strong> <i>&phi; = &omega;t</i></li>
+                    <li><strong>Asymmetric Phase:</strong> <i>&phi;<sub>asym</sub> = &phi; - Asymmetry cos(&phi;)</i></li>
+                    <li><strong>Vertical Position (<i>z</i>):</strong> <i>z(t) = A cos(&phi;<sub>asym</sub>)</i></li>
+                    <li><strong>Vertical Velocity (<i>v<sub>z</sub></i>):</strong> <i>v<sub>z</sub>(t) = -A sin(&phi;<sub>asym</sub>) d&phi;<sub>asym</sub>/dt</i></li>
+                    <li><strong>Vertical Acceleration (<i>a<sub>z</sub></i>):</strong> Calculated as the derivative of <i>v<sub>z</sub></i>.</li>
+                    <li><strong>Pitch Angle (<i>&theta;</i>):</strong> <i>&theta;(t) = &theta;<sub>trim</sub> + &theta;<sub>amp</sub> cos(&phi;<sub>asym</sub> + &phi;<sub>shift</sub>)</i></li>
+                </ul>
+
+                <h3>2. Fluid Forces</h3>
+                <p>Lift and Drag are calculated using <strong>Thin Airfoil Theory</strong>, corrected for a finite Aspect Ratio (<i>AR</i>).</p>
+
+                <ul>
+                    <li><strong>Flight Path Angle (<i>&gamma;</i>):</strong> <i>&gamma; = arctan(v<sub>z</sub> / U)</i></li>
+                    <li><strong>Effective Angle of Attack (<i>&alpha;</i>):</strong> <i>&alpha; = &theta; - &gamma;</i></li>
+                    <li><strong>Lift Coefficient (<i>C<sub>L</sub></i>):</strong><br>
+                    <i>C<sub>L</sub> = (2 &pi; &alpha;) / (1 + 2/AR)</i></li>
+                    <li><strong>Drag Coefficient (<i>C<sub>D</sub></i>):</strong><br>
+                    <i>C<sub>D</sub> = C<sub>D0</sub> + k C<sub>L</sub><sup>2</sup></i> &emsp; where &emsp; <i>k &approx; 1 / (&pi; AR)</i></li>
+                    <li><strong>Total Hydrodynamic Force (Vertical):</strong><br>
+                    <i>F<sub>hydro_z</sub> = F<sub>wing_z</sub> + F<sub>stab_z</sub> + F<sub>mast_z</sub></i> (Sum of all vertical forces).</li>
+                    <li><strong>Stall Model:</strong><br>
+                    Beyond a critical angle (~13&deg;), the lift coefficient saturates and drag increases significantly to simulate stalling.</li>
+                </ul>
+
+                <h3>2b. Mast Drag & Ventilation</h3>
+                <p>To increase realism, the simulation accounts for the mast's drag and surface effects.</p>
+                <ul>
+                    <li><strong>Mast Drag:</strong> Calculated based on the submerged length of the mast at each time step.</li>
+                    <li><strong>Ventilation:</strong> If the wing approaches or breaches the surface (<i>z &gt; 0</i>), the lift coefficient is penalized to simulate air entrainment (ventilation), preventing the rider from generating power above the water.</li>
+                </ul>
+
+                <h3>3. Dynamics (Two-Mass Model)</h3>
+                <p>To simulate high-frequency pumping accurately, the system is split into a <strong>Fixed Mass</strong> (Torso) and a <strong>Moving Mass</strong> (Legs + Board). This prevents the "zero power" error seen in single-point mass models when acceleration exceeds gravity.</p>
+
+                <ul>
+                    <li><strong>Moving Mass (<i>m<sub>moving</sub></i>):</strong><br>
+                    <i>m<sub>moving</sub> = m<sub>board</sub> + (m<sub>rider</sub> &times; SwingRatio)</i><br>
+                    <em>(Default SwingRatio is 0.4. Can exceed 0.5 for aggressive pumping involving hips/torso)</em></li>
+                    <li><strong>Inertial Requirement:</strong><br>
+                    The force required to accelerate the legs and board:<br>
+                    <i>F<sub>inertia</sub> = m<sub>moving</sub> (g + a<sub>z</sub>)</i></li>
+                    <li><strong>Hydrodynamic Added Mass:</strong><br>
+                    Accelerating the wing moves a volume of water with it. This "virtual mass" is added to the inertial requirement. It is scaled by <i>cos<sup>2</sup>(&theta;)</i> because added mass acts perpendicular to the wing surface.<br>
+                    <i>m<sub>added</sub> = &rho; &pi; (c/2)<sup>2</sup> b cos<sup>2</sup>(&theta;)</i></li>
+                    <li><strong>Rider Force (<i>F<sub>rider</sub></i>):</strong><br>
+                    The rider must push down to bridge the gap between the Water Force and the Inertial Force.<br>
+                    <i>F<sub>req</sub> = F<sub>hydro_z</sub> - F<sub>inertia</sub> - m<sub>added</sub> a<sub>z</sub></i><br>
+                    <i>F<sub>rider</sub> = max(0, F<sub>req</sub>)</i> (Includes static weight of upper body).<br>
+                    <em>(Clamped to 0 to simulate unstrapped riding—the rider cannot pull the board up).</em></li>
+                </ul>
+
+                <h3>3b. Stabilizer & Pitching Moment</h3>
+                <p>The simulation now includes a rear stabilizer and calculates the torque (Pitching Moment) the rider must manage.</p>
+                <ul>
+                    <li><strong>Stabilizer Aerodynamics:</strong><br>
+                    Calculates local Angle of Attack based on the <strong>Local Velocity Vector</strong> at the tail (<i>v<sub>z_stab</sub> = v<sub>z</sub> - &omega;<sub>pitch</sub> &times; FuselageLength</i>). This accounts for <strong>Downwash</strong> and naturally provides <strong>Pitch Damping</strong> without artificial terms.</li>
+                    <li><strong>Moment Summation (at Center of Lift):</strong><br>
+                    <ul>
+                        <li><strong>Stabilizer Moment:</strong> <i>M<sub>stab</sub> = -L<sub>stab</sub> &times; FuselageLength</i></li>
+                        <li><strong>Rider Offset Moment:</strong> Torque created if the rider stands forward or aft of the Center of Lift.</li>
+                        <li><strong>Total Moment:</strong> <i>M<sub>total</sub> = M<sub>stab</sub> + M<sub>rider</sub></i></li>
+                    </ul></li>
+                </ul>
+
+                <h3>4. Power Calculation</h3>
+                <p>Power is the sum of Linear Power (legs pushing down) and Rotational Power (core/ankles fighting torque).</p>
+
+                <ul>
+                    <li><strong>Linear Power:</strong><br>
+                    <i>P<sub>linear</sub> = max(0, F<sub>rider</sub> &times; v<sub>ext</sub>)</i></li>
+                    <li><strong>Rotational Power:</strong><br>
+                    <i>P<sub>rot</sub> = |M<sub>total</sub> &times; &omega;<sub>pitch</sub>|</i><br>
+                    <em>(Absolute value is used because muscles consume energy to resist torque even during eccentric loading).</em></li>
+                    <li><strong>Total Power:</strong> <i>P<sub>total</sub> = P<sub>linear</sub> + P<sub>rot</sub></i></li>
+                </ul>
+
+                <h3>5. Power Metrics (Normalized vs Average)</h3>
+                <ul>
+                    <li><strong>Average Power:</strong><br>
+                    The arithmetic mean of the power output. It represents the total physical work done over time.</li>
+                    <li><strong>Normalized Power:</strong><br>
+                    A weighted average that emphasizes high-intensity spikes. Since physiological fatigue increases non-linearly with intensity, this metric better represents the metabolic "cost" of the session. It is calculated using a 4th-power weighting algorithm:<br>
+                    <i>P<sub>norm</sub> = ( &Sigma; P<sup>4</sup> / N )<sup>0.25</sup></i></li>
+                </ul>
+
+                <h2>Model Limitations</h2>
+
+                <h3>1. Aerodynamic Limitations</h3>
+                <ul>
+                    <li><strong>Simplified Drag Model:</strong><br>
+                    Drag is calculated using a simple parabolic polar (<i>C<sub>D</sub> = C<sub>D0</sub> + k C<sub>L</sub><sup>2</sup></i>). While mast drag is included, interference drag between components is ignored.</li>
+                </ul>
+
+                <h3>2. Biomechanical Limitations</h3>
+                <ul>
+                    <li><strong>Infinite Muscle Strength:</strong><br>
+                    The rider is modeled as an ideal force generator. The simulation might say "Requires 1200 Watts," but it doesn't know that a human cannot generate 1200 Watts. It does not implement Hill's Muscle Equation (the trade-off between force and speed).</li>
+                    <li><strong>Perfectly Rigid Transmission:</strong><br>
+                    The "Two-Mass Model" assumes the board and legs move as one solid unit relative to the water forces. It ignores the flex of the mast and the fuselage, which can dampen energy transfer.</li>
+                    <li><strong>Forced Kinematics (The "Rail" Effect):</strong><br>
+                    The motion is defined by math (<i>z = A cos(&omega;t)</i>), not by forces. The board is essentially moving on a predefined invisible rail.<br>
+                    <em>Consequence: If the rider stops pumping (power = 0), the simulation doesn't show the board slowing down or sinking; it just shows "Rider Force = 0". The board never "crashes."</em></li>
+                    <li><strong>Mass Effect & "Free Lift":</strong><br>
+                    Increasing rider mass without re-optimizing causes the simulation to show the rider "Sinking" (Lift < Weight). However, the Power calculation might not increase (or may even decrease). This is because the simulation forces the heavy legs back up during the upstroke regardless of whether there is enough Lift to do so, effectively giving the rider "free energy" for the recovery phase. To see the true cost, you must increase Lift (Speed/Trim) until the system is Balanced.</li>
+                </ul>
+
+                <h3>3. Mathematical Simplifications</h3>
+                <ul>
+                    <li><strong>Quasi-Steady Assumption:</strong><br>
+                    The solver calculates forces based only on the current instant's velocity and angle. It ignores "unsteady aerodynamics" (Theodorsen effects/Wagner function), where the wake from the previous stroke affects the current lift. This is usually acceptable for low frequencies but becomes inaccurate above ~2-3 Hz.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div id="batch-graphs-container" style="width:100%; max-width: 900px; display:flex; flex-direction:column; gap:20px; align-items:center; margin-top:20px; padding-bottom: 50px;"></div>
+
+<script>
+/**
+ * PUMP FOIL SIMULATOR
+ */
+
+// --- CONFIGURATION ---
+const CONFIG = {
+    mass: 70.0,          // Rider mass in kg
+    board_mass: 6.0,     // Mass of the board + foil + wet gear (kg)
+    U: 17.0 / 3.6,       // Forward speed in m/s (converted from km/h)
+    rho: 1000.0,         // Water density in kg/m³
+    S: 0.135,            // Wing area in m² (e.g., 1350 cm² = 0.135 m²)
+    Cd0: 0.008,          // Parasitic Drag Coefficient (NACA 0015 approx)
+    k: 0.05,             // Induced Drag Factor (recalculated based on AR)
+    g: 9.81,             // Gravity (m/s²)
+    visual_size_m: 0.4,  // Visual scale for foil chord length
+    // Scales
+    scale_L: 0.5, scale_D: 0.5, scale_T: 0.5, scale_R: 0.5, scale_N: 0.5, scale_W: 0.5, scale_Stab_L: 0.5, scale_Stab_D: 0.5,
+    AR: 13.9,            // Aspect Ratio (Span² / Area)
+    
+    // --- ADD THESE NEW LINES ---
+    S_stab: 0.012,       // Stabilizer Area in m2 (e.g., 250cm2)
+    AR_stab: 8.0,        // Stabilizer Aspect Ratio
+    fuselage_len: 0.60,  // Distance from Mast to Stabilizer (m)
+    stab_angle: -1.0,    // Stabilizer incidence angle (degrees) - usually negative!
+    rider_offset: 0.0,   // Rider's feet position relative to CoL (m)
+    riding_depth: 0.20,   // Average depth of the wing (m)
+    
+    // Adjustable Parameters
+    pitch_trim_deg: 4.9,    // Base pitch angle in degrees
+    phase_shift_deg: 90.0,  // Phase difference between Heave and Pitch
+    swing_weight_ratio: 0.4, // Percentage of body mass considered moving (legs + arms)
+    elastic_efficiency: 1.0,  // Rider elastic efficiency
+    asymmetry_factor: 0.0,
+    enable_added_mass: true, // Toggle for Added Mass effect
+    water_temp: 20.0,    // Water temperature in Celsius
+    polar_data: null,    // Processed 3D polar { alpha_3d:[], cl:[], cd_profile:[] }
+    raw_polar_2d: null,   // Raw 2D polar from CSV
+    polar_name: null     // Name of the loaded polar
+};
+
+// --- VISIBILITY STATE ---
+const VISIBILITY = { lift: true, drag: true, rider: true, thrust: true, assembly: true, weight: false, net: false, stab: true };
+
+// --- STATE ---
+let state = {
+    t: 0,
+    dt: 0.01,
+    historyTimer: 0,
+    paused: false,
+    slowMotion: false,
+    freq: 1.49,
+    heave_amp: 0.11,
+    pathX: [],
+    pathZ: [],
+    liftHistory: [],
+    thrustHistory: [],
+    avgThrustHistory: [],
+    avgLiftHistory: [],
+    powerHistory: [],
+    normPowerHistory: [],
+    avgPowerHistory: [],
+    linearPowerHistory: [],
+    rotationalPowerHistory: [],
+    gForceHistory: [],
+    avgGForceHistory: []
+};
+
+// --- NACA PROFILE ---
+function getNACA00xx(thickness, points) {
+    const coords = [];
+    // Generate Upper Surface (TE -> LE)
+    for (let i = points; i >= 0; i--) {
+        const beta = (i / points) * Math.PI;
+        const x = (1 - Math.cos(beta)) / 2;
+        const yt = 5 * thickness * (0.2969 * Math.sqrt(x) - 0.1260 * x - 0.3516 * Math.pow(x, 2) + 0.2843 * Math.pow(x, 3) - 0.1015 * Math.pow(x, 4));
+        coords.push({x: x, y: yt});
+    }
+    // Generate Lower Surface (LE -> TE)
+    for (let i = 1; i <= points; i++) {
+        const beta = (i / points) * Math.PI;
+        const x = (1 - Math.cos(beta)) / 2;
+        const yt = 5 * thickness * (0.2969 * Math.sqrt(x) - 0.1260 * x - 0.3516 * Math.pow(x, 2) + 0.2843 * Math.pow(x, 3) - 0.1015 * Math.pow(x, 4));
+        coords.push({x: x, y: -yt});
+    }
+    return coords;
+}
+let foilShape = getNACA00xx(0.15, 40);
+
+// --- POLAR PROCESSING ---
+function update3DPolar() {
+    if (!CONFIG.raw_polar_2d) {
+        CONFIG.polar_data = null;
+        document.getElementById('disp-polar-name').textContent = "Default (Analytical)";
+        drawPolarGraph();
+        return;
+    }
+    
+    // Convert 2D Polar to 3D based on current AR
+    // We map the 2D alpha to the required 3D geometric alpha: alpha_3d = alpha_2d + alpha_induced
+    // We keep Cd as profile drag, and add induced drag dynamically in the physics loop or here.
+    // To allow viscosity scaling on profile drag only, we store profile drag separately.
+    
+    const p2 = CONFIG.raw_polar_2d;
+    const p3 = { alpha_3d: [], cl: [], cd_profile: [] };
+    const AR = CONFIG.AR;
+    const rad2deg = 180 / Math.PI;
+    
+    for(let i=0; i<p2.alpha.length; i++) {
+        const cl = p2.cl[i];
+        const cd2 = p2.cd[i]; // Profile drag from 2D polar
+        const alpha2 = p2.alpha[i];
+        
+        const induced_angle_deg = (cl / (Math.PI * AR)) * rad2deg;
+        const alpha3 = alpha2 + induced_angle_deg;
+        
+        p3.alpha_3d.push(alpha3);
+        p3.cl.push(cl);
+        p3.cd_profile.push(cd2);
+    }
+    CONFIG.polar_data = p3;
+    const displayName = CONFIG.polar_name || "Custom";
+    document.getElementById('disp-polar-name').textContent = `${displayName} (AR ${CONFIG.AR.toFixed(1)})`;
+    drawPolarGraph();
+}
+
+// --- DOM ELEMENTS ---
+const canvas = document.getElementById('simCanvas');
+const ctx = canvas.getContext('2d');
+const ctxLift = document.getElementById('graphLift').getContext('2d');
+const ctxThrust = document.getElementById('graphThrust').getContext('2d');
+const ctxPower = document.getElementById('graphPower').getContext('2d');
+const ctxAvgPower = document.getElementById('graphAvgPower').getContext('2d');
+const ctxPowerComp = document.getElementById('graphPowerComp').getContext('2d');
+const ctxGForce = document.getElementById('graphGForce').getContext('2d');
+
+const ui = {
+    time: document.getElementById('val-time'),
+    watts: document.getElementById('val-watts'),
+    avgWatts: document.getElementById('val-avg-watts'),
+    normWatts: document.getElementById('val-norm-watts'),
+    avgThrust: document.getElementById('val-avg-thrust'),
+    wkg: document.getElementById('val-wkg'),
+    
+    // Angle Displays
+    pitch: document.getElementById('val-pitch'),
+    re: document.getElementById('val-re'),
+    aoa: document.getElementById('val-aoa'),
+    
+    dispFreq: document.getElementById('disp-freq'),
+    dispPpm: document.getElementById('disp-ppm'),
+    dispAmp: document.getElementById('disp-amp'),
+    dispAsym: document.getElementById('disp-asym'),
+    dispSpeed: document.getElementById('disp-speed'),
+    dispMass: document.getElementById('disp-mass'),
+    dispBoardMass: document.getElementById('disp-board-mass'),
+    dispArea: document.getElementById('disp-area'),
+    dispAr: document.getElementById('disp-ar'),
+    dispTrim: document.getElementById('disp-trim'),
+    dispPhase: document.getElementById('disp-phase'),
+    dispSwing: document.getElementById('disp-swing'),
+    dispElastic: document.getElementById('disp-elastic'),
+    dispStabAngle: document.getElementById('disp-stab-angle'),
+    dispStabArea: document.getElementById('disp-stab-area'),
+    dispStabAr: document.getElementById('disp-stab-ar'),
+    dispFuseLen: document.getElementById('disp-fuse-len'),
+    dispOffset: document.getElementById('disp-offset'),
+    dispHeight: document.getElementById('disp-height'),
+    dispTemp: document.getElementById('disp-temp')
+};
+
+// --- PHYSICS ENGINE ---
+function calculatePhysics(t) {
+    const omega = 2 * Math.PI * state.freq;
+    
+    // --- 1. CONFIGURATION FOR 2-MASS MODEL (LEGS + BOARD) ---
+    // Standard anthropometry: Legs (~35%) + Arms (~10%) + Hips (~15%).
+    // Aggressive pumping can involve >50% of body mass moving relative to head.
+    // The "Moving Mass" is the Board + Active Body Parts.
+    // The "Fixed Mass" is the Inertial Anchor (Head/Upper Torso).
+    
+    const m_board_gear = CONFIG.board_mass; // Foil + Board + Wet wetusit (kg)
+    const m_legs = CONFIG.mass * CONFIG.swing_weight_ratio;
+    const m_moving = m_board_gear + m_legs; 
+    // m_moving is the mass we must accelerate violently (~30-35kg total)
+    
+    // --- 2. KINEMATICS (Moving Mass Motion) ---
+    const vz_max = state.heave_amp * omega;
+    const gamma_max = Math.atan2(vz_max, CONFIG.U);
+    const pitch_amp = gamma_max * 0.90; 
+    
+    const pitch_trim = CONFIG.pitch_trim_deg * (Math.PI / 180);
+    const phase_rad = CONFIG.phase_shift_deg * (Math.PI / 180);
+
+    // Position (z), Velocity (vz), Acceleration (az) of the FEET/BOARD
+    const phi = omega * t;
+    // Asymmetric pumping profile: Quick Down / Slow Up (Time Warping)
+    // psi = phi - C * cos(phi)
+    const psi = phi - CONFIG.asymmetry_factor * Math.cos(phi);
+    const dpsi = omega * (1 + CONFIG.asymmetry_factor * Math.sin(phi));
+    const ddpsi = (omega * omega) * CONFIG.asymmetry_factor * Math.cos(phi);
+    
+    const z = state.heave_amp * Math.cos(psi);
+    const vz = -state.heave_amp * Math.sin(psi) * dpsi;
+    const az = -state.heave_amp * (Math.cos(psi) * (dpsi * dpsi) + Math.sin(psi) * ddpsi);
+    
+    // Pitch follows the warped phase to stay in sync
+    const theta = pitch_trim + pitch_amp * Math.cos(psi + phase_rad);
+
+    // Pitch Angular Velocity (rad/s)
+    const dTheta = -pitch_amp * Math.sin(psi + phase_rad) * dpsi;
+
+    // --- 3. AERODYNAMICS (FRONT WING) ---
+    const x = CONFIG.U * t;
+    const vx = CONFIG.U;
+    
+    const gamma = Math.atan2(vz, vx);
+    const alpha = theta - gamma;
+    const v_sq = vx*vx + vz*vz;
+    
+    // --- VISCOSITY CORRECTION ---
+    // Kinematic Viscosity of water (m^2/s) approx fit
+    const T = CONFIG.water_temp;
+    const nu = 1.793e-6 / (1 + 0.03368 * T + 0.000221 * T * T);
+    const nu_20 = 1.004e-6; // Reference at 20C
+    // Turbulent skin friction scaling factor ~ (nu/nu_ref)^0.2
+    const visc_factor = Math.pow(nu / nu_20, 0.2);
+
+    // --- LIFT & DRAG CALCULATION ---
+    const stall_angle_deg = 13.0;
+    const stall_rad = stall_angle_deg * (Math.PI / 180);
+    const alpha_abs = Math.abs(alpha);
+    const alpha_deg = alpha * (180 / Math.PI);
+    
+    let Cl, Cd_profile;
+    let isStalled = false;
+
+    if (CONFIG.polar_data) {
+        // --- CUSTOM POLAR LOOKUP ---
+        const p = CONFIG.polar_data;
+        // Linear Interpolation on alpha_3d
+        let idx = 0;
+        // Assume sorted alpha
+        if (alpha_deg <= p.alpha_3d[0]) {
+            idx = 0;
+        } else if (alpha_deg >= p.alpha_3d[p.alpha_3d.length - 1]) {
+            idx = p.alpha_3d.length - 2;
+        } else {
+            // Simple scan
+            for (let i = 0; i < p.alpha_3d.length - 1; i++) {
+                if (alpha_deg >= p.alpha_3d[i] && alpha_deg < p.alpha_3d[i+1]) {
+                    idx = i;
+                    break;
+                }
+            }
+        }
+        
+        const t_interp = (alpha_deg - p.alpha_3d[idx]) / (p.alpha_3d[idx+1] - p.alpha_3d[idx]);
+        Cl = p.cl[idx] + t_interp * (p.cl[idx+1] - p.cl[idx]);
+        const Cd_prof_raw = p.cd_profile[idx] + t_interp * (p.cd_profile[idx+1] - p.cd_profile[idx]);
+        
+        // Add Induced Drag & Apply Viscosity to Profile Drag
+        const Cd_induced = (Cl * Cl) / (Math.PI * CONFIG.AR);
+        Cd_profile = (Cd_prof_raw * visc_factor) + Cd_induced;
+        
+        if (alpha_abs > 15 * (Math.PI/180)) isStalled = true; 
+
+    } else {
+        // --- ANALYTICAL MODEL ---
+        const lift_slope = (2 * Math.PI) / (1 + 2 / CONFIG.AR);
+        
+        if (alpha_abs < stall_rad) {
+            // Linear Region
+            Cl = lift_slope * alpha;
+            const k = 1 / (Math.PI * CONFIG.AR);
+            // Apply viscosity factor to the parasitic term (Cd0)
+            Cd_profile = (CONFIG.Cd0 * visc_factor) + k * (Cl * Cl);
+        } else {
+            // Stall Region
+            isStalled = true;
+            const sign = Math.sign(alpha);
+            const max_Cl = lift_slope * stall_rad;
+            Cl = max_Cl * sign; 
+            const excess_rad = alpha_abs - stall_rad;
+            Cd_profile = 0.05 + (excess_rad * 2.0); 
+        }
+    }
+    
+    const L_mag = 0.5 * CONFIG.rho * CONFIG.S * Cl * v_sq;
+    const D_mag = 0.5 * CONFIG.rho * CONFIG.S * Cd_profile * v_sq;
+    
+    let Lx = -L_mag * Math.sin(gamma); let Lz = L_mag * Math.cos(gamma);
+    let Dx = -D_mag * Math.cos(gamma); let Dz = -D_mag * Math.sin(gamma);
+    
+    // --- 3b. AERODYNAMICS (STABILIZER) ---
+    // 1. Calculate Downwash Angle (epsilon) caused by front wing
+    // Approximation: epsilon = 2 * CL / (pi * AR)
+    const epsilon = (2 * Cl) / (Math.PI * CONFIG.AR);
+    
+    // 2. Local Angle of Attack for Stabilizer
+    // We calculate the actual vertical velocity at the stabilizer, accounting for pitch rotation.
+    // vz_stab = vz_front_wing - (angular_velocity * fuselage_length)
+    const vz_stab = vz - (dTheta * CONFIG.fuselage_len);
+    const gamma_stab = Math.atan2(vz_stab, vx);
+
+    // Alpha_stab = BoardPitch + StabAngle - FlightPathAngle_Stab - Downwash
+    const stab_rad = CONFIG.stab_angle * (Math.PI / 180);
+    const alpha_stab = theta + stab_rad - gamma_stab - epsilon;
+    
+    // 3. Stabilizer Lift (Usually Downforce, so likely negative)
+    const AR_stab = CONFIG.AR_stab; 
+    const Cl_stab = (2 * Math.PI * alpha_stab) / (1 + 2 / AR_stab);
+    const v_sq_stab = vx*vx + vz_stab*vz_stab; // Local velocity squared
+    const L_stab_mag = 0.5 * CONFIG.rho * CONFIG.S_stab * Cl_stab * v_sq_stab;
+    
+    // Resolve Forces (using gamma_stab)
+    let L_stab_z = L_stab_mag * Math.cos(gamma_stab); 
+    let L_stab_x = -L_stab_mag * Math.sin(gamma_stab);
+
+    // Add Stabilizer Drag (Profile drag + Induced)
+    const D_stab_mag = 0.5 * CONFIG.rho * CONFIG.S_stab * (0.02 + (Cl_stab*Cl_stab)/(Math.PI*AR_stab)) * v_sq_stab;
+    let D_stab_x = -D_stab_mag * Math.cos(gamma_stab); 
+    let D_stab_z = -D_stab_mag * Math.sin(gamma_stab);
+
+    // --- 3c. VARIABLE MAST DRAG & SURFACE BREACH ---
+    const mean_depth = CONFIG.riding_depth;  
+    let depth = mean_depth - z;
+    
+    // Initialize mast drag components
+    let D_mast_x = 0;
+    let D_mast_z = 0;
+
+    if (depth < 0) {
+        // Breach!
+        Lz = 0; Lx = 0;
+        L_stab_z = 0; L_stab_x = 0;
+        Dz = 0; Dx = 0;
+        D_stab_z = 0; D_stab_x = 0;
+        depth = 0; 
+    }
+
+    // Mast Drag
+    const mast_thick = 0.015;    
+    const Cd_mast = 0.12;        
+    const area_mast = depth * mast_thick;
+    const D_mast_mag = 0.5 * CONFIG.rho * area_mast * Cd_mast * v_sq;
+    
+    D_mast_x = -D_mast_mag * Math.cos(gamma);
+    D_mast_z = -D_mast_mag * Math.sin(gamma);
+
+    // --- 4. DYNAMICS & FORCES ---
+    
+    // Total Vertical Hydro Force
+    // Note: This includes Circulatory Lift & Drag, but EXCLUDES Added Mass (which is modeled as inertia)
+    const F_hydro_z = Lz + Dz + L_stab_z + D_stab_z + D_mast_z;
+    const F_hydro_x = Lx + Dx + L_stab_x + D_stab_x + D_mast_x;
+
+    // Wing Geometry (Added Mass)
+    const span = Math.sqrt(CONFIG.AR * CONFIG.S);
+    const chord = CONFIG.S / span;
+    const m_33 = CONFIG.rho * Math.PI * Math.pow(chord / 2, 2) * span;
+    const added_mass = CONFIG.enable_added_mass ? (m_33 * Math.pow(Math.cos(theta), 2)) : 0;
+
+    // Reynolds Number
+    const Re = (Math.sqrt(v_sq) * chord) / nu;
+
+    // F_inertia_moving: Force needed to accelerate Board + Legs
+    const F_inertia_moving = m_moving * (CONFIG.g + az);
+
+    // F_legs_push: The force the TORSO exerts on the LEGS to drive them.
+    let F_legs_push = F_hydro_z - F_inertia_moving - added_mass * az;
+    const F_rider_action = Math.max(0, F_legs_push); 
+
+    // --- 5. MOMENTS (Summed at Center of Lift) ---
+    
+    // A. Front Wing Moment
+    // By definition, if we pivot at CoL, the moment is 0.
+    const M_front = 0;
+    
+    // B. Stabilizer Moment
+    // Torque = Force * Distance. We define Nose Up as Positive Torque.
+    // Force L_stab_z is usually negative (down). Lever is negative (back).
+    // To get positive torque from downforce on tail: Torque = - (L_stab_z * fuselage_len)
+    const M_stab = -(L_stab_z * CONFIG.fuselage_len);
+    
+
+    // D. Rider Offset Moment (The "Imbalance" variable)
+    // Standing forward (Positive offset) pushes nose DOWN (Negative Torque).
+    const M_rider = -(F_rider_action * CONFIG.rider_offset);
+
+    // Total Moment the Rider must fight
+    const M_total = M_stab + M_rider;
+
+    // --- 6. POWER ---
+    
+    // Linear Power
+    let rawLegPower = F_legs_push * (-vz);
+    if (vz > 0) rawLegPower = 0;
+    
+    // Rotational Power
+    // Rider applies counter-torque: -M_total
+    // Use abs() because human muscles consume metabolic energy to resist torque even if technically "absorbing" work.
+    const rotPower = Math.abs(M_total * dTheta);
+
+    // Total Power
+    let power = Math.max(0, rawLegPower * CONFIG.elastic_efficiency) + rotPower;
+
+    // Weight Vector (Gravity)
+    const Wz = -(CONFIG.mass + CONFIG.board_mass) * CONFIG.g;
+    
+    // Apparent Weight (G-Force)
+    // For strapless riding, we clamp this to 0. You cannot feel "negative weight" (being pulled down).
+    // If the board accelerates down > 1g, you just float (0g).
+    const W_apparent_z = -CONFIG.mass * Math.max(0, CONFIG.g + az);
+
+    // Force on Board (at Feet) - For Visualization
+    // This includes the muscular force from the torso PLUS the inertial weight of the legs themselves.
+    // Note: If Lift=0, F_rider_action becomes 0 (Torso unsupported), but F_inertia_legs remains (Legs supported by Rail).
+    const F_inertia_legs = m_legs * (CONFIG.g + az);
+    const F_feet_push = F_rider_action + F_inertia_legs;
+
+    // --- 6. OUTPUTS ---
+    const Rx = 0; 
+    const Rz = -F_feet_push; 
+
+    // Calculate Net Force (Sum of all forces)
+    // Horizontal Net: Lift_x + Drag_x (Rider and Gravity are vertical)
+    const NetFx = F_hydro_x;
+    // Vertical Net: Lift_z + Drag_z 
+    const NetFz = F_hydro_z + Wz;
+    
+    return {
+        x, z, alpha, gamma, theta, vz, az,
+        Lx, Lz, Dx: Dx + D_mast_x, Dz: Dz + D_mast_z, Rx, Rz, Wz, W_apparent_z, NetFx, NetFz,
+        thrust: F_hydro_x, 
+        riderForce: F_rider_action,
+        power: power,
+        rawPower: rawLegPower,
+        L_stab_x, L_stab_z, D_stab_x, D_stab_z,
+        rotPower: rotPower,
+        isStalled: isStalled,
+        F_hydro_z, F_hydro_x, Re,
+        Cl, Cd: Cd_profile
+    };
+}
+ 
+// --- DRAWING ---
+function drawArrow(ctx, startX, startY, u, v, color, scale, user_scale, maxLen = 150) {
+    let len = Math.sqrt(u*u + v*v) * scale * user_scale;
+    const MAX_LEN_PX = maxLen;
+    let clamp = 1.0;
+    if (len > MAX_LEN_PX) clamp = MAX_LEN_PX / len;
+    const finalU = u * scale * user_scale * clamp;
+    const finalV = v * scale * user_scale * clamp;
+    const endX = startX + finalU;
+    const endY = startY - finalV; 
+    ctx.beginPath(); ctx.moveTo(startX, startY); ctx.lineTo(endX, endY);
+    ctx.strokeStyle = color; ctx.lineWidth = 3; ctx.stroke();
+    const angle = Math.atan2(-finalV, finalU); const headLen = 10;
+    ctx.beginPath(); ctx.moveTo(endX, endY);
+    ctx.lineTo(endX - headLen * Math.cos(angle - Math.PI / 6), endY - headLen * Math.sin(angle - Math.PI / 6));
+    ctx.lineTo(endX - headLen * Math.cos(angle + Math.PI / 6), endY - headLen * Math.sin(angle + Math.PI / 6));
+    ctx.fillStyle = color; ctx.fill();
+}
+
+function drawSimpleGraph(ctx, data, title, colorPositive, colorNegative, data2, color2, minScale) {
+    const w = ctx.canvas.width;
+    const h = ctx.canvas.height;
+    
+    // Scale factor for High DPI (assuming base height of 60px)
+    const scale = h / 80;
+
+    ctx.clearRect(0, 0, w, h);
+
+    const fontStack = "Verdana, Arial, sans-serif";
+    
+    const leftMargin = 50 * scale;
+    const rightMargin = 5 * scale;
+    const topMargin = 15 * scale;
+    const bottomMargin = 10 * scale;
+
+    // Title
+    ctx.font =  (8 * scale) + "px " + fontStack;
+    ctx.fillStyle = "#333";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+    ctx.fillText(title.toUpperCase(), leftMargin, 4 * scale);
+
+    const plotW = w - leftMargin - rightMargin;
+    const plotH = h - topMargin - bottomMargin;
+
+    if (data.length < 2) return;
+
+    // Scaling
+    let maxVal;
+    let max1 = 0;
+    if (data.length > 0) {
+        if (colorNegative) {
+            max1 = Math.max(...data.map(v => Math.abs(v)));
+        } else {
+            max1 = Math.max(...data);
+        }
+    }
+    let max2 = 0;
+    if (data2 && data2.length > 0) {
+        max2 = Math.max(...data2);
+    }
+    maxVal = Math.max(max1, max2);
+    
+    if (minScale) maxVal = Math.max(maxVal, minScale);
+
+    if (!isFinite(maxVal) || maxVal <= 1) maxVal = 10;
+
+    const midY = colorNegative ? (topMargin + plotH / 2) : (topMargin + plotH);
+    const scaleY = colorNegative ? (plotH / 2) / maxVal : (plotH) / maxVal;
+
+    // Grid & Axis
+    ctx.strokeStyle = '#e4e4e7'; // Zinc-200
+    ctx.lineWidth = 1 * scale;
+    
+    // Zero line
+    ctx.beginPath(); 
+    ctx.moveTo(leftMargin, midY); 
+    ctx.lineTo(w - rightMargin, midY); 
+    ctx.stroke();
+
+    // Max line
+    ctx.beginPath();
+    ctx.moveTo(leftMargin, topMargin);
+    ctx.lineTo(w - rightMargin, topMargin);
+    ctx.stroke();
+
+    if (colorNegative) {
+        ctx.beginPath();
+        ctx.moveTo(leftMargin, h - bottomMargin);
+        ctx.lineTo(w - rightMargin, h - bottomMargin);
+        ctx.stroke();
+    }
+
+    // Labels
+    ctx.fillStyle = "#444";
+    ctx.font =  (8 * scale) + "px " + fontStack;
+    ctx.textAlign = "right";
+    ctx.textBaseline = "middle";
+
+    if (colorNegative) {
+        ctx.fillText(maxVal.toFixed(1), leftMargin - 6 * scale, topMargin);
+        ctx.fillText('0', leftMargin - 6 * scale, midY);
+        ctx.fillText((-maxVal).toFixed(1), leftMargin - 6 * scale, h - bottomMargin);
+    } else {
+        ctx.fillText(maxVal.toFixed(1), leftMargin - 6 * scale, topMargin);
+        ctx.fillText('0', leftMargin - 6 * scale, h - bottomMargin);
+    }
+
+    // Plot
+    const stepX = plotW / Math.max(1, data.length - 1);
+    const pts = [];
+    for (let i = 0; i < data.length; i++) {
+        pts.push({
+            x: leftMargin + i * stepX,
+            y: midY - (data[i] * scaleY)
+        });
+    }
+
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+
+    if (colorNegative) {
+        // 1. Positive Area
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(leftMargin, topMargin - 2 * scale, plotW, midY - topMargin + 2 * scale);
+        ctx.clip();
+        
+        ctx.beginPath();
+        ctx.moveTo(pts[0].x, midY);
+        for (let p of pts) ctx.lineTo(p.x, p.y);
+        ctx.lineTo(pts[pts.length-1].x, midY);
+        ctx.closePath();
+        
+        let grad = ctx.createLinearGradient(0, topMargin, 0, midY);
+        grad.addColorStop(0, colorPositive); 
+        grad.addColorStop(1, "rgba(255,255,255,0)");
+        ctx.fillStyle = grad;
+        ctx.fill();
+        
+        ctx.strokeStyle = colorPositive.replace(/[\d.]+\)$/, '1)'); 
+        ctx.lineWidth = 1.5 * scale;
+        ctx.stroke();
+        ctx.restore();
+
+        // 2. Negative Area
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(leftMargin, midY, plotW, h - bottomMargin - midY + 2 * scale);
+        ctx.clip();
+        
+        ctx.beginPath();
+        ctx.moveTo(pts[0].x, midY);
+        for (let p of pts) ctx.lineTo(p.x, p.y);
+        ctx.lineTo(pts[pts.length-1].x, midY);
+        ctx.closePath();
+        
+        grad = ctx.createLinearGradient(0, midY, 0, h - bottomMargin);
+        grad.addColorStop(0, "rgba(255,255,255,0)");
+        grad.addColorStop(1, colorNegative);
+        ctx.fillStyle = grad;
+        ctx.fill();
+        
+        ctx.strokeStyle = colorNegative.replace(/[\d.]+\)$/, '1)');
+        ctx.lineWidth = 1.5 * scale;
+        ctx.stroke();
+        ctx.restore();
+
+    } else {
+        ctx.beginPath();
+        ctx.moveTo(pts[0].x, h - bottomMargin);
+        for (let p of pts) ctx.lineTo(p.x, p.y);
+        ctx.lineTo(pts[pts.length-1].x, h - bottomMargin);
+        ctx.closePath();
+
+        let grad = ctx.createLinearGradient(0, topMargin, 0, h - bottomMargin);
+        grad.addColorStop(0, colorPositive);
+        grad.addColorStop(1, "rgba(255,255,255,0)");
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        ctx.beginPath();
+        for (let i = 0; i < pts.length; i++) {
+            if (i===0) ctx.moveTo(pts[i].x, pts[i].y);
+            else ctx.lineTo(pts[i].x, pts[i].y);
+        }
+        ctx.strokeStyle = colorPositive.replace(/[\d.]+\)$/, '1)');
+        ctx.lineWidth = 1.5 * scale;
+        ctx.stroke();
+    }
+
+    if (data2 && data2.length > 1) {
+        ctx.beginPath();
+        for (let i = 0; i < data2.length; i++) {
+            const px = leftMargin + i * stepX;
+            const py = midY - (data2[i] * scaleY);
+            if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.strokeStyle = color2;
+        ctx.lineWidth = 2 * scale;
+        ctx.stroke();
+    }
+}
+
+function drawSignGraph(ctx, data, title) {
+    const w = ctx.canvas.width;
+    const h = ctx.canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    const leftMargin = 44;
+    const rightMargin = 8;
+    const topMargin = 6;
+    const bottomMargin = 6;
+
+    ctx.font = "12px sans-serif";
+    ctx.fillStyle = "#444";
+    ctx.fillText(title, leftMargin, 12);
+
+    const plotW = w - leftMargin - rightMargin;
+    const plotH = h - topMargin - bottomMargin;
+
+    // Draw Y axis (small)
+    ctx.strokeStyle = '#ccc';
+    ctx.beginPath();
+    ctx.moveTo(leftMargin, topMargin);
+    ctx.lineTo(leftMargin, h - bottomMargin);
+    ctx.stroke();
+
+    if (!data || data.length === 0) return;
+
+    const stepX = plotW / Math.max(1, data.length - 1);
+
+    for (let i = 0; i < data.length; i++) {
+        const val = data[i];
+        const px = leftMargin + i * stepX;
+        const wRect = Math.max(1, Math.ceil(stepX));
+        ctx.fillStyle = (val >= 0) ? 'rgba(0,160,0,0.5)' : 'rgba(220,0,0,0.45)';
+        ctx.fillRect(px, topMargin, wRect, plotH);
+    }
+
+    // Draw a thin separator line at mid (zero) for clarity
+    ctx.strokeStyle = '#eee';
+    ctx.beginPath(); ctx.moveTo(leftMargin, topMargin + plotH/2); ctx.lineTo(w - rightMargin, topMargin + plotH/2); ctx.stroke();
+}
+
+function drawSustainabilityGauge(ctx, avgThrust, maxThrustRef) {
+    const w = ctx.canvas.width;
+    const h = ctx.canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    const margin = 8;
+    const gaugeW = w - 2 * margin;
+    const gaugeH = h - 2 * margin;
+    const centerX = margin + gaugeW / 2;
+    const centerY = margin + gaugeH / 2;
+
+    // Clamp avgThrust to reasonable range
+    const clampedThrust = Math.max(-maxThrustRef, Math.min(maxThrustRef, avgThrust));
+    const normalized = clampedThrust / maxThrustRef; // -1 to +1
+
+    // Background bar (light gray)
+    ctx.fillStyle = '#f5f5f5';
+    ctx.fillRect(margin, margin, gaugeW, gaugeH);
+
+    // Split into left (negative/red) and right (positive/green) halves
+    const halfW = gaugeW / 2;
+
+    // Left half: negative/deceleration (red)
+    ctx.fillStyle = 'rgba(255, 100, 100, 0.2)';
+    ctx.fillRect(margin, margin, halfW, gaugeH);
+
+    // Right half: positive/acceleration (green)
+    ctx.fillStyle = 'rgba(100, 200, 100, 0.2)';
+    ctx.fillRect(margin + halfW, margin, halfW, gaugeH);
+
+    // Fill indicator based on normalized thrust
+    if (normalized < 0) {
+        // Deceleration: fill from center left
+        const fillW = Math.abs(normalized) * halfW;
+        ctx.fillStyle = 'rgba(220, 50, 50, 0.6)';
+        ctx.fillRect(centerX - fillW, margin, fillW, gaugeH);
+    } else {
+        // Acceleration: fill from center right
+        const fillW = normalized * halfW;
+        ctx.fillStyle = 'rgba(80, 180, 80, 0.6)';
+        ctx.fillRect(centerX, margin, fillW, gaugeH);
+    }
+
+    // Center line (zero)
+    ctx.strokeStyle = '#666';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(centerX, margin);
+    ctx.lineTo(centerX, margin + gaugeH);
+    ctx.stroke();
+
+    // Border
+    ctx.strokeStyle = '#ccc';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(margin, margin, gaugeW, gaugeH);
+
+    // Label text
+    ctx.fillStyle = '#333';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('Decel', margin + 4, margin + 12);
+    ctx.textAlign = 'right';
+    ctx.fillText('Accel', w - margin - 4, margin + 12);
+
+    // Show numeric value
+    ctx.textAlign = 'center';
+    ctx.font = 'bold 11px monospace';
+    ctx.fillStyle = (normalized >= 0) ? '#008000' : '#c00000';
+    ctx.fillText(avgThrust.toFixed(0) + ' N', centerX, margin + gaugeH - 2);
+}
+
+function drawAirfoilShape() {
+    const canvas = document.getElementById('graphFoil');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width;
+    const h = canvas.height;
+    const scale = h / 300; 
+    
+    ctx.clearRect(0, 0, w, h);
+    
+    ctx.textAlign = "left";
+    ctx.textBaseline = "alphabetic";
+    
+    ctx.save();
+    const shapeW = w * 0.85;
+    const shapeX = w * 0.075;
+    const chordY = h / 2;
+    
+    ctx.fillStyle = "#333";
+    ctx.font = (14 * scale) + "px sans-serif";
+    const foilName = document.getElementById('disp-foil-name').textContent;
+    ctx.fillText(`Profile Shape (${foilName})`, 10 * scale, 30 * scale);
+    
+    ctx.beginPath();
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 2;
+    for(let i=0; i<foilShape.length; i++) {
+        const px = shapeX + foilShape[i].x * shapeW;
+        const py = chordY - foilShape[i].y * shapeW; 
+        if(i===0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.stroke();
+    ctx.fillStyle = "#ddd";
+    ctx.fill();
+    ctx.restore();
+}
+
+function drawPolarGraph(currentPoint) {
+    const canvas = document.getElementById('graphPolar');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width;
+    const h = canvas.height;
+    const scale = h / 360; 
+    
+    ctx.clearRect(0, 0, w, h);
+    
+    // Reset text alignment
+    ctx.textAlign = "left";
+    ctx.textBaseline = "alphabetic";
+    
+    // --- 2. Draw Polar Curves ---
+    const graphX = 60 * scale;
+    const graphY = 30 * scale;
+    const graphW = w - 130 * scale;
+    const graphH = h - 70 * scale;
+    
+    // Generate Data Points
+    const dataPoints = [];
+    const minAlpha = -5, maxAlpha = 20, step = 0.5;
+    
+    // Helper to calculate physics-like coefficients
+    const getCoeffs = (alphaDeg) => {
+        // Re-use physics logic (simplified)
+        const alphaRad = alphaDeg * Math.PI / 180;
+        const T = CONFIG.water_temp;
+        const nu = 1.793e-6 / (1 + 0.03368 * T + 0.000221 * T * T);
+        const visc_factor = Math.pow(nu / 1.004e-6, 0.2);
+
+        if (CONFIG.polar_data) {
+            const p = CONFIG.polar_data;
+            let idx = 0;
+            if (alphaDeg <= p.alpha_3d[0]) idx = 0;
+            else if (alphaDeg >= p.alpha_3d[p.alpha_3d.length-1]) idx = p.alpha_3d.length - 2;
+            else { for(let i=0; i<p.alpha_3d.length-1; i++) { if (alphaDeg >= p.alpha_3d[i] && alphaDeg < p.alpha_3d[i+1]) { idx = i; break; } } }
+            const t = (alphaDeg - p.alpha_3d[idx]) / (p.alpha_3d[idx+1] - p.alpha_3d[idx] || 1);
+            const cl = p.cl[idx] + t * (p.cl[idx+1] - p.cl[idx]);
+            const cd_prof = p.cd_profile[idx] + t * (p.cd_profile[idx+1] - p.cd_profile[idx]);
+            return { cl, cd: (cd_prof * visc_factor) + (cl*cl)/(Math.PI * CONFIG.AR) };
+        } else {
+            const stall_rad = 13.0 * Math.PI/180;
+            const lift_slope = (2 * Math.PI) / (1 + 2 / CONFIG.AR);
+            let cl, cd_prof;
+            if (Math.abs(alphaRad) < stall_rad) {
+                cl = lift_slope * alphaRad;
+                cd_prof = (CONFIG.Cd0 * visc_factor) + (cl*cl)/(Math.PI * CONFIG.AR);
+            } else {
+                cl = lift_slope * stall_rad * Math.sign(alphaRad);
+                cd_prof = 0.05 + (Math.abs(alphaRad) - stall_rad) * 2.0;
+            }
+            return { cl, cd: cd_prof };
+        }
+    };
+    
+    for(let a = minAlpha; a <= maxAlpha; a += step) dataPoints.push({ a, ...getCoeffs(a) });
+    
+    const mapX = (a) => graphX + ((a - minAlpha) / (maxAlpha - minAlpha)) * graphW;
+    const mapY_Cl = (cl) => graphY + graphH - ((cl + 0.5) / 2.0) * graphH; // Range -0.5 to 1.5
+    const mapY_Cd = (cd) => graphY + graphH - (cd / 0.2) * graphH; // Range 0 to 0.2
+    
+    // Background & Grid
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(graphX, graphY, graphW, graphH);
+    ctx.strokeStyle = "#ccc";
+    ctx.lineWidth = 1;
+    ctx.strokeRect(graphX, graphY, graphW, graphH);
+
+    // --- Add Axis Labels and Gridlines ---
+    ctx.fillStyle = "#666";
+    ctx.font = (12 * scale) + "px sans-serif";
+    ctx.strokeStyle = '#eee';
+    ctx.lineWidth = 1;
+
+    // X-Axis (Alpha)
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    for (let a = minAlpha; a <= maxAlpha; a += 5) {
+        const x = mapX(a);
+        ctx.fillText(a.toString(), x, graphY + graphH + 5 * scale);
+        ctx.beginPath();
+        ctx.moveTo(x, graphY);
+        ctx.lineTo(x, graphY + graphH);
+        ctx.stroke();
+    }
+    ctx.fillText("Alpha (deg)", graphX + graphW / 2, graphY + graphH + 20 * scale);
+
+    // Y-Axis (Cl - Left)
+    ctx.textAlign = "right";
+    ctx.textBaseline = "middle";
+    for (let cl = -0.5; cl <= 1.5; cl += 0.5) {
+        const y = mapY_Cl(cl);
+        ctx.fillText(cl.toFixed(1), graphX - 8 * scale, y);
+        ctx.beginPath();
+        ctx.moveTo(graphX, y);
+        ctx.lineTo(graphX + graphW, y);
+        ctx.stroke();
+    }
+    ctx.save();
+    ctx.translate(graphX - 45 * scale, graphY + graphH / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.textAlign = "center";
+    ctx.fillText("Cl (Lift Coefficient)", 0, 0);
+    ctx.restore();
+
+
+    // Y-Axis (Cd - Right)
+    ctx.textAlign = "left";
+    ctx.textBaseline = "middle";
+    for (let cd = 0; cd <= 0.2; cd += 0.05) {
+        const y = mapY_Cd(cd);
+        ctx.fillText(cd.toFixed(2), graphX + graphW + 8 * scale, y);
+        // No need to redraw horizontal grid lines
+    }
+    ctx.save();
+    ctx.translate(graphX + graphW + 50 * scale, graphY + graphH / 2);
+    ctx.rotate(Math.PI / 2);
+    ctx.textAlign = "center";
+    ctx.fillText("Cd (Drag Coefficient)", 0, 0);
+    ctx.restore();
+
+
+    // Draw Cl (Blue)
+    ctx.beginPath(); ctx.strokeStyle = "blue"; ctx.lineWidth = 2;
+    for(let i=0; i<dataPoints.length; i++) { const x = mapX(dataPoints[i].a), y = mapY_Cl(dataPoints[i].cl); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); }
+    ctx.stroke();
+    // Draw Cd (Red)
+    ctx.beginPath(); ctx.strokeStyle = "red"; ctx.lineWidth = 2;
+    for(let i=0; i<dataPoints.length; i++) { const x = mapX(dataPoints[i].a), y = mapY_Cd(dataPoints[i].cd); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); }
+    ctx.stroke();
+    
+    // Legend
+    ctx.fillStyle = "blue";
+    ctx.fillRect(graphX + 10 * scale, graphY + 10 * scale, 10 * scale, 10 * scale);
+    ctx.fillStyle = "#333";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "middle";
+    ctx.fillText("Cl", graphX + 25 * scale, graphY + 15 * scale);
+
+    ctx.fillStyle = "red";
+    ctx.fillRect(graphX + 10 * scale, graphY + 30 * scale, 10 * scale, 10 * scale);
+    ctx.fillStyle = "#333";
+    ctx.fillText("Cd", graphX + 25 * scale, graphY + 35 * scale);
+
+    // --- 3. Draw Current Operating Point ---
+    if (currentPoint) {
+        const { alpha, cl, cd } = currentPoint;
+        // Check bounds to avoid drawing outside
+        if (alpha >= minAlpha && alpha <= maxAlpha) {
+            const px = mapX(alpha);
+            const pyCl = mapY_Cl(cl);
+            const pyCd = mapY_Cd(cd);
+
+            // Draw vertical line at Alpha
+            ctx.save();
+            ctx.setLineDash([2, 2]);
+            ctx.strokeStyle = "#aaa";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(px, graphY);
+            ctx.lineTo(px, graphY + graphH);
+            ctx.stroke();
+
+            // Draw Cl Point
+            ctx.fillStyle = "blue";
+            ctx.beginPath();
+            ctx.arc(px, pyCl, 4 * scale, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Draw Cd Point
+            ctx.fillStyle = "red";
+            ctx.beginPath();
+            ctx.arc(px, pyCd, 4 * scale, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Real-time values
+            ctx.font = "bold " + (12 * scale) + "px monospace";
+            ctx.textAlign = "left";
+            ctx.fillStyle = "#333";
+            ctx.fillText(`α: ${alpha.toFixed(1)}°`, graphX + 10*scale, graphY + 55*scale);
+            ctx.fillStyle = "blue";
+            ctx.fillText(`Cl: ${cl.toFixed(2)}`, graphX + 10*scale, graphY + 70*scale);
+            ctx.fillStyle = "red";
+            ctx.fillText(`Cd: ${cd.toFixed(3)}`, graphX + 10*scale, graphY + 85*scale);
+            
+            ctx.restore();
+        }
+    }
+}
+
+// --- UPDATE & RENDER ---
+function updatePhysicsState(dtOverride) {
+    const dt = dtOverride || state.dt;
+    
+    // Increment the history timer
+    state.historyTimer += dt;
+
+    // Process history updates in fixed steps
+    while (state.historyTimer >= state.dt) {
+        // Decrement timer by one simulation step
+        state.historyTimer -= state.dt;
+        
+        // Increment simulation time and recalculate physics for the history
+        state.t += state.dt;
+        if(state.t > 1000) state.t = 0; // Reset time to avoid precision issues
+        
+        const phys = calculatePhysics(state.t); // Recalculate for the new time
+        
+        // --- Update History Arrays ---
+        state.liftHistory.push(phys.F_hydro_z);
+        if (state.liftHistory.length > 1000) state.liftHistory.shift();
+        
+        state.thrustHistory.push(phys.thrust);
+        if (state.thrustHistory.length > 1000) state.thrustHistory.shift();
+        
+        state.powerHistory.push(phys.power);
+        if (state.powerHistory.length > 1000) state.powerHistory.shift();
+        
+        state.linearPowerHistory.push(Math.max(0, phys.rawPower * CONFIG.elastic_efficiency));
+        if (state.linearPowerHistory.length > 1000) state.linearPowerHistory.shift();
+
+        state.rotationalPowerHistory.push(phys.rotPower);
+        if (state.rotationalPowerHistory.length > 1000) state.rotationalPowerHistory.shift();
+        
+        // Track Apparent Weight (Signed Force in Newtons) to ensure avg is exactly 1G
+        state.gForceHistory.push(phys.W_apparent_z);
+        if (state.gForceHistory.length > 1000) state.gForceHistory.shift();
+
+        // Calculate window (2 cycles) for smoothing
+        const cyclePeriod = 1.0 / state.freq;
+        const samplesPerCycle = Math.max(1, cyclePeriod / state.dt);
+        const windowSize = Math.ceil(samplesPerCycle * 2);
+        
+        // Power (Normalized & Average)
+        let sumFourthPower = 0;
+        let sumPower = 0;
+        const start = Math.max(0, state.powerHistory.length - windowSize);
+        const count = state.powerHistory.length - start;
+        for (let i = state.powerHistory.length - 1; i >= start; i--) {
+            // Double Check: Ensure we only calculate positive work.
+            // Clamp negative values (braking/absorbing) to 0 before averaging.
+            const val = Math.max(0, state.powerHistory[i]);
+            sumFourthPower += Math.pow(val, 4);
+            sumPower += val;
+        }
+        const normPower = (count > 0) ? Math.pow(sumFourthPower / count, 0.25) : 0;
+        const avgPower = (count > 0) ? sumPower / count : 0;
+
+        state.normPowerHistory.push(normPower);
+        if (state.normPowerHistory.length > 1000) state.normPowerHistory.shift();
+        state.avgPowerHistory.push(avgPower);
+        if (state.avgPowerHistory.length > 1000) state.avgPowerHistory.shift();
+
+        // Average Thrust (Windowed)
+        let thrustSum = 0;
+        const startThrust = Math.max(0, state.thrustHistory.length - windowSize);
+        const countThrust = state.thrustHistory.length - startThrust;
+        for (let i = state.thrustHistory.length - 1; i >= startThrust; i--) {
+            thrustSum += state.thrustHistory[i];
+        }
+        const avgThrust = (countThrust > 0) ? thrustSum / countThrust : 0;
+        state.avgThrustHistory.push(avgThrust);
+        if (state.avgThrustHistory.length > 1000) state.avgThrustHistory.shift();
+
+        // Average Lift (Windowed)
+        let liftSum = 0;
+        const startLift = Math.max(0, state.liftHistory.length - windowSize);
+        const countLift = state.liftHistory.length - startLift;
+        for (let i = state.liftHistory.length - 1; i >= startLift; i--) {
+            liftSum += state.liftHistory[i];
+        }
+        const avgLift = (countLift > 0) ? liftSum / countLift : 0;
+        state.avgLiftHistory.push(avgLift);
+        if (state.avgLiftHistory.length > 1000) state.avgLiftHistory.shift();
+
+        // Average G-Force (Windowed)
+        let gSum = 0;
+        const startG = Math.max(0, state.gForceHistory.length - windowSize);
+        const countG = state.gForceHistory.length - startG;
+        for (let i = state.gForceHistory.length - 1; i >= startG; i--) {
+            gSum += state.gForceHistory[i];
+        }
+        const avgGForce = (countG > 0) ? gSum / countG : 0;
+        state.avgGForceHistory.push(avgGForce);
+        if (state.avgGForceHistory.length > 1000) state.avgGForceHistory.shift();
+
+        // Update the visual path of the foil (synced with physics steps)
+        state.pathX.push(phys.x);
+        state.pathZ.push(phys.z);
+        if (state.pathX.length > 300) {
+            state.pathX.shift();
+            state.pathZ.shift();
+        }
+    }
+    
+    // Get the most recent averages for the UI display
+    const currentNormPower = state.normPowerHistory.length > 0 ? state.normPowerHistory[state.normPowerHistory.length - 1] : 0;
+    const currentAvgPower = state.avgPowerHistory.length > 0 ? state.avgPowerHistory[state.avgPowerHistory.length - 1] : 0;
+    const currentAvgThrust = state.avgThrustHistory.length > 0 ? state.avgThrustHistory[state.avgThrustHistory.length - 1] : 0;
+    const currentAvgLift = state.avgLiftHistory.length > 0 ? state.avgLiftHistory[state.avgLiftHistory.length - 1] : 0;
+    const currentAvgGForce = state.avgGForceHistory.length > 0 ? state.avgGForceHistory[state.avgGForceHistory.length - 1] : 0;
+
+    // Calculate smooth physics for rendering (interpolate time using the remainder)
+    const smoothPhys = calculatePhysics(state.t + state.historyTimer);
+
+    return { phys: smoothPhys, normPower: currentNormPower, avgPower: currentAvgPower, avgThrust: currentAvgThrust, avgLift: currentAvgLift, avgGForce: currentAvgGForce };
+}
+
+function render(data) {
+    const { phys, normPower, avgPower, avgThrust, avgLift, avgGForce } = data;
+
+    // UI
+    ui.time.textContent = state.t.toFixed(2);
+    
+    ui.re.textContent = phys.Re.toFixed(0);
+    // Update New Angle Displays
+    ui.pitch.textContent = (phys.theta * 180 / Math.PI).toFixed(1);
+    ui.aoa.textContent = (phys.alpha * 180 / Math.PI).toFixed(1);
+
+    ui.watts.textContent = phys.power.toFixed(0);
+    ui.avgWatts.textContent = avgPower.toFixed(0);
+    ui.normWatts.textContent = normPower.toFixed(0);
+    ui.wkg.textContent = (avgPower / CONFIG.mass).toFixed(2);
+    
+    // Canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const PPU = 100;
+    const camX = phys.x * PPU;
+    const camOffset = canvas.width / 3;
+    
+    ctx.save();
+    ctx.translate(-camX + camOffset, canvas.height * 0.70);
+    
+    // Environment
+    ctx.strokeStyle = '#e0e0e0'; ctx.lineWidth = 1;
+    ctx.beginPath();
+    const startGrid = Math.floor((phys.x - 2)); const endGrid = Math.floor((phys.x + 8));
+    for (let i = startGrid; i <= endGrid; i++) { ctx.moveTo(i * PPU, -500); ctx.lineTo(i * PPU, 500); }
+    ctx.moveTo(-10000, 0); ctx.lineTo(10000, 0); ctx.stroke();
+    
+    // Water Surface
+    const surfaceZ = CONFIG.riding_depth; 
+    const surfaceY = -surfaceZ * PPU;
+    ctx.fillStyle = 'rgba(0, 160, 255, 0.1)';
+    ctx.fillRect(camX - 2000, surfaceY, 4000, 1000);
+    ctx.beginPath(); ctx.moveTo(camX - 2000, surfaceY); ctx.lineTo(camX + 2000, surfaceY);
+    ctx.strokeStyle = 'rgba(0, 160, 255, 0.5)'; ctx.lineWidth = 2; ctx.stroke();
+
+    // Trail
+    ctx.beginPath(); ctx.strokeStyle = 'rgba(0,0,0,0.3)'; ctx.lineWidth = 2;
+    for(let i=0; i<state.pathX.length; i++){
+        const px = state.pathX[i] * PPU; const pz = -state.pathZ[i] * PPU;
+        if (i===0) ctx.moveTo(px, pz); else ctx.lineTo(px, pz);
+    }
+    // Connect trail to current foil position to close the gap
+    if (state.pathX.length > 0) {
+        ctx.lineTo(phys.x * PPU, -phys.z * PPU);
+    }
+    ctx.stroke();
+    
+    const foilCX = phys.x * PPU; const foilCY = -phys.z * PPU;
+    
+    // Chest position for G-Force vector (defaults to foil center)
+    let chestX = foilCX;
+    let chestY = foilCY;
+
+    // Foil
+    // Foil Assembly (Rigid Body)
+    ctx.save(); ctx.translate(foilCX, foilCY); ctx.rotate(-phys.theta); 
+    
+    // Dimensions
+    const mastH = 0.85 * PPU;
+    const mastW = 0.1 * PPU;
+    const fuseLen = CONFIG.fuselage_len * PPU;
+    const fuseRad = 0.015 * PPU;
+    const mastX = -0.2 * PPU; 
+    const boardL = 1.2 * PPU;
+    const boardThick = 0.06 * PPU;
+
+    // Calculate Rider Force Attachment Point (Feet Center)
+    const rSinT = Math.sin(phys.theta);
+    const rCosT = Math.cos(phys.theta);
+    const localFeetX = CONFIG.rider_offset * PPU;
+    const localFeetY = -mastH - boardThick;
+    const riderForceX = foilCX + (localFeetX * rCosT + localFeetY * rSinT);
+    const riderForceY = foilCY + (-localFeetX * rSinT + localFeetY * rCosT);
+
+    if (VISIBILITY.assembly) {
+        // 1. Mast & Fuselage & Stabilizer
+        ctx.fillStyle = '#444';
+        
+        // Fuselage (extending backwards from wing at 0,0)
+        ctx.fillRect(-fuseLen, -fuseRad, fuseLen, fuseRad*2);
+        // Stabilizer (at the back end of fuselage)
+        ctx.beginPath(); ctx.ellipse(-fuseLen, 0, 0.12*PPU, 0.015*PPU, 0, 0, Math.PI*2); ctx.fill();
+        // Mast (extending up)
+        ctx.fillRect(mastX - mastW/2, -mastH, mastW, mastH);
+
+        // 2. Board (on top of mast)
+        ctx.fillStyle = '#ccc'; ctx.strokeStyle = '#999';
+        ctx.beginPath(); ctx.rect(mastX - boardL/3, -mastH - boardThick, boardL, boardThick);
+        ctx.fill(); ctx.stroke();
+    }
+
+    // 3. Stickman Rider
+    if (VISIBILITY.rider && VISIBILITY.assembly) {
+        const fatness = CONFIG.mass / 80.0;
+        const limbWidth = 8 * fatness * fatness;
+        const torsoWidth = 12 * fatness * fatness;
+
+        // Color change for Power Phase
+        // Light up when pushing down (Rz < 0) and accelerating downwards (az < 0)
+        const isPowerPhase = (phys.rawPower > 0 && phys.az < 0);
+        const riderColor = isPowerPhase ? '#f97316' : '#222'; // Orange-500 if powered
+
+        ctx.strokeStyle = riderColor; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+        const deckY = -mastH - boardThick;
+        const legLen = 0.9 * PPU;
+        const torsoLen = 0.55 * PPU;
+        const headRad = 0.1 * PPU * Math.sqrt(fatness);
+        
+        // Crouch: z high (up) -> crouch=1 (bent). z low (down) -> crouch=0 (straight)
+        const normZ = (state.heave_amp > 0.0001) ? Math.max(-1, Math.min(1, phys.z / state.heave_amp)) : 0;
+        const crouch = (normZ + 1) / 2; 
+        
+        const curLegLen = legLen * (1.0 - 0.35 * crouch);
+        
+        // Feet positions (Fixed on board)
+        const footRearX = (CONFIG.rider_offset - 0.2) * PPU;
+        const footFrontX = footRearX + 0.4 * PPU;
+
+        // Hip stabilized over front foot (World Up)
+        const sinT = Math.sin(phys.theta);
+        const cosT = Math.cos(phys.theta);
+        
+        const hipX = footFrontX + curLegLen * sinT;
+        const hipY = deckY - curLegLen * cosT;
+        
+        const kneeBend = 0.25 * PPU * crouch;
+
+        // Legs
+        ctx.lineWidth = limbWidth;
+        ctx.beginPath(); ctx.moveTo(footRearX, deckY); ctx.quadraticCurveTo(footRearX + (hipX - footRearX)/2 + kneeBend, deckY - curLegLen/2, hipX, hipY); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(footFrontX, deckY); ctx.quadraticCurveTo(footFrontX + (hipX - footFrontX)/2 + kneeBend, deckY - curLegLen/2, hipX, hipY); ctx.stroke();
+        
+        // Torso & Head (Upright in World Space)
+        const shoulderX = hipX + torsoLen * sinT;
+        const shoulderY = hipY - torsoLen * cosT;
+
+        ctx.lineWidth = torsoWidth;
+        ctx.beginPath(); ctx.moveTo(hipX, hipY); ctx.lineTo(shoulderX, shoulderY); ctx.stroke();
+        
+        // Neck
+        const neckLen = 0.09 * PPU;
+        const neckX = shoulderX + neckLen * sinT;
+        const neckY = shoulderY - neckLen * cosT;
+        const neckWidth = 7 * fatness * fatness;
+        ctx.lineWidth = neckWidth;
+        ctx.beginPath(); ctx.moveTo(shoulderX, shoulderY); ctx.lineTo(neckX, neckY); ctx.stroke();
+        
+        // Head
+        const headX = neckX;
+        const headY = neckY - headRad;
+        ctx.beginPath(); ctx.fillStyle='#eee'; ctx.lineWidth=2; ctx.arc(headX, headY, headRad, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+        
+        // Face - Smiley
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 1.5;
+        ctx.lineCap = 'round';
+        
+        // Eyes - shifted slightly to the right
+        const eyeY = headY - headRad * 0.30;
+        const eyeSpacing = headRad * 0.35;
+        const eyeSize = headRad * 0.1;
+        const faceOffsetX = headRad * 0.25;
+        ctx.beginPath();
+        ctx.arc(headX - eyeSpacing + faceOffsetX, eyeY, eyeSize, 0, Math.PI*2);
+        ctx.fillStyle = '#333';
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(headX + eyeSpacing + faceOffsetX, eyeY, eyeSize, 0, Math.PI*2);
+        ctx.fill();
+        
+        // Smile - shifted slightly to the right
+        const smileY = headY + headRad * 0.1;
+        const smileWidth = headRad * 0.5;
+        const smileHeight = headRad * 0.25;
+        ctx.beginPath();
+        ctx.arc(headX + faceOffsetX, smileY, smileWidth, 0.2, Math.PI - 0.2, false);
+        ctx.stroke();
+        
+        // Arms
+        const armLen = 0.55 * PPU;
+        
+        // Arm swing logic: Simulate motion in Z-Y plane (Out of screen / Up-Down)
+        // 0 = Down, PI = Up. We map crouch to a range that lifts arms.
+        const armAngle = 0.2 + (crouch * 1.3); 
+        
+        // Projection:
+        // Y component (Vertical) varies with cos(angle). 
+        // X component (Lateral) is minimized to simulate "out of screen" motion rather than "side-to-side".
+        const armDyLocal = armLen * Math.cos(armAngle); 
+        const armDxLocal = armLen * 0.2 * Math.sin(armAngle); // Small lateral spread for "elbows out"
+
+        // Shoulders (Facing Screen -> Spread in World X) - positioned at torso top
+        const shoulderSpread = 0.12 * PPU; 
+        const sDx = shoulderSpread * cosT;
+        const sDy = shoulderSpread * sinT;
+
+        const rShoulderX = shoulderX + sDx; const rShoulderY = shoulderY + sDy;
+        const lShoulderX = shoulderX - sDx; const lShoulderY = shoulderY - sDy;
+
+        // Draw Shoulder Line
+        ctx.lineWidth = limbWidth;
+        ctx.beginPath(); ctx.moveTo(lShoulderX, lShoulderY); ctx.lineTo(rShoulderX, rShoulderY); ctx.stroke();
+
+        // Calculate Arm Vectors rotated by Rider Pitch (theta)
+        // Right Arm (+X spread)
+        const rDx = (armDxLocal * cosT - armDyLocal * sinT);
+        const rDy = (armDxLocal * sinT + armDyLocal * cosT);
+        
+        // Left Arm (-X spread for symmetry)
+        const lDx = (-armDxLocal * cosT - armDyLocal * sinT);
+        const lDy = (-armDxLocal * sinT + armDyLocal * cosT);
+
+        const rArmX = rShoulderX + rDx; const rArmY = rShoulderY + rDy;
+        const lArmX = lShoulderX + lDx; const lArmY = lShoulderY + lDy;
+
+        ctx.beginPath(); ctx.moveTo(lShoulderX, lShoulderY); ctx.lineTo(lArmX, lArmY); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(rShoulderX, rShoulderY); ctx.lineTo(rArmX, rArmY); ctx.stroke();
+        
+        // Calculate Chest Position (World Space) for G-Force Vector
+        // Local Chest is midpoint of torso
+        const localChestX = (hipX + shoulderX) / 2;
+        const localChestY = (hipY + shoulderY) / 2;
+        
+        // Transform Local -> World (Rotation is -phys.theta)
+        chestX = foilCX + (localChestX * cosT + localChestY * sinT);
+        chestY = foilCY + (-localChestX * sinT + localChestY * cosT);
+    }
+
+    // 3. Main Wing (NACA Profile) - Centered at (0,0)
+    const chordPx = CONFIG.visual_size_m * PPU;
+    const toLocalX = (nx) => (0.25 - nx) * chordPx; 
+    ctx.beginPath(); ctx.fillStyle = 'black';
+    // Draw full polygon loop
+    if (foilShape.length > 0) {
+        ctx.moveTo(toLocalX(foilShape[0].x), -foilShape[0].y * chordPx);
+        for (let i = 1; i < foilShape.length; i++) ctx.lineTo(toLocalX(foilShape[i].x), -foilShape[i].y * chordPx);
+    }
+    ctx.fill(); ctx.restore();
+
+    // Vectors
+    const vecScale = 0.2; 
+    if (VISIBILITY.lift) drawArrow(ctx, foilCX, foilCY, phys.Lx, phys.Lz, 'blue', vecScale, CONFIG.scale_L);
+    if (VISIBILITY.drag) drawArrow(ctx, foilCX, foilCY, phys.Dx, phys.Dz, 'red', vecScale, CONFIG.scale_D);
+    if (VISIBILITY.rider) {
+        // Only draw if there is significant force
+        if (Math.abs(phys.Rz) > 1) {
+            drawArrow(ctx, riderForceX, riderForceY, phys.Rx, phys.Rz, 'orange', vecScale, CONFIG.scale_R, 1000);
+        }
+    }
+    if (VISIBILITY.thrust) drawArrow(ctx, foilCX, foilCY, phys.thrust, 0, 'cyan', vecScale, CONFIG.scale_T);
+    if (VISIBILITY.weight) drawArrow(ctx, chestX, chestY, 0, phys.W_apparent_z, 'rgb(255, 251, 0)', vecScale, CONFIG.scale_W, 1000);
+    if (VISIBILITY.net) drawArrow(ctx, foilCX, foilCY, phys.NetFx, phys.NetFz, 'lime', vecScale, CONFIG.scale_N);
+    
+    if (VISIBILITY.stab) {
+        // Calculate Stabilizer World Position
+        // Local pos: (-CONFIG.fuselage_len, 0)
+        const stabDx = -CONFIG.fuselage_len * Math.cos(phys.theta);
+        const stabDz = -CONFIG.fuselage_len * Math.sin(phys.theta);
+        const stabPX = foilCX + stabDx * PPU;
+        const stabPY = foilCY - stabDz * PPU; // Canvas Y is inverted Z
+        
+        // Draw Stabilizer Lift (Purple)
+        drawArrow(ctx, stabPX, stabPY, phys.L_stab_x, phys.L_stab_z, '#d946ef', vecScale, CONFIG.scale_Stab_L);
+        
+        // Draw Stabilizer Drag (Red)
+        drawArrow(ctx, stabPX, stabPY, phys.D_stab_x, phys.D_stab_z, '#ef4444', vecScale, CONFIG.scale_Stab_D);
+    }
+
+    if (phys.isStalled) {
+        ctx.save();
+        if (Math.floor(Date.now() / 150) % 2 === 0) {
+            ctx.fillStyle = "#ef4444";
+            ctx.font = "bold 14px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("⚠️ STALL", foilCX, foilCY - 1.3 * PPU);
+        }
+        ctx.restore();
+    }
+
+    ctx.restore();
+    
+    // Graphs
+    const weight = (CONFIG.mass + CONFIG.board_mass) * CONFIG.g;
+    const riderWeight = CONFIG.mass * CONFIG.g;
+
+    drawSimpleGraph(ctxLift, state.liftHistory, "Total Vertical Force (N)", "rgba(59, 130, 246, 0.5)", "rgba(239, 68, 68, 0.5)");
+    drawSimpleGraph(ctxThrust, state.thrustHistory, "Net Thrust (N)", "rgba(16, 185, 129, 0.5)", "rgba(244, 63, 94, 0.5)");
+    
+    const gData = state.gForceHistory.map(v => Math.abs(v) / (riderWeight || 1));
+    drawSimpleGraph(ctxGForce, gData, "Rider G-Force (G)", "rgba(255, 215, 0, 0.5)", null, null, null, 1.5);
+
+    drawSimpleGraph(ctxPower, state.powerHistory, "Rider Inst. Power (W)", "rgba(245, 158, 11, 0.5)", "rgba(168, 85, 247, 0.5)");
+    drawSimpleGraph(ctxAvgPower, state.normPowerHistory, "Norm (Org) vs Avg (Blu) Power (W)", "rgba(249, 115, 22, 0.5)", null, state.avgPowerHistory, "rgba(59, 130, 246, 0.8)");
+    drawSimpleGraph(ctxPowerComp, state.linearPowerHistory, "Linear (Grn) vs Rotational (Red) Power (W)", "rgba(16, 185, 129, 0.5)", null, state.rotationalPowerHistory, "rgba(239, 68, 68, 0.8)", 250);
+
+    // Update avg lift status bar
+    const liftStatusEl = document.getElementById('avgLiftStatus');
+    const liftDiff = avgLift - weight;
+    
+    if (liftDiff < -20) { // Tolerance of 20N
+        liftStatusEl.style.backgroundColor = '#ffcdd2';
+        liftStatusEl.style.color = '#b71c1c';
+        liftStatusEl.textContent = `Avg Lift: Sinking (${avgLift.toFixed(0)} N < ${weight.toFixed(0)} N)`;
+    } else if (liftDiff > 20) {
+        liftStatusEl.style.backgroundColor = '#bbdefb';
+        liftStatusEl.style.color = '#0d47a1';
+        liftStatusEl.textContent = `Avg Lift: Climbing (${avgLift.toFixed(0)} N > ${weight.toFixed(0)} N)`;
+    } else {
+        liftStatusEl.style.backgroundColor = '#c8e6c9';
+        liftStatusEl.style.color = '#1b5e20';
+        liftStatusEl.textContent = `Avg Lift: Balanced (~${weight.toFixed(0)} N)`;
+    }
+
+    // Update avg thrust status bar
+    ui.avgThrust.textContent = avgThrust.toFixed(0);
+    const statusEl = document.getElementById('avgThrustStatus');
+    if (avgThrust < -2) {
+        statusEl.style.backgroundColor = '#ffcdd2';
+        statusEl.style.color = '#b71c1c';
+        statusEl.textContent = 'Avg Thrust: Decelerating : ' + avgThrust.toFixed(0) + ' N';
+    } else if (avgThrust > 2) {
+        statusEl.style.backgroundColor = '#bbdefb';
+        statusEl.style.color = '#0d47a1';
+        statusEl.textContent = 'Avg Thrust: Accelerating : ' + avgThrust.toFixed(0) + ' N';
+    } else {
+        statusEl.style.backgroundColor = '#c8e6c9';
+        statusEl.style.color = '#1b5e20';
+        statusEl.textContent = 'Avg Thrust: On Target : ' + avgThrust.toFixed(0) + ' N';
+    }
+    
+    // Update Avg G-Force Status
+    const gStatusEl = document.getElementById('avgGForceStatus');
+    const targetWeight = CONFIG.mass * CONFIG.g;
+    // Calculate ratio (e.g., 1.00 G)
+    const gRatio = (targetWeight > 0) ? (Math.abs(avgGForce) / targetWeight) : 0;
+    
+    if (Math.abs(gRatio - 1.0) > 0.02) { // 2% tolerance
+        gStatusEl.style.backgroundColor = '#ffcdd2'; // Red warning
+        gStatusEl.style.color = '#b71c1c';
+        gStatusEl.textContent = `Avg Rider G-Force: Deviation (${gRatio.toFixed(2)} G)`;
+    } else {
+        gStatusEl.style.backgroundColor = '#c8e6c9'; // Green OK
+        gStatusEl.style.color = '#1b5e20';
+        gStatusEl.textContent = `Avg Rider G-Force: OK (${gRatio.toFixed(2)} G)`;
+    }
+
+    // Update Polar Graph with current point
+    drawPolarGraph({ 
+        alpha: phys.alpha * (180 / Math.PI), 
+        cl: phys.Cl, 
+        cd: phys.Cd 
+    });
+}
+
+// --- AIRFOIL PRESETS ---
+const symmetric_airfoils = ["naca0008", "naca0010", "naca0015"];
+const asymmetric_airfoils = ["naca1408", "naca1412", "naca2408", "naca2410", "naca2411", "naca2412", "naca2415", "naca4412", "naca4415", "naca6412"];
+
+const airfoilSelect = document.getElementById('in-airfoil-select');
+
+const all_airfoils = [...symmetric_airfoils, ...asymmetric_airfoils];
+all_airfoils.forEach(name => {
+    const option = document.createElement('option');
+    option.value = name;
+    option.textContent = name.toUpperCase();
+    airfoilSelect.appendChild(option);
+});
+
+function updateBatchInputs(selId) {
+    const sel = document.getElementById(selId);
+    if (!sel) return;
+    const isFoil = sel.value === 'foil_profile';
+    const prefix = selId.replace('-sel', '');
+    
+    for(let i=1; i<=3; i++) {
+        const elId = `${prefix}-v${i}`;
+        const oldEl = document.getElementById(elId);
+        if (!oldEl) continue;
+        
+        let newEl;
+        if (isFoil) {
+            newEl = document.createElement('select');
+            const empty = document.createElement('option');
+            empty.value = "";
+            empty.text = "--";
+            newEl.appendChild(empty);
+            all_airfoils.forEach(f => {
+                const opt = document.createElement('option');
+                opt.value = f;
+                opt.text = f.toUpperCase();
+                if (oldEl.value === f) opt.selected = true;
+                newEl.appendChild(opt);
+            });
+        } else {
+            newEl = document.createElement('input');
+            newEl.type = 'text';
+            newEl.value = oldEl.value;
+        }
+        newEl.id = elId;
+        newEl.className = oldEl.className;
+        newEl.style.cssText = oldEl.style.cssText;
+        oldEl.replaceWith(newEl);
+    }
+}
+
+document.getElementById('batch-p1-sel').addEventListener('change', () => updateBatchInputs('batch-p1-sel'));
+document.getElementById('batch-p2-sel').addEventListener('change', () => updateBatchInputs('batch-p2-sel'));
+
+function loadPresetAirfoil(foilName) {
+    if (!foilName) return Promise.resolve();
+    let geomPath, polarPath;
+    if (symmetric_airfoils.includes(foilName)) {
+        geomPath = `naca_data/symmetric/geometry/${foilName}_geom.txt`;
+        polarPath = `naca_data/symmetric/polar_data/${foilName}_re500000.csv`;
+    } else if (asymmetric_airfoils.includes(foilName)) {
+        geomPath = `naca_data/asymmetric/geometry/${foilName}_geom.txt`;
+        polarPath = `naca_data/asymmetric/polar_data/${foilName}_re500000.csv`;
+    }
+
+    const promises = [];
+
+    if (geomPath) {
+        promises.push(fetch(geomPath)
+            .then(response => response.text())
+            .then(text => {
+                const lines = text.split(/\r?\n/);
+                const newShape = [];
+                let name = foilName;
+                
+                for(let line of lines) {
+                    line = line.trim();
+                    if(!line) continue;
+                    if (isNaN(parseFloat(line[0])) && line[0] !== '-' && line[0] !== '.') {
+                        if (newShape.length === 0) name = line;
+                        continue;
+                    }
+                    const parts = line.split(/[\s,]+/).filter(x => x !== "");
+                    if (parts.length >= 2) {
+                        const x = parseFloat(parts[0]);
+                        const y = parseFloat(parts[1]);
+                        if (!isNaN(x) && !isNaN(y)) newShape.push({x, y});
+                    }
+                }
+                if (newShape.length > 10) {
+                    foilShape = newShape;
+                    document.getElementById('disp-foil-name').textContent = name.substring(0, 20);
+                    drawAirfoilShape();
+                } else { console.error("Could not parse airfoil coordinates."); }
+            }));
+    }
+
+    if (polarPath) {
+        promises.push(fetch(polarPath)
+            .then(response => {
+                if (!response.ok) {
+                    // If the specific Re polar doesn't exist, fall back to no polar
+                    console.warn(`Polar data not found for ${foilName} at Re500000. Using analytical model.`);
+                    CONFIG.raw_polar_2d = null;
+                    update3DPolar();
+                    return null;
+                }
+                return response.text();
+            })
+            .then(text => {
+                if (text === null) return;
+                const lines = text.split(/\r?\n/);
+                const alpha = [], cl = [], cd = [];
+                
+                lines.forEach(line => {
+                    line = line.trim();
+                    if (!line || isNaN(line[0]) && line[0] !== '-') return;
+                    const parts = line.split(/[\s,]+/).filter(x => x !== "");
+                    if (parts.length >= 3) {
+                        const a = parseFloat(parts[0]);
+                        const l = parseFloat(parts[1]);
+                        const d = parseFloat(parts[2]);
+                        if (!isNaN(a) && !isNaN(l) && !isNaN(d)) {
+                            alpha.push(a);
+                            cl.push(l);
+                            cd.push(d);
+                        }
+                    }
+                });
+                
+                if (alpha.length > 2) {
+                    const combined = alpha.map((a, i) => ({a, l: cl[i], d: cd[i]}));
+                    combined.sort((a, b) => a.a - b.a);
+                    CONFIG.raw_polar_2d = {
+                        alpha: combined.map(x => x.a),
+                        cl: combined.map(x => x.l),
+                        cd: combined.map(x => x.d)
+                    };
+                    CONFIG.polar_name = foilName;
+                    update3DPolar();
+                } else {
+                    console.error("Could not parse polar data.");
+                }
+            }));
+    }
+    
+    return Promise.all(promises);
+}
+
+airfoilSelect.addEventListener('change', (e) => {
+    loadPresetAirfoil(e.target.value);
+});
+
+// Load default NACA 2408 on startup
+airfoilSelect.value = "naca2408";
+loadPresetAirfoil("naca2408");
+
+
+// --- LISTENERS ---
+document.getElementById('in-freq').addEventListener('input', (e) => { state.freq = parseFloat(e.target.value); ui.dispFreq.textContent = state.freq.toFixed(2); ui.dispPpm.textContent = (state.freq * 60).toFixed(0); });
+document.getElementById('in-amp').addEventListener('input', (e) => { 
+    let val = parseFloat(e.target.value);
+    if (val > CONFIG.riding_depth - 0.02) {
+        CONFIG.riding_depth = Math.min(0.80, val + 0.02);
+        document.getElementById('in-height').value = CONFIG.riding_depth;
+        ui.dispHeight.textContent = CONFIG.riding_depth.toFixed(2);
+    }
+    state.heave_amp = val; 
+    ui.dispAmp.textContent = state.heave_amp.toFixed(2); 
+});
+document.getElementById('in-asym').addEventListener('input', (e) => { CONFIG.asymmetry_factor = parseFloat(e.target.value); ui.dispAsym.textContent = CONFIG.asymmetry_factor.toFixed(2); });
+document.getElementById('in-speed').addEventListener('input', (e) => { const kph = parseFloat(e.target.value); CONFIG.U = kph / 3.6; ui.dispSpeed.textContent = kph.toFixed(1); });
+document.getElementById('in-mass').addEventListener('input', (e) => { CONFIG.mass = parseFloat(e.target.value); ui.dispMass.textContent = CONFIG.mass.toFixed(0); });
+document.getElementById('in-board-mass').addEventListener('input', (e) => { CONFIG.board_mass = parseFloat(e.target.value); ui.dispBoardMass.textContent = CONFIG.board_mass.toFixed(1); });
+document.getElementById('in-area').addEventListener('input', (e) => { const cm2 = parseFloat(e.target.value); CONFIG.S = cm2 / 10000; ui.dispArea.textContent = cm2.toFixed(0); });
+document.getElementById('in-ar').addEventListener('input', (e) => { CONFIG.AR = parseFloat(e.target.value); ui.dispAr.textContent = CONFIG.AR.toFixed(1); update3DPolar(); });
+document.getElementById('in-trim').addEventListener('input', (e) => { CONFIG.pitch_trim_deg = parseFloat(e.target.value); ui.dispTrim.textContent = CONFIG.pitch_trim_deg.toFixed(1); });
+document.getElementById('in-phase').addEventListener('input', (e) => { CONFIG.phase_shift_deg = parseFloat(e.target.value); ui.dispPhase.textContent = CONFIG.phase_shift_deg.toFixed(0); });
+document.getElementById('in-swing').addEventListener('input', (e) => { CONFIG.swing_weight_ratio = parseFloat(e.target.value); ui.dispSwing.textContent = (CONFIG.swing_weight_ratio * 100).toFixed(0); });
+document.getElementById('in-elastic').addEventListener('input', (e) => { const val = parseFloat(e.target.value); CONFIG.elastic_efficiency = 1.0 - (val / 100.0); ui.dispElastic.textContent = val.toFixed(0); });
+document.getElementById('chk-slowmo').addEventListener('change', (e) => { state.slowMotion = e.target.checked; });
+document.getElementById('in-stab-angle').addEventListener('input', (e) => { CONFIG.stab_angle = parseFloat(e.target.value); ui.dispStabAngle.textContent = CONFIG.stab_angle.toFixed(1); });
+document.getElementById('in-stab-area').addEventListener('input', (e) => { const val = parseFloat(e.target.value); CONFIG.S_stab = val / 10000; ui.dispStabArea.textContent = val.toFixed(0); });
+document.getElementById('in-stab-ar').addEventListener('input', (e) => { CONFIG.AR_stab = parseFloat(e.target.value); ui.dispStabAr.textContent = CONFIG.AR_stab.toFixed(1); });
+document.getElementById('in-fuse-len').addEventListener('input', (e) => { CONFIG.fuselage_len = parseFloat(e.target.value); ui.dispFuseLen.textContent = CONFIG.fuselage_len.toFixed(2); });
+document.getElementById('in-offset').addEventListener('input', (e) => { CONFIG.rider_offset = parseFloat(e.target.value); ui.dispOffset.textContent = CONFIG.rider_offset.toFixed(2); });
+document.getElementById('in-height').addEventListener('input', (e) => { 
+    let val = parseFloat(e.target.value);
+    if (val < state.heave_amp + 0.02) {
+        state.heave_amp = Math.max(0.0, val - 0.02);
+        document.getElementById('in-amp').value = state.heave_amp;
+        ui.dispAmp.textContent = state.heave_amp.toFixed(2);
+    }
+    CONFIG.riding_depth = val; 
+    ui.dispHeight.textContent = CONFIG.riding_depth.toFixed(2); 
+});
+document.getElementById('in-temp').addEventListener('input', (e) => { CONFIG.water_temp = parseFloat(e.target.value); ui.dispTemp.textContent = CONFIG.water_temp.toFixed(0); drawPolarGraph(); });
+
+// Polar File Upload
+document.getElementById('in-polar-file').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+        const text = evt.target.result;
+        const lines = text.split(/\r?\n/);
+        const alpha = [], cl = [], cd = [];
+        
+        lines.forEach(line => {
+            line = line.trim();
+            if (!line || isNaN(line[0]) && line[0] !== '-') return; // Skip headers/empty
+            // Split by comma or whitespace
+            const parts = line.split(/[\s,]+/).filter(x => x !== "");
+            if (parts.length >= 3) {
+                const a = parseFloat(parts[0]);
+                const l = parseFloat(parts[1]);
+                const d = parseFloat(parts[2]);
+                if (!isNaN(a) && !isNaN(l) && !isNaN(d)) {
+                    alpha.push(a);
+                    cl.push(l);
+                    cd.push(d);
+                }
+            }
+        });
+        
+        if (alpha.length > 2) {
+            // Sort by alpha just in case
+            // Create objects, sort, unpack
+            const combined = alpha.map((a, i) => ({a, l: cl[i], d: cd[i]}));
+            combined.sort((a, b) => a.a - b.a);
+            CONFIG.raw_polar_2d = {
+                alpha: combined.map(x => x.a),
+                cl: combined.map(x => x.l),
+                cd: combined.map(x => x.d)
+            };
+            update3DPolar();
+        } else {
+            alert("Could not parse polar data. Ensure CSV format: Alpha, Cl, Cd");
+        }
+    };
+    reader.readAsText(file);
+});
+document.getElementById('btn-clear-polar').addEventListener('click', () => {
+    CONFIG.raw_polar_2d = null;
+    CONFIG.polar_name = null;
+    update3DPolar();
+    document.getElementById('in-polar-file').value = "";
+    document.getElementById('in-airfoil-select').value = "";
+});
+// Foil Shape File Upload
+document.getElementById('in-foil-file').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+        const text = evt.target.result;
+        const lines = text.split(/\r?\n/);
+        const newShape = [];
+        let name = file.name.replace(/\.[^/.]+$/, ""); // Default to filename
+        
+        for(let line of lines) {
+            line = line.trim();
+            if(!line) continue;
+            // Check if header (starts with non-digit/minus/dot)
+            if (isNaN(parseFloat(line[0])) && line[0] !== '-' && line[0] !== '.') {
+                if (newShape.length === 0) name = line; // Assume first text line is name
+                continue;
+            }
+            const parts = line.split(/[\s,]+/).filter(x => x !== "");
+            if (parts.length >= 2) {
+                const x = parseFloat(parts[0]);
+                const y = parseFloat(parts[1]);
+                if (!isNaN(x) && !isNaN(y)) newShape.push({x, y});
+            }
+        }
+        if (newShape.length > 10) {
+            foilShape = newShape;
+            document.getElementById('disp-foil-name').textContent = name.substring(0, 20);
+            drawAirfoilShape();
+            if (state.paused) render(updatePhysicsState(0));
+        } else { alert("Could not parse airfoil coordinates."); }
+    };
+    reader.readAsText(file);
+});
+document.getElementById('btn-reset-foil').addEventListener('click', () => { airfoilSelect.value = "naca2408"; loadPresetAirfoil("naca2408"); document.getElementById('in-foil-file').value = ""; });
+
+document.getElementById('btn-optimize').addEventListener('click', () => {
+    const btn = document.getElementById('btn-optimize');
+    const originalText = btn.textContent;
+    btn.textContent = "CALCULATING...";
+    
+    setTimeout(() => {
+        runOptimization();
+        btn.textContent = originalText;
+    }, 10);
+});
+
+function runOptimization() {
+    const targetLift = (CONFIG.mass + CONFIG.board_mass) * CONFIG.g;
+    const targetRiderWeight = CONFIG.mass * CONFIG.g;
+    const targetThrust = 0; 
+    const liftTolerance = 5.0;
+    const thrustTolerance = 2.0;
+    
+    const optMetric = document.getElementById('opt-metric').value;
+
+    // Backup
+    const originalFreq = state.freq;
+    const originalAmp = state.heave_amp;
+    const originalTrim = CONFIG.pitch_trim_deg;
+    const originalAsym = CONFIG.asymmetry_factor;
+    const originalPhase = CONFIG.phase_shift_deg;
+    const originalHeight = CONFIG.riding_depth;
+
+    // Check locks
+    const lockFreq = document.getElementById('lock-freq').checked;
+    const lockAmp = document.getElementById('lock-amp').checked;
+    const lockTrim = document.getElementById('lock-trim').checked;
+    const lockAsym = document.getElementById('lock-asym').checked;
+    const lockPhase = document.getElementById('lock-phase').checked;
+    const lockHeight = document.getElementById('lock-height').checked;
+
+    let bestFreq = originalFreq;
+    let bestAmp = originalAmp;
+    let bestTrim = originalTrim;
+    let bestAsym = originalAsym;
+    let bestPhase = originalPhase;
+    let bestHeight = originalHeight;
+    let bestCost = Infinity;
+
+    // Helper to get dynamic ranges from sliders
+    const getLims = (id) => { 
+        const suffix = id.replace('in-', '');
+        const min = parseFloat(document.getElementById('min-' + suffix).value);
+        const max = parseFloat(document.getElementById('max-' + suffix).value);
+        return { min, max, span: max - min }; 
+    };
+
+    // Helper
+    function evaluate(f, a, tr, as, ph, h) {
+        state.freq = f;
+        state.heave_amp = a;
+        CONFIG.pitch_trim_deg = tr;
+        CONFIG.asymmetry_factor = as;
+        CONFIG.phase_shift_deg = ph;
+        CONFIG.riding_depth = h;
+
+        let sumLift = 0;
+        let sumThrust = 0;
+        let sumPower = 0;
+        let sumPower4 = 0;
+        let sumGForce = 0;
+        let count = 0;
+        
+        const period = 1.0 / f;
+        const dt = 0.02; 
+        const steps = Math.ceil((2 * period) / dt);
+
+        for (let i = 0; i < steps; i++) {
+            const t = i * dt;
+            const phys = calculatePhysics(t);
+            sumLift += phys.F_hydro_z;
+            sumThrust += phys.thrust;
+            sumPower += phys.power;
+            if (optMetric === 'norm') sumPower4 += Math.pow(phys.power, 4);
+            sumGForce += Math.abs(phys.W_apparent_z);
+            count++;
+        }
+
+        const avgLift = sumLift / count;
+        const avgThrust = sumThrust / count;
+        const avgPower = sumPower / count;
+        const normPower = (optMetric === 'norm') ? Math.pow(sumPower4 / count, 0.25) : avgPower;
+        const avgGForce = sumGForce / count;
+
+        const liftErr = Math.abs(avgLift - targetLift);
+        const thrustErr = Math.abs(avgThrust - targetThrust);
+        const gForceErr = Math.abs(avgGForce - targetRiderWeight);
+        
+        if (isNaN(liftErr) || isNaN(thrustErr)) return { cost: Infinity };
+
+        // Cost Function with Dead Zone
+        // We allow errors up to a small threshold without penalty.
+        // This lets the optimizer minimize power freely within the valid region.
+        const liftSafe = 2.0; 
+        const thrustSafe = 1.0;
+        const gForceSafe = 5.0;
+        
+        const liftPen = Math.max(0, liftErr - liftSafe);
+        const thrustPen = Math.max(0, thrustErr - thrustSafe);
+        const gForcePen = Math.max(0, gForceErr - gForceSafe);
+        
+        const powerCost = (optMetric === 'norm') ? normPower : avgPower;
+        // Heavy penalty for leaving the safe zone
+        const cost = powerCost + 10000 * (liftPen + thrustPen + gForcePen);
+        
+        const isValid = (liftErr < liftTolerance && thrustErr < thrustTolerance && gForceErr < (gForceSafe * 2));
+        return { cost: cost, l: avgLift, t: avgThrust, p: powerCost, valid: isValid };
+    }
+
+    let bestValidResult = null;
+    let bestFallbackResult = null;
+    let bestFallbackCost = Infinity;
+
+    const attempts = 30;
+    const iterations = 1500;
+
+    for (let attempt = 0; attempt < attempts; attempt++) {
+        const limFreq = getLims('in-freq');
+        const limAmp = getLims('in-amp');
+        const limTrim = getLims('in-trim');
+        const limAsym = getLims('in-asym');
+        const limPhase = getLims('in-phase');
+        const limHeight = getLims('in-height');
+
+        let currentBestFreq = originalFreq;
+        let currentBestAmp = originalAmp;
+        let currentBestTrim = originalTrim;
+        let currentBestAsym = originalAsym;
+        let currentBestPhase = originalPhase;
+        let currentBestHeight = originalHeight;
+        let currentBestCost = Infinity;
+
+        // Randomize start point for subsequent attempts to explore broader space
+        if (attempt > 0) {
+            const startScale = 0.5;
+            if (!lockFreq) currentBestFreq += (Math.random() - 0.5) * limFreq.span * startScale;
+            if (!lockAmp) currentBestAmp += (Math.random() - 0.5) * limAmp.span * startScale;
+            if (!lockTrim) currentBestTrim += (Math.random() - 0.5) * limTrim.span * startScale;
+            if (!lockAsym) currentBestAsym += (Math.random() - 0.5) * limAsym.span * startScale;
+            if (!lockPhase) currentBestPhase += (Math.random() - 0.5) * limPhase.span * startScale;
+            if (!lockHeight) currentBestHeight += (Math.random() - 0.5) * limHeight.span * startScale;
+        }
+
+        for (let i = 0; i < iterations; i++) {
+            const learningRate = 1.0; 
+            const scale = learningRate * Math.max(0.1, (1 - i/iterations));
+
+            let f = currentBestFreq + (lockFreq ? 0 : (Math.random() - 0.5) * limFreq.span * 0.5 * scale);
+            let a = currentBestAmp + (lockAmp ? 0 : (Math.random() - 0.5) * limAmp.span * 0.5 * scale);
+            let tr = currentBestTrim + (lockTrim ? 0 : (Math.random() - 0.5) * limTrim.span * 0.5 * scale);
+            let as = currentBestAsym + (lockAsym ? 0 : (Math.random() - 0.5) * limAsym.span * 0.5 * scale);
+            let ph = currentBestPhase + (lockPhase ? 0 : (Math.random() - 0.5) * limPhase.span * 0.5 * scale);
+            let h = currentBestHeight + (lockHeight ? 0 : (Math.random() - 0.5) * limHeight.span * 0.5 * scale);
+
+            if (!lockFreq) f = Math.max(limFreq.min, Math.min(limFreq.max, f));
+            if (!lockAmp) a = Math.max(limAmp.min, Math.min(limAmp.max, a));
+            if (!lockTrim) tr = Math.max(limTrim.min, Math.min(limTrim.max, tr));
+            if (!lockAsym) as = Math.max(limAsym.min, Math.min(limAsym.max, as));
+            if (!lockPhase) ph = Math.max(limPhase.min, Math.min(limPhase.max, ph));
+            if (!lockHeight) h = Math.max(limHeight.min, Math.min(limHeight.max, h));
+
+            if (h < a + 0.02) {
+                if (!lockHeight) h = Math.min(0.80, a + 0.02);
+                if (h < a + 0.02 && !lockAmp) a = Math.max(0.05, h - 0.02);
+            }
+
+            const r = evaluate(f, a, tr, as, ph, h);
+            
+            if (r.cost < currentBestCost) {
+                currentBestCost = r.cost;
+                currentBestFreq = f;
+                currentBestAmp = a;
+                currentBestTrim = tr;
+                currentBestAsym = as;
+                currentBestPhase = ph;
+                currentBestHeight = h;
+                
+                if (r.valid) {
+                    if (!bestValidResult || r.p < bestValidResult.p) {
+                        bestValidResult = {
+                            f, a, tr, as, ph, h,
+                            p: r.p
+                        };
+                    }
+                }
+            }
+        }
+
+        if (currentBestCost < bestFallbackCost) {
+            bestFallbackCost = currentBestCost;
+            bestFallbackResult = {
+                f: currentBestFreq, a: currentBestAmp, tr: currentBestTrim, 
+                as: currentBestAsym, ph: currentBestPhase, h: currentBestHeight
+            };
+        }
+    }
+
+    const finalResult = bestValidResult || bestFallbackResult;
+
+    if (finalResult) {
+        state.freq = finalResult.f;
+        state.heave_amp = finalResult.a;
+        CONFIG.pitch_trim_deg = finalResult.tr;
+        CONFIG.asymmetry_factor = finalResult.as;
+        CONFIG.phase_shift_deg = finalResult.ph;
+        CONFIG.riding_depth = finalResult.h;
+    }
+
+    // Update UI
+    document.getElementById('in-freq').value = state.freq; ui.dispFreq.textContent = state.freq.toFixed(2);
+    ui.dispPpm.textContent = (state.freq * 60).toFixed(0);
+    document.getElementById('in-amp').value = state.heave_amp; ui.dispAmp.textContent = state.heave_amp.toFixed(2);
+    document.getElementById('in-trim').value = CONFIG.pitch_trim_deg; ui.dispTrim.textContent = CONFIG.pitch_trim_deg.toFixed(1);
+    document.getElementById('in-asym').value = CONFIG.asymmetry_factor; ui.dispAsym.textContent = CONFIG.asymmetry_factor.toFixed(2);
+    document.getElementById('in-phase').value = CONFIG.phase_shift_deg; ui.dispPhase.textContent = CONFIG.phase_shift_deg.toFixed(0);
+    document.getElementById('in-height').value = CONFIG.riding_depth; ui.dispHeight.textContent = CONFIG.riding_depth.toFixed(2);
+    
+    // Clear history
+    state.liftHistory = []; state.thrustHistory = []; state.powerHistory = []; state.normPowerHistory = []; state.avgPowerHistory = []; state.avgThrustHistory = []; state.avgLiftHistory = []; state.linearPowerHistory = []; state.rotationalPowerHistory = []; state.gForceHistory = []; state.avgGForceHistory = [];
+}
+
+document.getElementById('btn-reset').addEventListener('click', () => {
+    state.freq = 1.49; document.getElementById('in-freq').value = 1.49; ui.dispFreq.textContent = "1.49";
+    ui.dispPpm.textContent = "89";
+    state.heave_amp = 0.11; document.getElementById('in-amp').value = 0.11; ui.dispAmp.textContent = "0.11";
+    CONFIG.asymmetry_factor = 0.0; document.getElementById('in-asym').value = 0.0; ui.dispAsym.textContent = "0.00";
+    CONFIG.U = 17.0 / 3.6; document.getElementById('in-speed').value = 17.0; ui.dispSpeed.textContent = "17.0";
+    CONFIG.mass = 70.0; document.getElementById('in-mass').value = 70; ui.dispMass.textContent = "70";
+    CONFIG.board_mass = 6.0; document.getElementById('in-board-mass').value = 6.0; ui.dispBoardMass.textContent = "6.0";
+    CONFIG.S = 0.135; document.getElementById('in-area').value = 1350; ui.dispArea.textContent = "1350";
+    CONFIG.AR = 13.9; document.getElementById('in-ar').value = 13.9; ui.dispAr.textContent = "13.9";
+    CONFIG.Cd0 = 0.008;
+    CONFIG.pitch_trim_deg = 4.9; document.getElementById('in-trim').value = 4.9; ui.dispTrim.textContent = "4.9";
+    CONFIG.phase_shift_deg = 90.0; document.getElementById('in-phase').value = 90; ui.dispPhase.textContent = "90";
+    document.getElementById('lock-phase').checked = true;
+    CONFIG.swing_weight_ratio = 0.4; document.getElementById('in-swing').value = 0.4; ui.dispSwing.textContent = "40";
+    CONFIG.elastic_efficiency = 1.0; document.getElementById('in-elastic').value = 0; ui.dispElastic.textContent = "0";
+    CONFIG.visual_size_m = 0.4;
+    state.slowMotion = false; document.getElementById('chk-slowmo').checked = false;
+    CONFIG.enable_added_mass = true;
+    CONFIG.stab_angle = -1.0; document.getElementById('in-stab-angle').value = -1.0; ui.dispStabAngle.textContent = "-1.0";
+    CONFIG.S_stab = 0.012; document.getElementById('in-stab-area').value = 120; ui.dispStabArea.textContent = "120";
+    CONFIG.AR_stab = 8.0; document.getElementById('in-stab-ar').value = 8.0; ui.dispStabAr.textContent = "8.0";
+    CONFIG.fuselage_len = 0.60; document.getElementById('in-fuse-len').value = 0.60; ui.dispFuseLen.textContent = "0.60";
+    CONFIG.rider_offset = 0.0; document.getElementById('in-offset').value = 0.0; ui.dispOffset.textContent = "0.00";
+    CONFIG.riding_depth = 0.20; document.getElementById('in-height').value = 0.20; ui.dispHeight.textContent = "0.20";
+    document.getElementById('lock-height').checked = true;
+    
+    // Clear history for clean restart
+    state.liftHistory = []; state.thrustHistory = []; state.powerHistory = []; state.normPowerHistory = []; state.avgPowerHistory = []; state.avgThrustHistory = []; state.avgLiftHistory = []; state.linearPowerHistory = []; state.rotationalPowerHistory = []; state.gForceHistory = []; state.avgGForceHistory = [];
+
+    // Reset optimization limits
+    document.getElementById('btn-reset-limits').click();
+});
+
+document.getElementById('btn-replay').addEventListener('click', () => {
+    state.t = 0;
+    state.historyTimer = 0;
+    state.liftHistory = [];
+    state.thrustHistory = [];
+    state.powerHistory = [];
+    state.normPowerHistory = [];
+    state.avgPowerHistory = [];
+    state.avgThrustHistory = [];
+    state.avgLiftHistory = [];
+    state.linearPowerHistory = [];
+    state.rotationalPowerHistory = [];
+    state.gForceHistory = [];
+    state.avgGForceHistory = [];
+    state.pathX = [];
+    state.pathZ = [];
+    state.paused = false;
+    render({ phys: calculatePhysics(0), normPower: 0, avgPower: 0, avgThrust: 0, avgLift: 0, avgGForce: 0 });
+});
+
+document.getElementById('chk-lift').addEventListener('change', (e) => VISIBILITY.lift = e.target.checked);
+document.getElementById('chk-drag').addEventListener('change', (e) => VISIBILITY.drag = e.target.checked);
+document.getElementById('chk-rider').addEventListener('change', (e) => VISIBILITY.rider = e.target.checked);
+document.getElementById('chk-thrust').addEventListener('change', (e) => VISIBILITY.thrust = e.target.checked);
+document.getElementById('chk-assembly').addEventListener('change', (e) => VISIBILITY.assembly = e.target.checked);
+document.getElementById('chk-weight').addEventListener('change', (e) => VISIBILITY.weight = e.target.checked);
+document.getElementById('chk-net').addEventListener('change', (e) => VISIBILITY.net = e.target.checked);
+document.getElementById('chk-stab').addEventListener('change', (e) => VISIBILITY.stab = e.target.checked);
+document.getElementById('chk-true-scale').addEventListener('change', (e) => {
+    if (e.target.checked) {
+        // True Scale (All 0.5)
+        CONFIG.scale_L = 0.5; CONFIG.scale_D = 0.5; CONFIG.scale_T = 0.5;
+        CONFIG.scale_R = 0.5; CONFIG.scale_N = 0.5; CONFIG.scale_W = 0.5;
+        CONFIG.scale_Stab_L = 0.5; CONFIG.scale_Stab_D = 0.5;
+    } else {
+        // Visible Scale (Exaggerate Drag & Thrust)
+        CONFIG.scale_L = 0.5; CONFIG.scale_D = 5.0; CONFIG.scale_T = 1.0;
+        CONFIG.scale_R = 0.5; CONFIG.scale_N = 0.5; CONFIG.scale_W = 0.5;
+        CONFIG.scale_Stab_L = .5; CONFIG.scale_Stab_D = 10.0;
+    }
+});
+
+function togglePause() { state.paused = !state.paused; }
+
+function stepForward() {
+    if (state.paused) render(updatePhysicsState());
+}
+
+function stepBackward() {
+    if (state.paused && state.thrustHistory.length > 0) {
+        state.liftHistory.pop();
+        state.thrustHistory.pop();
+        state.powerHistory.pop();
+        state.normPowerHistory.pop();
+        state.avgPowerHistory.pop();
+        state.avgThrustHistory.pop();
+        state.avgLiftHistory.pop();
+        state.linearPowerHistory.pop();
+        state.rotationalPowerHistory.pop();
+        state.gForceHistory.pop();
+        state.avgGForceHistory.pop();
+        state.pathX.pop();
+        state.pathZ.pop();
+
+        state.t -= state.dt;
+        state.historyTimer = 0;
+
+        render({ 
+            phys: calculatePhysics(state.t), 
+            normPower: state.normPowerHistory[state.normPowerHistory.length-1] || 0, 
+            avgPower: state.avgPowerHistory[state.avgPowerHistory.length-1] || 0, 
+            avgThrust: state.avgThrustHistory[state.avgThrustHistory.length-1] || 0,
+            avgLift: state.avgLiftHistory[state.avgLiftHistory.length-1] || 0,
+            avgGForce: state.avgGForceHistory[state.avgGForceHistory.length-1] || 0
+        });
+    }
+}
+
+document.getElementById('cmd-pause').addEventListener('click', togglePause);
+document.getElementById('cmd-rewind').addEventListener('click', stepBackward);
+document.getElementById('cmd-forward').addEventListener('click', stepForward);
+
+window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space') togglePause();
+    if (e.code === 'ArrowRight') stepForward();
+    if (e.code === 'ArrowLeft') stepBackward();
+});
+
+let lastTime = 0;
+function loop(timestamp) {
+    if (!timestamp) {
+        requestAnimationFrame(loop);
+        return;
+    }
+    if (!lastTime) lastTime = timestamp;
+    const dt = (timestamp - lastTime) / 1000;
+    lastTime = timestamp;
+
+    if (!state.paused) {
+        const safeDt = Math.min(dt, 0.1);
+        const simDt = state.slowMotion ? safeDt * 0.2 : safeDt;
+        render(updatePhysicsState(simDt));
+    }
+    requestAnimationFrame(loop);
+}
+
+// --- PRESETS SYSTEM ---
+const PRESET_KEY = 'foil_sim_presets';
+const DEFAULT_PRESETS = {
+    "Standard (80kg)": {
+        speed: 17.0, freq: 1.13, amp: 0.18, asym: 0.08, trim: 4.6, phase: 90, height: 0.20,
+        mass: 80, boardMass: 6.0, area: 1400, ar: 13.9, cd0: 0.008,
+        stabArea: 120, stabAr: 8.0, stabAngle: -1.0, fuseLen: 0.60, offset: 0.0,
+        swing: 0.4, elastic: 0, size: 0.4
+    },
+    "Beginner (Slow/Stable)": {
+        speed: 15.0, freq: 1.18, amp: 0.18, asym: 0.0, trim: 5.0, phase: 90, height: 0.3,
+        mass: 75, boardMass: 7.5, area: 1800, ar: 11.5, cd0: 0.018,
+        stabArea: 250, stabAr: 6.0, stabAngle: -2.0, fuseLen: 0.70, offset: 0.05,
+        swing: 0.4, elastic: 0, size: 0.4
+    },
+   
+    "@foilien": {
+        speed: 17.0, freq: 1.12, amp: 0.18, asym: 0.16, trim: 4.5, phase: 90, height: 0.20,
+        mass: 80, boardMass: 5.5, area: 1300, ar: 13.9, cd0: 0.008,
+        stabArea: 120, stabAr: 8.0, stabAngle: -1.0, fuseLen: 0.60, offset: 0.0,
+        swing: 0.4, elastic: 0, size: 0.4
+    }
+};
+
+function getPresets() {
+    let presets = JSON.parse(JSON.stringify(DEFAULT_PRESETS));
+    try {
+        const stored = localStorage.getItem(PRESET_KEY);
+        if (stored) {
+            const storedPresets = JSON.parse(stored);
+            Object.keys(storedPresets).forEach(k => {
+                // Only load custom presets from storage to allow code updates to defaults
+                if (!DEFAULT_PRESETS[k]) {
+                    presets[k] = storedPresets[k];
+                }
+            });
+        }
+    } catch(e) { console.error(e); }
+    return presets;
+}
+
+function savePresets(presets) {
+    localStorage.setItem(PRESET_KEY, JSON.stringify(presets));
+    renderPresetDropdown();
+}
+
+function renderPresetDropdown() {
+    const presets = getPresets();
+    const sel = document.getElementById('preset-select');
+    const current = sel.value;
+    sel.innerHTML = '<option value="">-- Load Preset --</option>';
+    Object.keys(presets).forEach(k => {
+        const opt = document.createElement('option');
+        opt.value = k;
+        opt.textContent = k;
+        sel.appendChild(opt);
+    });
+    sel.value = current;
+}
+
+function captureCurrentState() {
+    return {
+        speed: parseFloat(document.getElementById('in-speed').value),
+        freq: parseFloat(document.getElementById('in-freq').value),
+        amp: parseFloat(document.getElementById('in-amp').value),
+        asym: parseFloat(document.getElementById('in-asym').value),
+        trim: parseFloat(document.getElementById('in-trim').value),
+        phase: parseFloat(document.getElementById('in-phase').value),
+        height: parseFloat(document.getElementById('in-height').value),
+        mass: parseFloat(document.getElementById('in-mass').value),
+        boardMass: parseFloat(document.getElementById('in-board-mass').value),
+        area: parseFloat(document.getElementById('in-area').value),
+        ar: parseFloat(document.getElementById('in-ar').value),
+        cd0: CONFIG.Cd0,
+        stabArea: parseFloat(document.getElementById('in-stab-area').value),
+        stabAr: parseFloat(document.getElementById('in-stab-ar').value),
+        stabAngle: parseFloat(document.getElementById('in-stab-angle').value),
+        fuseLen: parseFloat(document.getElementById('in-fuse-len').value),
+        offset: parseFloat(document.getElementById('in-offset').value),
+        swing: parseFloat(document.getElementById('in-swing').value),
+        elastic: parseFloat(document.getElementById('in-elastic').value)
+    };
+}
+
+function applyPresetState(p) {
+    // Update Inputs
+    document.getElementById('in-speed').value = p.speed;
+    document.getElementById('in-freq').value = p.freq;
+    document.getElementById('in-amp').value = p.amp;
+    document.getElementById('in-asym').value = p.asym;
+    document.getElementById('in-trim').value = p.trim;
+    document.getElementById('in-phase').value = p.phase;
+    document.getElementById('in-height').value = p.height;
+    document.getElementById('in-mass').value = p.mass;
+    document.getElementById('in-board-mass').value = p.boardMass || 6.0;
+    document.getElementById('in-area').value = p.area;
+    document.getElementById('in-ar').value = p.ar;
+    document.getElementById('in-stab-area').value = p.stabArea;
+    document.getElementById('in-stab-ar').value = p.stabAr;
+    document.getElementById('in-stab-angle').value = p.stabAngle;
+    document.getElementById('in-fuse-len').value = p.fuseLen;
+    document.getElementById('in-offset').value = p.offset;
+    document.getElementById('in-swing').value = p.swing;
+    document.getElementById('in-elastic').value = p.elastic;
+
+    // Update Config/State
+    CONFIG.U = p.speed / 3.6;
+    state.freq = p.freq;
+    state.heave_amp = p.amp;
+    CONFIG.asymmetry_factor = p.asym;
+    CONFIG.pitch_trim_deg = p.trim;
+    CONFIG.phase_shift_deg = p.phase;
+    CONFIG.riding_depth = p.height;
+    CONFIG.mass = p.mass;
+    CONFIG.board_mass = p.boardMass || 6.0;
+    CONFIG.S = p.area / 10000;
+    CONFIG.AR = p.ar;
+    CONFIG.Cd0 = p.cd0;
+    CONFIG.S_stab = p.stabArea / 10000;
+    CONFIG.AR_stab = p.stabAr;
+    CONFIG.stab_angle = p.stabAngle;
+    CONFIG.fuselage_len = p.fuseLen;
+    CONFIG.rider_offset = p.offset;
+    CONFIG.swing_weight_ratio = p.swing;
+    CONFIG.elastic_efficiency = 1.0 - (p.elastic / 100.0);
+    if (p.size !== undefined) CONFIG.visual_size_m = p.size;
+
+    // Update UI Text
+    ui.dispSpeed.textContent = p.speed.toFixed(1);
+    ui.dispFreq.textContent = p.freq.toFixed(2);
+    ui.dispPpm.textContent = (p.freq * 60).toFixed(0);
+    ui.dispAmp.textContent = p.amp.toFixed(2);
+    ui.dispAsym.textContent = p.asym.toFixed(2);
+    ui.dispTrim.textContent = p.trim.toFixed(1);
+    ui.dispPhase.textContent = p.phase.toFixed(0);
+    ui.dispHeight.textContent = p.height.toFixed(2);
+    ui.dispMass.textContent = p.mass.toFixed(0);
+    ui.dispBoardMass.textContent = (p.boardMass || 6.0).toFixed(1);
+    ui.dispArea.textContent = p.area.toFixed(0);
+    ui.dispAr.textContent = p.ar.toFixed(1);
+    ui.dispStabArea.textContent = p.stabArea.toFixed(0);
+    ui.dispStabAr.textContent = p.stabAr.toFixed(1);
+    ui.dispStabAngle.textContent = p.stabAngle.toFixed(1);
+    ui.dispFuseLen.textContent = p.fuseLen.toFixed(2);
+    ui.dispOffset.textContent = p.offset.toFixed(2);
+    ui.dispSwing.textContent = (p.swing * 100).toFixed(0);
+    ui.dispElastic.textContent = p.elastic.toFixed(0);
+    
+    // Reset History to avoid graph jumps
+    state.liftHistory = []; state.thrustHistory = []; state.powerHistory = []; 
+    state.normPowerHistory = []; state.avgPowerHistory = []; 
+    state.avgThrustHistory = []; state.avgLiftHistory = [];
+}
+
+document.getElementById('btn-save-preset').addEventListener('click', () => {
+    const name = prompt("Name for this preset?");
+    if (name) {
+        const presets = getPresets();
+        presets[name] = captureCurrentState();
+        savePresets(presets);
+        document.getElementById('preset-select').value = name;
+    }
+});
+
+document.getElementById('btn-delete-preset').addEventListener('click', () => {
+    const sel = document.getElementById('preset-select');
+    if (sel.value && confirm("Delete preset '" + sel.value + "'?")) {
+        const presets = getPresets();
+        delete presets[sel.value];
+        savePresets(presets);
+    }
+});
+
+document.getElementById('btn-download-preset').addEventListener('click', () => {
+    const state = captureCurrentState();
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "foil_preset.json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+});
+
+document.getElementById('btn-upload-preset').addEventListener('click', () => {
+    document.getElementById('file-upload-preset').click();
+});
+
+document.getElementById('file-upload-preset').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const data = JSON.parse(e.target.result);
+            const name = prompt("Name for imported preset?", file.name.replace('.json',''));
+            if(name) {
+                const presets = getPresets();
+                presets[name] = data;
+                savePresets(presets);
+                document.getElementById('preset-select').value = name;
+                applyPresetState(data);
+            }
+        } catch(err) {
+            console.error(err);
+            alert("Invalid JSON file");
+        }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+});
+
+document.getElementById('btn-reset-presets').addEventListener('click', () => {
+    if (confirm("Reset all presets? This will remove custom saved presets.")) {
+        localStorage.removeItem(PRESET_KEY);
+        renderPresetDropdown();
+    }
+});
+
+document.getElementById('preset-select').addEventListener('change', (e) => {
+    const val = e.target.value;
+    if (val) {
+        const presets = getPresets();
+        if (presets[val]) {
+            applyPresetState(presets[val]);
+            document.getElementById('btn-optimize').click();
+        }
+    }
+});
+
+// --- TEST SUITE ---
+document.getElementById('btn-tests').addEventListener('click', () => {
+    console.clear();
+    console.log("%c🧪 STARTING MASTER VALIDATION SUITE (Fixed)...", "color: #2563eb; font-weight: bold; font-size: 16px; margin-bottom: 10px;");
+    
+    let passCount = 0;
+    let failCount = 0;
+
+    // ==========================================
+    // 1. HELPER FUNCTIONS
+    // ==========================================
+    function resetSim() {
+        CONFIG.mass = 70; CONFIG.board_mass = 6.0; CONFIG.g = 9.81; CONFIG.rho = 1000; CONFIG.S = 0.135; 
+        CONFIG.Cd0 = 0.008; CONFIG.AR = 13.9; CONFIG.U = 5.55; 
+        
+        // State Resets
+        state.freq = 0; 
+        state.heave_amp = 0; 
+        
+        // CONFIG Resets (CRITICAL FIXES HERE)
+        CONFIG.pitch_trim_deg = 0;
+        CONFIG.asymmetry_factor = 0.0; // <--- FIX: Ensure wave is symmetric for tests
+        CONFIG.phase_shift_deg = 90.0; // Standard phase
+        CONFIG.elastic_efficiency = 1.0;
+        
+        CONFIG.stab_angle = 0; CONFIG.S_stab = 0; CONFIG.fuselage_len = 0.7; CONFIG.riding_depth = 0.2;
+
+        // Force Analytical Model for Tests
+        CONFIG.polar_data = null;
+        CONFIG.raw_polar_2d = null;
+        CONFIG.polar_name = null;
+    }
+
+    function assert(testName, actual, expected, tolerance = 0.01) {
+        if (typeof expected === 'boolean') {
+            if (actual === expected) { console.log(`%c✔ PASS: ${testName}`, "color: green"); passCount++; }
+            else { console.log(`%c✘ FAIL: ${testName}`, "color: red; font-weight: bold"); failCount++; }
+            return;
+        }
+        const diff = Math.abs(actual - expected);
+        if (diff <= tolerance) { console.log(`%c✔ PASS: ${testName}`, "color: green"); passCount++; }
+        else { console.log(`%c✘ FAIL: ${testName}`, "color: red; font-weight: bold"); console.log(`   Expected: ${expected}`); console.log(`   Actual:   ${actual}`); failCount++; }
+    }
+
+    // ==========================================
+    // 2. BASIC PHYSICS TESTS
+    // ==========================================
+    console.log("%c--- PHASE 1: AERODYNAMICS ---", "color: #555; font-weight: bold;");
+
+    resetSim(); assert("Static Lift at 0° AoA is 0", calculatePhysics(0).Lz, 0);
+    
+    resetSim(); CONFIG.pitch_trim_deg = 2.0; 
+    const expLift = 0.5 * CONFIG.rho * CONFIG.S * ((2 * Math.PI * (2*Math.PI/180)) / (1 + 2/CONFIG.AR)) * (CONFIG.U * CONFIG.U);
+    assert(`Lift at 2° matches Linear Theory`, calculatePhysics(0).Lz, expLift, 1.0);
+
+    resetSim(); CONFIG.riding_depth = 0.2; 
+    const k = 1 / (Math.PI * CONFIG.AR); const cl = (2 * Math.PI * (2*Math.PI/180)) / (1 + 2/CONFIG.AR);
+    const d_wing = 0.5 * CONFIG.rho * CONFIG.S * (CONFIG.Cd0 + k * cl*cl) * CONFIG.U**2;
+    const d_mast = 0.5 * CONFIG.rho * (0.2 * 0.015) * 0.12 * CONFIG.U**2;
+    CONFIG.pitch_trim_deg = 2.0; 
+    assert(`Total Drag at 2° (Wing + Mast)`, Math.abs(calculatePhysics(0).Dx), d_wing + d_mast, 0.5);
+
+    resetSim(); CONFIG.riding_depth = 0.2; state.heave_amp = 0.3; 
+    assert("Lift drops to 0 when breached", calculatePhysics(0).Lz, 0);
+
+    resetSim(); CONFIG.pitch_trim_deg = 15.0; 
+    assert("Stall Flag is TRUE at 15°", calculatePhysics(0).isStalled, true);
+
+    resetSim(); CONFIG.S_stab = 0.025; CONFIG.stab_angle = -2.0; 
+    assert("Stabilizer generates Downforce (< 0)", calculatePhysics(0).L_stab_z < -1.0, true);
+
+    // ==========================================
+    // 3. DYNAMICS TESTS
+    // ==========================================
+    console.log("%c--- PHASE 2: DYNAMICS & POWER ---", "color: #555; font-weight: bold; margin-top: 10px;");
+
+    // TEST 7 & 8: Kinematics (Now safe from asymmetry)
+    resetSim(); state.freq = 1.0; state.heave_amp = 0.5;
+    assert("Kinematics: t=0, z = +Amp", calculatePhysics(0).z, 0.5);
+    assert("Kinematics: t=0.5, z = -Amp", calculatePhysics(0.5).z, -0.5);
+
+    resetSim(); state.freq = 2.0; state.heave_amp = 0.1;
+    assert("Instant Power generated (> 0)", calculatePhysics(0.05).power > 10, true);
+
+    // Test 10: Mass vs Power
+    function getTrimmedPower(m) {
+        resetSim(); CONFIG.mass = m; state.freq = 1.5; state.heave_amp = 0.20;
+        const w = m * 9.81; const q = 0.5 * 1000 * 0.135 * 5.55**2;
+        CONFIG.pitch_trim_deg = ((w/q) / ((2*Math.PI)/(1+2/13.9))) * (180/Math.PI);
+        let s=0; const steps=50; for(let i=0;i<steps;i++) s+=calculatePhysics(i*0.02).power;
+        return s/steps;
+    }
+    const p60 = getTrimmedPower(60.0); const p80 = getTrimmedPower(80.0);
+    assert("Heavier rider requires more Power", p80 > p60, true);
+
+    // ==========================================
+    // 4. OPTIMIZER STRESS TEST (100 RUNS)
+    // ==========================================
+    console.log("%c--- PHASE 3: OPTIMIZER STRESS TEST (100 Runs) ---", "color: #555; font-weight: bold; margin-top: 10px;");
+    console.log("   ⏳ Crunching numbers (this may take 1-2 seconds)...");
+
+    function findBalancedState(runIndex, metric = 'avg') {
+        resetSim();
+        const targetLift = (CONFIG.mass + CONFIG.board_mass) * CONFIG.g;
+        
+        state.freq = 1.0 + Math.random();
+        state.heave_amp = 0.1 + Math.random()*0.1;
+        CONFIG.pitch_trim_deg = Math.random() * 5.0; 
+        
+        let bestCost = Infinity; let bestPower = Infinity;
+        
+        for (let i = 0; i < 150; i++) {
+            const oldFreq = state.freq; const oldAmp = state.heave_amp; const oldTrim = CONFIG.pitch_trim_deg;
+            const scale = Math.max(0.1, 1.0 - (i/150));
+            state.freq += (Math.random()-0.5) * 1.0 * scale;
+            state.heave_amp += (Math.random()-0.5) * 0.05 * scale;
+            CONFIG.pitch_trim_deg += (Math.random()-0.5) * 2.0 * scale;
+            
+            state.freq = Math.max(0.5, Math.min(2.5, state.freq));
+            state.heave_amp = Math.max(0.05, Math.min(0.3, state.heave_amp));
+            
+            let sL=0, sT=0, sP=0, sP4=0; const steps = 12; const dt = (1.0/state.freq)/steps;
+            for(let k=0; k<steps; k++) {
+                const p = calculatePhysics(k*dt); 
+                sL += p.F_hydro_z; 
+                sT += p.thrust; 
+                sP += p.power;
+                if (metric === 'norm') sP4 += Math.pow(p.power, 4);
+            }
+            
+            const avgLift = sL/steps;
+            const avgThrust = sT/steps;
+            const avgPower = sP/steps;
+            const normPower = (metric === 'norm') ? Math.pow(sP4/steps, 0.25) : avgPower;
+            
+            const powerMetric = (metric === 'norm') ? normPower : avgPower;
+            
+            const cost = Math.abs(avgLift - targetLift) + Math.abs(avgThrust)*3.0 + (powerMetric * 0.01);
+            
+            if (cost < bestCost) { bestCost = cost; bestPower = powerMetric; } 
+            else { state.freq = oldFreq; state.heave_amp = oldAmp; CONFIG.pitch_trim_deg = oldTrim; }
+        }
+        return { 
+            power: bestPower, 
+            cost: bestCost, 
+            valid: bestCost < 30.0,
+            freq: state.freq,
+            amp: state.heave_amp,
+            trim: CONFIG.pitch_trim_deg
+        };
+    }
+
+    // --- EXECUTE 200 RUNS (100 AVG + 100 NORM) ---
+    const RUNS = 100;
+    
+    console.log(`   🏃 Running ${RUNS} optimizations for AVG Power...`);
+    let resultsAvg = [];
+    const startTime = performance.now();
+    for(let r=0; r<RUNS; r++) resultsAvg.push(findBalancedState(r, 'avg'));
+    
+    console.log(`   🏃 Running ${RUNS} optimizations for NORM Power...`);
+    let resultsNorm = [];
+    for(let r=0; r<RUNS; r++) resultsNorm.push(findBalancedState(r, 'norm'));
+    
+    const endTime = performance.now();
+    console.log(`   ⏱️ Completed all runs in ${((endTime-startTime)/1000).toFixed(2)}s`);
+
+    resultsAvg.sort((a,b) => {
+        if (a.valid === b.valid) return a.power - b.power; 
+        return b.valid - a.valid; 
+    });
+    resultsNorm.sort((a,b) => {
+        if (a.valid === b.valid) return a.power - b.power; 
+        return b.valid - a.valid; 
+    });
+
+    console.log("   🏆 TOP 10 RESULTS (AVG):");
+    console.table(resultsAvg.slice(0, 10).map((r, i) => ({
+        Rank: i+1, "Power (W)": r.power.toFixed(1), "Valid?": r.valid ? "YES" : "NO", "Cost": r.cost.toFixed(1)
+    })));
+
+    const validRunsAvg = resultsAvg.filter(r => r.valid).length;
+    const validRunsNorm = resultsNorm.filter(r => r.valid).length;
+    
+    assert(`Optimizer convergence rate AVG (${validRunsAvg}/${RUNS}) >= 50%`, validRunsAvg >= (RUNS/2), true);
+    assert(`Optimizer convergence rate NORM (${validRunsNorm}/${RUNS}) >= 50%`, validRunsNorm >= (RUNS/2), true);
+    
+    let bestPowerInfo = "";
+    if(validRunsAvg > 0) {
+        const bestP = resultsAvg[0].power;
+        assert("Best VALID AVG solution is realistic (100W-600W)", (bestP > 100 && bestP < 600), true);
+        console.log(`   🏆 Best Avg Power: ${bestP.toFixed(1)} W`);
+        bestPowerInfo += ` Best Avg: ${bestP.toFixed(1)} W.`;
+    }
+    
+    if(validRunsNorm > 0) {
+        const bestP = resultsNorm[0].power;
+        assert("Best VALID NORM solution is realistic (100W-800W)", (bestP > 100 && bestP < 800), true);
+        console.log(`   🏆 Best Norm Power: ${bestP.toFixed(1)} W`);
+        bestPowerInfo += ` Best Norm: ${bestP.toFixed(1)} W.`;
+    } else {
+        console.log("%c   ⚠️ No valid runs found.", "color: orange");
+    }
+
+    if (validRunsAvg > 0 && validRunsNorm > 0) {
+        const bestAvg = resultsAvg[0];
+        const bestNorm = resultsNorm[0];
+        
+        console.log("%c--- COMPARISON: AVG vs NORM OPTIMIZATION ---", "color: #555; font-weight: bold; margin-top: 10px;");
+        console.table({
+            "Frequency (Hz)": { 
+                "Best Avg": bestAvg.freq.toFixed(2), 
+                "Best Norm": bestNorm.freq.toFixed(2), 
+                "Diff": (bestNorm.freq - bestAvg.freq).toFixed(2) 
+            },
+            "Amplitude (m)": { 
+                "Best Avg": bestAvg.amp.toFixed(2), 
+                "Best Norm": bestNorm.amp.toFixed(2), 
+                "Diff": (bestNorm.amp - bestAvg.amp).toFixed(2) 
+            },
+            "Pitch Trim (°)": { 
+                "Best Avg": bestAvg.trim.toFixed(1), 
+                "Best Norm": bestNorm.trim.toFixed(1), 
+                "Diff": (bestNorm.trim - bestAvg.trim).toFixed(1) 
+            },
+            "Optimized Power (W)": {
+                "Best Avg": bestAvg.power.toFixed(1),
+                "Best Norm": bestNorm.power.toFixed(1),
+                "Diff": (bestNorm.power - bestAvg.power).toFixed(1)
+            }
+        });
+    }
+
+    // ==========================================
+    // SUMMARY
+    // ==========================================
+    console.log("--------------------------------------------------");
+    const total = passCount + failCount;
+    if (failCount === 0) console.log(`%c✅ SUCCESS: ALL ${passCount} TESTS PASSED.`, "color: green; font-weight: bold; font-size: 16px;");
+    else console.log(`%c❌ FAILURE: ${failCount} / ${total} TESTS FAILED.`, "color: red; font-weight: bold; font-size: 16px;");
+    
+    alert(`Tests Completed. Passed: ${passCount}, Failed: ${failCount}.${bestPowerInfo} Check Console for details.`);
+});
+
+// Init
+renderPresetDropdown();
+
+render({ phys: calculatePhysics(0), normPower: 0, avgPower: 0, avgThrust: 0, avgLift: 0, avgGForce: 0 });
+drawAirfoilShape();
+drawPolarGraph();
+loop();
+
+// --- RANGE CONTROLS SETUP ---
+document.querySelectorAll('.range-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const t = document.getElementById(btn.dataset.target);
+        t.classList.toggle('visible');
+    });
+});
+
+const RANGE_DEFAULTS = {
+    'in-freq': {min: 0.01, max: 2.5},
+    'in-amp': {min: 0.00, max: 0.40},
+    'in-asym': {min: 0.0, max: 0.8},
+    'in-trim': {min: -2.0, max: 10.0},
+    'in-phase': {min: 80, max: 110},
+    'in-height': {min: 0.10, max: 0.80}
+};
+
+const updateRangeVisual = (id) => {
+    const s = document.getElementById(id);
+    const def = RANGE_DEFAULTS[id];
+    if (!def) return;
+    
+    const suffix = id.replace('in-', '');
+    const currentMin = parseFloat(document.getElementById('min-' + suffix).value);
+    const currentMax = parseFloat(document.getElementById('max-' + suffix).value);
+    
+    const range = def.max - def.min;
+    
+    const leftPct = ((currentMin - def.min) / range) * 100;
+    const rightPct = ((currentMax - def.min) / range) * 100;
+    
+    // Update Handles
+    const wrapper = s.closest('.slider-wrapper');
+    if (wrapper) {
+        const minH = wrapper.querySelector('.min-handle');
+        const maxH = wrapper.querySelector('.max-handle');
+        if (minH) minH.style.left = leftPct + '%';
+        if (maxH) maxH.style.left = rightPct + '%';
+    }
+
+    // Gradient: Track -> Active Zone -> Track (Handles are now DOM elements)
+    const grad = `linear-gradient(to right, 
+        #e2e8f0 0%, #e2e8f0 ${leftPct}%, 
+        #dbeafe ${leftPct}%, #dbeafe ${rightPct}%, 
+        #e2e8f0 ${rightPct}%, #e2e8f0 100%)`;
+        
+    s.style.background = grad;
+};
+
+const setupHandleDrag = (handle) => {
+    const id = handle.dataset.for;
+    const type = handle.dataset.type;
+    const slider = document.getElementById(id);
+    const def = RANGE_DEFAULTS[id];
+    const suffix = id.replace('in-', '');
+    const minInput = document.getElementById('min-' + suffix);
+    const maxInput = document.getElementById('max-' + suffix);
+
+    const onMove = (e) => {
+        const wrapper = slider.closest('.slider-wrapper');
+        const rect = wrapper.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        
+        let pct = (clientX - rect.left) / rect.width;
+        pct = Math.max(0, Math.min(1, pct));
+        
+        const range = def.max - def.min;
+        let val = def.min + pct * range;
+        
+        // Snap to step
+        const step = parseFloat(slider.step) || 0.01;
+        val = Math.round(val / step) * step;
+        
+        // Constraints
+        if (type === 'min') {
+            const currentMax = parseFloat(maxInput.value);
+            val = Math.min(val, currentMax);
+            minInput.value = val.toFixed(step < 0.1 ? 2 : 1);
+        } else {
+            const currentMin = parseFloat(minInput.value);
+            val = Math.max(val, currentMin);
+            maxInput.value = val.toFixed(step < 0.1 ? 2 : 1);
+        }
+        
+        updateRangeVisual(id);
+    };
+
+    const onUp = () => {
+        window.removeEventListener('mousemove', onMove);
+        window.removeEventListener('mouseup', onUp);
+        window.removeEventListener('touchmove', onMove);
+        window.removeEventListener('touchend', onUp);
+    };
+
+    handle.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', onUp);
+    });
+    
+    handle.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        window.addEventListener('touchmove', onMove);
+        window.addEventListener('touchend', onUp);
+    });
+};
+
+const bindRange = (id, minId, maxId) => {
+    const s = document.getElementById(id), min = document.getElementById(minId), max = document.getElementById(maxId);
+    min.value = s.min; max.value = s.max;
+    const update = () => { updateRangeVisual(id); };
+    min.addEventListener('change', update);
+    max.addEventListener('change', update);
+    
+    // Initialize handles
+    const wrapper = s.closest('.slider-wrapper');
+    if (wrapper) wrapper.querySelectorAll('.limit-handle').forEach(setupHandleDrag);
+    
+    updateRangeVisual(id);
+};
+bindRange('in-freq', 'min-freq', 'max-freq');
+bindRange('in-amp', 'min-amp', 'max-amp');
+bindRange('in-asym', 'min-asym', 'max-asym');
+bindRange('in-trim', 'min-trim', 'max-trim');
+bindRange('in-phase', 'min-phase', 'max-phase');
+bindRange('in-height', 'min-height', 'max-height');
+
+document.getElementById('btn-reset-limits').addEventListener('click', () => {
+    for (const [id, range] of Object.entries(RANGE_DEFAULTS)) {
+        const slider = document.getElementById(id);
+        const suffix = id.replace('in-', '');
+        document.getElementById('min-' + suffix).value = range.min;
+        document.getElementById('max-' + suffix).value = range.max;
+        updateRangeVisual(id);
+    }
+});
+
+document.getElementById('doc-toggle').addEventListener('click', () => {
+    const panel = document.getElementById('doc-panel');
+    panel.classList.toggle('doc-panel-hidden');
+});
+
+document.getElementById('doc-close').addEventListener('click', () => {
+    document.getElementById('doc-panel').classList.add('doc-panel-hidden');
+});
+
+</script>
+<script src="testscript.js"></script>
+</body>
+</html>
