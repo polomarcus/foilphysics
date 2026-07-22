@@ -3,8 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Comparateur Longue Distance — Foil Physics</title>
+<title>Le Choc des Watts — Comparateur d'ailes de foil longue distance</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="description" content="Comparateur d'ailes de foil : classique vs longue distance (High Aspect). Comprends où partent tes watts — AR, traînée induite, Wh/km, sweet spot — et pourquoi une aile fine te fait voler plus loin à effort réduit. Basé sur le modèle foilphysics.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Le Choc des Watts — Comparateur d'ailes de foil">
+<meta property="og:description" content="Classique vs longue distance : où partent tes watts ? AR, traînée, Wh/km, sweet spot. Bilingue FR/EN.">
+<meta property="og:image" content="https://polomarcus.github.io/foilphysics/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://polomarcus.github.io/foilphysics/">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Le Choc des Watts — Comparateur d'ailes de foil">
+<meta name="twitter:description" content="Classique vs longue distance : où partent tes watts ? AR, traînée, Wh/km, sweet spot.">
+<meta name="twitter:image" content="https://polomarcus.github.io/foilphysics/og.png">
 <style>
   :root{
     --bg:#0f172a; --panel:#1e293b; --panel-2:#243347; --line:#334155;
@@ -600,6 +613,7 @@
   <div class="shock">
     <h3 data-i18n="tbl-h3">📋 Toutes les ailes en un coup d'œil</h3>
     <p class="lede" data-i18n="tbl-lede">Chaque aile à sa croisière conseillée, pour <b id="cmp-w">75</b> kg et ta forme réglée plus haut.
+      <b>Rig standardisé pour toutes</b> (mât 16 mm carbone, fuselage court 60 cm, stab 50) pour comparer à parité.
       Triées de la <b>moins</b> à la plus gourmande en watts. La colonne <b>Wh/km</b> = énergie par km parcouru :
       elle révèle l'efficacité réelle <i>indépendamment de la vitesse</i> (c'est là que le grand allongement gagne vraiment).</p>
     <div class="cmp"><table id="cmp-table"></table></div>
@@ -824,8 +838,7 @@
   function tableCalc(it, W){
     const RHO = rho();
     const b=it.b/100, S=it.s/10000, AR=b*b/S;
-    const Am=parseFloat(it.mast||'0.065'), mat=parseFloat(it.mat||'1.0');
-    const Af=parseFloat(it.fus||'0.035'), As=parseFloat(it.stb||'0.020');   // rig propre à l'aile (ou standard)
+    const Am=0.065, mat=1.0, Af=0.035, As=0.020;   // rig STANDARDISÉ (mât 16mm carbone, fuselage court, stab 50) pour comparer à parité
     const Kpar=S*it.cd0 + Am*CD_MAST + Af*CD_FUS + As*CD_STAB;
     const Aind=(W*W)/(0.5*RHO*Math.PI*b*b*E);
     const vOpt=Math.pow(Aind/(3*0.5*RHO*Kpar),0.25);
@@ -835,7 +848,7 @@
     const q=0.5*RHO*vSweet*vSweet;
     let eta=Math.min(0.62,Math.max(0.30,0.38+0.012*AR)); eta=Math.min(0.70,eta*mat);
     const Dtot = Aind/(vSweet*vSweet) + q*Kpar;
-    return {AR, Cm:(S/b)*100, vKmh:vSweet*3.6, P:Dtot*vSweet/eta, LD:W/Dtot};
+    return {AR, Cm:(S/b)*100, span:b*100, vKmh:vSweet*3.6, P:Dtot*vSweet/eta};
   }
 
   function drawTable(){
@@ -844,11 +857,11 @@
     const rows=[];
     CATALOG.forEach(grp=> grp.items.forEach(it=>{
       const c=tableCalc(it,W);
-      rows.push({n:it.n, cat:grp.cat, AR:c.AR, Cm:c.Cm, LD:c.LD, vKmh:c.vKmh, P:c.P, wh:c.P/c.vKmh, dif:difficulty(c.AR)});
+      rows.push({n:it.n, cat:grp.cat, AR:c.AR, Cm:c.Cm, span:c.span, vKmh:c.vKmh, P:c.P, wh:c.P/c.vKmh, dif:difficulty(c.AR)});
     }));
     rows.sort((a,b)=> a.P-b.P);
     const whMin = Math.min(...rows.map(r=>r.wh));
-    let h='<thead><tr><th>'+t('Aile','Wing')+'</th><th>Type</th><th>AR</th><th>'+t('Finesse','Glide (L/D)')+'</th><th>'+
+    let h='<thead><tr><th>'+t('Aile','Wing')+'</th><th>Type</th><th>AR</th><th>'+t('Envergure','Span')+'</th><th>'+
       t('Corde','Chord')+'</th><th>'+t('Croisière','Cruise')+'</th><th>Watts</th>'+
       '<th>Wh/km</th><th>'+t('Niveau','Level')+'</th></tr></thead><tbody>';
     rows.forEach(r=>{
@@ -858,7 +871,7 @@
         : '<span class="wtag ld">'+t('Longue dist.','Long dist.')+'</span>';
       const whCol = r.wh < whMin*1.15 ? '#86efac' : r.wh > whMin*1.6 ? '#fca5a5' : 'var(--txt)';
       h+='<tr><td class="nm">'+r.n+'</td><td>'+tag+'</td><td>'+num(r.AR,1)+'</td>'+
-        '<td>'+num(r.LD,0)+'</td><td>'+num(r.Cm,0)+' cm</td>'+
+        '<td>'+num(r.span,0)+' cm</td><td>'+num(r.Cm,0)+' cm</td>'+
         '<td>'+num(r.vKmh,1)+' km/h</td><td class="w" style="color:'+col+'">'+num(r.P,0)+' W</td>'+
         '<td class="w" style="color:'+whCol+'">'+num(r.wh,1)+'</td>'+
         '<td class="stars" style="color:'+r.dif.col+'" title="'+r.dif.lab+'">'+r.dif.stars+'</td></tr>';
@@ -1231,7 +1244,7 @@
     'conseil-h':'⚓ Polo Foil\'s tip','conseil-formula':'Overall performance = <b>Physical energy</b> + <b>Mental energy</b>',
     'copy-btn':'📋 Copy the mental-comfort recap',
     'tbl-h3':'📋 All wings at a glance',
-    'tbl-lede':'Each wing at its recommended cruise, for <b id="cmp-w">75</b> kg and your fitness set above. Sorted from <b>least</b> to most watt-hungry. The <b>Wh/km</b> column = energy per km travelled: it reveals real efficiency <i>regardless of speed</i> (that\'s where long span truly wins).',
+    'tbl-lede':'Each wing at its recommended cruise, for <b id="cmp-w">75</b> kg and your fitness set above. <b>Standardised rig for all</b> (16 mm carbon mast, short fuselage 60 cm, stab 50) for a fair comparison. Sorted from <b>least</b> to most watt-hungry. The <b>Wh/km</b> column = energy per km travelled: it reveals real efficiency <i>regardless of speed</i> (that\'s where long span truly wins).',
     'foot-formulas':'<b style="color:var(--txt)">In plain words:</b> the longer and thinner the wing, and the closer you fly to the <b>right speed</b> (neither too slow nor too fast), the less you force — and the longer you fly.<br><br><b style="color:var(--txt)">Physics engine</b> (based on the <a href="https://github.com/lsegessemann/foilphysics" target="_blank" rel="noopener">foilphysics</a> model) — steady flight, lift = weight:<br><code>AR = b²/S</code> &nbsp;·&nbsp; <code>C_m = S/b</code> &nbsp;·&nbsp; <code>C_L = W / (½ρv²S)</code><br><code>D_induced = W² / (½ρv²·π·b²)</code> &nbsp;→ depends only on span &amp; speed<br><code>D_profile = ½ρv²S·C_D0 + mast + fuselage + stab</code> &nbsp;·&nbsp; <code>P = (D_total / η_pump) · v</code>',
     'foot-note':'ρ selectable (1000 fresh / 1025 salt water) · induced drag = C<sub>L</sub>²/(π·AR) · stall at 13° — like foilphysics; thin profiles are capped earlier (real ventilation) · η_pump grows with AR and mast stiffness. Watts and flight time are illustrative estimates (critical-power model, adjustable to your fitness) — not a real effort measurement.'
   };
