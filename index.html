@@ -112,6 +112,7 @@
   .kpi .lab .tech{color:var(--dim); font-weight:500;}
   .kpi .hint{font-size:.63rem; color:var(--muted); margin-top:4px; line-height:1.25;}
   .watts .whint{font-size:.66rem; color:var(--muted); margin-top:3px;}
+  .watts .wappl{font-size:.74rem; color:var(--sky); font-weight:700; margin-top:5px;}
   .legend b{color:var(--txt);}
 
   .watts{text-align:center; margin:8px 0 12px; padding:12px; border-radius:12px; background:var(--panel-2);}
@@ -451,7 +452,8 @@
 
       <div class="watts"><div class="lab" data-i18n="watts-lab">Puissance à fournir</div>
         <div class="val" id="p1">—<span class="unit"> W</span></div>
-        <div class="whint" data-i18n="watts-h">ton effort, comme les watts au vélo</div></div>
+        <div class="whint" data-i18n="watts-h">ton effort, comme les watts au vélo</div>
+        <div class="wappl" id="appl1">—</div></div>
 
       <div class="sweet" id="sweet1">🎯 Sweet spot ≈ <b id="sw1">—</b>
         <span class="sub" data-i18n="sweet-sub">croisière éco</span>
@@ -516,7 +518,8 @@
 
       <div class="watts"><div class="lab" data-i18n="watts-lab">Puissance à fournir</div>
         <div class="val" id="p2">—<span class="unit"> W</span></div>
-        <div class="whint" data-i18n="watts-h">ton effort, comme les watts au vélo</div></div>
+        <div class="whint" data-i18n="watts-h">ton effort, comme les watts au vélo</div>
+        <div class="wappl" id="appl2">—</div></div>
 
       <div class="sweet" id="sweet2">🎯 Sweet spot ≈ <b id="sw2">—</b>
         <span class="sub" data-i18n="sweet-sub">croisière éco</span>
@@ -805,6 +808,15 @@
     return {cls:'red', dot:'🔴', title:t('Mode Effort Violent','Hard Effort Mode'), sub:t('Au-dessus de ton seuil : tu plafonnes et tu tombes vite.','Above your threshold: you plateau then drop fast.')};
   }
 
+  function appliance(P){
+    if(P<150) return t('🔌 ≈ un ordinateur portable','🔌 ≈ a laptop');
+    if(P<250) return t('🔌 ≈ une console PS5 en jeu','🔌 ≈ a PS5 gaming');
+    if(P<400) return t('🔌 ≈ un mixeur / blender à soupe','🔌 ≈ a soup blender');
+    if(P<600) return t('🔌 ≈ un gros blender','🔌 ≈ a big blender');
+    if(P<900) return t('🔌 ≈ un aspirateur','🔌 ≈ a vacuum cleaner');
+    return t('🔌 ≈ un grille-pain','🔌 ≈ a toaster');
+  }
+
   function fmtTime(sec){
     if(!isFinite(sec)) return t('vol illimité ♾️','unlimited flight ♾️');
     if(sec < 90) return '≈ ' + Math.round(sec) + t(' s avant l\'explosion',' s before blowing up');
@@ -1002,6 +1014,7 @@
       document.getElementById('ld'+i).textContent = num(r.LD,1);
       document.getElementById('cl'+i).textContent = num(r.CL,2).replace('.',',');
       document.getElementById('p'+i).innerHTML = num(r.P,0)+'<span class="unit"> W</span>';
+      document.getElementById('appl'+i).textContent = appliance(r.P);
 
       const v = verdictClass(r.P);
       const badge = document.getElementById('badge'+i);
