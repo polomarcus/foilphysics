@@ -621,6 +621,7 @@
       Triées de la <b>moins</b> à la plus gourmande en watts. La colonne <b>Wh/km</b> = énergie par km parcouru :
       elle révèle l'efficacité réelle <i>indépendamment de la vitesse</i> (c'est là que le grand allongement gagne vraiment).</p>
     <div class="cmp"><table id="cmp-table"></table></div>
+    <p class="lede" data-i18n="tbl-note" style="font-size:.72rem; margin:10px 0 0">ℹ️ Le C_D0 (traînée de profil) est estimé d'après l'épaisseur publiée quand elle est connue, sinon d'après la catégorie de profil (fin / moyen / épais) — chiffres indicatifs.</p>
   </div>
 
   <footer>
@@ -1249,6 +1250,7 @@
     'copy-btn':'📋 Copy the mental-comfort recap',
     'tbl-h3':'📋 All wings at a glance',
     'tbl-lede':'Each wing at its recommended cruise, for <b id="cmp-w">75</b> kg and your fitness set above. <b>Standardised rig for all</b> (16 mm carbon mast, short fuselage 60 cm, stab 50) for a fair comparison. Sorted from <b>least</b> to most watt-hungry. The <b>Wh/km</b> column = energy per km travelled: it reveals real efficiency <i>regardless of speed</i> (that\'s where long span truly wins).',
+    'tbl-note':'ℹ️ C_D0 (profile drag) is estimated from published thickness when available, otherwise from the profile category (thin / medium / thick) — indicative figures.',
     'foot-formulas':'<b style="color:var(--txt)">In plain words:</b> the longer and thinner the wing, and the closer you fly to the <b>right speed</b> (neither too slow nor too fast), the less you force — and the longer you fly.<br><br><b style="color:var(--txt)">Physics engine</b> (based on the <a href="https://github.com/lsegessemann/foilphysics" target="_blank" rel="noopener">foilphysics</a> model) — steady flight, lift = weight:<br><code>AR = b²/S</code> &nbsp;·&nbsp; <code>C_m = S/b</code> &nbsp;·&nbsp; <code>C_L = W / (½ρv²S)</code><br><code>D_induced = W² / (½ρv²·π·b²)</code> &nbsp;→ depends only on span &amp; speed<br><code>D_profile = ½ρv²S·C_D0 + mast + fuselage + stab</code> &nbsp;·&nbsp; <code>P = (D_total / η_pump) · v</code>',
     'foot-note':'ρ selectable (1000 fresh / 1025 salt water) · induced drag = C<sub>L</sub>²/(π·AR) · stall at 13° — like foilphysics; thin profiles are capped earlier (real ventilation) · η_pump grows with AR and mast stiffness. Watts and flight time are illustrative estimates (critical-power model, adjustable to your fitness) — not a real effort measurement.'
   };
