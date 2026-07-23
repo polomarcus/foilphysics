@@ -57,6 +57,10 @@
     text-transform:uppercase; color:var(--sky); background:rgba(14,165,233,.12);
     border:1px solid rgba(14,165,233,.3); padding:4px 12px; border-radius:999px;}
 
+  .disclaimer{background:rgba(245,158,11,.12); border:1px solid rgba(245,158,11,.45); color:#fcd34d;
+    border-radius:12px; padding:12px 16px; margin-bottom:16px; font-size:.85rem; line-height:1.5;}
+  .disclaimer b{color:#fde68a;}
+
   .story{background:var(--panel); border:1px solid var(--line); border-radius:16px; margin-bottom:16px; overflow:hidden;}
   .story summary{cursor:pointer; padding:14px 18px; font-weight:800; font-size:1rem; color:var(--txt); list-style:none;}
   .story summary::-webkit-details-marker{display:none;}
@@ -204,6 +208,13 @@
     border-radius:10px; padding:10px 12px;}
   .scale-note b{color:#fcd34d;}
   .note-title{text-align:center; font-weight:800; color:var(--txt); font-size:.92rem; margin-bottom:8px;}
+  .whbars{margin:12px 0;}
+  .whrow{display:grid; grid-template-columns:150px 1fr 42px; align-items:center; gap:8px; margin:5px 0; font-size:.78rem;}
+  .whrow .whlab{color:var(--muted); white-space:nowrap;}
+  .whrow .whtrack{background:var(--bg); border:1px solid var(--line); border-radius:6px; height:16px;}
+  .whrow .whfill{display:block; height:100%; border-radius:5px;}
+  .whrow .whval{text-align:right; font-weight:800; color:var(--txt);}
+  @media(max-width:560px){ .whrow{grid-template-columns:118px 1fr 38px; font-size:.72rem; gap:6px;} }
 
   /* Tableau comparatif */
   .cmp{overflow-x:auto; -webkit-overflow-scrolling:touch;}
@@ -306,6 +317,8 @@
     <p class="hsimple" data-i18n="hsimple">Le foil de demain n'est pas celui qui <b>soulève le plus fort</b>. C'est celui qui <b>gaspille le moins ce qu'on lui donne</b>.</p>
   </header>
 
+  <div class="disclaimer" data-i18n="disclaimer">⚠️ <b>Chiffres estimés, pas des mesures réelles.</b> Les profils d'ailes sont souvent gardés secrets par les marques : ce comparateur donne des <b>ordres de grandeur pédagogiques</b> (tendances), pas des valeurs constructeur. À prendre comme un outil pour <b>comprendre</b> — pas comme un banc d'essai.</div>
+
   <details class="story">
     <summary data-i18n="story-sum">📖 Comprendre en 2 min : la nouvelle philosophie du pump foil</summary>
     <div class="story-in" data-i18n="story-body">
@@ -393,6 +406,19 @@
     </div>
     <div class="scale-note" data-i18n="mh-note">⚡ En <b>pointe</b> (sprint ~5 s), un pistard sort <b>&gt; 1200 W</b> — de quoi allumer
       un grille-pain. Mais ça ne dure pas : pour <i>voler longtemps</i>, seule la puissance <b>soutenue</b> compte.</div>
+    <div class="scale-note" style="margin-top:12px; line-height:1.55" data-i18n="wh-explain">
+      <div class="note-title">💡 Ça coûte combien d'énergie, 1 km ?</div>
+      Le <b>Wh/km</b> = l'énergie dépensée pour parcourir 1 km. Plus c'est bas, plus tu vas loin pour le même effort :
+      <div class="whbars">
+        <div class="whrow"><span class="whlab">🚴 Vélo tranquille</span><span class="whtrack"><span class="whfill" style="width:20%;background:#22c55e"></span></span><span class="whval">~6</span></div>
+        <div class="whrow"><span class="whlab">🚴 Vélo à 25 km/h</span><span class="whtrack"><span class="whfill" style="width:40%;background:#84cc16"></span></span><span class="whval">~12</span></div>
+        <div class="whrow"><span class="whlab">🚶 Marche</span><span class="whtrack"><span class="whfill" style="width:50%;background:#f59e0b"></span></span><span class="whval">~15</span></div>
+        <div class="whrow"><span class="whlab">🏄 Foil, aile fine</span><span class="whtrack"><span class="whfill" style="width:50%;background:#0ea5e9"></span></span><span class="whval">~15</span></div>
+        <div class="whrow"><span class="whlab">🏄 Foil, aile courte</span><span class="whtrack"><span class="whfill" style="width:83%;background:#0ea5e9"></span></span><span class="whval">~25</span></div>
+      </div>
+      🚗 <b>Voiture électrique ≈ 150 Wh/km</b> — soit <b>~10× une aile fine</b> (et là, c'est la batterie qui bosse, pas toi).<br>
+      En pump foil, une aile fine te met au niveau de la <b>marche</b>… mais tu glisses sur l'eau. <b>Diviser ton Wh/km par deux = deux fois moins de fatigue.</b>
+    </div>
   </div>
 
   <div class="grid">
@@ -654,9 +680,9 @@
       physique mais une concentration de tous les instants.</p>
 
     <div class="chips" id="mchips">
-      <button class="chip active" data-k="sirus">🟢 GONG Sirus</button>
-      <button class="chip" data-k="jam">🟠 F-One Jam</button>
-      <button class="chip" data-k="fireball">🔴 Axis Fireball 1750</button>
+      <button class="chip active" data-k="sirus" data-i18n="chip-sirus">🟢 Longue distance · croisière</button>
+      <button class="chip" data-k="jam" data-i18n="chip-jam">🟠 Aile classique</button>
+      <button class="chip" data-k="fireball" data-i18n="chip-fireball">🔴 Aile longue distance race</button>
     </div>
 
     <div class="m-name" id="m-name">—</div>
@@ -687,17 +713,6 @@
       <div class="formula" data-i18n="conseil-formula">Performance globale = <b>Énergie physique</b> + <b>Énergie mentale</b></div>
       <p id="conseil-txt">—</p>
     </div>
-  </div>
-
-  <!-- TABLEAU COMPARATIF -->
-  <div class="shock">
-    <h3 data-i18n="tbl-h3">📋 Toutes les ailes en un coup d'œil</h3>
-    <p class="lede" data-i18n="tbl-lede">Chaque aile à sa croisière conseillée, pour <b id="cmp-w">75</b> kg et ta forme réglée plus haut.
-      <b>Rig standardisé pour toutes</b> (mât 16 mm carbone, fuselage court 60 cm, stab 50) pour comparer à parité.
-      Triées de la <b>moins</b> à la plus gourmande en watts. La colonne <b>Wh/km</b> = énergie par km parcouru :
-      elle révèle l'efficacité réelle <i>indépendamment de la vitesse</i> (c'est là que le grand allongement gagne vraiment).</p>
-    <div class="cmp"><table id="cmp-table"></table></div>
-    <p class="lede" data-i18n="tbl-note" style="font-size:.72rem; margin:10px 0 0">ℹ️ Le C_D0 (traînée de profil) est estimé d'après l'épaisseur publiée quand elle est connue, sinon d'après la catégorie de profil (fin / moyen / épais) — chiffres indicatifs.</p>
   </div>
 
   <footer>
@@ -850,9 +865,11 @@
   }
 
   const BENCH = [
+    {w:70,  fr:'🚶 Marche',            en:'🚶 Walking',            c:'#f59e0b'},
     {w:100, fr:'Cyclo 1×/an',          en:'Once-a-year rider'},
     {w:170, fr:'Balade régulière',     en:'Regular rider'},
-    {w:250, fr:'Cyclosportif entraîné',en:'Trained cyclist'},
+    {w:200, fr:'🏃 Course',            en:'🏃 Running',            c:'#f59e0b'},
+    {w:235, fr:'🚵 Ventoux (côte 10 %)', en:'🚵 Ventoux (10% ramp)', c:'#f59e0b'},
     {w:330, fr:'Amateur compét (FTP)', en:'Amateur racer (FTP)'},
     {w:430, fr:'Pro / pistard (FTP)',  en:'Pro / track (FTP)'}
   ];
@@ -863,7 +880,7 @@
     const pos = w => Math.max(1.5, Math.min(98.5, (w/SC_MAX)*100));
     document.getElementById('scale-ticks').innerHTML = BENCH.map(b=>
       '<div class="scale-tick" style="left:'+pos(b.w)+'%"><div class="ln"></div>'+
-      '<div class="tw">'+b.w+' W</div><div class="tl">'+t(b.fr,b.en)+'</div></div>').join('');
+      '<div class="tw">'+b.w+' W</div><div class="tl"'+(b.c?' style="color:'+b.c+'"':'')+'>'+t(b.fr,b.en)+'</div></div>').join('');
     const marks = [
       {r:r1, name:t('🪽 Classique','🪽 Classic'), bottom:26},
       {r:r2, name:t('🌊 Longue distance','🌊 Long distance'), bottom:0}
@@ -1070,7 +1087,6 @@
       drawPie(2, r2);
       drawEngine(r1, r2);
       drawTurn();
-      drawTable();
     }
   }
 
@@ -1202,21 +1218,21 @@
   /* ---------- Module confort mental ---------- */
   const WINGS = {
     sirus:{
-      name:'GONG Sirus', tag:'AR ~15 · High Aspect longue distance', tagEn:'AR ~15 · long-distance High Aspect', chord:'~17 cm',
+      name:'Longue distance · croisière', nameEn:'Long distance · cruising', tag:'AR ~15 · High Aspect longue distance', tagEn:'AR ~15 · long-distance High Aspect', chord:'~17 cm',
       sMin:11, sMax:16, stall:9, narrow:false,
       mental:15, mentalLab:'Zen / pilote automatique', mentalLabEn:'Zen / autopilot',
       stress:20, stressLab:'Attention minimale — tu profites du paysage', stressLabEn:'Minimal focus — enjoy the view',
       miss:{ok:true, title:'✅ Glisse maintenue', titleEn:'✅ Glide holds', txt:"L'aile décélère en douceur sans décrocher. Temps pour réagir ≈ 2,5 s : tu remets un coup de pompe tranquillement.", txtEn:'The wing slows down gently without stalling. Reaction window ≈ 2.5 s: just pump again, relaxed.'}
     },
     jam:{
-      name:'F-One Jam', tag:'AR ~10 · profil porteur', tagEn:'AR ~10 · high-lift profile', chord:'~12 cm',
+      name:'Aile classique', nameEn:'Classic wing', tag:'AR ~10 · profil porteur', tagEn:'AR ~10 · high-lift profile', chord:'~12 cm',
       sMin:10, sMax:15, stall:8, narrow:false,
       mental:50, mentalLab:'Pas de stress de décrochage… mais le cardio te grille', mentalLabEn:'No stall stress… but the cardio cooks you',
       stress:15, stressLab:'Décrochage improbable — mais fatigue physique extrême', stressLabEn:'Stall unlikely — but extreme physical fatigue',
       miss:{ok:true, title:'✅ Aucun décrochage… mais tu cuis', titleEn:'✅ No stall… but you\'re cooking', txt:"Techniquement pardonnant, mais l'effort (>330 W) épuise ta concentration en < 1 min. Tu tombes de fatigue, pas de faute de pilotage.", txtEn:'Technically forgiving, but the effort (>330 W) drains your focus in < 1 min. You fall from fatigue, not from a piloting mistake.'}
     },
     fireball:{
-      name:'Axis Fireball 1750 / Takoon Pump Extreme', tag:'AR ~20 · Ultra High Aspect', tagEn:'AR ~20 · Ultra High Aspect', chord:'~9 cm',
+      name:'Aile longue distance race', nameEn:'Long distance race', tag:'AR ~20 · Ultra High Aspect', tagEn:'AR ~20 · Ultra High Aspect', chord:'~9 cm',
       sMin:15, sMax:18, stall:14, narrow:true,
       mental:85, mentalLab:'Formule 1 / zéro droit à l\'erreur', mentalLabEn:'Formula 1 / zero margin for error',
       stress:90, stressLab:'Concentration maximale en permanence — sanction immédiate', stressLabEn:'Maximum focus at all times — instant penalty',
@@ -1229,13 +1245,13 @@
 
   function conseil(w){
     return t(
-      "Sur la <b>"+w.name.split(' /')[0]+"</b>, ta charge mentale tourne autour de <b>"+w.mental+"%</b> ("+w.mentalLab.toLowerCase()+"). En session, la performance ne se résume pas aux watts : une aile qui pardonne (corde large, plage de vitesse ample) libère ton cerveau et te fait durer, tandis qu'une lame ultra-fine peut coûter moins de watts mais te vider nerveusement. Choisis selon l'énergie — <b>physique ET mentale</b> — dont tu disposes ce jour-là.",
-      "On the <b>"+w.name.split(' /')[0]+"</b>, your mental load is around <b>"+w.mental+"%</b> ("+w.mentalLabEn.toLowerCase()+"). Out on the water, performance isn't just watts: a forgiving wing (wide chord, broad speed range) frees your brain and makes you last, whereas an ultra-thin blade can cost fewer watts but drain you mentally. Choose based on the energy — <b>physical AND mental</b> — you have that day.");
+      "<b>"+w.name+"</b> : ta charge mentale tourne autour de <b>"+w.mental+"%</b> ("+w.mentalLab.toLowerCase()+"). En session, la performance ne se résume pas aux watts : une aile qui pardonne (corde large, plage de vitesse ample) libère ton cerveau et te fait durer, tandis qu'une lame ultra-fine peut coûter moins de watts mais te vider nerveusement. Choisis selon l'énergie — <b>physique ET mentale</b> — dont tu disposes ce jour-là.",
+      "<b>"+w.nameEn+"</b>: your mental load is around <b>"+w.mental+"%</b> ("+w.mentalLabEn.toLowerCase()+"). Out on the water, performance isn't just watts: a forgiving wing (wide chord, broad speed range) frees your brain and makes you last, whereas an ultra-thin blade can cost fewer watts but drain you mentally. Choose based on the energy — <b>physical AND mental</b> — you have that day.");
   }
 
   function renderMental(){
     const w = WINGS[curKey];
-    document.getElementById('m-name').innerHTML = '<b>'+w.name+'</b> — '+t(w.tag,w.tagEn)+' · '+t('corde moy.','avg chord')+' '+w.chord;
+    document.getElementById('m-name').innerHTML = '<b>'+t(w.name,w.nameEn)+'</b> — '+t(w.tag,w.tagEn)+' · '+t('corde moy.','avg chord')+' '+w.chord;
 
     const gm = document.getElementById('gm-f');
     gm.style.width = w.mental+'%'; gm.style.background = gColor(w.mental);
@@ -1284,6 +1300,8 @@
     'hsub':'Why a <b>High Aspect</b> wing lets you fly far longer for less effort, where a classic pump wing puts you in the red within minutes.',
     'tag':'Long-Distance Setup · Steady flight',
     'hsimple':'Tomorrow\'s foil isn\'t the one that <b>lifts the hardest</b>. It\'s the one that <b>wastes the least of what you give it</b>.',
+    'disclaimer':'⚠️ <b>Estimated figures, not real measurements.</b> Wing profiles are often kept secret by brands: this comparator gives <b>educational orders of magnitude</b> (trends), not manufacturer values. Treat it as a tool to <b>understand</b> — not a test bench.',
+    'chip-sirus':'🟢 Long distance · cruising','chip-jam':'🟠 Classic wing','chip-fireball':'🔴 Long distance race',
     'story-sum':'📖 Understand in 2 min: the new philosophy of pump foiling',
     'story-body':`
       <h4>1. It's no longer about lifting hard, but losing little</h4>
@@ -1373,6 +1391,17 @@
     'copy-btn':'📋 Copy the mental-comfort recap',
     'tbl-h3':'📋 All wings at a glance',
     'tbl-lede':'Each wing at its recommended cruise, for <b id="cmp-w">75</b> kg and your fitness set above. <b>Standardised rig for all</b> (16 mm carbon mast, short fuselage 60 cm, stab 50) for a fair comparison. Sorted from <b>least</b> to most watt-hungry. The <b>Wh/km</b> column = energy per km travelled: it reveals real efficiency <i>regardless of speed</i> (that\'s where long span truly wins).',
+    'wh-explain':`<div class="note-title">💡 How much energy does 1 km cost?</div>
+      <b>Wh/km</b> = the energy spent to travel 1 km. Lower = you go further for the same effort:
+      <div class="whbars">
+        <div class="whrow"><span class="whlab">🚴 Easy cycling</span><span class="whtrack"><span class="whfill" style="width:20%;background:#22c55e"></span></span><span class="whval">~6</span></div>
+        <div class="whrow"><span class="whlab">🚴 Cycling at 25 km/h</span><span class="whtrack"><span class="whfill" style="width:40%;background:#84cc16"></span></span><span class="whval">~12</span></div>
+        <div class="whrow"><span class="whlab">🚶 Walking</span><span class="whtrack"><span class="whfill" style="width:50%;background:#f59e0b"></span></span><span class="whval">~15</span></div>
+        <div class="whrow"><span class="whlab">🏄 Foil, thin wing</span><span class="whtrack"><span class="whfill" style="width:50%;background:#0ea5e9"></span></span><span class="whval">~15</span></div>
+        <div class="whrow"><span class="whlab">🏄 Foil, short wing</span><span class="whtrack"><span class="whfill" style="width:83%;background:#0ea5e9"></span></span><span class="whval">~25</span></div>
+      </div>
+      🚗 <b>Electric car ≈ 150 Wh/km</b> — about <b>10× a thin wing</b> (and there it's the battery working, not you).<br>
+      On a thin wing you're at <b>walking</b> level… but you glide on water. <b>Halve your Wh/km = half the fatigue.</b>`,
     'tbl-note':'ℹ️ C_D0 (profile drag) is estimated from published thickness when available, otherwise from the profile category (thin / medium / thick) — indicative figures.',
     'foot-formulas':'<b style="color:var(--txt)">In plain words:</b> the longer and thinner the wing, and the closer you fly to the <b>right speed</b> (neither too slow nor too fast), the less you force — and the longer you fly.<br><br><b style="color:var(--txt)">Physics engine</b> (based on the <a href="https://github.com/lsegessemann/foilphysics" target="_blank" rel="noopener">foilphysics</a> model) — steady flight, lift = weight:<br><code>AR = b²/S</code> &nbsp;·&nbsp; <code>C_m = S/b</code> &nbsp;·&nbsp; <code>C_L = W / (½ρv²S)</code><br><code>D_induced = W² / (½ρv²·π·b²)</code> &nbsp;→ depends only on span &amp; speed<br><code>D_profile = ½ρv²S·C_D0 + mast + fuselage + stab</code> &nbsp;·&nbsp; <code>P = (D_total / η_pump) · v</code>',
     'foot-note':'ρ selectable (1000 fresh / 1025 salt water) · induced drag = C<sub>L</sub>²/(π·AR) · stall at 13° — like foilphysics; thin profiles are capped earlier (real ventilation) · η_pump grows with AR and mast stiffness. Watts and flight time are illustrative estimates (critical-power model, adjustable to your fitness) — not a real effort measurement.'
