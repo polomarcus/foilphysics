@@ -725,7 +725,7 @@
       <code>D_induite = W² / (½ρv²·π·b²·e)</code> &nbsp;→ ne dépend que de l'envergure & de la vitesse<br>
       <code>D_profil = ½ρv²S·C_D0 + mât + fuselage + stab</code> &nbsp;·&nbsp; <code>P = (D_totale / η_pompage) · v</code>
     </div>
-    <p data-i18n="foot-note">ρ sélectionnable (1000 eau douce / 1025 eau salée) · traînée induite = C<sub>L</sub>²/(π·AR) · décrochage à 13° — comme foilphysics ; les profils fins sont plafonnés plus tôt (ventilation réelle) · η_pompage croît avec l'AR et la rigidité du mât.
+    <p data-i18n="foot-note">ρ sélectionnable (1000 eau douce / 1025 eau salée) · traînée induite = C<sub>L</sub>²/(π·AR) · décrochage à 13° — comme foilphysics ; les profils fins sont plafonnés plus tôt (ventilation réelle) · η_pompage (rendement de pompage <b>estimé</b>) croît avec l'AR et la rigidité du mât.
     Les watts et le temps de vol sont des estimations pédagogiques (modèle puissance critique réglable selon ton niveau physique) — pas une mesure d'effort réelle.</p>
   </footer>
 
@@ -789,10 +789,9 @@
     const CD = Dtot/(q*S);
     const LD = CL/CD;
 
-    // Rendement de pompage : meilleur pour les grands allongements, modulé par la rigidité (matériau du mât)
+    // Rendement de pompage ESTIMÉ : croît avec l'allongement et la rigidité du mât (matériau)
     const matFactor = parseFloat(document.getElementById(cfg.mat).value); // alu 0.90 / carbone 1.0 / UHM 1.06
-    let eta = Math.min(0.62, Math.max(0.30, 0.38 + 0.012*AR));
-    eta = Math.min(0.70, eta * matFactor);
+    const eta = Math.min(0.80, (0.44 + 0.015*AR) * matFactor);
     const P = (Dtot*v)/eta;               // puissance foiler
 
     // Temps de vol estimé (modèle puissance critique, selon le niveau du rider)
@@ -953,7 +952,7 @@
     const vStall=Math.sqrt(W/(0.5*RHO*S*clMax));
     const vSweet=Math.max(vOpt, vStall*1.15);
     const q=0.5*RHO*vSweet*vSweet;
-    let eta=Math.min(0.62,Math.max(0.30,0.38+0.012*AR)); eta=Math.min(0.70,eta*mat);
+    const eta=Math.min(0.80,(0.44+0.015*AR)*mat);
     const Dtot = Aind/(vSweet*vSweet) + q*Kpar;
     return {AR, Cm:(S/b)*100, span:b*100, vKmh:vSweet*3.6, P:Dtot*vSweet/eta};
   }
@@ -1404,7 +1403,7 @@
       On a thin wing you're at <b>walking</b> level… but you glide on water. <b>Halve your Wh/km = half the fatigue.</b>`,
     'tbl-note':'ℹ️ C_D0 (profile drag) is estimated from published thickness when available, otherwise from the profile category (thin / medium / thick) — indicative figures.',
     'foot-formulas':'<b style="color:var(--txt)">In plain words:</b> the longer and thinner the wing, and the closer you fly to the <b>right speed</b> (neither too slow nor too fast), the less you force — and the longer you fly.<br><br><b style="color:var(--txt)">Physics engine</b> (based on the <a href="https://github.com/lsegessemann/foilphysics" target="_blank" rel="noopener">foilphysics</a> model) — steady flight, lift = weight:<br><code>AR = b²/S</code> &nbsp;·&nbsp; <code>C_m = S/b</code> &nbsp;·&nbsp; <code>C_L = W / (½ρv²S)</code><br><code>D_induced = W² / (½ρv²·π·b²)</code> &nbsp;→ depends only on span &amp; speed<br><code>D_profile = ½ρv²S·C_D0 + mast + fuselage + stab</code> &nbsp;·&nbsp; <code>P = (D_total / η_pump) · v</code>',
-    'foot-note':'ρ selectable (1000 fresh / 1025 salt water) · induced drag = C<sub>L</sub>²/(π·AR) · stall at 13° — like foilphysics; thin profiles are capped earlier (real ventilation) · η_pump grows with AR and mast stiffness. Watts and flight time are illustrative estimates (critical-power model, adjustable to your fitness) — not a real effort measurement.'
+    'foot-note':'ρ selectable (1000 fresh / 1025 salt water) · induced drag = C<sub>L</sub>²/(π·AR) · stall at 13° — like foilphysics; thin profiles are capped earlier (real ventilation) · η_pump (<b>estimated</b> pumping efficiency) grows with AR and mast stiffness. Watts and flight time are illustrative estimates (critical-power model, adjustable to your fitness) — not a real effort measurement.'
   };
   const FRC = {};
   function applyLang(l){
