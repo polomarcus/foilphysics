@@ -404,7 +404,7 @@
 
   <header>
     <h1 data-i18n="h1">Le Choc des <span class="hi">Watts</span> en pump foil 🌊</h1>
-    <p data-i18n="hsub">Pourquoi une aile de <b>longue distance</b> vous fait voler bien plus longtemps à effort réduit, là où une aile classique vous met dans le rouge en quelques minutes.</p>
+    <p data-i18n="hsub">Pourquoi une aile de <b>longue distance</b> te fait voler bien plus longtemps à effort réduit, là où une aile classique te met dans le rouge en quelques minutes.</p>
     <p class="hsimple" data-i18n="hsimple">Rien de neuf côté physique : une aile <b>longue et fine</b> gaspille moins d'énergie — les planeurs le savent depuis un siècle. Ce qui est <b>récent</b>, c'est qu'on sait enfin <b>fabriquer</b> ces ailes assez fines et rigides pour le pump foil.</p>
   </header>
 
@@ -428,7 +428,7 @@
           <li><b>🥈 Profil fin</b> (cambre travaillée) — <b>~10 %</b>.</li>
           <li><b>Le reste</b> (mât plus fin ou plus rigide, stab plus petit, fuselage court) — <b>~1 à 5 %</b> chacun : des miettes à côté de l'envergure.</li>
         </ul>
-        <div class="imp-note">👉 Mets ton budget dans l'<b>envergure</b> d'abord. Et souviens-toi : changer ta <b>forme physique</b> (tout en haut) fait bouger le temps de vol bien plus que n'importe quel matos.</div>
+        <div class="imp-note">👉 Mets ton budget dans l'<b>envergure</b> d'abord. Et souviens-toi : changer ta <b>forme physique</b> (dans ton profil, plus bas) fait bouger le temps de vol bien plus que n'importe quel matos.</div>
       </div>
     </div>
   </div>
@@ -1162,50 +1162,6 @@
       '<b>'+nSmall+'</b> pivots tight and switches rails instantly. <b>'+nBig+'</b>, longer by '+num(big.bCm-small.bCm,0)+' cm, has <b>×'+num(iner,1)+' more roll inertia</b>: reassuring and stable in a straight line, but lazy and wide in turns — you must anticipate. In a hard carve its load rises (centrifugal force): a thin profile already near its max can stall mid-turn.');
   }
 
-  function tableCalc(it, W){
-    const RHO = rho();
-    const b=it.b/100, S=it.s/10000, AR=b*b/S;
-    const Am=0.065, mat=1.0, Af=0.035, As=0.020;   // rig STANDARDISÉ (mât 16mm carbone, fuselage court, stab 50) pour comparer à parité
-    const Kpar=S*it.cd0 + Am*CD_MAST + Af*CD_FUS + As*CD_STAB;
-    const Aind=(W*W)/(0.5*RHO*Math.PI*b*b*E);
-    const vOpt=Math.pow(Aind/(3*0.5*RHO*Kpar),0.25);
-    const clMax=Math.min((2*Math.PI/(1+2/AR))*(13*Math.PI/180), parseFloat(it.clMax||1.5));
-    const vStall=Math.sqrt(W/(0.5*RHO*S*clMax));
-    const vSweet=Math.max(vOpt, vStall*1.15);
-    const q=0.5*RHO*vSweet*vSweet;
-    const eta=Math.min(0.80,(0.44+0.015*AR)*mat);
-    const Dtot = Aind/(vSweet*vSweet) + q*Kpar;
-    return {AR, Cm:(S/b)*100, span:b*100, vKmh:vSweet*3.6, P:Dtot*vSweet/eta};
-  }
-
-  function drawTable(){
-    const W = val('rider-w')*G;
-    document.getElementById('cmp-w').textContent = num(val('rider-w'),0);
-    const rows=[];
-    CATALOG.forEach(grp=> grp.items.forEach(it=>{
-      const c=tableCalc(it,W);
-      rows.push({n:it.n, cat:grp.cat, AR:c.AR, Cm:c.Cm, span:c.span, vKmh:c.vKmh, P:c.P, wh:c.P/c.vKmh, dif:difficulty(c.AR)});
-    }));
-    rows.sort((a,b)=> a.P-b.P);
-    const whMin = Math.min(...rows.map(r=>r.wh));
-    let h='<thead><tr><th>'+t('Aile','Wing')+'</th><th>Type</th><th>AR</th><th>'+t('Envergure','Span')+'</th><th>'+
-      t('Corde','Chord')+'</th><th>'+t('Croisière','Cruise')+'</th><th>Watts</th>'+
-      '<th>Wh/km</th><th>'+t('Niveau','Level')+'</th></tr></thead><tbody>';
-    rows.forEach(r=>{
-      const col=powColor(r.P);
-      const tag = r.cat==='classic'
-        ? '<span class="wtag cl">'+t('Classique','Classic')+'</span>'
-        : '<span class="wtag ld">'+t('Longue dist.','Long dist.')+'</span>';
-      const whCol = r.wh < whMin*1.15 ? '#86efac' : r.wh > whMin*1.6 ? '#fca5a5' : 'var(--txt)';
-      h+='<tr><td class="nm">'+r.n+'</td><td>'+tag+'</td><td>'+num(r.AR,1)+'</td>'+
-        '<td>'+num(r.span,0)+' cm</td><td>'+num(r.Cm,0)+' cm</td>'+
-        '<td>'+num(r.vKmh,1)+' km/h</td><td class="w" style="color:'+col+'">'+num(r.P,0)+' W</td>'+
-        '<td class="w" style="color:'+whCol+'">'+num(r.wh,1)+'</td>'+
-        '<td class="stars" style="color:'+r.dif.col+'" title="'+r.dif.lab+'">'+r.dif.stars+'</td></tr>';
-    });
-    document.getElementById('cmp-table').innerHTML = h+'</tbody>';
-  }
-
   function drawFriction(){
     const RHO = rho();
     const v = val('cf-v')/3.6, S = val('cf-s')/10000, b = val('cf-b')/100, W = val('rider-w')*G;
@@ -1688,7 +1644,7 @@
     'imp-lede':'It\'s all about energy. Three levers — and only one you can buy.',
     'imp-cardio':'<div class="imp-h">🫀 Your cardio</div>Partly innate, but trainable: a little <b>interval work</b>, and above all <b>lots of volume</b>. The biggest lever… and the slowest to build.',
     'imp-tech':'<div class="imp-h">🎯 Your technique</div>It comes with time (and videos): better <b>bump linking</b>, <b>keeping speed</b>, pumping at the right moment. Free — but earned.',
-    'imp-matos':'<div class="imp-h">🛠️ Your gear</div>The smallest lever, but the <b>easiest</b>: you can buy it. Rough gain in effort (computed by this tool):<ul class="imp-gains"><li><b>🥇 Span / high AR</b> — <b>~30%</b> less effort. By far the best value.</li><li><b>🥈 Thin profile</b> (worked camber) — <b>~10%</b>.</li><li><b>The rest</b> (thinner/stiffer mast, smaller stab, shorter fuselage) — <b>~1–5%</b> each: crumbs next to span.</li></ul><div class="imp-note">👉 Spend your budget on <b>span</b> first. And remember: changing your <b>fitness</b> (top of page) moves flight time far more than any gear.</div>',
+    'imp-matos':'<div class="imp-h">🛠️ Your gear</div>The smallest lever, but the <b>easiest</b>: you can buy it. Rough gain in effort (computed by this tool):<ul class="imp-gains"><li><b>🥇 Span / high AR</b> — <b>~30%</b> less effort. By far the best value.</li><li><b>🥈 Thin profile</b> (worked camber) — <b>~10%</b>.</li><li><b>The rest</b> (thinner/stiffer mast, smaller stab, shorter fuselage) — <b>~1–5%</b> each: crumbs next to span.</li></ul><div class="imp-note">👉 Spend your budget on <b>span</b> first. And remember: changing your <b>fitness</b> (in your profile, below) moves flight time far more than any gear.</div>',
     'kid-h':'🧒 Why does a big wing tire you less?',
     'kid-def':'👉 Here, «<b>big wing</b>» means <b>wide span</b> (long tip-to-tip) — <b>not</b> necessarily more surface. And span, not surface, is the real lever — <b>yes, it\'s very counter-intuitive</b>, we\'ll get there.',
     'kid-cap1':'<b>Wide span</b><br>sweeps a <b>broad</b> ribbon of water → gentle push',
@@ -1759,8 +1715,6 @@
     'sim-btn':'🌊 Simulate a missed pump stroke',
     'conseil-h':'⚓ Polo Foil\'s tip','conseil-formula':'Overall performance = <b>Physical energy</b> + <b>Mental energy</b>',
     'copy-btn':'📋 Copy the mental-comfort recap',
-    'tbl-h3':'📋 All wings at a glance',
-    'tbl-lede':'Each wing at its recommended cruise, for <b id="cmp-w">75</b> kg and your fitness set above. <b>Standardised rig for all</b> (16 mm carbon mast, short fuselage 60 cm, stab 50) for a fair comparison. Sorted from <b>least</b> to most watt-hungry. The <b>Wh/km</b> column = energy per km travelled: it reveals real efficiency <i>regardless of speed</i> (that\'s where long span truly wins).',
     'wh-explain':`<div class="note-title">💡 How much energy does 1 km cost?</div>
       <b>Wh/km</b> = the energy spent to travel 1 km. Lower = you go further for the same effort:
       <div class="whbars">
@@ -1772,7 +1726,6 @@
       </div>
       🚗 <b>Electric car ≈ 150 Wh/km</b> — about <b>10× a thin wing</b> (and there it's the battery working, not you).<br>
       On a thin wing you're at <b>walking</b> level… but you glide on water. <b>Halve your Wh/km = half the fatigue.</b>`,
-    'tbl-note':'ℹ️ C_D0 (profile drag) is estimated from published thickness when available, otherwise from the profile category (thin / medium / thick) — indicative figures.',
     'foot-formulas':'<b style="color:var(--txt)">In plain words:</b> the longer and thinner the wing, and the closer you fly to the <b>right speed</b> (neither too slow nor too fast), the less you force — and the longer you fly.<br><br><b style="color:var(--txt)">Physics engine</b> (based on the <a href="https://github.com/lsegessemann/foilphysics" target="_blank" rel="noopener">foilphysics</a> model) — steady flight, lift = weight:<br><code>AR = b²/S</code> &nbsp;·&nbsp; <code>C_m = S/b</code> &nbsp;·&nbsp; <code>C_L = W / (½ρv²S)</code><br><code>D_induced = W² / (½ρv²·π·b²)</code> &nbsp;→ depends only on span &amp; speed<br><code>D_profile = ½ρv²S·C_D0 + mast + fuselage + stab</code> &nbsp;·&nbsp; <code>P = (D_total / η_pump) · v</code>',
     'foot-note':'ρ selectable (1000 fresh / 1025 salt water) · induced drag = C<sub>L</sub>²/(π·AR) · stall at 13° — like foilphysics; thin profiles are capped earlier (real ventilation) · η_pump (<b>estimated</b> pumping efficiency) grows with AR and mast stiffness. Watts and flight time are illustrative estimates (critical-power model, adjustable to your fitness) — not a real effort measurement.'
   };
