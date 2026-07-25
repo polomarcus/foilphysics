@@ -1325,9 +1325,9 @@
       + row(t('Traînée induite (portance)','Induced drag (lift)'),   num(Fi,1)+' N · '+num(pctI,0)+'%')
       + row(t('Traînée de profil (frottement)','Profile drag (friction)'), num(Fp,1)+' N · '+num(100-pctI,0)+'%')
       + '<div class="sens-sep"></div>'
-      + delta(t('⚖️ −5 kg (toi/matos)','⚖️ −5 kg (you/gear)'),  Pw(-5)-P)
-      + delta(t('⚖️ +5 kg (toi/matos)','⚖️ +5 kg (you/gear)'),  Pw(5)-P)
-      + delta(t('📏 +20 cm d\'envergure','📏 +20 cm span'),      Pb-P);
+      + delta(t('⚖️ Poids ','⚖️ Weight ')+w+'→'+(w-5)+t(' kg (toi+matos)',' kg (you+gear)'), Pw(-5)-P)
+      + delta(t('⚖️ Poids ','⚖️ Weight ')+w+'→'+(w+5)+t(' kg (toi+matos)',' kg (you+gear)'), Pw(5)-P)
+      + delta(t('📏 Envergure ','📏 Span ')+num(r.span,0)+'→'+num(r.span+20,0)+t(' cm (surface égale)',' cm (same area)'), Pb-P);
   }
 
   function render(){
