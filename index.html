@@ -785,7 +785,7 @@
       technique (bien enrouler, garder la vitesse) et la <b>forme physique</b>. Change ta « forme » en haut : tu verras le
       temps de vol bouger énormément, à aile identique.</div>
     </div>
-    <div class="kid-weight" data-i18n="kid-weight">⚖️ <b>Et ton poids ?</b> Plus tu es lourd (toi + le matos), plus il faut de <b>force pour te porter</b> → donc plus de traînée induite. Et comme l'envergure, ça joue <b>au carré</b> : <b>+10 % de poids ≈ +20 %</b> d'induite. Alléger (toi ou ton matériel) aide donc — même si, à la vitesse du pump, l'effet reste plus <b>modeste</b> que l'envergure.</div>
+    <div class="kid-weight" data-i18n="kid-weight">⚖️ <b>Et ton poids ?</b> Plus tu es lourd (toi + le matos), plus il faut de <b>force pour te porter</b> → plus de traînée induite. Et ça compte fort : <b>+10 kg ≈ +20 % d'effort</b> (la traînée induite grimpe au <b>carré du poids</b>, et tu voles plus vite). Sur une aile <b>déjà fine</b> (haut AR), c'est même <b>un des plus gros leviers qui te reste</b> — alléger (toi ou ton matériel) paie autant qu'un gros upgrade.</div>
     <div class="kid-src" data-i18n="kid-src">
       📚 <b>Et comment l'aile crée-t-elle sa portance, au juste ?</b> Elle s'incline d'un <b>tout petit angle</b> dans
       l'eau et dévie le flux : plus l'angle est grand, plus elle porte (mais plus elle freine aussi). C'est le b.a.-ba
@@ -900,7 +900,7 @@
   <!-- SENSIBILITÉ (Expert) -->
   <div class="shock">
     <h3 data-i18n="sens-h3">🔬 Sensibilité : qu'est-ce qui bouge le plus ?</h3>
-    <p class="lede" data-i18n="sens-lede">Effet marginal sur ta puissance, <b>à ta vitesse actuelle</b>. Le poids agit en W² sur la traînée induite ; l'envergure en 1/envergure². <span style="color:#86efac">Vert = tu gagnes</span>, <span style="color:#fca5a5">rouge = tu paies</span>.</p>
+    <p class="lede" data-i18n="sens-lede">Effet sur ta puissance <b>à ta croisière conseillée</b> (chaque changement suppose que tu réajustes ta vitesse). Le poids agit en W² sur la traînée induite ; l'envergure en 1/envergure². <span style="color:#86efac">Vert = tu gagnes</span>, <span style="color:#fca5a5">rouge = tu paies</span>.</p>
     <div class="sens-grid">
       <div class="sens-col" id="sens1">—</div>
       <div class="sens-col" id="sens2">—</div>
@@ -1308,26 +1308,34 @@
   // Analyse de sensibilité (mode Expert) : effet marginal poids (W²) & envergure (1/b²) sur la puissance, à vitesse fixée
   function drawSens(i, r){
     const el = document.getElementById('sens'+i); if(!el || !r) return;
+    const RHO = rho();
     const w = val('rider-w');
+    const S = val('s'+i)/10000;
     const matF = parseFloat(document.getElementById(CFG[i].mat).value);
-    const Fi = r.Di, Fp = r.Dprofile, v = r.v, eta = r.eta, P = r.P;
-    const pctI = 100*Fi/r.Dtot;
-    const Pw = dw => (Fi*Math.pow((w+dw)/w,2) + Fp)*v/eta;          // poids ±dw
-    const b = r.span/100, ARn = r.AR*Math.pow((b+0.2)/b, 2);        // envergure +20 cm, surface égale
-    const etaN = Math.min(0.80, (0.44+0.015*ARn)*matF);
-    const Pb = (Fi*Math.pow(b/(b+0.2),2) + Fp)*v/etaN;
+    const cap = CFG[i].clMax;                                     // plafond ventilation
+    const Kpar = r.Dprofile/(0.5*RHO*r.v*r.v);                    // D_profil = q·Kpar
+    // Puissance à la croisière RÉ-OPTIMISÉE pour (poids W, envergure b) — le vrai ressenti
+    const psweet = (W, b) => {
+      const AR=b*b/S, Aind=(W*W)/(0.5*RHO*Math.PI*b*b*E), eta=Math.min(0.80,(0.44+0.015*AR)*matF);
+      const clMax=Math.min((2*Math.PI/(1+2/AR))*(13*Math.PI/180), cap);
+      const vOpt=Math.pow(Aind/(3*0.5*RHO*Kpar),0.25), vSt=Math.sqrt(W/(0.5*RHO*S*clMax));
+      const v=Math.max(vOpt, vSt*1.15);
+      return ((Aind/(v*v)+0.5*RHO*v*v*Kpar)*v)/eta;
+    };
+    const b0 = r.span/100, P0 = psweet(w*G, b0);
+    const pctI = 100*r.Di/r.Dtot;
     const name = document.querySelector('#card-'+i+' h2').textContent.trim();
     const row = (k,val) => '<div class="sens-row"><span>'+k+'</span><span class="sv">'+val+'</span></div>';
     const delta = (k,d) => '<div class="sens-delta '+(d<0?'save':'cost')+'"><span>'+k+'</span><span class="dv">'+
       (d>=0?'+':'')+num(d,0)+' W</span></div>';
     el.innerHTML =
         '<div class="sens-name">'+name+'</div>'
-      + row(t('Traînée induite (portance)','Induced drag (lift)'),   num(Fi,1)+' N · '+num(pctI,0)+'%')
-      + row(t('Traînée de profil (frottement)','Profile drag (friction)'), num(Fp,1)+' N · '+num(100-pctI,0)+'%')
+      + row(t('Traînée induite (portance)','Induced drag (lift)'),   num(r.Di,1)+' N · '+num(pctI,0)+'%')
+      + row(t('Traînée de profil (frottement)','Profile drag (friction)'), num(r.Dprofile,1)+' N · '+num(100-pctI,0)+'%')
       + '<div class="sens-sep"></div>'
-      + delta(t('⚖️ Poids ','⚖️ Weight ')+w+'→'+(w-5)+t(' kg (toi+matos)',' kg (you+gear)'), Pw(-5)-P)
-      + delta(t('⚖️ Poids ','⚖️ Weight ')+w+'→'+(w+5)+t(' kg (toi+matos)',' kg (you+gear)'), Pw(5)-P)
-      + delta(t('📏 Envergure ','📏 Span ')+num(r.span,0)+'→'+num(r.span+20,0)+t(' cm (surface égale)',' cm (same area)'), Pb-P);
+      + delta(t('⚖️ Poids ','⚖️ Weight ')+w+'→'+(w-5)+t(' kg (toi+matos)',' kg (you+gear)'), psweet((w-5)*G,b0)-P0)
+      + delta(t('⚖️ Poids ','⚖️ Weight ')+w+'→'+(w+5)+t(' kg (toi+matos)',' kg (you+gear)'), psweet((w+5)*G,b0)-P0)
+      + delta(t('📏 Envergure ','📏 Span ')+num(r.span,0)+'→'+num(r.span+20,0)+t(' cm (surface égale)',' cm (same area)'), psweet(w*G,b0+0.2)-P0);
   }
 
   function render(){
@@ -1695,14 +1703,14 @@
     'mode-simple':'◐ Simple',
     'mode-expert':'⚙️ Expert (full control)',
     'sens-h3':'🔬 Sensitivity: what moves the needle most?',
-    'sens-lede':'Marginal effect on your power, <b>at your current speed</b>. Weight acts as W² on induced drag; span as 1/span². <span style="color:#86efac">Green = you gain</span>, <span style="color:#fca5a5">red = you pay</span>.',
+    'sens-lede':'Effect on your power <b>at your recommended cruise</b> (each change assumes you re-tune your speed). Weight acts as W² on induced drag; span as 1/span². <span style="color:#86efac">Green = you gain</span>, <span style="color:#fca5a5">red = you pay</span>.',
     'imp-h3':'🎯 How to fly longer?',
     'imp-lede':'It\'s all about energy. Three levers — and only one you can buy.',
     'imp-cardio':'<div class="imp-h">🫀 Your cardio</div>Partly innate, but trainable: a little <b>interval work</b>, and above all <b>lots of volume</b>. The biggest lever… and the slowest to build.',
     'imp-tech':'<div class="imp-h">🎯 Your technique</div>It comes with time (and videos): better <b>bump linking</b>, <b>keeping speed</b>, pumping at the right moment. Free — but earned.',
     'imp-matos':'<div class="imp-h">🛠️ Your gear</div>The smallest lever, but the <b>easiest</b>: you can buy it. Rough gain in effort (computed by this tool):<ul class="imp-gains"><li><b>🥇 Span / high AR</b> — <b>~30%</b> less effort. By far the best value.</li><li><b>🥈 Thin profile</b> (worked camber) — <b>~10%</b>.</li><li><b>The rest</b> (thinner/stiffer mast, smaller stab, shorter fuselage) — <b>~1–5%</b> each: crumbs next to span.</li></ul><div class="imp-note">👉 Spend your budget on <b>span</b> first. And remember: changing your <b>fitness</b> (in your profile, below) moves flight time far more than any gear.</div>',
     'kid-h':'🧒 Why does a big wing tire you less?',
-    'kid-weight':'⚖️ <b>What about your weight?</b> The heavier you are (you + gear), the more <b>force is needed to hold you up</b> → so more induced drag. And like span, it acts <b>squared</b>: <b>+10% weight ≈ +20%</b> induced drag. Losing weight (you or your gear) helps — though at pump speed the effect stays more <b>modest</b> than span.',
+    'kid-weight':'⚖️ <b>What about your weight?</b> The heavier you are (you + gear), the more <b>force is needed to hold you up</b> → more induced drag. And it bites hard: <b>+10 kg ≈ +20% more effort</b> (induced drag rises with the <b>square of weight</b>, and you fly faster too). On an <b>already-thin</b> wing (high AR), it\'s even <b>one of the biggest levers left</b> — shedding weight (you or gear) pays as much as a major upgrade.',
     'kid-def':'👉 Here, «<b>big wing</b>» means <b>wide span</b> (long tip-to-tip) — <b>not</b> necessarily more surface. And span, not surface, is the real lever — <b>yes, it\'s very counter-intuitive</b>, we\'ll get there.',
     'kid-cap1':'<b>Wide span</b><br>sweeps a <b>broad</b> ribbon of water → gentle push',
     'kid-cap2':'<b>Short span</b><br>sweeps only a <b>narrow</b> ribbon → must whip',
