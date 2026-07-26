@@ -143,6 +143,9 @@
   .imp-note{margin-top:10px; background:rgba(56,189,248,.08); border:1px solid rgba(56,189,248,.3);
     border-radius:10px; padding:10px 12px;}
   .imp-note b{color:#38bdf8;}
+  .imp-card .imp-gloss{margin:8px 0 4px; font-size:.8rem; color:var(--muted); line-height:1.45;
+    border-left:2px solid var(--line); padding-left:10px;}
+  .imp-card .imp-gloss b{color:var(--txt);}
   /* Sensibilité (Expert) */
   .sens-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
   @media(max-width:640px){ .sens-grid{grid-template-columns:1fr;} }
@@ -421,7 +424,6 @@
   <header>
     <h1 data-i18n="h1">Le Choc des <span class="hi">Watts</span> en pump foil 🌊</h1>
     <p data-i18n="hsub">Pourquoi une aile de <b>longue distance</b> te fait voler bien plus longtemps à effort réduit, là où une aile classique te met dans le rouge en quelques minutes.</p>
-    <p class="hsimple" data-i18n="hsimple">Rien de neuf côté physique : une aile <b>longue et fine</b> gaspille moins d'énergie — les planeurs le savent depuis un siècle. Ce qui est <b>récent</b>, c'est qu'on sait enfin <b>fabriquer</b> ces ailes assez fines et rigides pour le pump foil.</p>
   </header>
 
   <div class="disclaimer" data-i18n="disclaimer">⚠️ <b>Chiffres estimés, pas des mesures réelles.</b> Les profils d'ailes sont souvent gardés secrets par les marques : ce comparateur donne des <b>ordres de grandeur pédagogiques</b> (tendances), pas des valeurs constructeur. À prendre comme un outil pour <b>comprendre</b> — pas comme un banc d'essai.</div>
@@ -439,6 +441,7 @@
       <div class="imp-card" data-i18n="imp-cardio"><div class="imp-h">🫀 Ton cardio</div>Ça se construit <b>petit à petit</b>, à la portée de tout le monde : un peu de <b>fractionné</b>, et surtout <b>beaucoup de durée</b>. C'est le plus gros levier — mais le plus long à bâtir (des mois de pratique, pas des jours).</div>
       <div class="imp-card" data-i18n="imp-tech"><div class="imp-h">🎯 Ta technique</div>Ça vient avec le temps (et les vidéos) : mieux <b>enrouler les bumps</b>, <b>garder la vitesse</b>, pomper au bon moment. Gratuit — mais ça se mérite.</div>
       <div class="imp-card matos" data-i18n="imp-matos"><div class="imp-h">🛠️ Ton matos</div>Le plus petit levier, mais le plus <b>facile</b> : ça s'achète. Ordre de grandeur du gain d'effort (calculé par cet outil) :
+        <div class="imp-gloss">💡 L'<b>envergure</b> = la largeur de l'aile d'un bout à l'autre ; <b>grand AR</b> = aile longue &amp; fine. <i>Pourquoi c'est LE levier ? → « 🧒 Pourquoi une grande aile fatigue moins ? » plus bas.</i></div>
         <ul class="imp-gains">
           <li><b>🥇 Envergure / grand AR</b> — <b>~30 %</b> d'effort en moins. De très loin le plus rentable.</li>
           <li><b>🥈 Profil fin</b> (cambre travaillée) — <b>~10 %</b>.</li>
@@ -1656,7 +1659,6 @@
     'h1':'The Pump Foil <span class="hi">Watts</span> Showdown 🌊',
     'hsub':'Why a <b>High Aspect</b> wing lets you fly far longer for less effort, where a classic pump wing puts you in the red within minutes.',
     'tag':'Long-Distance Setup · Steady flight',
-    'hsimple':'Nothing new in the physics: a <b>long, thin</b> wing wastes less energy — gliders have known it for a century. What\'s <b>recent</b> is that we can finally <b>build</b> these wings thin and stiff enough for pump foiling.',
     'disclaimer':'⚠️ <b>Estimated figures, not real measurements.</b> Wing profiles are often kept secret by brands: this comparator gives <b>educational orders of magnitude</b> (trends), not manufacturer values. Treat it as a tool to <b>understand</b> — not a test bench.',
     'chip-sirus':'🟢 Long distance · cruising','chip-jam':'🟠 Classic wing','chip-fireball':'🔴 Long distance race',
     'story-sum':'📖 Understand in 2 min: why a long wing saves energy (and why it\'s recent)',
@@ -1705,7 +1707,7 @@
     'imp-lede':'It\'s all about energy. Three levers — and only one you can buy.',
     'imp-cardio':'<div class="imp-h">🫀 Your cardio</div>Built <b>step by step</b>, within everyone\'s reach: a little <b>interval work</b>, and above all <b>lots of volume</b>. The biggest lever — but the slowest to build (months of practice, not days).',
     'imp-tech':'<div class="imp-h">🎯 Your technique</div>It comes with time (and videos): better <b>bump linking</b>, <b>keeping speed</b>, pumping at the right moment. Free — but earned.',
-    'imp-matos':'<div class="imp-h">🛠️ Your gear</div>The smallest lever, but the <b>easiest</b>: you can buy it. Rough gain in effort (computed by this tool):<ul class="imp-gains"><li><b>🥇 Span / high AR</b> — <b>~30%</b> less effort. By far the best value.</li><li><b>🥈 Thin profile</b> (worked camber) — <b>~10%</b>.</li><li><b>The rest</b> (thinner/stiffer mast, smaller stab, shorter fuselage) — <b>~1–5%</b> each: crumbs next to span.</li></ul><div class="imp-note">👉 Spend your budget on <b>span</b> first. And remember: changing your <b>fitness</b> (in your profile, below) moves flight time far more than any gear.</div>',
+    'imp-matos':'<div class="imp-h">🛠️ Your gear</div>The smallest lever, but the <b>easiest</b>: you can buy it. Rough gain in effort (computed by this tool):<div class="imp-gloss">💡 <b>Span</b> = the wing\'s width tip-to-tip; <b>high AR</b> = long &amp; thin. <i>Why it\'s THE lever → see «🧒 Why does a big wing tire you less?» below.</i></div><ul class="imp-gains"><li><b>🥇 Span / high AR</b> — <b>~30%</b> less effort. By far the best value.</li><li><b>🥈 Thin profile</b> (worked camber) — <b>~10%</b>.</li><li><b>The rest</b> (thinner/stiffer mast, smaller stab, shorter fuselage) — <b>~1–5%</b> each: crumbs next to span.</li></ul><div class="imp-note">👉 Spend your budget on <b>span</b> first. And remember: changing your <b>fitness</b> (in your profile, below) moves flight time far more than any gear.</div>',
     'kid-h':'🧒 Why does a big wing tire you less?',
     'kid-weight':'⚖️ <b>What about your weight?</b> The heavier you are (you + gear), the more <b>force is needed to hold you up</b> → more induced drag. And it bites hard: <b>+10 kg ≈ +20% more effort</b> (induced drag rises with the <b>square of weight</b>, and you fly faster too). On an <b>already-thin</b> wing (high AR), it\'s even <b>one of the biggest levers left</b> — shedding weight (you or gear) pays as much as a major upgrade.',
     'kid-def':'👉 Here, «<b>big wing</b>» means <b>wide span</b> (long tip-to-tip) — <b>not</b> necessarily more surface. And span, not surface, is the real lever — <b>yes, it\'s very counter-intuitive</b>, we\'ll get there.',
