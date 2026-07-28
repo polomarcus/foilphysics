@@ -146,6 +146,11 @@
   .imp-card .imp-gloss{margin:8px 0 4px; font-size:.8rem; color:var(--muted); line-height:1.45;
     border-left:2px solid var(--line); padding-left:10px;}
   .imp-card .imp-gloss b{color:var(--txt);}
+  .pick{text-align:center; color:var(--muted); font-size:.9rem; margin:0 0 10px;}
+  .pick b{color:var(--txt);}
+  .shock details.fold summary{cursor:pointer; font-size:1.05rem; font-weight:700; color:var(--txt);
+    list-style-position:outside; margin-bottom:4px;}
+  .shock details.fold[open] summary{margin-bottom:10px;}
   /* Sensibilité (Expert) */
   .sens-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
   @media(max-width:640px){ .sens-grid{grid-template-columns:1fr;} }
@@ -410,6 +415,19 @@
   footer a{color:var(--sky); text-decoration:none;}
   footer a:hover{text-decoration:underline;}
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Le Choc des Watts — Comparateur d'ailes de pump foil",
+  "url": "https://polomarcus.github.io/foilphysics/",
+  "description": "Comparateur pédagogique d'ailes de pump foil : comprendre pourquoi une aile à grande envergure économise ton énergie (traînée induite, watts, Wh/km). Chiffres estimés, modèle physique open source.",
+  "applicationCategory": "EducationalApplication",
+  "inLanguage": ["fr", "en"],
+  "isAccessibleForFree": true,
+  "operatingSystem": "Web"
+}
+</script>
 </head>
 <body class="simple">
 <div class="topbar">
@@ -429,8 +447,8 @@
   <div class="disclaimer" data-i18n="disclaimer">⚠️ <b>Chiffres estimés, pas des mesures réelles.</b> Les profils d'ailes sont souvent gardés secrets par les marques : ce comparateur donne des <b>ordres de grandeur pédagogiques</b> (tendances), pas des valeurs constructeur. À prendre comme un outil pour <b>comprendre</b> — pas comme un banc d'essai.</div>
 
   <div class="modebar">
-    <button id="mb-simple" class="on" data-i18n="mode-simple">◐ Simple</button>
-    <button id="mb-expert" data-i18n="mode-expert">⚙️ Expert (tout régler)</button>
+    <button id="mb-simple" class="on" aria-pressed="true" data-i18n="mode-simple">◐ Simple</button>
+    <button id="mb-expert" aria-pressed="false" data-i18n="mode-expert">⚙️ Expert (tout régler)</button>
   </div>
 
   <!-- COMMENT PROGRESSER (en avant, Simple + Expert) -->
@@ -443,7 +461,7 @@
       <div class="imp-card matos" data-i18n="imp-matos"><div class="imp-h">🛠️ Ton matos</div>Le plus petit levier, mais le plus <b>facile</b> : ça s'achète. Ordre de grandeur du gain d'effort (calculé par cet outil) :
         <div class="imp-gloss">💡 L'<b>envergure</b> = la largeur de l'aile d'un bout à l'autre ; <b>grand AR</b> = aile longue &amp; fine. <i>Pourquoi c'est LE levier ? → « 🧒 Pourquoi une grande aile fatigue moins ? » plus bas.</i></div>
         <ul class="imp-gains">
-          <li><b>🥇 Envergure / grand AR</b> — <b>~30 %</b> d'effort en moins. De très loin le plus rentable.</li>
+          <li><b>🥇 Envergure / grand AR</b> — <b>~30 %</b> d'effort en moins (selon config). De très loin le plus rentable.</li>
           <li><b>🥈 Profil fin</b> (cambre travaillée) — <b>~10 %</b>.</li>
           <li><b>Le reste</b> (mât plus fin ou plus rigide, stab plus petit, fuselage court) — <b>~1 à 5 %</b> chacun : des miettes à côté de l'envergure.</li>
         </ul>
@@ -574,6 +592,8 @@
       En pump foil, une aile fine te met au niveau de la <b>marche</b>… mais tu glisses sur l'eau. <b>Diviser ton Wh/km par deux = deux fois moins de fatigue.</b>
     </div>
   </div>
+
+  <p class="pick so" data-i18n="pick">👇 <b>Choisis deux ailes réelles</b> à comparer — la vitesse se cale automatiquement sur leur croisière conseillée.</p>
 
   <div class="grid">
     <!-- AILE 1 -->
@@ -725,11 +745,11 @@
       <span><i id="pvc1"></i><b id="pvl1">Foil A</b></span>
       <span><i id="pvc2"></i><b id="pvl2">Foil B</b></span>
     </div>
-    <canvas id="pvGraph"></canvas>
+    <canvas id="pvGraph" role="img" aria-label="Graphique puissance selon la vitesse"></canvas>
     <div class="pvread" id="pvread">—</div>
     <details class="pvmethod">
       <summary data-i18n="pv-method-sum">Méthode & hypothèses</summary>
-      <div class="pvm-in" data-i18n="pv-method">Modèle de <b>vol stabilisé</b> : à vitesse constante, la puissance à fournir remplace exactement l'énergie perdue par la <b>traînée</b> (induite, qui domine à basse vitesse, + profil/mât/fuselage/stab, qui domine à haute vitesse). Un <b>rendement de pompage estimé</b> (croissant avec l'allongement et la rigidité du mât) convertit cette traînée en effort corporel. Les profils d'ailes étant confidentiels, ce sont des <b>ordres de grandeur</b> : compte <b>± ~15 %</b>. La courbe s'arrête à gauche là où l'aile <b>décroche</b> (elle ne peut plus voler assez lentement).</div>
+      <div class="pvm-in" data-i18n="pv-method">Modèle de <b>vol stabilisé</b> : à vitesse constante, la puissance à fournir remplace exactement l'énergie perdue par la <b>traînée</b> (induite, qui domine à basse vitesse, + profil/mât/fuselage/stab, qui domine à haute vitesse). Un <b>rendement de pompage estimé</b> (croissant avec l'allongement et la rigidité du mât) convertit cette traînée en effort corporel. Les profils d'ailes étant confidentiels, ce sont des <b>ordres de grandeur</b> : compte <b>± ~15 %</b>. La courbe s'arrête à gauche là où l'aile <b>décroche</b> (elle ne peut plus voler assez lentement). Deux simplifications assumées : distribution de portance idéale (<b>e = 1</b>, légèrement optimiste) et <b>vol stabilisé</b> — le pompage réel est un mouvement instationnaire, un peu plus coûteux que le modèle.</div>
     </details>
     <button class="expertbtn" id="winner-why" data-i18n="expert-btn">⚙️ Tout régler (mode Expert) →</button>
   </div>
@@ -790,7 +810,7 @@
       technique (bien enrouler, garder la vitesse) et la <b>forme physique</b>. Change ta « forme » en haut : tu verras le
       temps de vol bouger énormément, à aile identique.</div>
     </div>
-    <div class="kid-weight" data-i18n="kid-weight">⚖️ <b>Et ton poids ?</b> Plus tu es lourd (toi + le matos), plus il faut de <b>force pour te porter</b> → plus de traînée induite. Et ça compte fort : <b>+10 kg ≈ +20 % d'effort</b> (la traînée induite grimpe au <b>carré du poids</b>, et tu voles plus vite). Sur une aile <b>déjà fine</b> (haut AR), c'est même <b>un des plus gros leviers qui te reste</b> — alléger (toi ou ton matériel) paie autant qu'un gros upgrade.</div>
+    <div class="kid-weight" data-i18n="kid-weight">⚖️ <b>Et ton poids ?</b> Plus tu es lourd (toi + le matos), plus il faut de <b>force pour te porter</b> → plus de traînée induite. Et ça compte fort : <b>+10 kg ≈ +20 % d'effort</b>, ordre de grandeur selon l'aile (la traînée induite grimpe au <b>carré du poids</b>, et tu voles plus vite). Sur une aile <b>déjà fine</b> (haut AR), c'est même <b>un des plus gros leviers qui te reste</b> — alléger (toi ou ton matériel) paie autant qu'un gros upgrade.</div>
     <div class="kid-src" data-i18n="kid-src">
       📚 <b>Et comment l'aile crée-t-elle sa portance, au juste ?</b> Elle s'incline d'un <b>tout petit angle</b> dans
       l'eau et dévie le flux : plus l'angle est grand, plus elle porte (mais plus elle freine aussi). C'est le b.a.-ba
@@ -914,19 +934,22 @@
 
   <!-- VIRAGES / MANIABILITÉ -->
   <div class="shock">
-    <h3 data-i18n="turn-h3">🔄 Virages & maniabilité</h3>
-    <p class="lede" data-i18n="turn-lede">La grande envergure qui fait glisser se paie au pilotage : plus une aile est longue,
-      plus elle <b>tourne comme un paquebot</b> (l'inertie grimpe avec le carré de l'envergure).</p>
-    <div class="turn-grid">
-      <div class="turn-col" id="turn1">—</div>
-      <div class="turn-col" id="turn2">—</div>
-    </div>
-    <div class="verdict" id="turn-verdict">—</div>
+    <details class="fold">
+      <summary data-i18n="turn-h3">🔄 Virages & maniabilité</summary>
+      <p class="lede" data-i18n="turn-lede">La grande envergure qui fait glisser se paie au pilotage : plus une aile est longue,
+        plus elle <b>tourne comme un paquebot</b> (l'inertie grimpe avec le carré de l'envergure).</p>
+      <div class="turn-grid">
+        <div class="turn-col" id="turn1">—</div>
+        <div class="turn-col" id="turn2">—</div>
+      </div>
+      <div class="verdict" id="turn-verdict">—</div>
+    </details>
   </div>
 
   <!-- CONFORT MENTAL -->
   <div class="shock">
-    <h3 data-i18n="mental-h3">🧠 Confort mental & charge cognitive</h3>
+    <details class="fold">
+    <summary data-i18n="mental-h3">🧠 Confort mental & charge cognitive</summary>
     <p class="lede" data-i18n="mental-lede">À effort physique comparable, les ailes ne demandent pas la même <b>concentration</b>.
       <b>Performance = énergie physique + énergie mentale.</b><br>
       <span style="color:#fcd34d">⚠️ Le paradoxe :</span> l'aile la plus <b>économe en watts</b> peut être celle qui coûte le
@@ -966,6 +989,7 @@
       <div class="formula" data-i18n="conseil-formula">Performance globale = <b>Énergie physique</b> + <b>Énergie mentale</b></div>
       <p id="conseil-txt">—</p>
     </div>
+    </details>
   </div>
 
   <footer>
@@ -1431,9 +1455,16 @@
         const lo = Math.min(p1,p2), hi = Math.max(p1,p2);
         const pct = hi>0 ? Math.round((1-lo/hi)*100) : 0;
         const vwin = (p1<=p2 ? m1.vSweet : m2.vSweet)*3.6;
+        const wh1 = m1.Psweet/(m1.vSweet*3.6), wh2 = m2.Psweet/(m2.vSweet*3.6);
+        const whLo = Math.min(wh1,wh2), whHi = Math.max(wh1,wh2);
         document.getElementById('pvread').innerHTML = t(
-          'À sa croisière conseillée (~'+num(vwin,0)+' km/h), <b>'+winName+'</b> demande <b>~'+num(lo,0)+' W</b> contre ~'+num(hi,0)+' W — <span class="pct">environ '+pct+' % d\'effort en moins</span>. Chiffres estimés (± ~15 %).',
-          'At its recommended cruise (~'+num(vwin,0)+' km/h), <b>'+winName+'</b> needs <b>~'+num(lo,0)+' W</b> vs ~'+num(hi,0)+' W — <span class="pct">about '+pct+' % less effort</span>. Estimated figures (± ~15 %).');
+          'À sa croisière conseillée (~'+num(vwin,0)+' km/h), <b>'+winName+'</b> demande <b>~'+num(lo,0)+' W</b> contre ~'+num(hi,0)+' W — <span class="pct">environ '+pct+' % d\'effort en moins</span>. Chiffres estimés (± ~15 %).'+
+          '<br><span style="font-size:.85rem; color:var(--muted)">En énergie : <b>'+num(whLo,1)+'</b> contre '+num(whHi,1)+' Wh/km — ta « conso » par kilomètre, comme une voiture, sauf que le moteur c\'est toi.</span>',
+          'At its recommended cruise (~'+num(vwin,0)+' km/h), <b>'+winName+'</b> needs <b>~'+num(lo,0)+' W</b> vs ~'+num(hi,0)+' W — <span class="pct">about '+pct+' % less effort</span>. Estimated figures (± ~15 %).'+
+          '<br><span style="font-size:.85rem; color:var(--muted)">In energy: <b>'+num(whLo,1)+'</b> vs '+num(whHi,1)+' Wh/km — your «fuel consumption» per km, like a car, except the engine is you.</span>');
+        document.getElementById('pvGraph').setAttribute('aria-label', t(
+          'Graphique puissance selon la vitesse. '+nm(1)+' : '+num(m1.Psweet,0)+' watts à '+num(m1.vSweet*3.6,0)+' km/h. '+nm(2)+' : '+num(m2.Psweet,0)+' watts à '+num(m2.vSweet*3.6,0)+' km/h.',
+          'Power versus speed chart. '+nm(1)+': '+num(m1.Psweet,0)+' watts at '+num(m1.vSweet*3.6,0)+' km/h. '+nm(2)+': '+num(m2.Psweet,0)+' watts at '+num(m2.vSweet*3.6,0)+' km/h.'));
       }
     }
   }
@@ -1445,6 +1476,8 @@
     document.body.classList.toggle('simple', simple);
     document.getElementById('mb-simple').classList.toggle('on', simple);
     document.getElementById('mb-expert').classList.toggle('on', !simple);
+    document.getElementById('mb-simple').setAttribute('aria-pressed', simple);
+    document.getElementById('mb-expert').setAttribute('aria-pressed', !simple);
     if(simple) render();                       // redessine le graphe à la bonne largeur
     else window.scrollTo({top:0, behavior:'smooth'});
   }
@@ -1706,15 +1739,16 @@
       It's not a revolution of <b>ideas</b>, it's a revolution of <b>manufacturing</b>.`,
     'mode-simple':'◐ Simple',
     'mode-expert':'⚙️ Expert (full control)',
+    'pick':'👇 <b>Pick two real wings</b> to compare — speed snaps automatically to each one\'s recommended cruise.',
     'sens-h3':'🔬 Sensitivity: what moves the needle most?',
     'sens-lede':'Effect on your power <b>at your recommended cruise</b> (each change assumes you re-tune your speed). Weight acts as W² on induced drag; span as 1/span². <span style="color:#86efac">Green = you gain</span>, <span style="color:#fca5a5">red = you pay</span>.',
     'imp-h3':'🎯 How to fly longer?',
     'imp-lede':'It\'s all about energy. Three levers — and only one you can buy.',
     'imp-cardio':'<div class="imp-h">🫀 Your cardio</div>Built <b>step by step</b>, within everyone\'s reach: a little <b>interval work</b>, and above all <b>lots of volume</b>. The biggest lever — but the slowest to build (months of practice, not days).',
     'imp-tech':'<div class="imp-h">🎯 Your technique</div>It comes with time (and videos): better <b>bump linking</b>, <b>keeping speed</b>, pumping at the right moment. Free — but earned.',
-    'imp-matos':'<div class="imp-h">🛠️ Your gear</div>The smallest lever, but the <b>easiest</b>: you can buy it. Rough gain in effort (computed by this tool):<div class="imp-gloss">💡 <b>Span</b> = the wing\'s width tip-to-tip; <b>high AR</b> = long &amp; thin. <i>Why it\'s THE lever → see «🧒 Why does a big wing tire you less?» below.</i></div><ul class="imp-gains"><li><b>🥇 Span / high AR</b> — <b>~30%</b> less effort. By far the best value.</li><li><b>🥈 Thin profile</b> (worked camber) — <b>~10%</b>.</li><li><b>The rest</b> (thinner/stiffer mast, smaller stab, shorter fuselage) — <b>~1–5%</b> each: crumbs next to span.</li></ul><div class="imp-note">👉 Spend your budget on <b>span</b> first. And remember: changing your <b>fitness</b> (in your profile, below) moves flight time far more than any gear.</div>',
+    'imp-matos':'<div class="imp-h">🛠️ Your gear</div>The smallest lever, but the <b>easiest</b>: you can buy it. Rough gain in effort (computed by this tool):<div class="imp-gloss">💡 <b>Span</b> = the wing\'s width tip-to-tip; <b>high AR</b> = long &amp; thin. <i>Why it\'s THE lever → see «🧒 Why does a big wing tire you less?» below.</i></div><ul class="imp-gains"><li><b>🥇 Span / high AR</b> — <b>~30%</b> less effort (config-dependent). By far the best value.</li><li><b>🥈 Thin profile</b> (worked camber) — <b>~10%</b>.</li><li><b>The rest</b> (thinner/stiffer mast, smaller stab, shorter fuselage) — <b>~1–5%</b> each: crumbs next to span.</li></ul><div class="imp-note">👉 Spend your budget on <b>span</b> first. And remember: changing your <b>fitness</b> (in your profile, below) moves flight time far more than any gear.</div>',
     'kid-h':'🧒 Why does a big wing tire you less?',
-    'kid-weight':'⚖️ <b>What about your weight?</b> The heavier you are (you + gear), the more <b>force is needed to hold you up</b> → more induced drag. And it bites hard: <b>+10 kg ≈ +20% more effort</b> (induced drag rises with the <b>square of weight</b>, and you fly faster too). On an <b>already-thin</b> wing (high AR), it\'s even <b>one of the biggest levers left</b> — shedding weight (you or gear) pays as much as a major upgrade.',
+    'kid-weight':'⚖️ <b>What about your weight?</b> The heavier you are (you + gear), the more <b>force is needed to hold you up</b> → more induced drag. And it bites hard: <b>+10 kg ≈ +20% more effort</b>, ballpark depending on the wing (induced drag rises with the <b>square of weight</b>, and you fly faster too). On an <b>already-thin</b> wing (high AR), it\'s even <b>one of the biggest levers left</b> — shedding weight (you or gear) pays as much as a major upgrade.',
     'kid-def':'👉 Here, «<b>big wing</b>» means <b>wide span</b> (long tip-to-tip) — <b>not</b> necessarily more surface. And span, not surface, is the real lever — <b>yes, it\'s very counter-intuitive</b>, we\'ll get there.',
     'kid-cap1':'<b>Wide span</b><br>sweeps a <b>broad</b> ribbon of water → gentle push',
     'kid-cap2':'<b>Short span</b><br>sweeps only a <b>narrow</b> ribbon → must whip',
@@ -1726,7 +1760,7 @@
     'pv-h3':'Power required vs speed',
     'pv-sub':'Estimated effort to stay flying, at each speed. The dot marks each wing\'s recommended cruise.',
     'pv-method-sum':'Method & assumptions',
-    'pv-method':'A <b>steady-flight</b> model: at constant speed, the power you supply exactly replaces the energy lost to <b>drag</b> (induced drag, which dominates at low speed, + profile/mast/fuselage/stab, which dominates at high speed). An <b>estimated pumping efficiency</b> (rising with aspect ratio and mast stiffness) converts that drag into body effort. Since wing profiles are confidential, these are <b>orders of magnitude</b>: expect <b>± ~15 %</b>. The curve stops on the left where the wing <b>stalls</b> (it can no longer fly slowly enough).',
+    'pv-method':'A <b>steady-flight</b> model: at constant speed, the power you supply exactly replaces the energy lost to <b>drag</b> (induced drag, which dominates at low speed, + profile/mast/fuselage/stab, which dominates at high speed). An <b>estimated pumping efficiency</b> (rising with aspect ratio and mast stiffness) converts that drag into body effort. Since wing profiles are confidential, these are <b>orders of magnitude</b>: expect <b>± ~15 %</b>. The curve stops on the left where the wing <b>stalls</b> (it can no longer fly slowly enough). Two acknowledged simplifications: ideal lift distribution (<b>e = 1</b>, slightly optimistic) and <b>steady flight</b> — real pumping is unsteady motion, somewhat costlier than the model.',
     'l-weight':'⚖️ Rider weight (kg)',
     'l-form':'🫀 Fitness level',
     'opt-cp1':'Occasional — sport a few times a year (~150 W)',
