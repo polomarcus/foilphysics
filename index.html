@@ -428,6 +428,8 @@
   }
   .scale-note{margin-top:14px; font-size:.8rem; color:var(--muted); background:var(--panel-2);
     border-radius:10px; padding:10px 12px;}
+  .note-fig{background:var(--panel-2); border-radius:10px; margin-top:6px; padding:10px 12px;}
+  .note-fig svg{display:block; width:100%; max-width:400px; margin:0 auto;}
   .scale-note b{color:#fcd34d;}
   .note-title{text-align:center; font-weight:800; color:var(--txt); font-size:.92rem; margin-bottom:8px;}
   .whbars{margin:12px 0;}
@@ -744,7 +746,7 @@
         <option value="150" data-i18n="opt-cp1">Cyclo occasionnel — sport quelques fois/an (~150 W)</option>
         <option value="220" selected data-i18n="opt-cp2">Sportif régulier — 10 km course en ~50 min (~220 W)</option>
         <option value="270" data-i18n="opt-cp3">Bien entraîné — 10 km en ~43 min / vélo hebdo (~270 W)</option>
-        <option value="350" data-i18n="opt-cp4">Athlète d'endurance — marathon &lt; 3h30 (~350 W)</option>
+        <option value="350" data-i18n="opt-cp4">Athlète d'endurance — marathon &lt; 3h (~350 W)</option>
       </select>
     </div>
     <span class="rider-hint" data-i18n="rh1">La <b>forme</b> fixe ta puissance critique (l'effort que tu tiens des heures). Au-dessus, tu puises dans la réserve et tu finis par tomber.</span>
@@ -1080,6 +1082,14 @@
       • <b>Épais (~17 %)</b> → pousse plus d'eau → <b>plus de frottement</b>, mais <b>beaucoup de portance à basse
       vitesse</b> (décollage et pump faciles), plus <b>tolérant</b> et plus rigide/costaud.
     </div>
+    <div class="note-fig" aria-hidden="true">
+      <svg viewBox="0 0 360 74">
+        <path d="M14 34 Q58 22 152 32 Q62 42 14 34 Z" fill="#38bdf8"/>
+        <text x="83" y="62" font-size="12" fill="#94a3b8" text-anchor="middle" font-weight="700">~12 %</text>
+        <path d="M206 36 Q254 8 348 30 Q260 56 206 36 Z" fill="#f59e0b"/>
+        <text x="277" y="70" font-size="12" fill="#94a3b8" text-anchor="middle" font-weight="700">~17 %</text>
+      </svg>
+    </div>
     <div class="scale-note" style="margin-top:12px; line-height:1.55" data-i18n="note-fus">
       <div class="note-title">🔧 Fuselage — c'est un bras de levier</div>
       Le stab agit à une distance <b>L</b> derrière l'aile (= la longueur
@@ -1092,6 +1102,18 @@
       <b>part au quart de tour</b>, tu enclenches le pompage à moindre effort et tu enroules plus serré — en
       contrepartie le foil <b>ne se rattrape plus tout seul</b> → nerveux, pilotage actif obligatoire.
     </div>
+    <div class="note-fig" aria-hidden="true">
+      <svg viewBox="0 0 360 86">
+        <line x1="96" y1="8" x2="96" y2="38" stroke="#94a3b8" stroke-width="5"/>
+        <rect x="90" y="39" width="220" height="6" rx="3" fill="#64748b"/>
+        <ellipse cx="86" cy="42" rx="58" ry="8" fill="#38bdf8"/>
+        <ellipse cx="312" cy="42" rx="26" ry="5" fill="#f59e0b"/>
+        <line x1="96" y1="66" x2="312" y2="66" stroke="#94a3b8" stroke-width="1.5"/>
+        <path d="M96 66 l8 -4.5 v9 z" fill="#94a3b8"/>
+        <path d="M312 66 l-8 -4.5 v9 z" fill="#94a3b8"/>
+        <text x="204" y="82" font-size="13" fill="#94a3b8" text-anchor="middle" font-weight="800">L</text>
+      </svg>
+    </div>
     <div class="scale-note" style="margin-top:12px; line-height:1.55" data-i18n="note-stab">
       <div class="note-title">🔧 Stab — le plan porteur arrière qui équilibre le foil</div>
       Sa portance (négative) contre le moment
@@ -1101,6 +1123,22 @@
       à <b>cadence plus rapide mais avec moins de force</b> à chaque coup ; un gros stab impose l'inverse — des coups
       plus amples et plus appuyés, moins fréquents.<br>
       <span style="color:var(--muted)">Dans le détail poste par poste, fuselage et stab pèsent sur le « frottement » — l'efficacité se paie en stabilité, et inversement.</span>
+    </div>
+    <div class="note-fig" aria-hidden="true">
+      <svg viewBox="0 0 360 92">
+        <ellipse cx="92" cy="24" rx="48" ry="9" fill="#94a3b8"/>
+        <path d="M92 40 v20" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
+        <path d="M92 64 l-7 -9 M92 64 l7 -9" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
+        <path d="M40 24 h-22" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/>
+        <path d="M14 24 l9 -5.5 M14 24 l9 5.5" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/>
+        <text x="92" y="86" font-size="12" fill="#94a3b8" text-anchor="middle" font-weight="700">200</text>
+        <ellipse cx="272" cy="24" rx="23" ry="6" fill="#94a3b8"/>
+        <path d="M272 36 v10" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+        <path d="M272 50 l-4.5 -6 M272 50 l4.5 -6" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+        <path d="M246 24 h-9" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M234 24 l6 -4 M234 24 l6 4" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/>
+        <text x="272" y="86" font-size="12" fill="#94a3b8" text-anchor="middle" font-weight="700">50</text>
+      </svg>
     </div>
   </div>
 
@@ -1969,7 +2007,7 @@
     'opt-cp1':'Occasional — sport a few times a year (~150 W)',
     'opt-cp2':'Regular athlete — 10 km run in ~50 min (~220 W)',
     'opt-cp3':'Well-trained — 10 km in ~43 min / weekly cycling (~270 W)',
-    'opt-cp4':'Endurance athlete — marathon &lt; 3h30 (~350 W)',
+    'opt-cp4':'Endurance athlete — marathon &lt; 3h (~350 W)',
     'rh1':'Your <b>fitness</b> sets your critical power (the effort you hold for hours). Above it, you dip into reserves and eventually drop.',
     'mh-h3':'🚴 Your human engine',
     'mh-lede':'The power each wing demands, on <b>continuous</b> cycling benchmarks (FTP-like). The <b>🫀 your threshold</b> line depends on the level set above: to its left it holds for hours, to its right you dip into reserves and eventually drop.',
