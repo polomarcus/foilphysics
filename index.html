@@ -37,6 +37,12 @@
   }
   .wrap{max-width:960px; margin:0 auto; padding-top:52px;}
 
+  /* ---------- Accessibilité (RGAA) ---------- */
+  .skip{position:absolute; left:-9999px; top:0; z-index:100; background:var(--sky); color:#04121f;
+    font-weight:800; padding:10px 18px; border-radius:0 0 10px 0; text-decoration:none;}
+  .skip:focus{left:0;}
+  :focus-visible{outline:2px solid var(--sky); outline-offset:2px; border-radius:4px;}
+
   .topbar{position:fixed; top:0; left:0; right:0; z-index:50; display:flex; gap:8px; flex-wrap:wrap;
     justify-content:flex-end; padding:8px 12px;
     background:linear-gradient(180deg, rgba(15,23,42,.96), rgba(15,23,42,.82));
@@ -55,7 +61,7 @@
   header{text-align:center; padding:8px 0 20px;}
   header h1{display:flex; flex-direction:column; gap:6px; align-items:center;}
   header .h1a{font-size:clamp(2.1rem, 6vw, 3rem); font-weight:900; letter-spacing:-.03em; line-height:1.05;}
-  header .h1b{font-size:.95rem; font-weight:700; color:var(--muted); letter-spacing:.14em; text-transform:uppercase;}
+  header .h1b{font-size:1.35rem; font-weight:800; color:#cbd5e1; letter-spacing:.12em; text-transform:uppercase;}
   header h1 .hi{background:linear-gradient(100deg, #7dd3fc, #38bdf8 55%, #0ea5e9);
     -webkit-background-clip:text; background-clip:text; color:transparent;}
   header p{color:var(--muted); font-size:.92rem; margin-top:6px;}
@@ -117,7 +123,7 @@
   .kid figure.f-long .arr{color:#38bdf8; font-size:1rem;}
   .kid figure.f-short .arr{color:#f59e0b; font-size:1.9rem;}
   .f-eff{display:flex; align-items:center; gap:7px; margin:2px auto 10px; max-width:220px;}
-  .fe-lab{font-size:.66rem; color:var(--dim); text-transform:uppercase; letter-spacing:.07em;}
+  .fe-lab{font-size:.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:.07em;}
   .fe-trk{flex:1; height:15px; background:var(--bg); border-radius:5px; overflow:hidden; display:block;}
   .fe-fil{display:flex; align-items:center; justify-content:flex-end; padding-right:6px; height:100%;
     border-radius:5px; color:#0f172a; font-weight:800; font-size:.7rem;
@@ -178,7 +184,7 @@
     padding:9px 10px; margin:5px 0; cursor:pointer; color:var(--txt); font:inherit;}
   .mc-row.sel{border-color:var(--sky); background:rgba(56,189,248,.08);}
   .mc-row.mc-head{background:none; border:none; cursor:default; padding:0 10px; margin-bottom:0;
-    font-size:.66rem; color:var(--dim); text-transform:uppercase; letter-spacing:.05em;}
+    font-size:.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;}
   .mc-head span:nth-child(2){grid-column:2/4;}
   .mc-head span:nth-child(3){grid-column:4/6;}
   .mc-name{font-size:.82rem; font-weight:700; line-height:1.25;}
@@ -253,7 +259,7 @@
   .sens-delta.save .dv{color:#86efac;}
   .sens-delta.cost .dv{color:#fca5a5;}
   /* Tornado (barres divergentes autour du zéro) */
-  .sb-axis{display:grid; grid-template-columns:112px 1fr 1fr 52px; gap:6px; font-size:.66rem; color:var(--dim);
+  .sb-axis{display:grid; grid-template-columns:112px 1fr 1fr 52px; gap:6px; font-size:.7rem; color:var(--muted);
     margin-bottom:4px;}
   .sb-axis span:first-child{grid-column:2; text-align:right; padding-right:6px;}
   .sb-axis span:last-child{grid-column:3; padding-left:6px;}
@@ -268,6 +274,13 @@
   .sbar .sb-val{font-size:.78rem; font-weight:800; text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums;}
   .sbar .sb-val.save{color:#86efac;}
   .sbar .sb-val.cost{color:#fca5a5;}
+  @media(max-width:420px){
+    .sbar{grid-template-columns:1fr 1fr 52px;}
+    .sbar .sb-lab{grid-column:1/4; min-width:0; text-align:left; margin-bottom:1px;}
+    .sb-axis{grid-template-columns:1fr 1fr 52px;}
+    .sb-axis span:first-child{grid-column:1;}
+    .sb-axis span:last-child{grid-column:2;}
+  }
   /* Note poids (Simple) */
   .kid .kid-weight{margin-top:16px; background:transparent; border:none; border-left:3px solid var(--line);
     border-radius:0; padding:2px 0 2px 12px; font-size:.86rem; line-height:1.55; color:var(--muted);}
@@ -276,6 +289,7 @@
   .story{background:var(--panel); border:1px solid var(--line); border-radius:16px; margin-bottom:16px; overflow:hidden;}
   .story summary{cursor:pointer; padding:14px 18px; font-weight:800; font-size:1rem; color:var(--txt); list-style:none;}
   .story summary::-webkit-details-marker{display:none;}
+  .story-h{padding:14px 18px 0; font-weight:800; font-size:1rem; color:var(--txt); text-align:center; margin-bottom:8px;}
   .story summary::after{content:'▾'; float:right; color:var(--sky);}
   .story[open] summary::after{content:'▴';}
   .story-in{padding:0 18px 18px; color:#cbd5e1; font-size:.92rem; line-height:1.65; max-width:760px; margin:0 auto;}
@@ -369,8 +383,8 @@
   @media(max-width:560px){ .fr-controls{grid-template-columns:1fr;} }
   .fr-total{text-align:center; font-size:1.05rem; margin-bottom:8px;}
   .fr-total b{color:var(--sky); font-size:1.2rem;}
-  .fr-leg{display:flex; flex-wrap:wrap; gap:12px; margin-top:10px; font-size:.74rem; color:var(--muted);}
-  .fr-leg i{display:inline-block; width:11px; height:11px; border-radius:3px; margin-right:5px; vertical-align:middle;}
+  .fr-leg{display:flex; flex-wrap:wrap; gap:12px 16px; margin-top:12px; font-size:.84rem; color:#cbd5e1; justify-content:center;}
+  .fr-leg i{display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px; vertical-align:-1px;}
 
   .bar-row{margin-bottom:18px;}
   .bar-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;}
@@ -433,6 +447,9 @@
     border-radius:10px; padding:10px 12px;}
   .note-fig{background:var(--panel-2); border-radius:10px; margin-top:6px; padding:10px 12px;}
   .note-fig svg{display:block; width:100%; max-width:400px; margin:0 auto;}
+  .nf-caps{display:flex; justify-content:center; gap:10px 22px; margin-top:8px; font-size:.78rem;
+    color:#cbd5e1; text-align:center; flex-wrap:wrap;}
+  .nf-caps b{color:var(--txt);}
   .scale-note b{color:#fcd34d;}
   .note-title{text-align:center; font-weight:800; color:var(--txt); font-size:.92rem; margin-bottom:8px;}
   .whbars{margin:12px 0;}
@@ -544,6 +561,21 @@
     cursor:pointer; font-size:.95rem; opacity:.3; padding:6px;}
   .anchor-btn:hover{opacity:1;}
   .anchor-btn.inline{position:static; font-size:.85rem; padding:0 2px; margin-left:8px; vertical-align:2px; opacity:.35;}
+  /* Points de progression du deck */
+  .dots{position:fixed; right:12px; top:50%; transform:translateY(-50%); z-index:40;
+    display:flex; flex-direction:column; gap:9px;}
+  .dots button{width:9px; height:9px; border-radius:50%; background:var(--line); border:none;
+    cursor:pointer; padding:0; transition:background .25s, transform .25s;}
+  .dots button:hover{background:var(--muted);}
+  .dots button.on{background:var(--sky); transform:scale(1.35);}
+  @media(max-width:680px){ .dots{display:none;} }
+  /* Invitation à scroller (slide intro) */
+  .shint{position:absolute; bottom:16px; left:50%; transform:translateX(-50%);
+    color:var(--muted); font-size:1.25rem; pointer-events:none;}
+  @media (prefers-reduced-motion: no-preference){
+    .shint{animation:bob 1.8s ease-in-out infinite;}
+    @keyframes bob{0%,100%{transform:translate(-50%,0);} 50%{transform:translate(-50%,8px);}}
+  }
   .sslide > *{margin-bottom:0;}
   html:has(body.simple){scroll-snap-type:y proximity;}   /* snap seulement en Simple — l'Expert scrolle librement */
 
@@ -601,15 +633,16 @@
 </script>
 </head>
 <body class="simple">
-<div class="topbar">
+<a class="skip" href="#contenu">Aller au contenu / Skip to content</a>
+<nav class="topbar" aria-label="Liens externes et réglages">
   <a href="https://github.com/polomarcus/foilphysics" target="_blank" rel="noopener" title="Code de ce projet">🐙 Code</a>
   <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener" title="Modèle physique d'origine">💻 based on foilphysics</a>
   <a href="https://piouz.org/" target="_blank" rel="noopener">⚡ Piouz</a>
   <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">📸 PoloFoil</a>
   <button id="tb-mode" type="button" title="Simple ⇄ Expert">⚙️ Expert</button>
   <button id="lang-btn" type="button">🇬🇧 EN</button>
-</div>
-<div class="wrap">
+</nav>
+<main class="wrap" id="contenu">
 
   <div class="sslide" id="intro"><!-- SLIDE 1 · intro -->
   <header>
@@ -627,6 +660,7 @@
     <div class="t" data-i18n="tldr-t">Le secret pour voler longtemps :<br><b>grande envergure</b> + <b>poids léger</b>.</div>
     <div class="s" data-i18n="tldr-s">Le reste (profil, mât, stab…) se joue à quelques % — et c'est ton cardio qui fait la durée.</div>
   </div>
+  <div class="shint" aria-hidden="true">↓</div>
   </div><!-- /SLIDE 1 -->
 
   <div class="sslide" id="leviers"><!-- SLIDE 2 · comment voler -->
@@ -669,8 +703,8 @@
 
   <div class="orient xo" data-i18n="orient">⚙️ <b>Mode Expert.</b> Tu règles tout (envergure, surface, mât, fuselage, stab, vitesse…). L'objectif : obtenir la <b>plus faible Puissance (W)</b> possible à ta croisière. Chaque indicateur et chaque réglage explique son effet ci-dessous.</div>
 
-  <details class="story so">
-    <summary data-i18n="story-sum-s">📖 L'idée en 30 secondes</summary>
+  <div class="story so">
+    <div class="story-h" data-i18n="story-sum-s">📖 L'idée en 30 secondes</div>
     <div class="story-in" data-i18n="story-body-s">
       <p><b>1. Pour aller loin, l'ennemi c'est la traînée.</b> Moins l'aile <b>gaspille d'énergie</b> entre deux coups de
       pompe, plus tu vas loin sans forcer — comme un rouleur à vélo qui lance une impulsion puis laisse rouler.
@@ -684,7 +718,7 @@
       <p style="margin-top:10px;font-weight:600;color:var(--txt)">Une bonne aile de distance ne fait pas de miracle :
       elle <b>gaspille juste moins</b> ce que tu lui donnes.</p>
     </div>
-  </details>
+  </div>
 
   <details class="story xo">
     <summary data-i18n="story-sum">📖 Comprendre en 2 min : pourquoi une aile longue économise (et pourquoi c'est récent)</summary>
@@ -793,13 +827,13 @@
       <div class="sub" id="sub1">Allongement modéré, pump / polyvalence — type <i>F-One Jam 1900 (AR 10)</i></div>
 
       <div class="inputs">
-        <div class="field full"><label data-i18n="l-preset">Aile (preset réel)</label><select id="preset1"></select></div>
+        <div class="field full"><label for="preset1" data-i18n="l-preset">Aile (preset réel)</label><select id="preset1"></select></div>
         <div class="badge" id="badge1"><div class="dot">—</div>
           <div class="txt"><b id="badge1t">—</b><span id="badge1s">—</span></div></div>
-        <div class="field"><label><span data-i18n="l-span">Envergure</span> : <span class="fval" id="b1v">120</span> cm</label><input type="range" id="b1" min="90" max="250" step="1" value="120"></div>
-        <div class="field"><label><span data-i18n="l-surf">Surface</span> : <span class="fval" id="s1v">1400</span> cm²</label><input type="range" id="s1" min="800" max="3100" step="1" value="1400"></div>
-        <div class="field"><label><span data-i18n="l-speed">Vitesse</span> : <span class="fval" id="v1v">12,5</span> km/h</label><input type="range" id="v1" min="8" max="25" step="0.5" value="12.5"></div>
-        <div class="field"><label data-i18n="l-mast">Mât (profil)</label>
+        <div class="field"><label for="b1"><span data-i18n="l-span">Envergure</span> : <span class="fval" id="b1v">120</span> cm</label><input type="range" id="b1" min="90" max="250" step="1" value="120"></div>
+        <div class="field"><label for="s1"><span data-i18n="l-surf">Surface</span> : <span class="fval" id="s1v">1400</span> cm²</label><input type="range" id="s1" min="800" max="3100" step="1" value="1400"></div>
+        <div class="field"><label for="v1"><span data-i18n="l-speed">Vitesse</span> : <span class="fval" id="v1v">12,5</span> km/h</label><input type="range" id="v1" min="8" max="25" step="0.5" value="12.5"></div>
+        <div class="field"><label for="mst1" data-i18n="l-mast">Mât (profil)</label>
           <select id="mst1">
             <option value="0.050" data-i18n="opt-mast1">13 mm — fin (perf)</option>
             <option value="0.065" selected data-i18n="opt-mast2">16 mm — standard</option>
@@ -807,7 +841,7 @@
           </select>
           <div class="fhint" data-i18n="fh-mast">plus fin = moins de frottement, mais plus flexible</div>
         </div>
-        <div class="field"><label data-i18n="l-mat">Matériau mât</label>
+        <div class="field"><label for="mat1" data-i18n="l-mat">Matériau mât</label>
           <select id="mat1">
             <option value="0.90" data-i18n="opt-mat1">Alu (souple, lourd)</option>
             <option value="1.00" selected data-i18n="opt-mat2">Carbone</option>
@@ -815,7 +849,7 @@
           </select>
           <div class="fhint" data-i18n="fh-mat">plus rigide = mieux transmet ta pompe (meilleur rendement)</div>
         </div>
-        <div class="field"><label data-i18n="l-fus">Fuselage</label>
+        <div class="field"><label for="fus1" data-i18n="l-fus">Fuselage</label>
           <select id="fus1">
             <option value="0.045" selected data-i18n="opt-fus1">Long (70 cm)</option>
             <option value="0.035" data-i18n="opt-fus2">Court (60 cm)</option>
@@ -823,7 +857,7 @@
           </select>
           <div class="fhint" data-i18n="fh-fus">plus court = plus vif ; plus long = plus stable en tangage</div>
         </div>
-        <div class="field"><label data-i18n="l-stab">Stab</label>
+        <div class="field"><label for="stb1" data-i18n="l-stab">Stab</label>
           <select id="stb1">
             <option value="0.020" data-i18n="opt-stab1">Stab 50</option>
             <option value="0.028" data-i18n="opt-stab2">Stab 70</option>
@@ -851,8 +885,8 @@
         <div class="whint" data-i18n="watts-h">ton effort, comme les watts au vélo</div>
         <div class="wappl" id="appl1">—</div></div>
 
-      <div class="sweet" id="sweet1">🎯 Sweet spot ≈ <b id="sw1">—</b>
-        <span class="sub" data-i18n="sweet-sub">croisière éco</span>
+      <div class="sweet" id="sweet1">🎯 <span data-i18n="sweet-lab">Croisière éco</span> ≈ <b id="sw1">—</b>
+        <span class="sub" data-i18n="sweet-sub">le « sweet spot »</span>
         <button class="sweet-apply" data-i="1" data-i18n="sweet-btn">appliquer</button></div>
 
       <div class="warn" id="warn1" style="display:none"></div>
@@ -865,13 +899,13 @@
       <div class="sub" id="sub2">Grand allongement, glisse & endurance — type <i>Axis Fireball 1750 (AR ~20)</i></div>
 
       <div class="inputs">
-        <div class="field full"><label data-i18n="l-preset">Aile (preset réel)</label><select id="preset2"></select></div>
+        <div class="field full"><label for="preset2" data-i18n="l-preset">Aile (preset réel)</label><select id="preset2"></select></div>
         <div class="badge" id="badge2"><div class="dot">—</div>
           <div class="txt"><b id="badge2t">—</b><span id="badge2s">—</span></div></div>
-        <div class="field"><label><span data-i18n="l-span">Envergure</span> : <span class="fval" id="b2v">175</span> cm</label><input type="range" id="b2" min="90" max="250" step="1" value="175"></div>
-        <div class="field"><label><span data-i18n="l-surf">Surface</span> : <span class="fval" id="s2v">1525</span> cm²</label><input type="range" id="s2" min="800" max="3100" step="1" value="1525"></div>
-        <div class="field"><label><span data-i18n="l-speed">Vitesse</span> : <span class="fval" id="v2v">17</span> km/h</label><input type="range" id="v2" min="8" max="25" step="0.5" value="17"></div>
-        <div class="field"><label data-i18n="l-mast">Mât (profil)</label>
+        <div class="field"><label for="b2"><span data-i18n="l-span">Envergure</span> : <span class="fval" id="b2v">175</span> cm</label><input type="range" id="b2" min="90" max="250" step="1" value="175"></div>
+        <div class="field"><label for="s2"><span data-i18n="l-surf">Surface</span> : <span class="fval" id="s2v">1525</span> cm²</label><input type="range" id="s2" min="800" max="3100" step="1" value="1525"></div>
+        <div class="field"><label for="v2"><span data-i18n="l-speed">Vitesse</span> : <span class="fval" id="v2v">17</span> km/h</label><input type="range" id="v2" min="8" max="25" step="0.5" value="17"></div>
+        <div class="field"><label for="mst2" data-i18n="l-mast">Mât (profil)</label>
           <select id="mst2">
             <option value="0.050" data-i18n="opt-mast1">13 mm — fin (perf)</option>
             <option value="0.065" data-i18n="opt-mast2">16 mm — standard</option>
@@ -879,7 +913,7 @@
           </select>
           <div class="fhint" data-i18n="fh-mast">plus fin = moins de frottement, mais plus flexible</div>
         </div>
-        <div class="field"><label data-i18n="l-mat">Matériau mât</label>
+        <div class="field"><label for="mat2" data-i18n="l-mat">Matériau mât</label>
           <select id="mat2">
             <option value="0.90" data-i18n="opt-mat1">Alu (souple, lourd)</option>
             <option value="1.00" data-i18n="opt-mat2">Carbone</option>
@@ -887,7 +921,7 @@
           </select>
           <div class="fhint" data-i18n="fh-mat">plus rigide = mieux transmet ta pompe (meilleur rendement)</div>
         </div>
-        <div class="field"><label data-i18n="l-fus">Fuselage</label>
+        <div class="field"><label for="fus2" data-i18n="l-fus">Fuselage</label>
           <select id="fus2">
             <option value="0.045" data-i18n="opt-fus1">Long (70 cm)</option>
             <option value="0.035" data-i18n="opt-fus2">Court (60 cm)</option>
@@ -895,7 +929,7 @@
           </select>
           <div class="fhint" data-i18n="fh-fus">plus court = plus vif ; plus long = plus stable en tangage</div>
         </div>
-        <div class="field"><label data-i18n="l-stab">Stab</label>
+        <div class="field"><label for="stb2" data-i18n="l-stab">Stab</label>
           <select id="stb2">
             <option value="0.020" selected data-i18n="opt-stab1">Stab 50</option>
             <option value="0.028" data-i18n="opt-stab2">Stab 70</option>
@@ -923,8 +957,8 @@
         <div class="whint" data-i18n="watts-h">ton effort, comme les watts au vélo</div>
         <div class="wappl" id="appl2">—</div></div>
 
-      <div class="sweet" id="sweet2">🎯 Sweet spot ≈ <b id="sw2">—</b>
-        <span class="sub" data-i18n="sweet-sub">croisière éco</span>
+      <div class="sweet" id="sweet2">🎯 <span data-i18n="sweet-lab">Croisière éco</span> ≈ <b id="sw2">—</b>
+        <span class="sub" data-i18n="sweet-sub">le « sweet spot »</span>
         <button class="sweet-apply" data-i="2" data-i18n="sweet-btn">appliquer</button></div>
 
       <div class="warn" id="warn2" style="display:none"></div>
@@ -1046,16 +1080,16 @@
       <p class="lede" style="text-align:center; margin-bottom:14px" data-i18n="cfg-lede">Joue avec l'aile et le rig, chaque poste de traînée bouge en direct.
         La <b style="color:var(--induced)">portance</b> (traînée induite) fond avec l'<b>envergure</b> et la vitesse ; le reste = <b style="color:var(--profile)">frottement</b>.</p>
       <div class="fr-controls">
-        <div class="field"><label><span data-i18n="cfg-lspan">Envergure</span> : <span class="fval" id="cf-bv">150</span> cm</label><input type="range" id="cf-b" min="90" max="250" step="1" value="150"></div>
-        <div class="field"><label><span data-i18n="cfg-lspeed">Vitesse</span> : <span class="fval" id="cf-vv">15</span> km/h</label><input type="range" id="cf-v" min="8" max="25" step="0.5" value="15"></div>
-        <div class="field"><label><span data-i18n="cfg-lsurf">Surface aile</span> : <span class="fval" id="cf-sv">1500</span> cm²</label><input type="range" id="cf-s" min="800" max="3100" step="1" value="1500"></div>
-        <div class="field"><label data-i18n="cfg-lcd0">Profil de l'aile</label>
+        <div class="field"><label for="cf-b"><span data-i18n="cfg-lspan">Envergure</span> : <span class="fval" id="cf-bv">150</span> cm</label><input type="range" id="cf-b" min="90" max="250" step="1" value="150"></div>
+        <div class="field"><label for="cf-v"><span data-i18n="cfg-lspeed">Vitesse</span> : <span class="fval" id="cf-vv">15</span> km/h</label><input type="range" id="cf-v" min="8" max="25" step="0.5" value="15"></div>
+        <div class="field"><label for="cf-s"><span data-i18n="cfg-lsurf">Surface aile</span> : <span class="fval" id="cf-sv">1500</span> cm²</label><input type="range" id="cf-s" min="800" max="3100" step="1" value="1500"></div>
+        <div class="field"><label for="cf-cd0" data-i18n="cfg-lcd0">Profil de l'aile</label>
           <select id="cf-cd0"><option value="0.008" data-i18n="opt-cd0-1">Fin (~12 %)</option><option value="0.013" selected data-i18n="opt-cd0-2">Moyen (~15 %)</option><option value="0.018" data-i18n="opt-cd0-3">Épais (~17 %)</option></select></div>
-        <div class="field"><label data-i18n="cfg-lmast">Mât</label>
+        <div class="field"><label for="cf-mast" data-i18n="cfg-lmast">Mât</label>
           <select id="cf-mast"><option value="0.050" data-i18n="opt-cfmast1">13 mm — fin</option><option value="0.065" selected data-i18n="opt-cfmast2">16 mm — standard</option><option value="0.085" data-i18n="opt-cfmast3">19 mm — gros (Fatty)</option></select></div>
-        <div class="field"><label data-i18n="cfg-lfus">Fuselage</label>
+        <div class="field"><label for="cf-fus" data-i18n="cfg-lfus">Fuselage</label>
           <select id="cf-fus"><option value="0.045" data-i18n="opt-fus1">Long (70 cm)</option><option value="0.035" selected data-i18n="opt-fus2">Court (60 cm)</option><option value="0.028" data-i18n="opt-cffus3">Ultra court (52 cm)</option></select></div>
-        <div class="field"><label data-i18n="cfg-lstab">Stab</label>
+        <div class="field"><label for="cf-stb" data-i18n="cfg-lstab">Stab</label>
           <select id="cf-stb"><option value="0.020" selected data-i18n="opt-stab1">Stab 50</option><option value="0.028" data-i18n="opt-stab2">Stab 70</option><option value="0.040" data-i18n="opt-stab3">Stab 100</option><option value="0.060" data-i18n="opt-stab4">Stab 150</option><option value="0.080" data-i18n="opt-stab5">Stab 200</option></select></div>
       </div>
       <div class="fr-total" id="cf-total">—</div>
@@ -1092,6 +1126,7 @@
         <path d="M206 36 Q254 8 348 30 Q260 56 206 36 Z" fill="#f59e0b"/>
         <text x="277" y="70" font-size="12" fill="#94a3b8" text-anchor="middle" font-weight="700">~17 %</text>
       </svg>
+      <div class="nf-caps" data-i18n="fig-profil-cap"><span>🔵 <b>Fin</b> — fend l'eau, vole vite</span><span>🟠 <b>Épais</b> — porte fort, pardonne</span></div>
     </div>
     <div class="scale-note" style="margin-top:12px; line-height:1.55" data-i18n="note-fus">
       <div class="note-title">🔧 Fuselage — c'est un bras de levier</div>
@@ -1116,6 +1151,7 @@
         <path d="M312 66 l-8 -4.5 v9 z" fill="#94a3b8"/>
         <text x="204" y="82" font-size="13" fill="#94a3b8" text-anchor="middle" font-weight="800">L</text>
       </svg>
+      <div class="nf-caps" data-i18n="fig-fus-cap"><span>🔵 aile</span><span>⬜ fuselage = bras de levier <b>L</b></span><span>🟠 stab</span></div>
     </div>
     <div class="scale-note" style="margin-top:12px; line-height:1.55" data-i18n="note-stab">
       <div class="note-title">🔧 Stab — le plan porteur arrière qui équilibre le foil</div>
@@ -1142,6 +1178,7 @@
         <path d="M234 24 l6 -4 M234 24 l6 4" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/>
         <text x="272" y="86" font-size="12" fill="#94a3b8" text-anchor="middle" font-weight="700">50</text>
       </svg>
+      <div class="nf-caps" data-i18n="fig-stab-cap"><span>🔵 force stabilisatrice</span><span>🟠 frein</span><span>— le gros stab fait plus des deux</span></div>
     </div>
   </div>
 
@@ -1200,7 +1237,7 @@
     </div>
 
     <button class="sim-btn" id="sim-btn" data-i18n="sim-btn">🌊 Simuler un coup de pompe raté</button>
-    <div class="sim-out" id="sim-out"></div>
+    <div class="sim-out" id="sim-out" aria-live="polite"></div>
   </div>
 
   </div><!-- /SLIDE E5 -->
@@ -1222,7 +1259,7 @@
   </footer>
   </div><!-- /SLIDE 7 -->
 
-</div>
+</main>
 
 <script>
 (function(){
@@ -1441,10 +1478,10 @@
     const Di = (W*W)/(q*Math.PI*b*b*E);   // traînée induite (portance)
     const parts = [
       {lab:t('Portance (rester en l\'air)','Lift (staying airborne)'), D:Di, col:'#f43f5e'},
-      {lab:t('Profil aile','Wing profile'), D:q*S*cd0, col:'#cbd5e1'},
-      {lab:t('Mât','Mast'),      D:q*Am*CD_MAST,   col:'#94a3b8'},
-      {lab:'Fuselage',           D:q*Af*CD_FUS,    col:'#64748b', txtc:'#e2e8f0'},
-      {lab:'Stab',               D:q*As*CD_STAB,   col:'#475569', txtc:'#e2e8f0'}
+      {lab:t('Profil aile','Wing profile'), D:q*S*cd0, col:'#eab308'},
+      {lab:t('Mât','Mast'),      D:q*Am*CD_MAST,   col:'#38bdf8'},
+      {lab:'Fuselage',           D:q*Af*CD_FUS,    col:'#9085e9'},
+      {lab:'Stab',               D:q*As*CD_STAB,   col:'#34d399'}
     ];
     const tot = parts.reduce((a,p)=>a+p.D, 0);
     document.getElementById('cf-bv').textContent = num(val('cf-b'),0);
@@ -1986,6 +2023,9 @@
     'pick':'👇 <b>Pick two real wings</b> to compare — speed snaps automatically to each one\'s recommended cruise.',
     'tldr-t':'The secret to flying long:<br><b>wide span</b> + <b>light weight</b>.',
     'tldr-s':'Everything else (profile, mast, stab…) plays out in single digits — and your cardio sets the duration.',
+    'fig-profil-cap':'<span>🔵 <b>Thin</b> — slices the water, flies fast</span><span>🟠 <b>Thick</b> — lifts hard, forgives</span>',
+    'fig-fus-cap':'<span>🔵 wing</span><span>⬜ fuselage = lever arm <b>L</b></span><span>🟠 stab</span>',
+    'fig-stab-cap':'<span>🔵 stabilising force</span><span>🟠 drag</span><span>— the big stab does more of both</span>',
     'sens-h3':'🔬 Sensitivity: what moves the needle most?',
     'sens-lede':'Effect on your power <b>at your recommended cruise</b> (each change assumes you re-tune your speed). Weight acts as W² on induced drag; span as 1/span². <span style="color:#86efac">Green = you gain</span>, <span style="color:#fca5a5">red = you pay</span>.',
     'imp-h3':'🎯 How to fly longer?',
@@ -2034,7 +2074,7 @@
     'fh-fus':'shorter = livelier ; longer = more pitch-stable',
     'fh-stab':'smaller = less drag, but less stable',
     'watts-lab':'Power to supply','watts-h':'your effort, like watts on a bike',
-    'sweet-sub':'eco cruise','sweet-btn':'apply',
+    'sweet-lab':'Eco cruise','sweet-sub':'the "sweet spot"','sweet-btn':'apply',
     'pie-h3':'📊 Where does your energy go, each km?',
     'pie-lede':'The two wings <b>side by side, source by source</b>, in <b>Wh/km</b> — energy per kilometre, the only fair scale when cruises differ. Live: move a setting above.',
     'cmp-note':'Each wing is at <b>its own</b> cruise (~10 vs ~16 km/h) — comparing watts would be unfair, hence <b>Wh/km</b>. One logical exception: the long-distance wing\'s <b>Fatty mast</b> (19 mm) costs more even per km — the price of its stiffness, repaid many times over by lift drag cut by 5.',
@@ -2120,6 +2160,7 @@
       const b = document.createElement('button');
       b.className = 'anchor-btn'; b.type = 'button'; b.textContent = '🔗';
       b.title = 'Copier le lien de cette section / Copy link';
+      b.setAttribute('aria-label', 'Copier le lien de la section ' + s.id + ' / Copy section link');
       b.addEventListener('click', e=>{
         e.preventDefault(); e.stopPropagation();
         const mode = document.body.classList.contains('simple') ? 'simple' : 'expert';
@@ -2136,6 +2177,33 @@
     if(heads.length) heads.forEach(h=>{ const b = mkBtn(); b.classList.add('inline'); h.appendChild(b); });
     else { s.appendChild(mkBtn()); }
   });
+
+  /* ---------- Points de progression du deck ---------- */
+  const dotsNav = document.createElement('nav');
+  dotsNav.className = 'dots'; dotsNav.setAttribute('aria-label', 'Sections');
+  document.body.appendChild(dotsNav);
+  const allSlides = [...document.querySelectorAll('.sslide')];
+  function buildDots(){
+    dotsNav.innerHTML = '';
+    allSlides.forEach(s=>{
+      if(s.offsetParent === null) return;   // masquée dans ce mode
+      const d = document.createElement('button');
+      d.type = 'button'; d.title = s.id || '';
+      d.setAttribute('aria-label', (LANG==='en' ? 'Go to section ' : 'Aller à la section ') + (s.id || ''));
+      d.addEventListener('click', ()=> s.scrollIntoView({block:'start', behavior:'smooth'}));
+      d._slide = s;
+      dotsNav.appendChild(d);
+    });
+  }
+  buildDots();
+  const dotIO = new IntersectionObserver(es=>es.forEach(e=>{
+    if(!e.isIntersecting) return;
+    [...dotsNav.children].forEach(d=> d.classList.toggle('on', d._slide === e.target));
+  }), {threshold:.5});
+  allSlides.forEach(s=> dotIO.observe(s));
+  document.getElementById('mb-simple').addEventListener('click', buildDots);
+  document.getElementById('mb-expert').addEventListener('click', buildDots);
+  document.getElementById('tb-mode').addEventListener('click', buildDots);
 
   /* ---------- Survol du graphe : ligne + valeurs des deux ailes à la vitesse pointée ---------- */
   const pvCv = document.getElementById('pvGraph');
