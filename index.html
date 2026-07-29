@@ -67,12 +67,6 @@
   header p{color:var(--muted); font-size:.92rem; margin-top:6px;}
   header .hsub{font-size:1.15rem; color:#cbd5e1; line-height:1.55; max-width:640px; margin:12px auto 0;}
   header .hsub b{color:var(--sky);}
-  header .hsimple{color:var(--txt); font-size:1rem; margin-top:12px; padding:10px 14px; display:inline-block;
-    background:rgba(14,165,233,.1); border:1px solid rgba(14,165,233,.25); border-radius:12px; max-width:640px;}
-  header .hsimple b{color:var(--sky);}
-  .tag{display:inline-block; margin-top:10px; font-size:.72rem; letter-spacing:.08em;
-    text-transform:uppercase; color:var(--sky); background:rgba(14,165,233,.12);
-    border:1px solid rgba(14,165,233,.3); padding:4px 12px; border-radius:999px;}
 
   .disclaimer{background:transparent; border:none; color:#fcd34d; text-align:center;
     padding:0 8px; margin-bottom:18px; font-size:.78rem; line-height:1.5;}
@@ -203,17 +197,11 @@
   .mtrk{height:18px; background:var(--panel-2); border-radius:5px; overflow:hidden; display:block;}
   .mfil{display:flex; align-items:center; justify-content:flex-end; padding-right:7px; height:100%;
     border-radius:5px; color:#0f172a; font-weight:800; font-size:.72rem; white-space:nowrap;}
-  /* Hero poids (Simple + Expert) */
-  .heroW{background:transparent; border:none; padding:18px 0; margin-bottom:64px; text-align:center;}
-  .heroW .k{font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--sky); font-weight:800;}
-  .heroW .n{font-size:3.2rem; font-weight:800; color:#f59e0b; margin:8px 0 6px; letter-spacing:-.02em; line-height:1.05;}
-  .heroW .e{color:var(--muted); font-size:.9rem; line-height:1.55; max-width:560px; margin:0 auto;}
-  .heroW .e b{color:var(--txt);}
   /* Mode Expert : orientation + notes de réglage */
   .orient{background:rgba(56,189,248,.08); border:1px solid rgba(56,189,248,.30); border-radius:12px;
     padding:12px 14px; margin-bottom:16px; font-size:.86rem; color:var(--muted); line-height:1.5;}
   .orient b{color:var(--txt);}
-  .field .fhint{font-size:.68rem; color:var(--muted); margin-top:4px; line-height:1.3;}
+  .field .fhint{font-size:.75rem; color:var(--muted); margin-top:4px; line-height:1.3;}
   .kid .kid-src{margin-top:16px; background:transparent; border:none; border-left:3px solid rgba(56,189,248,.5);
     border-radius:0; padding:2px 0 2px 12px; font-size:.88rem; line-height:1.6; color:var(--muted);}
   .kid .kid-src b{color:var(--txt);}
@@ -309,6 +297,7 @@
   .rider input, .rider select{width:100%; background:var(--bg); border:1px solid var(--line); color:var(--txt);
     border-radius:8px; padding:8px 10px; font-size:.95rem; font-weight:600;}
   .rider input:focus, .rider select:focus{outline:none; border-color:var(--sky); box-shadow:0 0 0 2px rgba(14,165,233,.2);}
+  .rider input:invalid, .field input:invalid{border-color:var(--red); box-shadow:0 0 0 2px rgba(239,68,68,.25);}
   .rider-hint{width:100%; font-size:.72rem; color:var(--muted);}
 
   .grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
@@ -335,13 +324,13 @@
 
   .kpis{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;}
   .kpi{background:var(--panel-2); border-radius:10px; padding:10px 12px;}
-  .kpi .lab{font-size:.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;}
+  .kpi .lab{font-size:.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;}
   .kpi .val{font-size:1.6rem; font-weight:800; line-height:1.1; margin-top:2px;}
   .kpi .val small{font-size:.75rem; color:var(--muted); font-weight:600;}
   .kpi.hero .val{font-size:2.4rem; color:var(--sky);}
   .kpi .lab .tech{color:var(--dim); font-weight:500;}
-  .kpi .hint{font-size:.63rem; color:var(--muted); margin-top:4px; line-height:1.25;}
-  .watts .whint{font-size:.66rem; color:var(--muted); margin-top:3px;}
+  .kpi .hint{font-size:.72rem; color:var(--muted); margin-top:4px; line-height:1.25;}
+  .watts .whint{font-size:.74rem; color:var(--muted); margin-top:3px;}
   .watts .wappl{font-size:.74rem; color:var(--sky); font-weight:700; margin-top:5px;}
   .legend b{color:var(--txt);}
 
@@ -366,8 +355,8 @@
     display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
   .sweet b{color:var(--sky); font-size:.95rem;}
   .sweet .sub{color:var(--muted); font-size:.72rem;}
-  .sweet-apply{margin-left:auto; background:var(--sky); color:#04121f; border:none; border-radius:7px;
-    padding:5px 10px; font-size:.72rem; font-weight:700; cursor:pointer;}
+  .sweet-apply{margin-left:auto; background:var(--sky); color:#04121f; border:none; border-radius:8px;
+    padding:9px 14px; font-size:.78rem; font-weight:700; cursor:pointer;}
   .sweet-apply:active{transform:scale(.97);}
 
   /* Choc des watts */
@@ -400,20 +389,6 @@
     font-size:.72rem; font-weight:700; color:#0f172a; transition:width .35s ease; white-space:nowrap; overflow:hidden;}
   .seg.ind{background:var(--induced);} .seg.pro{background:var(--profile);}
 
-  /* Pie charts */
-  .pies{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
-  @media(max-width:640px){ .pies{grid-template-columns:1fr;} }
-  .pie-block{background:var(--panel-2); border-radius:14px; padding:16px; text-align:center;}
-  .pie-title{font-weight:700; font-size:.9rem; margin-bottom:10px;}
-  .pie-block svg{width:160px; height:160px; margin:0 auto; display:block;}
-  .pie-center-v{font-size:20px; font-weight:800; fill:var(--txt);}
-  .pie-center-l{font-size:8px; fill:var(--muted); text-transform:uppercase; letter-spacing:.08em;}
-  .pie-leg{margin-top:12px; text-align:left; font-size:.78rem;}
-  .pie-leg .row{display:flex; align-items:center; gap:8px; padding:2px 0;}
-  .pie-leg i{width:11px; height:11px; border-radius:3px; flex:none;}
-  .pie-leg .nm{color:var(--muted);}
-  .pie-leg .pct{margin-left:auto; font-weight:800; color:var(--txt);}
-
   .verdict{margin-top:16px; padding:14px 16px; border-radius:12px; background:rgba(14,165,233,.08);
     border:1px solid rgba(14,165,233,.25); font-size:.9rem;}
   .verdict b{color:var(--sky);}
@@ -428,20 +403,20 @@
   .scale-bar{position:relative; height:22px; border-radius:11px;
     background:linear-gradient(90deg,#22c55e 0%,#eab308 55%,#ef4444 100%); border:1px solid var(--line);}
   .cp-line{position:absolute; top:-6px; bottom:-6px; border-left:2px dashed #f8fafc;}
-  .cp-line span{position:absolute; top:2px; left:4px; font-size:9px;
+  .cp-line span{position:absolute; top:2px; left:4px; font-size:10px;
     font-weight:700; color:#0f172a; white-space:nowrap;}
   .tick-layer{position:relative; height:82px; margin-top:4px;}
   .scale-tick{position:absolute; top:0; transform:translateX(-50%); text-align:center; width:84px;}
   .scale-tick .ln{width:1px; height:8px; margin:0 auto; background:var(--dim);}
   .scale-tick.lo .ln{height:44px;}                    /* 1 repère sur 2 en 2e rangée */
   .scale-tick .tw{font-size:.72rem; font-weight:700; color:var(--txt); margin-top:2px;}
-  .scale-tick .tl{font-size:.62rem; color:var(--muted); line-height:1.1;}
+  .scale-tick .tl{font-size:.68rem; color:var(--muted); line-height:1.1;}
   @media(max-width:560px){
     .tick-layer{height:112px;}
     .scale-tick{width:50px;}
     .scale-tick.lo .ln{height:60px;}
-    .scale-tick .tw{font-size:.62rem;}
-    .scale-tick .tl{font-size:.54rem;}
+    .scale-tick .tw{font-size:.68rem;}
+    .scale-tick .tl{font-size:.62rem;}
   }
   .scale-note{margin-top:14px; font-size:.8rem; color:var(--muted); background:var(--panel-2);
     border-radius:10px; padding:10px 12px;}
@@ -460,19 +435,6 @@
   .whrow .whval{text-align:right; font-weight:800; color:var(--txt);}
   @media(max-width:560px){ .whrow{grid-template-columns:118px 1fr 38px; font-size:.72rem; gap:6px;} }
 
-  /* Tableau comparatif */
-  .cmp{overflow-x:auto; -webkit-overflow-scrolling:touch;}
-  .cmp table{width:100%; border-collapse:collapse; font-size:.82rem; min-width:600px;}
-  .cmp th, .cmp td{padding:8px 9px; text-align:left; border-bottom:1px solid var(--line); white-space:nowrap;}
-  .cmp th{color:var(--muted); font-size:.66rem; text-transform:uppercase; letter-spacing:.04em; font-weight:700;}
-  .cmp td.nm{font-weight:700;}
-  .cmp .wtag{display:inline-block; font-size:.66rem; padding:2px 7px; border-radius:999px; font-weight:700;}
-  .cmp .wtag.cl{background:rgba(244,63,94,.15); color:#fca5a5;}
-  .cmp .wtag.ld{background:rgba(34,197,94,.15); color:#86efac;}
-  .cmp td.w{font-weight:800;}
-  .cmp .stars{letter-spacing:1px; font-size:.8rem;}
-  .cmp tbody tr:hover{background:var(--panel-2);}
-
   /* Virages / maniabilité */
   .turn-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:6px;}
   @media(max-width:560px){ .turn-grid{grid-template-columns:1fr;} }
@@ -484,23 +446,8 @@
   .turn-stat .k small{display:block; font-size:.62rem; color:var(--dim);}
 
   /* Module confort mental */
-  .chips{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;}
-  .chip{background:var(--panel-2); color:var(--muted); border:1px solid var(--line);
-    border-radius:999px; padding:8px 14px; font-size:.82rem; font-weight:600; cursor:pointer;
-    transition:all .15s;}
-  .chip:hover{color:var(--txt);}
-  .chip.active{background:var(--sky); color:#04121f; border-color:var(--sky);}
-  .m-name{font-size:.82rem; color:var(--muted); margin-bottom:16px;}
-  .m-name b{color:var(--txt); font-size:1rem;}
-
-  .gauges{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px;}
-  @media(max-width:560px){ .gauges{grid-template-columns:1fr;} }
-  .gauge .g-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;}
-  .gauge .g-head span{font-size:.78rem; color:var(--muted);}
-  .gauge .g-head b{font-size:1.35rem; font-weight:800;}
   .g-track{height:14px; border-radius:8px; background:var(--bg); border:1px solid var(--line); overflow:hidden;}
   .g-fill{height:100%; border-radius:8px; transition:width .5s ease, background .4s;}
-  .g-lab{font-size:.74rem; color:var(--muted); margin-top:5px;}
 
   .tol{margin-bottom:20px;}
   .tol-head{font-size:.82rem; color:var(--muted); margin-bottom:10px;}
@@ -512,11 +459,11 @@
   .tol-band.narrow{background:linear-gradient(180deg,rgba(239,68,68,.35),rgba(239,68,68,.12));
     border-color:var(--red);}
   .tol-stall{position:absolute; top:0; bottom:0; width:2px; background:var(--red);}
-  .tol-stall::after{content:attr(data-lbl); position:absolute; top:2px; left:4px; font-size:9px; color:#fca5a5; white-space:nowrap;}
-  .tol-tick{position:absolute; bottom:2px; font-size:9px; color:var(--dim); transform:translateX(-50%);}
-  .tol-bandlab{position:absolute; top:4px; font-size:10px; font-weight:700; color:var(--txt); transform:translateX(-50%);}
+  .tol-stall::after{content:attr(data-lbl); position:absolute; top:2px; left:4px; font-size:10px; color:#fca5a5; white-space:nowrap;}
+  .tol-tick{position:absolute; bottom:2px; font-size:10px; color:var(--muted); transform:translateX(-50%);}
+  .tol-bandlab{position:absolute; top:4px; font-size:11px; font-weight:700; color:var(--txt); transform:translateX(-50%);}
 
-  .sim-btn, .copy-btn{width:100%; border:none; border-radius:10px; padding:13px; font-size:.92rem;
+  .sim-btn{width:100%; border:none; border-radius:10px; padding:13px; font-size:.92rem;
     font-weight:700; cursor:pointer; transition:transform .1s, filter .15s;}
   .sim-btn{background:var(--sky); color:#04121f;}
   .sim-btn:active{transform:scale(.98);}
@@ -539,17 +486,15 @@
     background:var(--bg); border-radius:10px; color:var(--muted);}
   .formula b{color:var(--sky);}
   .conseil p{font-size:.92rem; color:#cbd5e1; margin:0 0 12px; text-align:center; font-style:italic; line-height:1.6;}
-  .copy-btn{background:var(--panel-2); color:var(--txt); border:1px solid var(--line)!important;}
-  .copy-btn:active{transform:scale(.98);}
 
-  footer{margin-top:24px; color:var(--dim); font-size:.75rem; line-height:1.6;}
+  footer{margin-top:24px; color:var(--muted); font-size:.78rem; line-height:1.6;}
   footer .formulas{background:var(--panel); border:1px solid var(--line); border-radius:12px;
     padding:14px 16px; margin-bottom:12px; color:var(--muted);}
   footer code{color:var(--sky); font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.8rem;}
   .f-title{margin:16px 0 6px; font-weight:700; color:var(--txt); font-size:.85rem;}
   .frow{display:grid; grid-template-columns:190px 1fr; gap:10px; padding:7px 0; border-top:1px solid var(--line); align-items:baseline;}
   .frow .fk{color:var(--muted); font-size:.8rem; font-weight:600;}
-  .frow .fk i{display:block; font-style:italic; color:var(--dim); font-size:.72rem; font-weight:400;}
+  .frow .fk i{display:block; font-style:italic; color:var(--muted); font-size:.72rem; font-weight:400;}
   @media(max-width:560px){ .frow{grid-template-columns:1fr; gap:2px;} }
   footer a{color:var(--sky); text-decoration:none;}
   footer a:hover{text-decoration:underline;}
@@ -557,10 +502,11 @@
   /* ---------- Deck de slides plein écran (Simple ET Expert, snap au scroll) ---------- */
   .sslide{display:flex; flex-direction:column; justify-content:center; position:relative;
     min-height:100dvh; scroll-snap-align:start; gap:14px; padding:64px 0 28px;}
-  .anchor-btn{position:absolute; top:58px; right:0; z-index:5; background:none; border:none;
-    cursor:pointer; font-size:.95rem; opacity:.3; padding:6px;}
+  .anchor-btn{position:absolute; top:52px; right:0; z-index:5; background:none; border:none;
+    cursor:pointer; font-size:1.05rem; opacity:.35; padding:11px;}
   .anchor-btn:hover{opacity:1;}
-  .anchor-btn.inline{position:static; font-size:.85rem; padding:0 2px; margin-left:8px; vertical-align:2px; opacity:.35;}
+  .anchor-btn.inline{position:static; font-size:.95rem; padding:6px 8px; margin-left:4px; vertical-align:2px; opacity:.4;}
+  @media (hover:none){ .anchor-btn{opacity:.55;} }
   /* Points de progression du deck */
   .dots{position:fixed; right:12px; top:50%; transform:translateY(-50%); z-index:40;
     display:flex; flex-direction:column; gap:9px;}
@@ -577,7 +523,9 @@
     @keyframes bob{0%,100%{transform:translate(-50%,0);} 50%{transform:translate(-50%,8px);}}
   }
   .sslide > *{margin-bottom:0;}
-  html:has(body.simple){scroll-snap-type:y proximity;}   /* snap seulement en Simple — l'Expert scrolle librement */
+  @media(min-width:681px){
+    html:has(body.simple){scroll-snap-type:y proximity;}   /* snap seulement en Simple ET sur grand écran — mobile & Expert scrollent librement */
+  }
 
   /* ---------- Harmonisation « slides » : espacements communs Simple & Expert ---------- */
   .rider{margin-bottom:44px;}
@@ -613,9 +561,6 @@
     /* loi : le carré bleu (2× l'envergure) pop à l'apparition */
     .kid-law .lq1{transition:transform .7s cubic-bezier(.22,1,.36,1) .35s, opacity .7s ease .35s;}
     .a-watch:not(.seen) .kid-law .lq1{transform:scale(.25); opacity:.15;}
-    /* hero poids : le chiffre pop */
-    .heroW .n{transition:transform .8s cubic-bezier(.22,1,.36,1) .15s, opacity .8s ease .15s;}
-    .heroW.a-in:not(.seen) .n{opacity:0; transform:scale(.86);}
   }
 </style>
 <script type="application/ld+json">
@@ -634,13 +579,13 @@
 </head>
 <body class="simple">
 <a class="skip" href="#contenu">Aller au contenu / Skip to content</a>
-<nav class="topbar" aria-label="Liens externes et réglages">
-  <a href="https://github.com/polomarcus/foilphysics" target="_blank" rel="noopener" title="Code de ce projet">🐙 Code</a>
-  <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener" title="Modèle physique d'origine">💻 based on foilphysics</a>
-  <a href="https://piouz.org/" target="_blank" rel="noopener">⚡ Piouz</a>
-  <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">📸 PoloFoil</a>
+<nav class="topbar" aria-label="Réglages et liens externes">
   <button id="tb-mode" type="button" title="Simple ⇄ Expert">⚙️ Expert</button>
   <button id="lang-btn" type="button">🇬🇧 EN</button>
+  <a href="https://github.com/polomarcus/foilphysics" target="_blank" rel="noopener" title="Code de ce projet">🐙 Code</a>
+  <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener" title="Modèle physique d'origine — based on foilphysics">💻 Modèle physique</a>
+  <a href="https://piouz.org/" target="_blank" rel="noopener">⚡ Piouz</a>
+  <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">📸 PoloFoil</a>
 </nav>
 <main class="wrap" id="contenu">
 
@@ -773,7 +718,7 @@
   <div class="rider">
     <div class="rider-item weight">
       <label for="rider-w" data-i18n="l-weight">⚖️ Poids du foiler (kg)</label>
-      <input type="number" id="rider-w" value="75">
+      <input type="number" id="rider-w" value="75" min="30" max="150" step="1" required>
     </div>
     <div class="rider-item form">
       <label for="rider-cp" data-i18n="l-form">🫀 Forme physique</label>
@@ -1269,6 +1214,8 @@
 
   let LANG = 'fr';
   const t = (fr, en) => LANG === 'fr' ? fr : en;   // helper i18n pour le texte généré en JS
+  const store = (k,v)=>{ try{ localStorage.setItem(k,v); }catch(e){} };   // mémorise langue & mode
+  const stored = k=>{ try{ return localStorage.getItem(k); }catch(e){ return null; } };
   const CD_MAST = 0.008;                       // mât : coeff commun (aire via <select>)
   const CD_FUS = 0.010, CD_STAB = 0.020;       // fuselage & stab : coeff de traînée
   const W_ANAER = 12300;                        // réserve anaérobie (J) — modèle illustratif
@@ -1282,7 +1229,8 @@
   };
 
   const val = id => parseFloat(document.getElementById(id).value);
-  const num = (x,d=0) => x.toLocaleString('fr-FR',{maximumFractionDigits:d, minimumFractionDigits:d});
+  const num = (x,d=0) => x.toLocaleString(LANG==='fr'?'fr-FR':'en-GB',{maximumFractionDigits:d, minimumFractionDigits:d});
+  const dec = x => LANG==='fr' ? String(x).replace('.',',') : String(x);   // décimale localisée pour les valeurs de sliders
 
   function compute(cfg){
     const RHO = rho();
@@ -1366,8 +1314,8 @@
 
   function fmtTime(sec){
     if(!isFinite(sec)) return t('vol illimité ♾️','unlimited flight ♾️');
-    if(sec < 90) return '≈ ' + Math.round(sec) + t(' s avant l\'explosion',' s before blowing up');
-    return '≈ ' + (sec/60).toFixed(1).replace('.',',') + t(' min avant l\'explosion',' min before blowing up');
+    if(sec < 90) return '≈ ' + Math.round(sec) + t(' s avant l\'explosion',' s before you blow up');
+    return '≈ ' + num(sec/60,1) + t(' min avant l\'explosion',' min before you blow up');
   }
 
   // Barres groupées : les deux ailes côte à côte, poste par poste, même échelle (comparaison directe)
@@ -1485,7 +1433,7 @@
     ];
     const tot = parts.reduce((a,p)=>a+p.D, 0);
     document.getElementById('cf-bv').textContent = num(val('cf-b'),0);
-    document.getElementById('cf-vv').textContent = String(val('cf-v')).replace('.',',');
+    document.getElementById('cf-vv').textContent = dec(val('cf-v'));
     document.getElementById('cf-sv').textContent = num(val('cf-s'),0);
     document.getElementById('cf-total').innerHTML =
       t('Traînée totale : ','Total drag: ')+'<b>'+num(tot,0)+' N</b> ≈ '+t('tracter ','pulling ')+num(tot/G,1)+' kg';
@@ -1655,12 +1603,12 @@
     [ [1,r1],[2,r2] ].forEach(([i,r])=>{
       document.getElementById('b'+i+'v').textContent = num(val('b'+i),0);
       document.getElementById('s'+i+'v').textContent = num(val('s'+i),0);
-      document.getElementById('v'+i+'v').textContent = String(val('v'+i)).replace('.',',');
+      document.getElementById('v'+i+'v').textContent = dec(val('v'+i));
       if(!r) return;
       document.getElementById('ar'+i).textContent = num(r.AR,1);
       document.getElementById('cm'+i).innerHTML = num(r.Cm,1)+'<small> cm</small>';
       document.getElementById('ld'+i).textContent = num(r.LD,1);
-      document.getElementById('cl'+i).innerHTML = num(r.CL,2).replace('.',',')+' <small>/ '+num(r.clMax,2).replace('.',',')+'</small>';
+      document.getElementById('cl'+i).innerHTML = num(r.CL,2)+' <small>/ '+num(r.clMax,2)+'</small>';
       document.getElementById('p'+i).innerHTML = num(r.P,0)+'<span class="unit"> W</span>'+
         '<span class="pwh">'+num(r.P/(r.v*3.6),1)+' Wh/km</span>';
       document.getElementById('appl'+i).textContent = appliance(r.P);
@@ -1762,18 +1710,23 @@
     if(simple) render();                       // redessine le graphe à la bonne largeur
     else window.scrollTo({top:0, behavior:'smooth'});
   }
-  document.getElementById('mb-simple').addEventListener('click', ()=>setMode('simple'));
-  document.getElementById('mb-expert').addEventListener('click', ()=>setMode('expert'));
+  document.getElementById('mb-simple').addEventListener('click', ()=>{ setMode('simple'); store('lcw-mode','simple'); });
+  document.getElementById('mb-expert').addEventListener('click', ()=>{ setMode('expert'); store('lcw-mode','expert'); });
   document.getElementById('tb-mode').addEventListener('click', ()=>{
-    setMode(document.body.classList.contains('simple') ? 'expert' : 'simple');
+    const m = document.body.classList.contains('simple') ? 'expert' : 'simple';
+    setMode(m); store('lcw-mode', m);
     window.scrollTo({top:0});
   });
   document.getElementById('winner-why').addEventListener('click', ()=>{
-    setMode('expert');
-    setTimeout(()=>document.querySelector('.shock').scrollIntoView({behavior:'smooth', block:'start'}), 60);
+    setMode('expert'); store('lcw-mode','expert');
+    // amène directement aux cartes de réglages (la promesse du bouton), pas au moteur humain
+    setTimeout(()=>document.querySelector('.grid').scrollIntoView({behavior:'smooth', block:'start'}), 60);
   });
 
-  document.querySelectorAll('input,select').forEach(el=> el.addEventListener('input', render));
+  // re-render coalescé sur requestAnimationFrame : fluide au doigt sur mobile
+  let rafRender = null;
+  const scheduleRender = ()=>{ if(rafRender) return; rafRender = requestAnimationFrame(()=>{ rafRender = null; render(); }); };
+  document.querySelectorAll('input,select').forEach(el=> el.addEventListener('input', scheduleRender));
 
   document.querySelectorAll('.sweet-apply').forEach(btn=>{
     btn.addEventListener('click', ()=>{
@@ -1977,9 +1930,7 @@
   const EN = {
     'h1':'The Pump Foil <span class="hi">Watts</span> Showdown 🌊',
     'hsub':'Why a <b>High Aspect</b> wing lets you fly far longer for less effort, where a classic pump wing puts you in the red within minutes.',
-    'tag':'Long-Distance Setup · Steady flight',
     'disclaimer':'⚠️ <b>Estimated figures, not real measurements.</b> Wing profiles are often kept secret by brands: this comparator gives <b>educational orders of magnitude</b> (trends), not manufacturer values. Treat it as a tool to <b>understand</b> — not a test bench.',
-    'chip-sirus':'🟢 Long distance · cruising','chip-jam':'🟠 Classic wing','chip-fireball':'🔴 Long distance race',
     'story-sum':'📖 Understand in 2 min: why a long wing saves energy (and why it\'s recent)',
     'story-body':`
       <h4>1. Going far is losing little energy (not lifting harder)</h4>
@@ -2097,11 +2048,9 @@
     'turn-lede':'The long span that wins glide costs you at the controls: the longer a wing, the more it <b>turns like a barge</b> (inertia rises with the square of the span).',
     'mental-h3':'🧠 Mental comfort & cognitive load',
     'mental-lede':'For a comparable physical effort, wings don\'t all demand the same <b>focus</b>. <b>Performance = physical energy + mental energy.</b><br><span style="color:#fcd34d">⚠️ The paradox:</span> the <b>most watt-efficient</b> wing can be the one that costs most <i>mentally</i> — little effort, but non-stop concentration.',
-    'g-mental':'Mental load','g-stress':'Stall stress',
     'tol-head':'Usable speed range before stall <b id="tol-range">—</b>',
     'sim-btn':'🌊 Simulate a missed pump stroke',
     'conseil-h':'⚓ Polo Foil\'s tip','conseil-formula':'Overall performance = <b>Physical energy</b> + <b>Mental energy</b>',
-    'copy-btn':'📋 Copy the mental-comfort recap',
     'wh-explain':`<div class="note-title">💡 How much energy does 1 km cost?</div>
       <b>Wh/km</b> = the energy spent to travel 1 km. Lower = you go further for the same effort:
       <div class="whbars">
@@ -2138,14 +2087,25 @@
     document.title = l==='fr'
       ? 'Le Choc des Watts — Comparateur d\'ailes de pump foil longue distance'
       : 'The Watts Showdown — Long-distance pump foil wing comparator';
-    try { history.replaceState(null, '', l==='en' ? '#en' : '#fr'); } catch(e){}
+    try {   // langue en ?lang=… pour ne pas écraser l'ancre de section (#duel, #sensibilite…)
+      const u = new URL(location.href);
+      if(l==='en') u.searchParams.set('lang','en'); else u.searchParams.delete('lang');
+      const h = (u.hash==='#en'||u.hash==='#fr') ? '' : u.hash;   // purge l'ancien hash de langue
+      history.replaceState(null, '', u.pathname + u.search + h);
+    } catch(e){}
   }
-  document.getElementById('lang-btn').addEventListener('click', ()=> applyLang(LANG==='fr'?'en':'fr'));
-  // langue initiale via l'ancre (#en) ou ?lang=en → partageable par lien
+  document.getElementById('lang-btn').addEventListener('click', ()=>{ applyLang(LANG==='fr'?'en':'fr'); store('lcw-lang', LANG); });
+  // langue initiale : lien explicite (?lang=en ou #en) > choix mémorisé > langue du navigateur
   if(location.hash==='#en' || /[?&]lang=en/i.test(location.search)) applyLang('en');
+  else if(!/[?&]lang=fr/i.test(location.search)){
+    const savedLang = stored('lcw-lang');
+    if(savedLang==='en') applyLang('en');
+    else if(!savedLang && navigator.language && !/^fr/i.test(navigator.language)) applyLang('en');
+  }
 
   /* ---------- Ancres partageables : ?mode=simple|expert & lang=en & #section ---------- */
   if(/[?&]mode=expert/i.test(location.search)) setMode('expert');
+  else if(!/[?&]mode=simple/i.test(location.search) && stored('lcw-mode')==='expert') setMode('expert');
   const anchorTarget = location.hash.replace('#','');
   if(anchorTarget && anchorTarget !== 'en'){
     const tEl = document.getElementById(anchorTarget);
@@ -2249,11 +2209,14 @@
     };
     pvCv.addEventListener('mousemove', hover);
     pvCv.addEventListener('mouseleave', ()=>{ const a = ANIM.pv.args; if(a) drawPowerCurve(a[0], a[1], 1); });
+    // tactile : toucher/glisser le doigt sur le graphe affiche la ligne et les valeurs (passive → le scroll vertical reste libre)
+    pvCv.addEventListener('touchstart', e=>{ if(e.touches.length===1) hover(e.touches[0]); }, {passive:true});
+    pvCv.addEventListener('touchmove',  e=>{ if(e.touches.length===1) hover(e.touches[0]); }, {passive:true});
   }
 
   /* ---------- Animations d'entrée au scroll ---------- */
   if(!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window){
-    const sections = document.querySelectorAll('.tldr, .improve, .rider, .shock, .card, .pvpanel, .kid, .heroW');
+    const sections = document.querySelectorAll('.tldr, .improve, .rider, .shock, .card, .pvpanel, .kid');
     sections.forEach(s=> s.classList.add('a-in'));
     // conteneurs de barres : la largeur part de 0 au premier passage (survit au re-render i18n)
     const watched = document.querySelectorAll('[data-i18n="wh-explain"], [data-i18n="kid-txt"], #cmpbars');
