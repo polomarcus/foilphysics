@@ -331,6 +331,7 @@
   .watts{text-align:center; margin:8px 0 12px; padding:12px; border-radius:12px; background:var(--panel-2);}
   .watts .lab{font-size:.68rem; color:var(--muted); text-transform:uppercase; letter-spacing:.06em;}
   .watts .val{font-size:2.9rem; font-weight:900; line-height:1; margin-top:2px;}
+  .watts .pwh{display:inline-block; margin-left:10px; font-size:1.05rem; font-weight:700; color:var(--muted); vertical-align:6px;}
   .watts .unit{font-size:1.1rem; color:var(--muted); font-weight:700;}
 
   .inputs .badge{grid-column:1 / -1; margin-bottom:4px;}
@@ -1576,7 +1577,8 @@
       document.getElementById('cm'+i).innerHTML = num(r.Cm,1)+'<small> cm</small>';
       document.getElementById('ld'+i).textContent = num(r.LD,1);
       document.getElementById('cl'+i).innerHTML = num(r.CL,2).replace('.',',')+' <small>/ '+num(r.clMax,2).replace('.',',')+'</small>';
-      document.getElementById('p'+i).innerHTML = num(r.P,0)+'<span class="unit"> W</span>';
+      document.getElementById('p'+i).innerHTML = num(r.P,0)+'<span class="unit"> W</span>'+
+        '<span class="pwh">'+num(r.P/(r.v*3.6),1)+' Wh/km</span>';
       document.getElementById('appl'+i).textContent = appliance(r.P);
 
       const v = verdictClass(r.P);
