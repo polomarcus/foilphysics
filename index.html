@@ -35,15 +35,21 @@
     background:var(--bg); color:var(--txt);
     line-height:1.5; padding:16px; -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:960px; margin:0 auto;}
+  .wrap{max-width:960px; margin:0 auto; padding-top:52px;}
 
-  .topbar{position:fixed; top:10px; right:10px; z-index:50; display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; max-width:72vw;}
+  .topbar{position:fixed; top:0; left:0; right:0; z-index:50; display:flex; gap:8px; flex-wrap:wrap;
+    justify-content:flex-end; padding:8px 12px;
+    background:linear-gradient(180deg, rgba(15,23,42,.96), rgba(15,23,42,.82));
+    -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+    border-bottom:1px solid rgba(51,65,85,.4);}
   .topbar button, .topbar a{background:var(--panel); border:1px solid var(--line); color:var(--txt);
     border-radius:999px; padding:6px 12px; font-size:.78rem; font-weight:700; cursor:pointer; text-decoration:none;
     display:inline-flex; align-items:center; gap:5px;}
   .topbar button:hover, .topbar a:hover{border-color:var(--sky); color:var(--sky);}
   @media(max-width:680px){
-    .topbar{position:static; max-width:none; justify-content:center; margin:0 0 6px; padding-top:2px;}
+    .topbar{position:static; justify-content:center; margin:0 0 6px; padding:2px 0 6px; background:none;
+      border-bottom:none; -webkit-backdrop-filter:none; backdrop-filter:none;}
+    .wrap{padding-top:0;}
   }
 
   header{text-align:center; padding:8px 0 20px;}
@@ -57,8 +63,8 @@
     text-transform:uppercase; color:var(--sky); background:rgba(14,165,233,.12);
     border:1px solid rgba(14,165,233,.3); padding:4px 12px; border-radius:999px;}
 
-  .disclaimer{background:rgba(245,158,11,.12); border:1px solid rgba(245,158,11,.45); color:#fcd34d;
-    border-radius:12px; padding:12px 16px; margin-bottom:16px; font-size:.85rem; line-height:1.5;}
+  .disclaimer{background:transparent; border:none; color:#fcd34d; text-align:center;
+    padding:0 8px; margin-bottom:18px; font-size:.78rem; line-height:1.5;}
   .disclaimer b{color:#fde68a;}
 
   /* Mode Simple / Expert */
@@ -74,9 +80,9 @@
   body.simple .xo{display:none;}
   .story-in p{margin:0 0 9px;}
   /* Graphe puissance / vitesse (vue Simple) */
-  .pvpanel{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px 16px 16px; margin-bottom:16px;}
-  .pvpanel h3{font-size:1.02rem; font-weight:700; margin-bottom:3px;}
-  .pvpanel .pvsub{color:var(--muted); font-size:.82rem; margin-bottom:12px;}
+  .pvpanel{background:transparent; border:none; padding:8px 0; margin-bottom:64px;}
+  .pvpanel h3{font-size:1.5rem; font-weight:800; text-align:center; letter-spacing:-.015em; margin-bottom:8px;}
+  .pvpanel .pvsub{color:var(--muted); font-size:.9rem; text-align:center; margin-bottom:16px;}
   .pvlegend{display:flex; gap:18px; justify-content:center; font-size:.82rem; margin-bottom:4px; flex-wrap:wrap;}
   .pvlegend span{display:inline-flex; align-items:center; gap:7px; color:var(--muted);}
   .pvlegend i{width:18px; height:3px; border-radius:2px; display:inline-block;}
@@ -90,15 +96,15 @@
     color:var(--muted); border-radius:10px; padding:10px 20px; font-weight:700; cursor:pointer; font-size:.85rem;}
   .expertbtn:active{transform:scale(.98);}
   /* Encart "expliqué à un enfant" (vue Simple) */
-  .kid{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px 16px; margin-bottom:16px;}
-  .kid h3{font-size:1.02rem; font-weight:700; margin-bottom:8px; text-align:center;}
-  .kid .kid-def{margin:0 0 14px; text-align:center; font-size:.85rem; color:var(--muted); line-height:1.45;}
+  .kid{background:transparent; border:none; padding:8px 0; margin-bottom:64px;}
+  .kid h3{font-size:1.5rem; font-weight:800; margin-bottom:8px; text-align:center; letter-spacing:-.015em;}
+  .kid .kid-def{margin:0 0 22px; text-align:center; font-size:.88rem; color:var(--muted); line-height:1.5;}
   .kid .kid-def b{color:var(--txt);}
   .kid-cols{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;}
   .kid figure{margin:0; text-align:center; background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:14px 8px 12px;}
   .kid .wing{height:9px; border-radius:5px; margin:4px auto 8px;}
   .kid .wing.long{width:94%; background:#38bdf8;}
-  .kid .wing.short{width:30%; background:#94a3b8;}
+  .kid .wing.short{width:30%; background:#f59e0b;}
   .kid .flow{height:58px; overflow:hidden; display:flex; justify-content:center; gap:10px; margin-bottom:4px;}
   .kid .arr{font-weight:800; opacity:.85; line-height:1;}
   .kid figure.f-long .arr{color:#38bdf8; font-size:1rem;}
@@ -107,11 +113,13 @@
   .kid figcaption b{color:var(--txt);}
   .kid-txt{font-size:.9rem; line-height:1.6; color:var(--muted);}
   .kid-txt b{color:var(--txt);}
-  .kid .kid-warn{margin-top:12px; background:rgba(245,158,11,.10); border:1px solid rgba(245,158,11,.35);
-    border-radius:10px; padding:11px 12px; font-size:.85rem;}
+  .kid .kid-warn{margin-top:16px; background:transparent; border:none;
+    border-left:3px solid #f59e0b; border-radius:0; padding:2px 0 2px 12px; font-size:.85rem;}
   .kid .kid-warn b{color:#fcd34d;}
-  .kid .kid-ex{margin:4px 0 10px; background:var(--panel-2); border:1px solid var(--line);
-    border-radius:10px; padding:11px 12px; font-size:.83rem; line-height:1.6;}
+  .kid-law .law-proof{margin-top:14px; padding-top:12px; border-top:1px solid rgba(56,189,248,.25);
+    font-size:.85rem; color:var(--muted); line-height:1.5;}
+  .kid-law .law-proof b{color:var(--txt);}
+  .kid-law .proof-cap{font-size:.75rem; color:var(--muted);}
   .kid .kid-law{margin:6px 0 12px; text-align:center; background:rgba(56,189,248,.10);
     border:1px solid rgba(56,189,248,.45); border-radius:12px; padding:14px 12px;}
   .kid .kid-law .kid-law-t{font-size:.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; font-weight:700;}
@@ -124,10 +132,9 @@
   .kid-law .lq1{display:block; width:15px; height:15px; background:#38bdf8; border-radius:4px;}
   .kid-law .law-sq .sqcap{font-size:.68rem; color:var(--muted);}
   /* Hero poids (Simple + Expert) */
-  .heroW{background:var(--panel); border:1px solid var(--line); border-radius:16px;
-    padding:26px 16px; margin-bottom:16px; text-align:center;}
+  .heroW{background:transparent; border:none; padding:18px 0; margin-bottom:64px; text-align:center;}
   .heroW .k{font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--sky); font-weight:800;}
-  .heroW .n{font-size:2.7rem; font-weight:800; color:#f59e0b; margin:8px 0 6px; letter-spacing:-.02em; line-height:1.05;}
+  .heroW .n{font-size:3.2rem; font-weight:800; color:#f59e0b; margin:8px 0 6px; letter-spacing:-.02em; line-height:1.05;}
   .heroW .e{color:var(--muted); font-size:.9rem; line-height:1.55; max-width:560px; margin:0 auto;}
   .heroW .e b{color:var(--txt);}
   /* Mode Expert : orientation + notes de réglage */
@@ -135,36 +142,36 @@
     padding:12px 14px; margin-bottom:16px; font-size:.86rem; color:var(--muted); line-height:1.5;}
   .orient b{color:var(--txt);}
   .field .fhint{font-size:.68rem; color:var(--muted); margin-top:4px; line-height:1.3;}
-  .kid .kid-src{margin-top:14px; background:rgba(56,189,248,.09); border:1px solid rgba(56,189,248,.30);
-    border-radius:12px; padding:13px 14px; font-size:.88rem; line-height:1.6; color:var(--muted);}
+  .kid .kid-src{margin-top:16px; background:transparent; border:none; border-left:3px solid rgba(56,189,248,.5);
+    border-radius:0; padding:2px 0 2px 12px; font-size:.88rem; line-height:1.6; color:var(--muted);}
   .kid .kid-src b{color:var(--txt);}
   .kid .kid-src a{display:inline-block; margin-top:8px; font-weight:700; color:#38bdf8; text-decoration:none;
     border-bottom:2px solid rgba(56,189,248,.5);}
   .kid .kid-src a:hover{border-bottom-color:#38bdf8;}
-  /* Comment progresser (Simple + Expert) */
-  .improve{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px 16px; margin-bottom:16px;}
-  .improve h3{font-size:1.05rem; font-weight:800; margin-bottom:4px;}
-  .improve .imp-lede{color:var(--muted); font-size:.9rem; margin-bottom:14px;}
-  .imp-grid{display:grid; grid-template-columns:1fr; gap:12px;}
-  .imp-card{background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:14px;
-    font-size:.88rem; line-height:1.55; color:var(--muted);}
+  /* Comment progresser (Simple + Expert — même habillage « slide » partout) */
+  .improve{background:transparent; border:none; padding:8px 0; margin-bottom:56px;}
+  .improve h3{font-size:1.5rem; font-weight:800; text-align:center; letter-spacing:-.015em; margin-bottom:8px;}
+  .improve .imp-lede{color:var(--muted); font-size:1rem; text-align:center; margin-bottom:20px;}
+  .imp-grid{display:grid; grid-template-columns:1fr; gap:0;}
+  .imp-card{background:transparent; border:none; border-top:1px solid var(--line); border-radius:0;
+    padding:18px 0 14px; font-size:.88rem; line-height:1.55; color:var(--muted);}
   .imp-card .imp-h{font-weight:800; color:var(--txt); font-size:.98rem; margin-bottom:6px;}
-  .imp-card.matos{border-color:rgba(56,189,248,.45); background:rgba(56,189,248,.06);}
+  .imp-card.matos{background:transparent; border:none; border-top:1px solid var(--line);}
   .imp-gains{margin:10px 0 0; padding-left:20px;}
   .imp-gains li{margin:7px 0; font-size:.95rem;}
   .imp-gains b{color:var(--txt);}
   .imp-gains li b:first-child{font-size:1.02rem;}
-  .imp-note{margin-top:10px; background:rgba(56,189,248,.08); border:1px solid rgba(56,189,248,.3);
-    border-radius:10px; padding:10px 12px;}
+  .imp-note{margin-top:12px; background:transparent; border:none; border-left:3px solid var(--sky);
+    border-radius:0; padding:2px 0 2px 12px;}
   .imp-note b{color:#38bdf8;}
   .imp-card .imp-gloss{margin:8px 0 4px; font-size:.8rem; color:var(--muted); line-height:1.45;
     border-left:2px solid var(--line); padding-left:10px;}
   .imp-card .imp-gloss b{color:var(--txt);}
   .pick{text-align:center; color:var(--muted); font-size:.9rem; margin:0 0 10px;}
   .pick b{color:var(--txt);}
-  .shock details.fold summary{cursor:pointer; font-size:1.05rem; font-weight:700; color:var(--txt);
-    list-style-position:outside; margin-bottom:4px;}
-  .shock details.fold[open] summary{margin-bottom:10px;}
+  .shock details.fold summary{cursor:pointer; font-size:1.35rem; font-weight:800; color:var(--txt);
+    text-align:center; letter-spacing:-.015em; list-style-position:inside; margin-bottom:4px;}
+  .shock details.fold[open] summary{margin-bottom:12px;}
   /* Sensibilité (Expert) */
   .sens-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
   @media(max-width:640px){ .sens-grid{grid-template-columns:1fr;} }
@@ -178,8 +185,8 @@
   .sens-delta.save .dv{color:#86efac;}
   .sens-delta.cost .dv{color:#fca5a5;}
   /* Note poids (Simple) */
-  .kid .kid-weight{margin-top:12px; background:var(--panel-2); border:1px solid var(--line);
-    border-radius:10px; padding:11px 12px; font-size:.86rem; line-height:1.55; color:var(--muted);}
+  .kid .kid-weight{margin-top:16px; background:transparent; border:none; border-left:3px solid var(--line);
+    border-radius:0; padding:2px 0 2px 12px; font-size:.86rem; line-height:1.55; color:var(--muted);}
   .kid .kid-weight b{color:var(--txt);}
 
   .story{background:var(--panel); border:1px solid var(--line); border-radius:16px; margin-bottom:16px; overflow:hidden;}
@@ -265,9 +272,9 @@
   .sweet-apply:active{transform:scale(.97);}
 
   /* Choc des watts */
-  .shock{margin-top:20px; background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px;}
-  .shock h3{font-size:1.05rem; font-weight:800; margin-bottom:4px;}
-  .shock .lede{color:var(--muted); font-size:.85rem; margin-bottom:18px;}
+  .shock{margin-top:0; background:transparent; border:none; padding:8px 0; margin-bottom:64px;}
+  .shock h3{font-size:1.5rem; font-weight:800; text-align:center; letter-spacing:-.015em; margin-bottom:8px;}
+  .shock .lede{color:var(--muted); font-size:.9rem; text-align:center; max-width:680px; margin:0 auto 20px;}
   .legend{display:flex; flex-direction:column; gap:8px; margin-bottom:16px; font-size:.78rem; color:var(--muted);}
   .legend i{display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px; vertical-align:middle;}
   .i-ind{background:var(--induced);} .i-pro{background:var(--profile);}
@@ -429,6 +436,17 @@
   footer a{color:var(--sky); text-decoration:none;}
   footer a:hover{text-decoration:underline;}
 
+  /* ---------- Harmonisation « slides » : espacements communs Simple & Expert ---------- */
+  .rider{margin-bottom:44px;}
+  .story{margin-bottom:44px;}
+  .grid{margin-bottom:44px;}
+  /* TL;DR */
+  .tldr{text-align:center; padding:6px 0; margin-bottom:48px;}
+  .tldr .k{font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--sky); font-weight:800;}
+  .tldr .t{font-size:1.55rem; font-weight:800; letter-spacing:-.015em; margin:8px 0 6px; line-height:1.25;}
+  .tldr .t b{color:var(--sky);}
+  .tldr .s{color:var(--muted); font-size:.9rem;}
+
   /* ---------- Animations d'entrée au scroll (désactivées si reduced-motion) ---------- */
   @media (prefers-reduced-motion: no-preference){
     .a-in{opacity:0; transform:translateY(18px); transition:opacity .65s ease, transform .65s cubic-bezier(.22,1,.36,1);}
@@ -488,6 +506,13 @@
   <div class="modebar">
     <button id="mb-simple" class="on" aria-pressed="true" data-i18n="mode-simple">◐ Simple</button>
     <button id="mb-expert" aria-pressed="false" data-i18n="mode-expert">⚙️ Expert (tout régler)</button>
+  </div>
+
+  <!-- TL;DR (Simple + Expert) -->
+  <div class="tldr">
+    <div class="k" data-i18n="tldr-k">⚡ TL;DR</div>
+    <div class="t" data-i18n="tldr-t">Le secret pour voler longtemps :<br><b>grande envergure</b> + <b>poids léger</b>.</div>
+    <div class="s" data-i18n="tldr-s">Le reste (profil, mât, stab…) se joue à quelques % — et c'est ton cardio qui fait la durée.</div>
   </div>
 
   <!-- COMMENT PROGRESSER (en avant, Simple + Expert) -->
@@ -834,16 +859,15 @@
         <div class="kid-law-f">effort gaspillé ∝ 1 / envergure²</div>
         <div class="law-sq"><span class="sqcap">aile courte</span><span class="lq4"><i></i><i></i><i></i><i></i></span><span class="qar">→</span><span class="lq1"></span><span class="sqcap">envergure ×2</span></div>
         <div class="kid-law-s"><b>∝</b> = « proportionnel à ». Double l'envergure → <b>4× moins</b> d'effort perdu.</div>
+        <div class="law-proof">
+          La preuve, à <b>surface égale (1900 cm²)</b> — seule l'envergure change :
+          <div class="whbars" style="margin:9px 0 3px">
+            <div class="whrow"><span class="whlab">🟦 Longue (190 cm)</span><span class="whtrack"><span class="whfill" style="width:40%;background:#38bdf8"></span></span><span class="whval">1×</span></div>
+            <div class="whrow"><span class="whlab">🟧 Courte (120 cm)</span><span class="whtrack"><span class="whfill" style="width:100%;background:#f59e0b"></span></span><span class="whval">2,5×</span></div>
+          </div>
+          <span class="proof-cap">↑ effort gaspillé — même portance, mais la courte paie <b>1,6² ≈ 2,5×</b></span>
+        </div>
       </div>
-      <div class="kid-ex"><b>« Même surface » ≠ « même effort ».</b> Deux ailes de la <b>même surface (1900 cm²)</b> :<br>
-      🟦 <b>Longue &amp; fine</b> : <b>190 cm</b> d'envergure.<br>
-      ⬜ <b>Courte &amp; large</b> : <b>120 cm</b> d'envergure — soit <b>1,6× moins</b>.<br>
-      Même surface, même portance — mais par la loi, la courte gaspille <b>1,6² ≈ 2,5× plus</b> d'effort :
-      <div class="whbars" style="margin:9px 0 3px">
-        <div class="whrow"><span class="whlab">🟦 Longue (190 cm)</span><span class="whtrack"><span class="whfill" style="width:40%;background:#38bdf8"></span></span><span class="whval">1×</span></div>
-        <div class="whrow"><span class="whlab">⬜ Courte (120 cm)</span><span class="whtrack"><span class="whfill" style="width:100%;background:#94a3b8"></span></span><span class="whval">2,5×</span></div>
-      </div>
-      <span style="font-size:.75rem;color:var(--muted)">↑ effort gaspillé, à surface identique</span></div>
       <b>👉 Plus l'aile est longue et fine, moins tu forces pour aller aussi loin.</b>
       <div class="kid-warn">⚠️ <b>Mais elle ne pompe pas à ta place !</b> Une grande envergure rend chaque
       coup de pompe <b>plus rentable</b> — elle ne fait pas voler toute seule. Pour tenir 1 h, il faut <b>aussi</b> la
@@ -1366,7 +1390,8 @@
       ctx.strokeStyle=col; ctx.lineWidth=2.6; ctx.beginPath();
       let started=false;
       for(let vk=Math.max(vmin, m.vStall*3.6); vk<=vEnd; vk+=0.25){
-        const p=m.P(vk/3.6); if(p>ymax*1.02) { if(!started) continue; }
+        const p=m.P(vk/3.6);
+        if(p>ymax){ if(!started) continue; break; }   // sort du cadre : on coupe, pas de plateau
         const x=X(vk), y=Y(p);
         if(!started){ ctx.moveTo(x,y); started=true; } else ctx.lineTo(x,y);
       }
@@ -1795,6 +1820,9 @@
     'mode-simple':'◐ Simple',
     'mode-expert':'⚙️ Expert (full control)',
     'pick':'👇 <b>Pick two real wings</b> to compare — speed snaps automatically to each one\'s recommended cruise.',
+    'tldr-k':'⚡ TL;DR',
+    'tldr-t':'The secret to flying long:<br><b>wide span</b> + <b>light weight</b>.',
+    'tldr-s':'Everything else (profile, mast, stab…) plays out in single digits — and your cardio sets the duration.',
     'pw-kick':'⚖️ The lever everyone forgets',
     'pw-num':'+10 kg ≈ +20%',
     'pw-exp':'more effort to fly — you <b>or</b> your gear: drag rises with the <b>square of weight</b>. On an already-thin wing, shedding weight pays <b>as much as a major upgrade</b>.',
@@ -1810,7 +1838,7 @@
     'kid-def':'👉 Here, «<b>big wing</b>» means <b>wide span</b> (long tip-to-tip) — <b>not</b> necessarily more surface. And span, not surface, is the real lever — <b>yes, it\'s very counter-intuitive</b>, we\'ll get there.',
     'kid-cap1':'<b>Wide span</b><br>sweeps a <b>broad</b> ribbon of water → gentle push',
     'kid-cap2':'<b>Short span</b><br>sweeps only a <b>narrow</b> ribbon → must whip',
-    'kid-txt':'To hold you up, the wing <b>pushes water downward</b>; in reaction, the water pushes it up — like you when you jump by pushing off the ground. That push must make <b>your weight</b> (75 kg ≈ <b>750 N</b>; the <b>newton</b> N is the unit of force).<br><br><b>1) How do you make that push?</b> <b>force = amount of water × pushing speed</b>. Two ways to reach your weight:<br>• <b>lots of water</b> pushed <b>very gently</b>,<br>• or <b>little water</b> you must <b>throw hard</b>.<br>Like <b>swimming</b>: with <b>big fins</b> you glide along effortlessly; <b>bare-handed</b> you thrash for the same result.<br><br><b>2) Why does «gently» win?</b> Wasted energy <b>explodes with speed</b> (squared): throwing water <b>2× faster</b> costs <b>4× more</b>. So lots of water, very gently → almost nothing lost; little water thrown hard → you <b>burn out</b>.<br><br><b>3) What decides how much water? The WIDTH of the wing — its span.</b> Moving forward, the wing sweeps a <b>ribbon of water as wide as its span</b> (tip to tip). The trap: a wing has two dimensions — its <b>width tip-to-tip</b> (span) and its <b>depth front-to-back</b> (chord). Growing it <b>deeper</b> (more chord) adds surface but <b>doesn\'t widen the ribbon</b> — <b>only span widens it</b>.<br><b>⚠️ This is the most counter-intuitive point in foiling</b>: <b>surface</b> makes the <b>lift</b>, but <b>span</b> makes the <b>savings</b> — not the cm².<br><br><div class="kid-law"><div class="kid-law-t">📐 The law of foiling</div><div class="kid-law-f">wasted effort ∝ 1 / span²</div><div class="law-sq"><span class="sqcap">short wing</span><span class="lq4"><i></i><i></i><i></i><i></i></span><span class="qar">→</span><span class="lq1"></span><span class="sqcap">span ×2</span></div><div class="kid-law-s"><b>∝</b> = «proportional to». Double the span → <b>4× less</b> effort lost.</div></div><div class="kid-ex"><b>«Same surface» ≠ «same effort».</b> Two wings of the <b>same area (1900 cm²)</b>:<br>🟦 <b>Long &amp; thin</b>: <b>190 cm</b> span.<br>⬜ <b>Short &amp; wide</b>: <b>120 cm</b> span — <b>1.6× less</b>.<br>Same area, same lift — but by the law, the short one wastes <b>1.6² ≈ 2.5× more</b> effort:<div class="whbars" style="margin:9px 0 3px"><div class="whrow"><span class="whlab">🟦 Long (190 cm)</span><span class="whtrack"><span class="whfill" style="width:40%;background:#38bdf8"></span></span><span class="whval">1×</span></div><div class="whrow"><span class="whlab">⬜ Short (120 cm)</span><span class="whtrack"><span class="whfill" style="width:100%;background:#94a3b8"></span></span><span class="whval">2.5×</span></div></div><span style="font-size:.75rem;color:var(--muted)">↑ wasted effort, same area</span></div><b>👉 The longer and thinner the wing, the less you strain to go just as far.</b><div class="kid-warn">⚠️ <b>But it doesn\'t pump for you!</b> A wide span makes each pump stroke <b>more rewarding</b> — it doesn\'t fly on its own. To last 1 h you <b>also</b> need technique (linking bumps well, keeping speed) and <b>fitness</b>. Change your «fitness» above: you\'ll see flight time move a lot, on the very same wing.</div>',
+    'kid-txt':'To hold you up, the wing <b>pushes water downward</b>; in reaction, the water pushes it up — like you when you jump by pushing off the ground. That push must make <b>your weight</b> (75 kg ≈ <b>750 N</b>; the <b>newton</b> N is the unit of force).<br><br><b>1) How do you make that push?</b> <b>force = amount of water × pushing speed</b>. Two ways to reach your weight:<br>• <b>lots of water</b> pushed <b>very gently</b>,<br>• or <b>little water</b> you must <b>throw hard</b>.<br>Like <b>swimming</b>: with <b>big fins</b> you glide along effortlessly; <b>bare-handed</b> you thrash for the same result.<br><br><b>2) Why does «gently» win?</b> Wasted energy <b>explodes with speed</b> (squared): throwing water <b>2× faster</b> costs <b>4× more</b>. So lots of water, very gently → almost nothing lost; little water thrown hard → you <b>burn out</b>.<br><br><b>3) What decides how much water? The WIDTH of the wing — its span.</b> Moving forward, the wing sweeps a <b>ribbon of water as wide as its span</b> (tip to tip). The trap: a wing has two dimensions — its <b>width tip-to-tip</b> (span) and its <b>depth front-to-back</b> (chord). Growing it <b>deeper</b> (more chord) adds surface but <b>doesn\'t widen the ribbon</b> — <b>only span widens it</b>.<br><b>⚠️ This is the most counter-intuitive point in foiling</b>: <b>surface</b> makes the <b>lift</b>, but <b>span</b> makes the <b>savings</b> — not the cm².<br><br><div class="kid-law"><div class="kid-law-t">📐 The law of foiling</div><div class="kid-law-f">wasted effort ∝ 1 / span²</div><div class="law-sq"><span class="sqcap">short wing</span><span class="lq4"><i></i><i></i><i></i><i></i></span><span class="qar">→</span><span class="lq1"></span><span class="sqcap">span ×2</span></div><div class="kid-law-s"><b>∝</b> = «proportional to». Double the span → <b>4× less</b> effort lost.</div><div class="law-proof">The proof, at <b>equal area (1900 cm²)</b> — only the span changes:<div class="whbars" style="margin:9px 0 3px"><div class="whrow"><span class="whlab">🟦 Long (190 cm)</span><span class="whtrack"><span class="whfill" style="width:40%;background:#38bdf8"></span></span><span class="whval">1×</span></div><div class="whrow"><span class="whlab">🟧 Short (120 cm)</span><span class="whtrack"><span class="whfill" style="width:100%;background:#f59e0b"></span></span><span class="whval">2.5×</span></div></div><span class="proof-cap">↑ wasted effort — same lift, but the short one pays <b>1.6² ≈ 2.5×</b></span></div></div><b>👉 The longer and thinner the wing, the less you strain to go just as far.</b><div class="kid-warn">⚠️ <b>But it doesn\'t pump for you!</b> A wide span makes each pump stroke <b>more rewarding</b> — it doesn\'t fly on its own. To last 1 h you <b>also</b> need technique (linking bumps well, keeping speed) and <b>fitness</b>. Change your «fitness» above: you\'ll see flight time move a lot, on the very same wing.</div>',
     'kid-src':'📚 <b>And how does the wing actually make lift?</b> It tilts by a <b>tiny angle</b> in the water and deflects the flow: the bigger the angle, the more it lifts (but the more it drags too). That\'s the ABC of <b>thin airfoil theory</b> — the century-old physics that makes <i>every</i> foil (and aircraft) fly. <a href="https://en.wikipedia.org/wiki/Thin_airfoil_theory" target="_blank" rel="noopener">Read on Wikipedia →</a>',
     'story-sum-s':'📖 The idea in 30 seconds',
     'story-body-s':'<p><b>1. To go far, drag is the enemy.</b> The less energy the wing <b>wastes</b> between pump strokes, the further you go without forcing — like a cyclist who gives one push then coasts. (You still want lift; but at a given lift, what tires you is drag.)</p><p><b>2. The real cost is induced drag.</b> To hold you up, the wing throws water downward; that energy leaves in the wake and never comes back. Good news: it <b>drops as span grows</b> (as 1/span²).</p><p><b>3. Hence long, thin wings.</b> For the same effort they glide further per stroke → you fly <b>longer, less tired</b>. Nothing new in the physics (gliders, albatrosses…): what\'s <b>recent</b> is that we can finally <b>build</b> these wings thin and stiff enough for pump foiling.</p><p style="margin-top:10px;font-weight:600;color:var(--txt)">A good distance wing works no magic: it just <b>wastes less</b> of what you give it.</p>',
@@ -1920,7 +1948,7 @@
 
   /* ---------- Animations d'entrée au scroll ---------- */
   if(!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window){
-    const sections = document.querySelectorAll('.improve, .rider, .shock, .card, .pvpanel, .kid, .heroW');
+    const sections = document.querySelectorAll('.tldr, .improve, .rider, .shock, .card, .pvpanel, .kid, .heroW');
     sections.forEach(s=> s.classList.add('a-in'));
     // conteneurs de barres : la largeur part de 0 au premier passage (survit au re-render i18n)
     const watched = document.querySelectorAll('[data-i18n="wh-explain"], [data-i18n="kid-txt"]');
