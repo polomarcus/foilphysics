@@ -53,8 +53,11 @@
   }
 
   header{text-align:center; padding:8px 0 20px;}
-  header h1{font-size:1.55rem; font-weight:800; letter-spacing:-0.02em;}
-  header h1 .hi{color:var(--sky);}
+  header h1{display:flex; flex-direction:column; gap:6px; align-items:center;}
+  header .h1a{font-size:clamp(2.1rem, 6vw, 3rem); font-weight:900; letter-spacing:-.03em; line-height:1.05;}
+  header .h1b{font-size:.95rem; font-weight:700; color:var(--muted); letter-spacing:.14em; text-transform:uppercase;}
+  header h1 .hi{background:linear-gradient(100deg, #7dd3fc, #38bdf8 55%, #0ea5e9);
+    -webkit-background-clip:text; background-clip:text; color:transparent;}
   header p{color:var(--muted); font-size:.92rem; margin-top:6px;}
   header .hsub{font-size:1.15rem; color:#cbd5e1; line-height:1.55; max-width:640px; margin:12px auto 0;}
   header .hsub b{color:var(--sky);}
@@ -610,7 +613,7 @@
 
   <div class="sslide" id="intro"><!-- SLIDE 1 · intro -->
   <header>
-    <h1 data-i18n="h1">Le Choc des <span class="hi">Watts</span> en pump foil 🌊</h1>
+    <h1 data-i18n="h1"><span class="h1a">Le Choc des <span class="hi">Watts</span></span><span class="h1b">🌊 en pump foil</span></h1>
     <p class="hsub" data-i18n="hsub">Pourquoi une aile de <b>longue distance</b> te fait voler bien plus longtemps à effort réduit, là où une aile classique te met dans le rouge en quelques minutes.</p>
   </header>
 
@@ -1314,8 +1317,10 @@
   }
 
   function appliance(P){
-    if(P<150) return t('🔌 ≈ un ordinateur portable','🔌 ≈ a laptop');
-    if(P<250) return t('🔌 ≈ une console PS5 en jeu','🔌 ≈ a PS5 gaming');
+    if(P<115) return t('🔌 ≈ une grosse TV 65"','🔌 ≈ a big 65" TV');
+    if(P<155) return t('🔌 ≈ un PC portable qui charge','🔌 ≈ a charging laptop');
+    if(P<210) return t('🔌 ≈ une console PS5 en jeu','🔌 ≈ a PS5 gaming');
+    if(P<280) return t('🔌 ≈ une tour de PC gamer','🔌 ≈ a gaming PC tower');
     if(P<400) return t('🔌 ≈ un mixeur / blender à soupe','🔌 ≈ a soup blender');
     if(P<600) return t('🔌 ≈ un gros blender','🔌 ≈ a big blender');
     if(P<900) return t('🔌 ≈ un aspirateur','🔌 ≈ a vacuum cleaner');
