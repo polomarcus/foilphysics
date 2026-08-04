@@ -431,7 +431,7 @@
       rows.push([lab, d]);
     };
     test(t('Aile croisière (1500 · moyen)','Cruise wing (1500 · medium)'), x=>{ x.S=0.15; x.cd0=0.013; x.clMax=1.10; x.b=Math.max(x.b,0.90); });
-    test(t('Profil fin → moyen','Thin → medium profile'),                  x=>{ x.cd0=0.013; x.clMax=1.10; });
+    test(t('Profil actuel → moyen','Current → medium profile'),                  x=>{ x.cd0=0.013; x.clMax=1.10; });
     test(t('Stab actuel → 100','Current stab → 100'),                      x=>{ x.As=0.040; });
     test(t('Stab actuel → 200','Current stab → 200'),                      x=>{ x.As=0.080; });
     test(t('Mât → 19 mm (Fatty)','Mast → 19 mm (Fatty)'),                  x=>{ x.Am=0.085; });
