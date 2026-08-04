@@ -147,7 +147,7 @@
     <h3 data-i18n="sim-h3">🎛️ Ta vitesse max</h3>
     <p class="lede" data-i18n="sim-lede">La vitesse pure se joue en <b>anaérobie</b>. Deux échelles : le <b>sprint tenu</b> (30 s-1 min :
       400-600 W pour un sportif, 700-900 W pour un très bon athlète) et la <b>pointe de course</b> (10-20 s :
-      un coureur entraîné monte à <b>1 000-1 400 W</b> — c'est là que se font les 30-38 km/h des races).</p>
+      un coureur entraîné monte à <b>1 000-1 600 W</b> — c'est là que se font les 30-38 km/h des races).</p>
     <div class="panel">
       <div class="vout" aria-live="polite">
         <div class="n" id="o-vmax">— <small>km/h</small></div>
@@ -184,7 +184,7 @@
         <div class="field"><label for="i-w"><span data-i18n="l-w">Poids (toi + matos)</span> : <span class="fval" id="v-w">75</span> kg</label>
           <input type="range" id="i-w" min="45" max="110" step="1" value="75"></div>
         <div class="field"><label for="i-p"><span data-i18n="l-p">Tes watts (sprint ou pointe)</span> : <span class="fval" id="v-p">600</span> W</label>
-          <input type="range" id="i-p" min="250" max="1500" step="10" value="600"></div>
+          <input type="range" id="i-p" min="250" max="1600" step="10" value="600"></div>
       </div>
 
       <div class="bk" id="o-bk"></div>
@@ -253,9 +253,9 @@
         <div class="big">comme les pédales auto</div>
         <p>Pieds libres, tu ne peux que <b>pousser</b> — la moitié du cycle est perdue. Strappé, tu <b>tires
           aussi à la remontée</b> : ~+20 % de rendement ≈ <b>+1,5 à 2 km/h</b> à watts égaux. Et le modèle colle
-          au réel : les races se courent à <b>30-38 km/h</b>, ce qui demande <b>760 W à ~1 400 W</b> de pointe
-          strappé sur une lame fine — le <b>~37 km/h</b> du champion de France, c'est ~1 350 W pendant
-          quelques secondes. Cohérent.</p>
+          au réel : les races se courent à <b>30-38 km/h</b>, ce qui demande <b>~850 à ~1 600 W</b> de pointe
+          strappé sur une lame fine — le <b>~37 km/h</b> du champion de France, c'est ~1 550 W pendant
+          quelques secondes, le pic d'un sprinteur de haut niveau. Cohérent.</p>
       </div>
       <div class="card you" data-i18n="vd4">
         <div class="k">🫀 Le vrai plafond : ton sprint</div>
@@ -300,7 +300,7 @@
     'tldr-s':'And two surprises: span still helps… and at 25 km/h, <b>the air brakes you as much as a stab 200</b>.',
     'disc':'⚠️ <b>Estimated figures</b> (± ~15%) — same physics model as <a href="./?lang=en">the long-distance comparator</a>, solved here "flat out": Vmax = the speed where required power reaches your sprint.',
     'sim-h3':'🎛️ Your top speed',
-    'sim-lede':'Pure speed is an <b>anaerobic</b> game. Two scales: the <b>held sprint</b> (30 s-1 min: 400-600 W for a sporty rider, 700-900 W for a top athlete) and the <b>race burst</b> (10-20 s: a trained racer hits <b>1,000-1,400 W</b> — that\'s where the 30-38 km/h of races happen).',
+    'sim-lede':'Pure speed is an <b>anaerobic</b> game. Two scales: the <b>held sprint</b> (30 s-1 min: 400-600 W for a sporty rider, 700-900 W for a top athlete) and the <b>race burst</b> (10-20 s: a trained racer hits <b>1,000-1,600 W</b> — that\'s where the 30-38 km/h of races happen).',
     'l-s':'Wing area','l-b':'Span','l-prof':'Wing profile','l-mast':'Mast','l-stab':'Stab',
     'l-w':'Weight (you + gear)','l-p':'Your watts (sprint or burst)',
     'o-p1':'Thin (~8-10%) — speed blade','o-p2':'Medium (~13-15%)','o-p3':'Thick (~17%) — school wing',
@@ -319,7 +319,7 @@
     'vd2':'<div class="k">❌ «The stab plays no role»</div><div class="big">it does — a lot</div><p>Per cm², the stab is the foil\'s <b>dirtiest</b> appendage (it works in disturbed water, often loaded). A <b>stab 200 costs ~2 to 4 km/h</b> vs a stab 50 (depending on its cleanliness) — as much as changing wings! Even a stab 100 leaves ~1.5 km/h. Speed setups run tiny stabs for a reason.</p>',
     'vd3':'<div class="k">🔄 The surprise: span still helps</div><div class="big">+15 cm ≈ +1.8 km/h</div><p>Even at 25 km/h, staying airborne costs ~10 N if the span is short. At equal area, lengthening the wing cuts that bill <b>without adding friction</b>. The limit lies elsewhere: stiffness, control, turns — not hydrodynamics.</p>',
     'l-straps':'🦶 Straps — you also pull on the upstroke, like clipless pedals (+~20% efficiency)',
-    'vd5':'<div class="k">🦶 The game changer: straps</div><div class="big">like clipless pedals</div><p>Strapless, you can only <b>push</b> — half the cycle is wasted. Strapped in, you <b>also pull on the upstroke</b>: ~+20% efficiency ≈ <b>+1.5 to 2 km/h</b> at equal watts. And the model matches reality: races run at <b>30-38 km/h</b>, which takes <b>760 W to ~1,400 W</b> of strapped burst on a thin blade — the French champion\'s <b>~37 km/h</b> is ~1,350 W for a few seconds. It checks out.</p>',
+    'vd5':'<div class="k">🦶 The game changer: straps</div><div class="big">like clipless pedals</div><p>Strapless, you can only <b>push</b> — half the cycle is wasted. Strapped in, you <b>also pull on the upstroke</b>: ~+20% efficiency ≈ <b>+1.5 to 2 km/h</b> at equal watts. And the model matches reality: races run at <b>30-38 km/h</b>, which takes <b>~850 to ~1,600 W</b> of strapped burst on a thin blade — the French champion\'s <b>~37 km/h</b> is ~1,550 W for a few seconds, an elite sprinter\'s peak. It checks out.</p>',
     'vd4':'<div class="k">🫀 The real ceiling: your sprint</div><div class="big">Vmax ∝ ∛watts</div><p>Required power rises with the <b>cube</b> of speed: to go <b>2× faster</b>, you need <b>8× more watts</b>. Doubling your sprint only gives <b>+26%</b> Vmax. Pure speed is first a <b>sprinter\'s</b> exercise — then a gear one.</p>',
     'foot':'<b style="color:var(--txt)">Model</b> — steady flight (lift = weight), based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>: <code>P(v) = [weight²/(½ρv²·π·span²) + ½ρv²·(area·C_D0 + mast + fuselage + stab)] · v / η</code>; Vmax solves P(v) = your sprint, <b>rider air drag included</b> (CdA ≈ 0.55 crouched — ~120 W at 22 km/h!). ρ = 1025 · estimated η (grows with aspect ratio) · short fuselage fixed · stab C_D estimated (conclusion robust from 0.010 to 0.020) · cavitation ignored (negligible below ~30 km/h) · no swell, no take-off · straps = +20% efficiency (upstroke pull, cf. the original model\'s «unstrapped» clamp). Educational estimates, not a test bench.<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
   };
@@ -364,32 +364,39 @@
   }
   function vmax(c){
     const m = model(c);
+    const vlow = m.vStall*1.1;   // vitesse mini de vol : voler sous le décrochage est interdit
     let vOpt = 1, best = Infinity;
     for(let v=1; v<=22; v+=0.05){ const p = m.P(v); if(p < best){ best = p; vOpt = v; } }
-    if(best > c.P) return {v:NaN, m};
-    let lo = vOpt, hi = 30;
+    const vFrom = Math.max(vOpt, vlow);
+    if(m.P(vFrom) > c.P) return {v:NaN, m, vlow, need: m.P(vFrom)};
+    let lo = vFrom, hi = 30;
     for(let i=0; i<80; i++){ const mid = (lo+hi)/2; (m.P(mid) > c.P) ? hi = mid : lo = mid; }
-    return {v: lo, m};
+    return {v: lo, m, vlow};
   }
 
   /* ---------- rendu ---------- */
   function render(){
     ['s','b','w','p'].forEach(k => $('v-'+k).textContent = $('i-'+k).value);
     const c = cfg();
-    const {v, m} = vmax(c);
+    const {v, m, vlow, need} = vmax(c);
 
     if(isNaN(v)){
-      $('o-vmax').innerHTML = '<span class="ko">' + t('même le creux dépasse ton sprint 😅','even the sweet spot exceeds your sprint 😅') + '</span>';
-      $('o-win').innerHTML = t('Cette aile demande plus de ','This wing needs more than ') + num(c.P,0) +
-        t(' W rien que pour voler — monte le curseur sprint ou change de setup.',' W just to fly — raise the sprint slider or change setup.');
+      $('o-vmax').innerHTML = '<span class="ko">' + t('✋ ça ne vole pas','✋ it doesn\'t fly') + '</span>';
+      $('o-win').innerHTML = t('Cette config décroche sous <b>','This setup stalls below <b>') + num(vlow*3.6,0) +
+        t(' km/h</b> et y voler demande <b>~',' km/h</b> and flying there takes <b>~') + num(need,0) +
+        t(' W</b> — il te manque des watts, de la surface ou de l\'envergure.',
+          ' W</b> — you need more watts, more area or more span.');
       $('o-bk').innerHTML = '';
       tornado(c, NaN);
       return;
     }
+    const winKmh = (v - vlow)*3.6;
     $('o-vmax').innerHTML = num(v*3.6,1) + ' <small>km/h</small>';
-    $('o-win').innerHTML = t('Fenêtre de vol : de <b>','Flight window: from <b>') + num(m.vStall*1.1*3.6,0) + t('</b> à <b>','</b> to <b>') +
+    $('o-win').innerHTML = t('Fenêtre de vol : de <b>','Flight window: from <b>') + num(vlow*3.6,0) + t('</b> à <b>','</b> to <b>') +
       num(v*3.6,0) + ' km/h</b>' + t(' — en dessous ça décroche',' — below it stalls') + (c.clMax < 1 ? t(' / ventile',' / ventilates') : '') +
-      t(', au-dessus tes watts ne suivent plus.',', above it your watts can\'t keep up.');
+      t(', au-dessus tes watts ne suivent plus.',', above it your watts can\'t keep up.') +
+      (winKmh < 3 ? '<br><b style="color:#fcd34d">' + t('⚠️ Fenêtre très étroite (','⚠️ Very narrow window (') + num(winKmh,1) +
+        t(' km/h) : quasi impossible à lancer en pompant.',' km/h): nearly impossible to pump into.') + '</b>' : '');
 
     const q = 0.5*RHO*v*v;
     const parts = [
