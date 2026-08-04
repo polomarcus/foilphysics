@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La Course aux km/h — qu'est-ce qui fait aller un foil vite ?</title>
+<meta name="description" content="Simulateur pédagogique : qu'est-ce qui limite la vitesse max d'un foil de pump ? Surface, profil, stab, envergure, et surtout tes watts de sprint.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230f172a'/><rect x='9' y='33' width='82' height='13' rx='6.5' fill='%23f59e0b'/><path d='M57 53 L40 76 h10 l-6 18 18-24 h-10 z' fill='%2338bdf8'/></svg>">
+<style>
+  :root{
+    --bg:#0f172a; --panel:#1e293b; --panel-2:#16213a; --line:#334155;
+    --txt:#e2e8f0; --muted:#94a3b8; --dim:#64748b; --sky:#38bdf8;
+  }
+  *{margin:0; padding:0; box-sizing:border-box;}
+  body{background:var(--bg); color:var(--txt); font-family:system-ui,-apple-system,"Segoe UI",sans-serif; line-height:1.5;}
+  a{color:var(--sky);}
+  .skip{position:absolute; left:-9999px; top:0; z-index:100; background:var(--sky); color:#04121f;
+    font-weight:800; padding:10px 18px; border-radius:0 0 10px 0; text-decoration:none;}
+  .skip:focus{left:0;}
+  :focus-visible{outline:2px solid var(--sky); outline-offset:2px; border-radius:4px;}
+
+  .topbar{position:fixed; top:0; left:0; right:0; z-index:50; display:flex; gap:8px; flex-wrap:wrap;
+    justify-content:flex-end; padding:8px 12px;
+    background:linear-gradient(180deg, rgba(15,23,42,.96), rgba(15,23,42,.82));
+    -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+    border-bottom:1px solid rgba(51,65,85,.4);}
+  .topbar a{background:var(--panel); border:1px solid var(--line); color:var(--txt);
+    border-radius:999px; padding:6px 12px; font-size:.78rem; font-weight:700; text-decoration:none;}
+  .topbar a:hover{border-color:var(--sky); color:var(--sky);}
+  @media(max-width:680px){ .topbar{position:static; justify-content:center; background:none; border:none;} }
+
+  main{max-width:960px; margin:0 auto; padding:64px 16px 40px;}
+  header{text-align:center; padding:24px 0 8px;}
+  .h1a{display:block; font-size:clamp(2rem,6vw,2.8rem); font-weight:900; letter-spacing:-.03em; line-height:1.05;}
+  .h1a .hi{background:linear-gradient(100deg,#fcd34d,#f59e0b 55%,#d97706); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .h1b{display:block; font-size:1.2rem; font-weight:800; color:#cbd5e1; letter-spacing:.12em; text-transform:uppercase; margin-top:6px;}
+  .hsub{font-size:1.05rem; color:#cbd5e1; max-width:640px; margin:14px auto 0;}
+  .hsub b{color:var(--sky);}
+
+  .tldr{text-align:center; margin:34px 0 44px;}
+  .tldr .t{font-size:1.45rem; font-weight:800; letter-spacing:-.015em; line-height:1.3;}
+  .tldr .t b{color:#f59e0b;}
+  .tldr .s{color:var(--muted); font-size:.9rem; margin-top:8px;}
+
+  .disclaimer{color:#fcd34d; text-align:center; font-size:.78rem; margin:0 auto 34px; max-width:680px;}
+
+  section{margin-bottom:56px;}
+  h3{font-size:1.4rem; font-weight:800; text-align:center; letter-spacing:-.015em; margin-bottom:8px;}
+  .lede{color:var(--muted); font-size:.9rem; text-align:center; max-width:680px; margin:0 auto 20px;}
+
+  .panel{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px 16px;}
+  .inputs{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px 18px;}
+  .field label{display:block; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em;
+    color:var(--muted); font-weight:700; margin-bottom:5px;}
+  .field .fval{color:var(--sky); font-weight:800; font-size:.95rem; text-transform:none; letter-spacing:0;}
+  input[type=range]{width:100%; accent-color:var(--sky);}
+  select{width:100%; background:var(--panel-2); color:var(--txt); border:1px solid var(--line);
+    border-radius:9px; padding:9px 10px; font-size:.9rem;}
+
+  .vout{text-align:center; margin:26px 0 8px;}
+  .vout .n{font-size:3.4rem; font-weight:900; letter-spacing:-.03em; line-height:1;}
+  .vout .n small{font-size:1.3rem; color:var(--muted); font-weight:700;}
+  .vout .win{color:var(--muted); font-size:.9rem; margin-top:8px;}
+  .vout .win b{color:var(--txt);}
+  .vout .ko{color:#fca5a5; font-weight:700; font-size:1.1rem;}
+
+  .bk{max-width:640px; margin:18px auto 0;}
+  .bk-cat{font-size:.74rem; color:var(--muted); margin:10px 0 3px; font-weight:700; text-transform:uppercase; letter-spacing:.04em;}
+  .bkr{display:grid; grid-template-columns:auto 1fr 64px; gap:8px; align-items:center; margin:3px 0;}
+  .bkr .lab{font-size:.8rem; color:#cbd5e1; min-width:132px;}
+  .bkr .trk{height:15px; background:var(--panel-2); border-radius:5px; overflow:hidden; display:block;}
+  .bkr .fil{display:block; height:100%; border-radius:5px; transition:width .6s cubic-bezier(.22,1,.36,1);}
+  .bkr .v{font-size:.8rem; font-weight:800; text-align:right; font-variant-numeric:tabular-nums;}
+
+  .sb-axis{display:grid; grid-template-columns:150px 1fr 1fr 70px; gap:6px; font-size:.7rem; color:var(--muted); margin:16px 0 4px;}
+  .sb-axis span:first-child{grid-column:2; text-align:right; padding-right:6px;}
+  .sb-axis span:last-child{grid-column:3; padding-left:6px;}
+  .sbar{display:grid; grid-template-columns:150px 1fr 1fr 70px; gap:6px; align-items:center; margin:5px 0;}
+  .sbar .lab{font-size:.78rem; color:var(--muted); white-space:nowrap; overflow:hidden;}
+  .sbar .neg,.sbar .pos{height:14px; background:var(--panel-2); display:flex; min-width:0;}
+  .sbar .neg{justify-content:flex-end; border-radius:5px 0 0 5px;}
+  .sbar .pos{border-left:2px solid var(--line); border-radius:0 5px 5px 0;}
+  .sbar .fil{display:block; height:100%; transition:width .6s cubic-bezier(.22,1,.36,1);}
+  .sbar .fil.gain{background:#22c55e; border-radius:0 5px 5px 0;}
+  .sbar .fil.loss{background:#ef4444; border-radius:5px 0 0 5px;}
+  .sbar .v{font-size:.78rem; font-weight:800; text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums;}
+  .sbar .v.gain{color:#86efac;} .sbar .v.loss{color:#fca5a5;}
+  @media(max-width:460px){
+    .sbar,.sb-axis{grid-template-columns:1fr 1fr 70px;}
+    .sbar .lab{grid-column:1/4;}
+    .sb-axis span:first-child{grid-column:1;} .sb-axis span:last-child{grid-column:2;}
+  }
+
+  .cards{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  @media(max-width:640px){ .cards{grid-template-columns:1fr;} }
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px;}
+  .card .k{font-weight:800; margin-bottom:6px; text-align:center;}
+  .card .big{font-size:1.5rem; font-weight:800; text-align:center; margin:4px 0 8px; letter-spacing:-.02em;}
+  .card p{font-size:.87rem; color:#cbd5e1; line-height:1.55;}
+  .ok .big{color:#86efac;} .no .big{color:#fca5a5;} .meh .big{color:var(--sky);} .you .big{color:#f59e0b;}
+
+  footer{color:var(--muted); font-size:.78rem; text-align:center; padding:24px 8px; line-height:1.6;}
+  footer code{color:var(--sky); font-family:ui-monospace,Menlo,monospace;}
+</style>
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+<nav class="topbar" aria-label="Navigation">
+  <a href="./">⚡ Le Choc des Watts (longue distance)</a>
+  <a href="https://github.com/polomarcus/foilphysics" target="_blank" rel="noopener">🐙 Code</a>
+  <a href="https://piouz.org/" target="_blank" rel="noopener">⚡ Piouz</a>
+  <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">📸 PoloFoil</a>
+</nav>
+<main id="contenu">
+
+  <header>
+    <h1><span class="h1a">La Course aux <span class="hi">km/h</span></span><span class="h1b">🚀 qu'est-ce qui fait aller un foil vite ?</span></h1>
+    <p class="hsub">Tu penses que seule compte une <b>petite aile de 600-800 cm²</b>, et que le stab ne joue pas ?
+      Le modèle est d'accord sur la première partie… et pas du tout sur la seconde.</p>
+  </header>
+
+  <div class="tldr">
+    <div class="t">Pour la vitesse pure : <b>petite aile fine</b> + <b>petit stab</b><br>+ tes <b>watts de sprint</b>.</div>
+    <div class="s">Et une surprise : l'envergure aide encore, même à 25 km/h.</div>
+  </div>
+
+  <div class="disclaimer">⚠️ <b>Chiffres estimés</b> (± ~15 %) — même modèle physique que
+    <a href="./">le comparateur longue distance</a>, résolu ici « à fond » : Vmax = la vitesse où la
+    puissance requise atteint ton sprint.</div>
+
+  <!-- SIMULATEUR -->
+  <section>
+    <h3>🎛️ Ton setup vitesse</h3>
+    <p class="lede">La vitesse max se joue en <b>anaérobie</b> : ce que tu tiens 30 s à 1 min (pas ta puissance
+      d'endurance). Un sportif sort 400-600 W en sprint, un très bon athlète 700-900 W.</p>
+    <div class="panel">
+      <div class="inputs">
+        <div class="field"><label for="i-s">Surface aile : <span class="fval" id="v-s">700</span> cm²</label>
+          <input type="range" id="i-s" min="450" max="1800" step="10" value="700"></div>
+        <div class="field"><label for="i-b">Envergure : <span class="fval" id="v-b">75</span> cm</label>
+          <input type="range" id="i-b" min="55" max="110" step="1" value="75"></div>
+        <div class="field"><label for="i-prof">Profil de l'aile</label>
+          <select id="i-prof">
+            <option value="0.008|0.62" selected>Fin (~8-10 %) — lame de vitesse</option>
+            <option value="0.013|1.10">Moyen (~13-15 %)</option>
+            <option value="0.018|1.50">Épais (~17 %) — aile d'école</option>
+          </select></div>
+        <div class="field"><label for="i-mast">Mât</label>
+          <select id="i-mast">
+            <option value="0.050" selected>13 mm — fin (perf)</option>
+            <option value="0.065">16 mm — standard</option>
+            <option value="0.085">19 mm — gros (Fatty)</option>
+          </select></div>
+        <div class="field"><label for="i-stab">Stab</label>
+          <select id="i-stab">
+            <option value="0.020" selected>Stab 50</option>
+            <option value="0.028">Stab 70</option>
+            <option value="0.040">Stab 100</option>
+            <option value="0.060">Stab 150</option>
+            <option value="0.080">Stab 200</option>
+          </select></div>
+        <div class="field"><label for="i-w">Poids (toi + matos) : <span class="fval" id="v-w">75</span> kg</label>
+          <input type="range" id="i-w" min="45" max="110" step="1" value="75"></div>
+        <div class="field"><label for="i-p">Ton sprint (30 s-1 min) : <span class="fval" id="v-p">600</span> W</label>
+          <input type="range" id="i-p" min="250" max="900" step="10" value="600"></div>
+      </div>
+
+      <div class="vout">
+        <div class="n" id="o-vmax">— <small>km/h</small></div>
+        <div class="win" id="o-win">—</div>
+      </div>
+
+      <div class="bk" id="o-bk"></div>
+    </div>
+  </section>
+
+  <!-- TORNADO -->
+  <section>
+    <h3>🔬 Qu'est-ce qui te fait gagner (ou perdre) des km/h ?</h3>
+    <p class="lede">Effet de chaque changement sur <b>ta</b> Vmax, à sprint égal.
+      <span style="color:#86efac">Vert = plus vite</span>, <span style="color:#fca5a5">rouge = plus lent</span>.</p>
+    <div class="panel" id="o-tornado"></div>
+  </section>
+
+  <!-- VERDICTS -->
+  <section>
+    <h3>🧾 Le verdict, en 4 cartes</h3>
+    <div class="cards">
+      <div class="card ok">
+        <div class="k">✅ Ton intuition : la petite aile fine</div>
+        <div class="big">le levier n° 1</div>
+        <p>Le frottement de l'aile coûte <b>surface × v³</b> : à 25 km/h, chaque cm² se paie cher.
+          Passer d'une aile de croisière (1500 cm², profil moyen) à une lame de 700 cm² fine ≈
+          <b>+4-5 km/h</b>. Et une petite aile <b>ne peut pas</b> voler lentement — elle t'oblige à la vitesse.</p>
+      </div>
+      <div class="card no">
+        <div class="k">❌ « Le stab ne joue pas »</div>
+        <div class="big">si — beaucoup</div>
+        <p>Par cm², le stab est l'appendice <b>le plus sale</b> du foil (il travaille dans l'eau perturbée,
+          souvent chargé). Un <b>stab 200 coûte ~4-5 km/h</b> face à un stab 50 — autant que changer d'aile !
+          Même un stab 100 laisse ~2 km/h. Les setups de vitesse courent en stab minuscule pour une raison.</p>
+      </div>
+      <div class="card meh">
+        <div class="k">🔄 La surprise : l'envergure aide encore</div>
+        <div class="big">+15 cm ≈ +1,5 km/h</div>
+        <p>Même à 25 km/h, rester en l'air coûte ~10 N si l'envergure est courte. À surface égale, allonger
+          l'aile réduit cette facture <b>sans ajouter de frottement</b>. La limite est ailleurs : rigidité,
+          contrôle, virages — pas l'hydrodynamique.</p>
+      </div>
+      <div class="card you">
+        <div class="k">🫀 Le vrai plafond : ton sprint</div>
+        <div class="big">Vmax ∝ ∛watts</div>
+        <p>La puissance requise grimpe au <b>cube</b> de la vitesse : pour aller <b>2× plus vite</b>, il faut
+          <b>8× plus de watts</b>. Doubler ton sprint ne donne que <b>+26 %</b> de Vmax. La vitesse pure est
+          d'abord un exercice de <b>sprinteur</b> — puis de matos.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <b style="color:var(--txt)">Modèle</b> — vol stabilisé (portance = poids), d'après
+    <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a> :
+    <code>P(v) = [poids²/(½ρv²·π·envergure²) + ½ρv²·(surface·C_D0 + mât + fuselage + stab)] · v / η</code> ;
+    Vmax résout P(v) = ton sprint. ρ = 1025 · η estimé (croît avec l'allongement) · fuselage court fixé ·
+    hors houle, hors départ. Estimations pédagogiques, pas un banc d'essai.<br>
+    ⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> ·
+    📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> ·
+    ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>
+  </footer>
+</main>
+
+<script>
+(function(){
+  const RHO=1025, G=9.81, E=1.0, CDM=0.008, CDF=0.010, CDS=0.020, A_FUS=0.028;
+  const $ = id => document.getElementById(id);
+  const num = (x,d=1)=> x.toLocaleString('fr-FR',{maximumFractionDigits:d, minimumFractionDigits:d});
+
+  function cfg(){
+    const [cd0, clMax] = $('i-prof').value.split('|').map(parseFloat);
+    return {
+      S:  +$('i-s').value/10000,
+      b:  +$('i-b').value/100,
+      cd0, clMax,
+      Am: parseFloat($('i-mast').value),
+      As: parseFloat($('i-stab').value),
+      W:  +$('i-w').value*G,
+      P:  +$('i-p').value
+    };
+  }
+  function model(c){
+    const AR = c.b*c.b/c.S;
+    const eta = Math.min(0.80, (0.44 + 0.015*AR)*1.06);          // rig carbone rigide
+    const K  = c.S*c.cd0 + c.Am*CDM + A_FUS*CDF + c.As*CDS;
+    const Ai = (c.W*c.W)/(0.5*RHO*Math.PI*c.b*c.b*E);
+    const P  = v => (Ai/(v*v) + 0.5*RHO*v*v*K)*v/eta;
+    const cl = Math.min((2*Math.PI/(1+2/AR))*(13*Math.PI/180), c.clMax);
+    const vStall = Math.sqrt(c.W/(0.5*RHO*c.S*cl));
+    return {AR, eta, K, Ai, P, vStall};
+  }
+  function vmax(c){
+    const m = model(c);
+    let vOpt = 1, best = Infinity;
+    for(let v=1; v<=22; v+=0.05){ const p = m.P(v); if(p < best){ best = p; vOpt = v; } }
+    if(best > c.P) return {v:NaN, m};
+    let lo = vOpt, hi = 30;
+    for(let i=0; i<80; i++){ const mid = (lo+hi)/2; (m.P(mid) > c.P) ? hi = mid : lo = mid; }
+    return {v: lo, m};
+  }
+
+  function render(){
+    ['s','b','w','p'].forEach(k => $('v-'+k).textContent = $('i-'+k).value);
+    const c = cfg();
+    const {v, m} = vmax(c);
+
+    if(isNaN(v)){
+      $('o-vmax').innerHTML = '<span class="ko">même le creux dépasse ton sprint 😅</span>';
+      $('o-win').innerHTML = 'Cette aile demande plus de ' + num(c.P,0) +
+        ' W rien que pour voler — monte le curseur sprint ou change de setup.';
+      $('o-bk').innerHTML = '';
+      tornado(c, NaN);
+      return;
+    }
+    $('o-vmax').innerHTML = num(v*3.6,1) + ' <small>km/h</small>';
+    $('o-win').innerHTML = 'Fenêtre de vol : de <b>' + num(m.vStall*1.1*3.6,0) + '</b> à <b>' +
+      num(v*3.6,0) + ' km/h</b> — en dessous ça décroche' + (c.clMax < 1 ? ' / ventile' : '') +
+      ', au-dessus tes watts ne suivent plus.';
+
+    // Décomposition à Vmax
+    const q = 0.5*RHO*v*v;
+    const parts = [
+      ['Portance (rester en l\'air)', m.Ai/(v*v),      '#f43f5e'],
+      ['Frottement de l\'aile',        q*c.S*c.cd0,     '#eab308'],
+      ['Mât',                          q*c.Am*CDM,      '#38bdf8'],
+      ['Fuselage',                     q*A_FUS*CDF,     '#9085e9'],
+      ['Stab',                         q*c.As*CDS,      '#34d399']
+    ].map(([lab,D,col]) => [lab, D*v/m.eta, col]);
+    const mx = Math.max(...parts.map(p=>p[1]));
+    $('o-bk').innerHTML = '<div class="bk-cat">Où partent tes ' + num(c.P,0) + ' W à ' + num(v*3.6,0) + ' km/h</div>' +
+      parts.map(([lab,w,col]) =>
+        '<div class="bkr"><span class="lab">'+lab+'</span><span class="trk"><span class="fil" style="width:'+
+        (100*w/mx).toFixed(1)+'%;background:'+col+'"></span></span><span class="v">'+num(w,0)+' W</span></div>'
+      ).join('');
+
+    tornado(c, v);
+  }
+
+  function tornado(c, v0){
+    const rows = [];
+    const test = (lab, mut) => {
+      const c2 = Object.assign({}, c); mut(c2);
+      const r = vmax(c2);
+      const d = (isNaN(v0) || isNaN(r.v)) ? NaN : (r.v - v0)*3.6;
+      rows.push([lab, d]);
+    };
+    test('Aile croisière (1500 · moyen)', x=>{ x.S=0.15; x.cd0=0.013; x.clMax=1.10; x.b=Math.max(x.b,0.90); });
+    test('Profil fin → moyen',            x=>{ x.cd0=0.013; x.clMax=1.10; });
+    test('Stab actuel → 100',             x=>{ x.As=0.040; });
+    test('Stab actuel → 200',             x=>{ x.As=0.080; });
+    test('Mât → 19 mm (Fatty)',           x=>{ x.Am=0.085; });
+    test('Envergure +15 cm',              x=>{ x.b+=0.15; });
+    test('Envergure −15 cm',              x=>{ x.b=Math.max(0.45, x.b-0.15); });
+    test('Sprint +100 W',                 x=>{ x.P+=100; });
+    test('Poids −5 kg',                   x=>{ x.W-=5*G; });
+
+    const mx = Math.max(...rows.map(r=>Math.abs(r[1])||0), 0.5);
+    $('o-tornado').innerHTML =
+      '<div class="sb-axis"><span>← plus lent</span><span>plus vite →</span></div>' +
+      rows.map(([lab,d])=>{
+        if(isNaN(d)) return '<div class="sbar"><span class="lab">'+lab+'</span><span class="neg"></span><span class="pos"></span><span class="v">—</span></div>';
+        const w = (100*Math.abs(d)/mx).toFixed(1);
+        const gain = d >= 0;
+        return '<div class="sbar"><span class="lab">'+lab+'</span>'+
+          '<span class="neg">'+(!gain?'<span class="fil loss" style="width:'+w+'%"></span>':'')+'</span>'+
+          '<span class="pos">'+(gain?'<span class="fil gain" style="width:'+w+'%"></span>':'')+'</span>'+
+          '<span class="v '+(gain?'gain':'loss')+'">'+(gain?'+':'')+num(d,1)+' km/h</span></div>';
+      }).join('');
+  }
+
+  document.querySelectorAll('input,select').forEach(el => el.addEventListener('input', render));
+  render();
+})();
+</script>
+</body>
+</html>
