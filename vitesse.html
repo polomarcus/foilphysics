@@ -135,7 +135,7 @@
 
   <div class="tldr">
     <div class="t" data-i18n="tldr-t">Pour la vitesse pure : <b>petite aile fine</b> + <b>petit stab</b><br>+ tes <b>watts de sprint</b>.</div>
-    <div class="s" data-i18n="tldr-s">Et deux surprises : l'envergure aide encore… et à 25 km/h, <b>l'air te freine autant qu'un stab 200</b>.</div>
+    <div class="s" data-i18n="tldr-s">Et deux surprises : l'envergure aide encore… et à 25 km/h, <b>l'air te freine autant qu'un stab 100</b>.</div>
   </div>
 
   <div class="disclaimer" data-i18n="disc">⚠️ <b>Chiffres estimés</b> (± ~15 %) — même modèle physique que
@@ -147,7 +147,7 @@
     <h3 data-i18n="sim-h3">🎛️ Ta vitesse max</h3>
     <p class="lede" data-i18n="sim-lede">La vitesse pure se joue en <b>anaérobie</b>. Deux échelles : le <b>sprint tenu</b> (30 s-1 min :
       400-600 W pour un sportif, 700-900 W pour un très bon athlète) et la <b>pointe de course</b> (10-20 s :
-      un coureur entraîné monte à <b>1 000-1 600 W</b> — c'est là que se font les 30-38 km/h des races).</p>
+      un coureur entraîné monte à <b>1 000-1 400 W</b> — c'est là que se font les 30-38 km/h des races).</p>
     <div class="panel">
       <div class="vout" aria-live="polite">
         <div class="n" id="o-vmax">— <small>km/h</small></div>
@@ -162,6 +162,7 @@
         <div class="field"><label for="i-prof" data-i18n="l-prof">Profil de l'aile</label>
           <select id="i-prof">
             <option value="0.008|0.62" selected data-i18n="o-p1">Fin (~8-10 %) — lame de vitesse</option>
+            <option value="0.0095|0.80" data-i18n="o-p4">Affûté (~11 %) — lame de course réelle (type Flow)</option>
             <option value="0.013|1.10" data-i18n="o-p2">Moyen (~13-15 %)</option>
             <option value="0.018|1.50" data-i18n="o-p3">Épais (~17 %) — aile d'école</option>
           </select></div>
@@ -203,47 +204,47 @@
   <section class="a-in">
     <h3 data-i18n="cb-h3">🏆 Le combo parfait (selon TES watts)</h3>
     <p class="lede" data-i18n="cb-lede">Optimisation sous contrainte pump : il faut une <b>fenêtre de vol</b> d'au moins ~4 km/h
-      pour monter en vitesse en pompant. Résultat surprenant : à watts « mortels », l'aile optimale est
-      <b>plus grande</b> que l'intuition. Calculé pour 75 kg.</p>
+      pour monter en vitesse en pompant. Résultat : <b>plus t'as de watts, plus petite est la lame que tu
+      peux te permettre</b> — c'est la fenêtre qui décide, pas le catalogue. Calculé pour 75 kg, sans straps.</p>
     <div class="cards">
       <div class="card meh">
         <div class="k" data-i18n="cb1-k">Sprint ~600 W — sportif</div>
-        <div class="big">~950 cm² · 110 cm</div>
-        <p data-i18n="cb1-p">AR ~13, profil fin, stab 50, mât 13 mm → <b>~23-24 km/h</b>, décroche vers 18 km/h.
-          La lame de 700 cm² décroche trop haut : <b>pas de fenêtre pour la lancer</b> à ces watts.</p>
-        <p style="text-align:center;margin-top:12px"><button class="apply" type="button" data-c="950|110|600" data-i18n="cb-btn">⚙️ Appliquer ce combo</button></p>
+        <div class="big">~725 cm² · 100 cm</div>
+        <p data-i18n="cb1-p">Profil fin, stab 50, mât 13 mm → <b>~27 km/h</b>, fenêtre de vol 22-27 km/h.
+          La lame de 550 décroche trop haut : <b>pas de fenêtre pour la lancer</b> à ces watts.</p>
+        <p style="text-align:center;margin-top:12px"><button class="apply" type="button" data-c="725|100|600" data-i18n="cb-btn">⚙️ Appliquer ce combo</button></p>
       </div>
       <div class="card you">
         <div class="k" data-i18n="cb2-k">Sprint ~800 W — très bon sprinteur</div>
-        <div class="big">~725 cm² · 100 cm</div>
-        <p data-i18n="cb2-p">AR ~14, profil fin, stab 50, mât 13 mm → <b>~27 km/h</b>, décroche vers 20 km/h.
-          La petite lame de ton intuition — mais elle <b>exige</b> ce moteur-là.</p>
-        <p style="text-align:center;margin-top:12px"><button class="apply" type="button" data-c="725|100|800" data-i18n="cb-btn">⚙️ Appliquer ce combo</button></p>
+        <div class="big">~550 cm² · 88 cm</div>
+        <p data-i18n="cb2-p">Profil fin, stab 50, mât 13 mm → <b>~30 km/h</b>, fenêtre de vol 26-30 km/h.
+          La petite lame de ton intuition — mais elle <b>exige</b> ce moteur-là (et des straps pour viser plus haut).</p>
+        <p style="text-align:center;margin-top:12px"><button class="apply" type="button" data-c="550|88|800" data-i18n="cb-btn">⚙️ Appliquer ce combo</button></p>
       </div>
     </div>
   </section>
 
   <!-- VERDICTS -->
   <section class="a-in">
-    <h3 data-i18n="vd-h3">🧾 Le verdict, en 4 cartes</h3>
+    <h3 data-i18n="vd-h3">🧾 Le verdict, en 5 cartes</h3>
     <div class="cards">
       <div class="card ok" data-i18n="vd1">
         <div class="k">✅ Ton intuition : la petite aile fine</div>
         <div class="big">le levier n° 1</div>
         <p>Le frottement de l'aile coûte <b>surface × v³</b> : à 25 km/h, chaque cm² se paie cher.
           Passer d'une aile de croisière (1500 cm², profil moyen) à une lame de 700 cm² fine ≈
-          <b>+3-4 km/h</b>. Et une petite aile <b>ne peut pas</b> voler lentement — elle t'oblige à la vitesse.</p>
+          <b>+7 km/h</b> à 800 W. Et une petite aile <b>ne peut pas</b> voler lentement — elle t'oblige à la vitesse.</p>
       </div>
       <div class="card no" data-i18n="vd2">
         <div class="k">❌ « Le stab ne joue pas »</div>
         <div class="big">si — beaucoup</div>
         <p>Par cm², le stab est l'appendice <b>le plus sale</b> du foil (il travaille dans l'eau perturbée,
-          souvent chargé). Un <b>stab 200 coûte ~2 à 4 km/h</b> face à un stab 50 (selon sa propreté) — autant que changer
-          d'aile ! Même un stab 100 laisse ~1,5 km/h. Les setups de vitesse courent en stab minuscule pour une raison.</p>
+          souvent chargé). Un <b>stab 200 coûte ~3,5 km/h</b> face à un stab 50 — autant que changer
+          d'aile ! Même un stab 100 laisse ~1,3 km/h. Les setups de vitesse courent en stab minuscule pour une raison.</p>
       </div>
       <div class="card meh" data-i18n="vd3">
         <div class="k">🔄 La surprise : l'envergure aide encore</div>
-        <div class="big">+15 cm ≈ +1,8 km/h</div>
+        <div class="big">+15 cm ≈ +1,4 km/h</div>
         <p>Même à 25 km/h, rester en l'air coûte ~10 N si l'envergure est courte. À surface égale, allonger
           l'aile réduit cette facture <b>sans ajouter de frottement</b>. La limite est ailleurs : rigidité,
           contrôle, virages — pas l'hydrodynamique.</p>
@@ -252,10 +253,10 @@
         <div class="k">🦶 Le game changer : les straps</div>
         <div class="big">comme les pédales auto</div>
         <p>Pieds libres, tu ne peux que <b>pousser</b> — la moitié du cycle est perdue. Strappé, tu <b>tires
-          aussi à la remontée</b> : ~+20 % de rendement ≈ <b>+1,5 à 2 km/h</b> à watts égaux. Et le modèle colle
-          au réel : les races se courent à <b>30-38 km/h</b>, ce qui demande <b>~850 à ~1 600 W</b> de pointe
-          strappé sur une lame fine — le <b>~37 km/h</b> du champion de France, c'est ~1 550 W pendant
-          quelques secondes, le pic d'un sprinteur de haut niveau. Cohérent.</p>
+          aussi à la remontée</b> : ~+20 % de rendement ≈ <b>+2 km/h</b> à watts égaux. Et le modèle colle
+          au réel, calibré sur de vraies lames (Takoon Flow, GONG Veloce H — AR ~10, ~11 % d'épaisseur) :
+          strappé sur une 600, <b>30 km/h ≈ 750 W</b>, <b>33 km/h ≈ 1 000 W</b>… et le <b>~37 km/h</b> du
+          champion de France ≈ <b>1 300 W</b> de pointe — exactement le pic d'un sprinteur de haut niveau. Cohérent.</p>
       </div>
       <div class="card you" data-i18n="vd4">
         <div class="k">🫀 Le vrai plafond : ton sprint</div>
@@ -271,9 +272,11 @@
     <b style="color:var(--txt)">Modèle</b> — vol stabilisé (portance = poids), d'après
     <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a> :
     <code>P(v) = [poids²/(½ρv²·π·envergure²) + ½ρv²·(surface·C_D0 + mât + fuselage + stab)] · v / η</code> ;
-    Vmax résout P(v) = ton sprint, <b>traînée aérienne du rider incluse</b> (CdA ≈ 0,55 accroupi — ~120 W à 22 km/h !).
-    ρ = 1025 · η estimé (croît avec l'allongement) · fuselage court fixé · C_D du stab = estimation (conclusion robuste de
-    0,010 à 0,020) · cavitation ignorée (négligeable sous ~30 km/h) · hors houle, hors départ · straps = +20 % de rendement (traction à la remontée, cf. le clamp « unstrapped » du modèle d'origine). Estimations pédagogiques, pas un banc d'essai.<br>
+    Vmax résout P(v) = ton sprint, <b>traînée aérienne du rider incluse</b> (CdA ≈ 0,45 groupé — ~90 W à 25 km/h !).
+    ρ = 1025 · η estimé (croît avec l'allongement) · fuselage court fixé · mât compté à ~55 % immergé (à Vmax tu voles haut) ·
+    C_D stab et fuselage = milieux de fourchette, <b>calibrés sur les vitesses de course réelles</b> (30-38 km/h observés,
+    specs Takoon Flow / GONG Veloce H) · cavitation ignorée (négligeable sous ~30 km/h) · hors houle, hors départ ·
+    straps = +20 % de rendement (traction à la remontée, cf. le clamp « unstrapped » du modèle d'origine). Estimations pédagogiques, pas un banc d'essai.<br>
     ⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> ·
     📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> ·
     ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>
@@ -282,8 +285,9 @@
 
 <script>
 (function(){
-  const RHO=1025, G=9.81, E=1.0, CDM=0.008, CDF=0.010, CDS=0.020, A_FUS=0.028;
-  const CDA=0.55, RHO_AIR=1.2;   // traînée aérienne du rider (accroupi qui pompe)
+  const RHO=1025, G=9.81, E=1.0, CDM=0.008, CDF=0.006, CDS=0.012, A_FUS=0.028;
+  const M_IMM=0.55;              // à Vmax tu voles haut : ~55 % du mât immergé
+  const CDA=0.45, RHO_AIR=1.2;   // traînée aérienne du rider (groupé en pointe)
   const $ = id => document.getElementById(id);
 
   /* ---------- i18n ---------- */
@@ -297,31 +301,31 @@
     'h1b':'🚀 what makes a foil fast?',
     'hsub':'You think only a <b>small 600-800 cm² wing</b> matters, and the stab plays no role? The model agrees with the first part… and not at all with the second.',
     'tldr-t':'For pure speed: <b>small thin wing</b> + <b>small stab</b><br>+ your <b>sprint watts</b>.',
-    'tldr-s':'And two surprises: span still helps… and at 25 km/h, <b>the air brakes you as much as a stab 200</b>.',
+    'tldr-s':'And two surprises: span still helps… and at 25 km/h, <b>the air brakes you as much as a stab 100</b>.',
     'disc':'⚠️ <b>Estimated figures</b> (± ~15%) — same physics model as <a href="./?lang=en">the long-distance comparator</a>, solved here "flat out": Vmax = the speed where required power reaches your sprint.',
     'sim-h3':'🎛️ Your top speed',
-    'sim-lede':'Pure speed is an <b>anaerobic</b> game. Two scales: the <b>held sprint</b> (30 s-1 min: 400-600 W for a sporty rider, 700-900 W for a top athlete) and the <b>race burst</b> (10-20 s: a trained racer hits <b>1,000-1,600 W</b> — that\'s where the 30-38 km/h of races happen).',
+    'sim-lede':'Pure speed is an <b>anaerobic</b> game. Two scales: the <b>held sprint</b> (30 s-1 min: 400-600 W for a sporty rider, 700-900 W for a top athlete) and the <b>race burst</b> (10-20 s: a trained racer hits <b>1,000-1,400 W</b> — that\'s where the 30-38 km/h of races happen).',
     'l-s':'Wing area','l-b':'Span','l-prof':'Wing profile','l-mast':'Mast','l-stab':'Stab',
     'l-w':'Weight (you + gear)','l-p':'Your watts (sprint or burst)',
-    'o-p1':'Thin (~8-10%) — speed blade','o-p2':'Medium (~13-15%)','o-p3':'Thick (~17%) — school wing',
+    'o-p1':'Thin (~8-10%) — speed blade','o-p4':'Sharp (~11%) — real race blade (Flow-like)','o-p2':'Medium (~13-15%)','o-p3':'Thick (~17%) — school wing',
     'o-m1':'13 mm — thin (perf)','o-m2':'16 mm — standard','o-m3':'19 mm — big (Fatty)',
     'tor-h3':'🔬 What gains (or loses) you km/h?',
     'tor-lede':'Effect of each change on <b>your</b> Vmax, at equal sprint. <span style="color:#86efac">Green = faster</span>, <span style="color:#fca5a5">red = slower</span>.',
     'cb-h3':'🏆 The perfect combo (for YOUR watts)',
-    'cb-lede':'Optimisation under the pump constraint: you need a <b>flight window</b> of at least ~4 km/h to pump up to speed. Surprising result: at mortal watts, the optimal wing is <b>bigger</b> than intuition. Computed for 75 kg.',
+    'cb-lede':'Optimisation under the pump constraint: you need a <b>flight window</b> of at least ~4 km/h to pump up to speed. Result: <b>the more watts you have, the smaller the blade you can afford</b> — the window decides, not the catalogue. Computed for 75 kg, strapless.',
     'cb1-k':'Sprint ~600 W — athlete',
-    'cb1-p':'AR ~13, thin profile, stab 50, 13 mm mast → <b>~23-24 km/h</b>, stalls around 18 km/h. The 700 cm² blade stalls too high: <b>no window to launch it</b> at these watts.',
+    'cb1-p':'Thin profile, stab 50, 13 mm mast → <b>~27 km/h</b>, flight window 22-27 km/h. The 550 blade stalls too high: <b>no window to launch it</b> at these watts.',
     'cb2-k':'Sprint ~800 W — top sprinter',
-    'cb2-p':'AR ~14, thin profile, stab 50, 13 mm mast → <b>~27 km/h</b>, stalls around 20 km/h. The small blade of your intuition — but it <b>demands</b> that engine.',
+    'cb2-p':'Thin profile, stab 50, 13 mm mast → <b>~30 km/h</b>, flight window 26-30 km/h. The small blade of your intuition — but it <b>demands</b> that engine (and straps to aim higher).',
     'cb-btn':'⚙️ Apply this combo',
-    'vd-h3':'🧾 The verdict, in 4 cards',
-    'vd1':'<div class="k">✅ Your intuition: the small thin wing</div><div class="big">lever #1</div><p>Wing friction costs <b>area × v³</b>: at 25 km/h, every cm² is expensive. Going from a cruise wing (1500 cm², medium profile) to a thin 700 cm² blade ≈ <b>+3-4 km/h</b>. And a small wing <b>cannot</b> fly slowly — it forces you to speed.</p>',
-    'vd2':'<div class="k">❌ «The stab plays no role»</div><div class="big">it does — a lot</div><p>Per cm², the stab is the foil\'s <b>dirtiest</b> appendage (it works in disturbed water, often loaded). A <b>stab 200 costs ~2 to 4 km/h</b> vs a stab 50 (depending on its cleanliness) — as much as changing wings! Even a stab 100 leaves ~1.5 km/h. Speed setups run tiny stabs for a reason.</p>',
-    'vd3':'<div class="k">🔄 The surprise: span still helps</div><div class="big">+15 cm ≈ +1.8 km/h</div><p>Even at 25 km/h, staying airborne costs ~10 N if the span is short. At equal area, lengthening the wing cuts that bill <b>without adding friction</b>. The limit lies elsewhere: stiffness, control, turns — not hydrodynamics.</p>',
+    'vd-h3':'🧾 The verdict, in 5 cards',
+    'vd1':'<div class="k">✅ Your intuition: the small thin wing</div><div class="big">lever #1</div><p>Wing friction costs <b>area × v³</b>: at 25 km/h, every cm² is expensive. Going from a cruise wing (1500 cm², medium profile) to a thin 700 cm² blade ≈ <b>+7 km/h</b> at 800 W. And a small wing <b>cannot</b> fly slowly — it forces you to speed.</p>',
+    'vd2':'<div class="k">❌ «The stab plays no role»</div><div class="big">it does — a lot</div><p>Per cm², the stab is the foil\'s <b>dirtiest</b> appendage (it works in disturbed water, often loaded). A <b>stab 200 costs ~3.5 km/h</b> vs a stab 50 — as much as changing wings! Even a stab 100 leaves ~1.3 km/h. Speed setups run tiny stabs for a reason.</p>',
+    'vd3':'<div class="k">🔄 The surprise: span still helps</div><div class="big">+15 cm ≈ +1.4 km/h</div><p>Even at 25 km/h, staying airborne costs ~10 N if the span is short. At equal area, lengthening the wing cuts that bill <b>without adding friction</b>. The limit lies elsewhere: stiffness, control, turns — not hydrodynamics.</p>',
     'l-straps':'🦶 Straps — you also pull on the upstroke, like clipless pedals (+~20% efficiency)',
-    'vd5':'<div class="k">🦶 The game changer: straps</div><div class="big">like clipless pedals</div><p>Strapless, you can only <b>push</b> — half the cycle is wasted. Strapped in, you <b>also pull on the upstroke</b>: ~+20% efficiency ≈ <b>+1.5 to 2 km/h</b> at equal watts. And the model matches reality: races run at <b>30-38 km/h</b>, which takes <b>~850 to ~1,600 W</b> of strapped burst on a thin blade — the French champion\'s <b>~37 km/h</b> is ~1,550 W for a few seconds, an elite sprinter\'s peak. It checks out.</p>',
+    'vd5':'<div class="k">🦶 The game changer: straps</div><div class="big">like clipless pedals</div><p>Strapless, you can only <b>push</b> — half the cycle is wasted. Strapped in, you <b>also pull on the upstroke</b>: ~+20% efficiency ≈ <b>+2 km/h</b> at equal watts. And the model matches reality, calibrated on real blades (Takoon Flow, GONG Veloce H — AR ~10, ~11% thickness): strapped on a 600, <b>30 km/h ≈ 750 W</b>, <b>33 km/h ≈ 1,000 W</b>… and the French champion\'s <b>~37 km/h</b> ≈ <b>1,300 W</b> burst — exactly an elite sprinter\'s peak. It checks out.</p>',
     'vd4':'<div class="k">🫀 The real ceiling: your sprint</div><div class="big">Vmax ∝ ∛watts</div><p>Required power rises with the <b>cube</b> of speed: to go <b>2× faster</b>, you need <b>8× more watts</b>. Doubling your sprint only gives <b>+26%</b> Vmax. Pure speed is first a <b>sprinter\'s</b> exercise — then a gear one.</p>',
-    'foot':'<b style="color:var(--txt)">Model</b> — steady flight (lift = weight), based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>: <code>P(v) = [weight²/(½ρv²·π·span²) + ½ρv²·(area·C_D0 + mast + fuselage + stab)] · v / η</code>; Vmax solves P(v) = your sprint, <b>rider air drag included</b> (CdA ≈ 0.55 crouched — ~120 W at 22 km/h!). ρ = 1025 · estimated η (grows with aspect ratio) · short fuselage fixed · stab C_D estimated (conclusion robust from 0.010 to 0.020) · cavitation ignored (negligible below ~30 km/h) · no swell, no take-off · straps = +20% efficiency (upstroke pull, cf. the original model\'s «unstrapped» clamp). Educational estimates, not a test bench.<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
+    'foot':'<b style="color:var(--txt)">Model</b> — steady flight (lift = weight), based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>: <code>P(v) = [weight²/(½ρv²·π·span²) + ½ρv²·(area·C_D0 + mast + fuselage + stab)] · v / η</code>; Vmax solves P(v) = your sprint, <b>rider air drag included</b> (CdA ≈ 0.45 tucked — ~90 W at 25 km/h!). ρ = 1025 · estimated η (grows with aspect ratio) · short fuselage fixed · mast counted ~55% immersed (at Vmax you fly high) · stab & fuselage C_D mid-range, <b>calibrated on real race speeds</b> (observed 30-38 km/h, Takoon Flow / GONG Veloce H specs) · cavitation ignored (negligible below ~30 km/h) · no swell, no take-off · straps = +20% efficiency (upstroke pull, cf. the original model\'s «unstrapped» clamp). Educational estimates, not a test bench.<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
   };
   function applyLang(l){
     LANG = l;
@@ -355,7 +359,7 @@
   function model(c){
     const AR = c.b*c.b/c.S;
     const eta = Math.min(0.92, (0.44 + 0.015*AR)*1.06*(c.straps||1));
-    const K  = c.S*c.cd0 + c.Am*CDM + A_FUS*CDF + c.As*CDS;
+    const K  = c.S*c.cd0 + c.Am*M_IMM*CDM + A_FUS*CDF + c.As*CDS;
     const Ai = (c.W*c.W)/(0.5*RHO*Math.PI*c.b*c.b*E);
     const P  = v => ((Ai/(v*v) + 0.5*RHO*v*v*K)*v + 0.5*RHO_AIR*CDA*v*v*v)/eta;
     const cl = Math.min((2*Math.PI/(1+2/AR))*(13*Math.PI/180), c.clMax);
@@ -402,7 +406,7 @@
     const parts = [
       [t('Portance (rester en l\'air)','Lift (staying airborne)'), m.Ai/(v*v), '#f43f5e'],
       [t('Frottement de l\'aile','Wing friction'),                 q*c.S*c.cd0, '#eab308'],
-      [t('Mât','Mast'),                                            q*c.Am*CDM, '#38bdf8'],
+      [t('Mât','Mast'),                                            q*c.Am*M_IMM*CDM, '#38bdf8'],
       ['Fuselage',                                                 q*A_FUS*CDF, '#9085e9'],
       ['Stab',                                                     q*c.As*CDS, '#34d399']
     ].map(([lab,D,col]) => [lab, D*v/m.eta, col]);
