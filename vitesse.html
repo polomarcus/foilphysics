@@ -99,6 +99,9 @@
   .card p{font-size:.87rem; color:#cbd5e1; line-height:1.55;}
   .ok .big{color:#86efac;} .no .big{color:#fca5a5;} .meh .big{color:var(--sky);} .you .big{color:#f59e0b;}
 
+  .apply{background:var(--sky); color:#04121f; border:none; border-radius:9px; padding:9px 16px;
+    font-weight:800; cursor:pointer; font-size:.85rem;}
+  .apply:active{transform:scale(.98);}
   footer{color:var(--muted); font-size:.78rem; text-align:center; padding:24px 8px; line-height:1.6;}
   footer code{color:var(--sky); font-family:ui-monospace,Menlo,monospace;}
 </style>
@@ -121,7 +124,7 @@
 
   <div class="tldr">
     <div class="t">Pour la vitesse pure : <b>petite aile fine</b> + <b>petit stab</b><br>+ tes <b>watts de sprint</b>.</div>
-    <div class="s">Et une surprise : l'envergure aide encore, même à 25 km/h.</div>
+    <div class="s">Et deux surprises : l'envergure aide encore… et à 25 km/h, <b>l'air te freine autant qu'un stab 200</b>.</div>
   </div>
 
   <div class="disclaimer">⚠️ <b>Chiffres estimés</b> (± ~15 %) — même modèle physique que
@@ -129,7 +132,7 @@
     puissance requise atteint ton sprint.</div>
 
   <!-- SIMULATEUR -->
-  <section>
+  <section id="sim">
     <h3>🎛️ Ton setup vitesse</h3>
     <p class="lede">La vitesse max se joue en <b>anaérobie</b> : ce que tu tiens 30 s à 1 min (pas ta puissance
       d'endurance). Un sportif sort 400-600 W en sprint, un très bon athlète 700-900 W.</p>
@@ -182,6 +185,30 @@
     <div class="panel" id="o-tornado"></div>
   </section>
 
+  <!-- COMBO PARFAIT -->
+  <section>
+    <h3>🏆 Le combo parfait (selon TES watts)</h3>
+    <p class="lede">Optimisation sous contrainte pump : il faut une <b>fenêtre de vol</b> d'au moins ~4 km/h
+      pour monter en vitesse en pompant. Résultat surprenant : à watts « mortels », l'aile optimale est
+      <b>plus grande</b> que l'intuition. Calculé pour 75 kg.</p>
+    <div class="cards">
+      <div class="card meh">
+        <div class="k">Sprint ~600 W — sportif</div>
+        <div class="big">~950 cm² · 110 cm</div>
+        <p>AR ~13, profil fin, stab 50, mât 13 mm → <b>~23-24 km/h</b>, décroche vers 18 km/h.
+          La lame de 700 cm² décroche trop haut : <b>pas de fenêtre pour la lancer</b> à ces watts.</p>
+        <p style="text-align:center;margin-top:12px"><button class="apply" type="button" data-c="950|110|600">⚙️ Appliquer ce combo</button></p>
+      </div>
+      <div class="card you">
+        <div class="k">Sprint ~800 W — très bon sprinteur</div>
+        <div class="big">~725 cm² · 100 cm</div>
+        <p>AR ~14, profil fin, stab 50, mât 13 mm → <b>~27 km/h</b>, décroche vers 20 km/h.
+          La petite lame de ton intuition — mais elle <b>exige</b> ce moteur-là.</p>
+        <p style="text-align:center;margin-top:12px"><button class="apply" type="button" data-c="725|100|800">⚙️ Appliquer ce combo</button></p>
+      </div>
+    </div>
+  </section>
+
   <!-- VERDICTS -->
   <section>
     <h3>🧾 Le verdict, en 4 cartes</h3>
@@ -191,18 +218,18 @@
         <div class="big">le levier n° 1</div>
         <p>Le frottement de l'aile coûte <b>surface × v³</b> : à 25 km/h, chaque cm² se paie cher.
           Passer d'une aile de croisière (1500 cm², profil moyen) à une lame de 700 cm² fine ≈
-          <b>+4-5 km/h</b>. Et une petite aile <b>ne peut pas</b> voler lentement — elle t'oblige à la vitesse.</p>
+          <b>+3-4 km/h</b>. Et une petite aile <b>ne peut pas</b> voler lentement — elle t'oblige à la vitesse.</p>
       </div>
       <div class="card no">
         <div class="k">❌ « Le stab ne joue pas »</div>
         <div class="big">si — beaucoup</div>
         <p>Par cm², le stab est l'appendice <b>le plus sale</b> du foil (il travaille dans l'eau perturbée,
-          souvent chargé). Un <b>stab 200 coûte ~4-5 km/h</b> face à un stab 50 — autant que changer d'aile !
-          Même un stab 100 laisse ~2 km/h. Les setups de vitesse courent en stab minuscule pour une raison.</p>
+          souvent chargé). Un <b>stab 200 coûte ~2 à 4 km/h</b> face à un stab 50 (selon sa propreté) — autant que changer
+          d'aile ! Même un stab 100 laisse ~1,5 km/h. Les setups de vitesse courent en stab minuscule pour une raison.</p>
       </div>
       <div class="card meh">
         <div class="k">🔄 La surprise : l'envergure aide encore</div>
-        <div class="big">+15 cm ≈ +1,5 km/h</div>
+        <div class="big">+15 cm ≈ +1,8 km/h</div>
         <p>Même à 25 km/h, rester en l'air coûte ~10 N si l'envergure est courte. À surface égale, allonger
           l'aile réduit cette facture <b>sans ajouter de frottement</b>. La limite est ailleurs : rigidité,
           contrôle, virages — pas l'hydrodynamique.</p>
@@ -221,8 +248,9 @@
     <b style="color:var(--txt)">Modèle</b> — vol stabilisé (portance = poids), d'après
     <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a> :
     <code>P(v) = [poids²/(½ρv²·π·envergure²) + ½ρv²·(surface·C_D0 + mât + fuselage + stab)] · v / η</code> ;
-    Vmax résout P(v) = ton sprint. ρ = 1025 · η estimé (croît avec l'allongement) · fuselage court fixé ·
-    hors houle, hors départ. Estimations pédagogiques, pas un banc d'essai.<br>
+    Vmax résout P(v) = ton sprint, <b>traînée aérienne du rider incluse</b> (CdA ≈ 0,55 accroupi — ~120 W à 22 km/h !).
+    ρ = 1025 · η estimé (croît avec l'allongement) · fuselage court fixé · C_D du stab = estimation (conclusion robuste de
+    0,010 à 0,020) · cavitation ignorée (négligeable sous ~30 km/h) · hors houle, hors départ. Estimations pédagogiques, pas un banc d'essai.<br>
     ⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> ·
     📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> ·
     ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>
@@ -232,6 +260,7 @@
 <script>
 (function(){
   const RHO=1025, G=9.81, E=1.0, CDM=0.008, CDF=0.010, CDS=0.020, A_FUS=0.028;
+  const CDA=0.55, RHO_AIR=1.2;   // traînée aérienne du rider (accroupi qui pompe)
   const $ = id => document.getElementById(id);
   const num = (x,d=1)=> x.toLocaleString('fr-FR',{maximumFractionDigits:d, minimumFractionDigits:d});
 
@@ -252,7 +281,7 @@
     const eta = Math.min(0.80, (0.44 + 0.015*AR)*1.06);          // rig carbone rigide
     const K  = c.S*c.cd0 + c.Am*CDM + A_FUS*CDF + c.As*CDS;
     const Ai = (c.W*c.W)/(0.5*RHO*Math.PI*c.b*c.b*E);
-    const P  = v => (Ai/(v*v) + 0.5*RHO*v*v*K)*v/eta;
+    const P  = v => ((Ai/(v*v) + 0.5*RHO*v*v*K)*v + 0.5*RHO_AIR*CDA*v*v*v)/eta;
     const cl = Math.min((2*Math.PI/(1+2/AR))*(13*Math.PI/180), c.clMax);
     const vStall = Math.sqrt(c.W/(0.5*RHO*c.S*cl));
     return {AR, eta, K, Ai, P, vStall};
@@ -294,6 +323,7 @@
       ['Fuselage',                     q*A_FUS*CDF,     '#9085e9'],
       ['Stab',                         q*c.As*CDS,      '#34d399']
     ].map(([lab,D,col]) => [lab, D*v/m.eta, col]);
+    parts.push(['Toi dans l\'air 💨', 0.5*RHO_AIR*CDA*v*v*v/m.eta, '#94a3b8']);
     const mx = Math.max(...parts.map(p=>p[1]));
     $('o-bk').innerHTML = '<div class="bk-cat">Où partent tes ' + num(c.P,0) + ' W à ' + num(v*3.6,0) + ' km/h</div>' +
       parts.map(([lab,w,col]) =>
@@ -336,6 +366,13 @@
       }).join('');
   }
 
+  document.querySelectorAll('.apply').forEach(b => b.addEventListener('click', ()=>{
+    const [s, bb, p] = b.dataset.c.split('|');
+    $('i-s').value = s; $('i-b').value = bb; $('i-p').value = p;
+    $('i-prof').value = '0.008|0.62'; $('i-mast').value = '0.050'; $('i-stab').value = '0.020';
+    render();
+    document.getElementById('sim').scrollIntoView({behavior:'smooth'});
+  }));
   document.querySelectorAll('input,select').forEach(el => el.addEventListener('input', render));
   render();
 })();
