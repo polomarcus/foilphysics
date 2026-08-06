@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bien débuter en pump foil — le setup qui pardonne</title>
+<meta name="description" content="Quel foil pour apprendre le pump ? Grande aile épaisse, gros stab, mât court : le setup débutant expliqué par la physique, selon ton poids.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230f172a'/><rect x='9' y='33' width='82' height='13' rx='6.5' fill='%23f59e0b'/><path d='M57 53 L40 76 h10 l-6 18 18-24 h-10 z' fill='%2338bdf8'/></svg>">
+<style>
+  :root{
+    --bg:#0f172a; --panel:#1e293b; --panel-2:#16213a; --line:#334155;
+    --txt:#e2e8f0; --muted:#94a3b8; --dim:#64748b; --sky:#38bdf8;
+  }
+  *{margin:0; padding:0; box-sizing:border-box;}
+  body{background:var(--bg); color:var(--txt); font-family:system-ui,-apple-system,"Segoe UI",sans-serif; line-height:1.5;}
+  a{color:var(--sky);}
+  .skip{position:absolute; left:-9999px; top:0; z-index:100; background:var(--sky); color:#04121f;
+    font-weight:800; padding:10px 18px; border-radius:0 0 10px 0; text-decoration:none;}
+  .skip:focus{left:0;}
+  :focus-visible{outline:2px solid var(--sky); outline-offset:2px; border-radius:4px;}
+
+  .topbar{position:fixed; top:0; left:0; right:0; z-index:50; display:flex; gap:8px; flex-wrap:wrap;
+    justify-content:flex-end; padding:8px 12px;
+    background:linear-gradient(180deg, rgba(15,23,42,.96), rgba(15,23,42,.82));
+    -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+    border-bottom:1px solid rgba(51,65,85,.4);}
+  .topbar a, .topbar button{background:var(--panel); border:1px solid var(--line); color:var(--txt);
+    border-radius:999px; padding:6px 12px; font-size:.78rem; font-weight:700; text-decoration:none; cursor:pointer;}
+  .topbar a:hover, .topbar button:hover{border-color:var(--sky); color:var(--sky);}
+  @media(max-width:680px){ .topbar{position:static; justify-content:center; background:none; border:none;} }
+
+  main{max-width:960px; margin:0 auto; padding:64px 16px 40px;}
+  header{text-align:center; padding:24px 0 8px;}
+  .h1a{display:block; font-size:clamp(2rem,6vw,2.8rem); font-weight:900; letter-spacing:-.03em; line-height:1.05;}
+  .h1a .hi{background:linear-gradient(100deg,#6ee7b7,#34d399 55%,#059669); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .h1b{display:block; font-size:1.2rem; font-weight:800; color:#cbd5e1; letter-spacing:.12em; text-transform:uppercase; margin-top:6px;}
+  .hsub{font-size:1.05rem; color:#cbd5e1; max-width:640px; margin:14px auto 0;}
+  .hsub b{color:var(--sky);}
+
+  .tldr{text-align:center; margin:34px 0 44px;}
+  .tldr .t{font-size:1.45rem; font-weight:800; letter-spacing:-.015em; line-height:1.3;}
+  .tldr .t b{color:#34d399;}
+  .tldr .s{color:var(--muted); font-size:.9rem; margin-top:8px;}
+
+  .disclaimer{color:#fcd34d; text-align:center; font-size:.78rem; margin:0 auto 34px; max-width:680px;}
+
+  section{margin-bottom:56px;}
+  h3{font-size:1.4rem; font-weight:800; text-align:center; letter-spacing:-.015em; margin-bottom:8px;}
+  .lede{color:var(--muted); font-size:.9rem; text-align:center; max-width:680px; margin:0 auto 20px;}
+
+  .panel{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px 16px;}
+  .inputs{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px 18px; margin-top:4px;}
+  .field label{display:block; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em;
+    color:var(--muted); font-weight:700; margin-bottom:5px;}
+  .field .fval{color:var(--sky); font-weight:800; font-size:.95rem; text-transform:none; letter-spacing:0;}
+  input[type=range]{width:100%; accent-color:var(--sky);}
+  select{width:100%; background:var(--panel-2); color:var(--txt); border:1px solid var(--line);
+    border-radius:9px; padding:9px 10px; font-size:.9rem;}
+
+  .vout{text-align:center; margin:22px 0 6px;}
+  .vout .n{font-size:3.2rem; font-weight:900; letter-spacing:-.03em; line-height:1; color:#34d399;}
+  .vout .n small{font-size:1.2rem; color:var(--muted); font-weight:700;}
+  .vout .win{color:var(--muted); font-size:.9rem; margin-top:8px; max-width:560px; margin-left:auto; margin-right:auto;}
+  .vout .win b{color:var(--txt);}
+
+  .rec-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; max-width:640px; margin:18px auto 0;}
+  .rec{background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:10px 8px; text-align:center;}
+  .rec .rk{font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); font-weight:700;}
+  .rec .rv{font-size:1.15rem; font-weight:800; margin-top:3px;}
+
+  .bk{max-width:640px; margin:22px auto 0;}
+  .bk-cat{font-size:.74rem; color:var(--muted); margin:10px 0 5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; text-align:center;}
+  .bkr{display:grid; grid-template-columns:auto 1fr 74px; gap:8px; align-items:center; margin:4px 0;}
+  .bkr .lab{font-size:.8rem; color:#cbd5e1; min-width:168px;}
+  .bkr .trk{height:15px; background:var(--panel-2); border-radius:5px; overflow:hidden; display:block;}
+  .bkr .fil{display:block; height:100%; border-radius:5px; transition:width .6s cubic-bezier(.22,1,.36,1);}
+  .bkr .v{font-size:.8rem; font-weight:800; text-align:right; font-variant-numeric:tabular-nums;}
+  @media(max-width:460px){ .bkr .lab{min-width:128px; font-size:.74rem;} }
+
+  .cards{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  @media(max-width:640px){ .cards{grid-template-columns:1fr;} }
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px;}
+  .card .k{font-weight:800; margin-bottom:6px; text-align:center;}
+  .card .big{font-size:1.4rem; font-weight:800; text-align:center; margin:4px 0 8px; letter-spacing:-.02em;}
+  .card p{font-size:.87rem; color:#cbd5e1; line-height:1.55;}
+  .ok .big{color:#86efac;} .no .big{color:#fca5a5;} .meh .big{color:var(--sky);} .you .big{color:#f59e0b;}
+
+  .steps{max-width:680px; margin:0 auto; counter-reset:step;}
+  .step{display:grid; grid-template-columns:44px 1fr; gap:14px; margin:16px 0; align-items:start;}
+  .step .num{width:44px; height:44px; border-radius:50%; background:var(--panel-2); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; font-size:1.3rem;}
+  .step h4{font-size:1rem; font-weight:800; margin-bottom:3px;}
+  .step p{font-size:.87rem; color:#cbd5e1; line-height:1.55;}
+  .step p b{color:#6ee7b7;}
+  .next{text-align:center; margin-top:26px;}
+  .next a{display:inline-block; background:var(--panel); border:1px solid var(--line); border-radius:999px;
+    padding:9px 16px; margin:4px; font-weight:700; font-size:.88rem; text-decoration:none;}
+  .next a:hover{border-color:var(--sky);}
+
+  footer{color:var(--muted); font-size:.78rem; text-align:center; padding:24px 8px; line-height:1.6;}
+  footer code{color:var(--sky); font-family:ui-monospace,Menlo,monospace;}
+
+  @media (prefers-reduced-motion: no-preference){
+    .a-in{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s cubic-bezier(.22,1,.36,1);}
+    .a-in.seen{opacity:1; transform:none;}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu / Skip to content</a>
+<nav class="topbar" aria-label="Navigation">
+  <a href="./" data-i18n="tb-ld">⚡ Le Choc des Watts</a>
+  <a href="vitesse.html" data-i18n="tb-vit">🚀 La Course aux km/h</a>
+  <a href="https://github.com/polomarcus/foilphysics" target="_blank" rel="noopener">🐙 Code</a>
+  <a href="https://piouz.org/" target="_blank" rel="noopener">⚡ Piouz</a>
+  <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">📸 PoloFoil</a>
+  <button id="lang-btn" type="button">🇬🇧 EN</button>
+</nav>
+<main id="contenu">
+
+  <header>
+    <h1><span class="h1a" data-i18n="h1a">Bien <span class="hi">débuter</span></span><span class="h1b" data-i18n="h1b">🎓 le setup qui pardonne</span></h1>
+    <p class="hsub" data-i18n="hsub">Les autres pages cherchent la performance. Ici on cherche l'inverse :
+      <b>l'aile qui te laisse le droit de te tromper</b> — parce que c'est en se trompant qu'on apprend.</p>
+  </header>
+
+  <div class="tldr">
+    <div class="t" data-i18n="tldr-t">Pour apprendre : <b>grande aile épaisse</b> + <b>gros stab</b> + <b>mât court</b>.</div>
+    <div class="s" data-i18n="tldr-s">Tout ce que les pages « perf » te déconseillent — parce qu'apprendre, c'est l'inverse de performer.
+      Et achète d'occasion : ce matos-là se revend quand tu progresses.</div>
+  </div>
+
+  <div class="disclaimer" data-i18n="disc">⚠️ <b>Chiffres estimés</b> (± ~15 %) — même modèle physique que
+    <a href="./">le comparateur longue distance</a> et <a href="vitesse.html">la page vitesse</a>, appliqué ici
+    à la seule question qui compte au début : voler lentement sans décrocher.</div>
+
+  <!-- RECOMMANDEUR -->
+  <section id="reco" class="a-in">
+    <h3 data-i18n="reco-h3">🎛️ Ton setup d'apprentissage</h3>
+    <p class="lede" data-i18n="reco-lede">Une seule règle physique derrière tout ça : il faut que l'aile <b>décroche vers 10-11 km/h</b>
+      — assez bas pour qu'un pump raté ne soit pas une chute. La surface nécessaire dépend surtout de ton poids.</p>
+    <div class="panel">
+      <div class="inputs">
+        <div class="field"><label for="i-w"><span data-i18n="l-w">Ton poids</span> : <span class="fval" id="v-w">75</span> kg</label>
+          <input type="range" id="i-w" min="40" max="110" step="1" value="75"></div>
+        <div class="field"><label for="i-stage" data-i18n="l-stage">Où tu en es</label>
+          <select id="i-stage">
+            <option value="A" selected data-i18n="o-st1">🐣 Jamais volé / premiers dock starts</option>
+            <option value="B" data-i18n="o-st2">🐥 Je vole quelques secondes</option>
+            <option value="C" data-i18n="o-st3">🐦 Je tiens 30 s et je commence à pomper loin</option>
+          </select></div>
+      </div>
+
+      <div class="vout" aria-live="polite">
+        <div class="n" id="o-surf">—</div>
+        <div class="win" id="o-why"></div>
+      </div>
+      <div class="rec-grid" id="o-rec"></div>
+      <p style="font-size:.76rem;color:var(--muted);text-align:center;margin:12px auto 0;max-width:560px" data-i18n="reco-ref">
+        Cohérent avec les chartes constructeurs : <b>GONG Trail</b> conseille 1940 cm² (AR 9,4, stab 239)
+        pour 75-85 kg en dockstart ; <b>Takoon École</b> 1800 cm² + stab 220.</p>
+      <div class="bk" id="o-eff"></div>
+    </div>
+  </section>
+
+  <!-- VERDICTS -->
+  <section class="a-in">
+    <h3 data-i18n="vd-h3">🧾 Pourquoi ce setup, en 6 cartes</h3>
+    <div class="cards">
+      <div class="card ok" data-i18n="vd1">
+        <div class="k">📏 La surface = ta marge d'erreur</div>
+        <div class="big">~20-25 cm² par kilo</div>
+        <p>Une grande aile décroche vers <b>10 km/h</b> : quand tu rates un pump et que tu ralentis, elle
+          <b>te rattrape</b> au lieu de tomber. Une lame de course décroche à 20+ km/h — zéro droit à l'erreur.
+          La surface, c'est du temps de vol par session, donc de l'apprentissage par session.</p>
+      </div>
+      <div class="card ok" data-i18n="vd2">
+        <div class="k">🛞 Le gros stab = tes roues d'entraînement</div>
+        <div class="big">la stabilité d'abord</div>
+        <p>Sur <a href="vitesse.html">la page vitesse</a>, un stab 200 coûte ~3,5 km/h — ici c'est ton meilleur
+          allié : il <b>calme le tangage</b> et rend la machine prévisible. Quand il commencera à te sembler
+          « mou », réduis-le : c'est <b>l'upgrade le moins cher</b> de tout le foil.</p>
+      </div>
+      <div class="card meh" data-i18n="vd3">
+        <div class="k">🍞 Le profil épais = décrochage gentil</div>
+        <div class="big">il prévient avant de lâcher</div>
+        <p>Un profil épais (~13-15 %) s'enfonce <b>progressivement</b> quand tu vas trop lentement — tu le sens
+          et tu corriges. Un profil fin <b>lâche d'un coup</b>, sans préavis. Le supplément de traînée, tu t'en
+          fiches : tu n'es pas là pour la vitesse.</p>
+      </div>
+      <div class="card meh" data-i18n="vd4">
+        <div class="k">📐 Allongement modéré (AR ~9)</div>
+        <div class="big">docile avant efficace</div>
+        <p><a href="./">Le comparateur</a> te dira qu'une grande envergure économise tes watts — c'est vrai,
+          <b>plus tard</b>. Une aile très allongée (AR 11+) est nerveuse en roulis et décroche du bout d'aile.
+          Les ailes d'école modernes font toutes <b>AR ~9</b> (GONG Trail 9,4, Takoon 9,2) : c'est le bon
+          compromis docile/efficace, validé par le marché.</p>
+      </div>
+      <div class="card you" data-i18n="vd5">
+        <div class="k">🩳 Mât court (60-70 cm)</div>
+        <div class="big">tomber de moins haut</div>
+        <p>Moins de levier sous les pieds = machine <b>moins nerveuse</b>, chutes plus douces, et l'eau peu
+          profonde reste praticable. L'inconvénient (moins de marge pour pomper haut) ne te concernera que
+          dans quelques mois — tu passeras alors à 75-85 cm.</p>
+      </div>
+      <div class="card you" data-i18n="vd6">
+        <div class="k">💶 Alu et occasion</div>
+        <div class="big">le carbone attendra</div>
+        <p>Au début, ton foil rencontrera des quais, des cailloux et du sable. L'<b>alu</b> encaisse et pardonne
+          au portefeuille ; d'occasion, un setup complet d'apprentissage se trouve — et se <b>revend</b> presque
+          au même prix quand tu changes. Le carbone rigide, c'est quand ta technique saura le sentir.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRESSION -->
+  <section id="prog" class="a-in">
+    <h3 data-i18n="prog-h3">🪜 Et ensuite ? La descente de taille</h3>
+    <p class="lede" data-i18n="prog-lede">Le matos de débutant n'est pas un mauvais achat : c'est un <b>étage de fusée</b>.
+      Voici quand larguer chaque étage.</p>
+    <div class="steps">
+      <div class="step" data-i18n="p1">
+        <div class="num">🐣</div>
+        <div><h4>Dock start & premiers vols</h4>
+        <p>Objectif : <b>8 départs réussis sur 10</b> et des vols de 10-20 s. Reste sur la grande aile — chaque
+          seconde de vol vaut plus que n'importe quel upgrade. C'est ici que ta technique gagne le plus vite.</p></div>
+      </div>
+      <div class="step" data-i18n="p2">
+        <div class="num">🐥</div>
+        <div><h4>Tu tiens 30-60 s et l'aile te semble « lente »</h4>
+        <p>C'est le signal : descends de <b>~200-300 cm²</b> et réduis le stab d'un cran. L'aile décrochera un
+          peu plus haut, volera un peu plus vite — ta technique a payé cette marge.</p></div>
+      </div>
+      <div class="step" data-i18n="p3">
+        <div class="num">🐦</div>
+        <div><h4>Tu pompes loin : le matos devient un choix</h4>
+        <p>À partir de là, la question n'est plus « quoi acheter pour apprendre » mais <b>« optimiser quoi ? »</b> —
+          l'endurance ou la vitesse. Bonne nouvelle : il y a une page pour chaque réponse.</p></div>
+      </div>
+    </div>
+    <div class="next">
+      <a href="./" data-i18n="next-ld">⚡ Voler loin — le comparateur d'ailes</a>
+      <a href="vitesse.html" data-i18n="next-vit">🚀 Voler vite — la course aux km/h</a>
+    </div>
+  </section>
+
+  <footer data-i18n="foot">
+    <b style="color:var(--txt)">Modèle</b> — vol stabilisé (portance = poids), d'après
+    <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a> :
+    la surface recommandée vise un décrochage vers ~10-11 km/h (<code>S ≈ poids / (½ρv²·C_Lmax)</code>) ;
+    l'effort estimé inclut une <b>pénalité de technique débutant</b> (~30 % de watts gaspillés au début —
+    c'est le levier n°1 du comparateur, et il ne coûte que du temps). Estimations pédagogiques, pas un banc d'essai.<br>
+    ⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> ·
+    📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> ·
+    ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>
+  </footer>
+</main>
+
+<script>
+(function(){
+  const RHO=1025, G=9.81, E=1.0, CDM=0.008, CDF=0.008, CDS=0.016, A_FUS=0.028, A_MAST=0.050;
+  const CDA=0.55, RHO_AIR=1.2;   // débutant : debout, mât immergé en entier (on vole bas)
+  const $ = id => document.getElementById(id);
+
+  /* ---------- i18n ---------- */
+  let LANG = 'fr';
+  const t = (fr, en) => LANG === 'fr' ? fr : en;
+  const num = (x,d=0)=> x.toLocaleString(LANG==='fr'?'fr-FR':'en-GB',{maximumFractionDigits:d, minimumFractionDigits:d});
+  const FRC = {};
+  const EN = {
+    'tb-ld':'⚡ The Watts Clash',
+    'tb-vit':'🚀 The Race for km/h',
+    'h1a':'Learning it <span class="hi">right</span>',
+    'h1b':'🎓 the setup that forgives',
+    'hsub':'The other pages chase performance. Here we chase the opposite: <b>the wing that gives you the right to be wrong</b> — because being wrong is how you learn.',
+    'tldr-t':'To learn: <b>big thick wing</b> + <b>big stab</b> + <b>short mast</b>.',
+    'tldr-s':'Everything the «perf» pages advise against — because learning is the opposite of performing. And buy second-hand: this gear resells when you progress.',
+    'disc':'⚠️ <b>Estimated figures</b> (± ~15%) — same physics model as <a href="./?lang=en">the long-distance comparator</a> and <a href="vitesse.html?lang=en">the speed page</a>, applied to the only question that matters at first: flying slowly without stalling.',
+    'reco-h3':'🎛️ Your learning setup',
+    'reco-lede':'One physical rule behind it all: the wing must <b>stall around 10-11 km/h</b> — low enough that a missed pump isn\'t a crash. The required area mostly depends on your weight.',
+    'l-w':'Your weight','l-stage':'Where you are',
+    'o-st1':'🐣 Never flown / first dock starts','o-st2':'🐥 I fly for a few seconds','o-st3':'🐦 I hold 30 s and start pumping away',
+    'reco-ref':'Consistent with manufacturer charts: <b>GONG Trail</b> recommends 1940 cm² (AR 9.4, stab 239) for 75-85 kg dockstart; <b>Takoon School</b> 1800 cm² + stab 220.',
+    'vd-h3':'🧾 Why this setup, in 6 cards',
+    'vd1':'<div class="k">📏 Area = your margin for error</div><div class="big">~20-25 cm² per kilo</div><p>A big wing stalls around <b>10 km/h</b>: when you miss a pump and slow down, it <b>catches you</b> instead of dropping you. A race blade stalls at 20+ km/h — zero room for error. Area means seconds of flight per session, which means learning per session.</p>',
+    'vd2':'<div class="k">🛞 The big stab = your training wheels</div><div class="big">stability first</div><p>On <a href="vitesse.html?lang=en">the speed page</a> a stab 200 costs ~3.5 km/h — here it\'s your best ally: it <b>tames the pitch</b> and makes the machine predictable. When it starts feeling «soft», size it down: it\'s <b>the cheapest upgrade</b> on the whole foil.</p>',
+    'vd3':'<div class="k">🍞 Thick profile = gentle stall</div><div class="big">it warns before letting go</div><p>A thick profile (~13-15%) sinks <b>progressively</b> when you go too slow — you feel it and correct. A thin profile <b>lets go at once</b>, no warning. The extra drag? You don\'t care: you\'re not here for speed.</p>',
+    'vd4':'<div class="k">📐 Moderate aspect ratio (AR ~9)</div><div class="big">docile before efficient</div><p><a href="./?lang=en">The comparator</a> will tell you a wide span saves your watts — true, <b>later</b>. A very elongated wing (AR 11+) is twitchy in roll and stalls from the tips. Modern school wings all sit at <b>AR ~9</b> (GONG Trail 9.4, Takoon 9.2): the docile/efficient sweet spot, validated by the market.</p>',
+    'vd5':'<div class="k">🩳 Short mast (60-70 cm)</div><div class="big">falling from lower</div><p>Less leverage underfoot = a <b>calmer</b> machine, softer falls, and shallow water stays usable. The downside (less room to pump high) won\'t concern you for months — then you\'ll move to 75-85 cm.</p>',
+    'vd6':'<div class="k">💶 Alu and second-hand</div><div class="big">carbon can wait</div><p>At first your foil will meet docks, rocks and sand. <b>Alu</b> takes the hits and forgives your wallet; second-hand, a full learning setup is findable — and <b>resells</b> at nearly the same price when you move on. Stiff carbon is for when your technique can feel it.</p>',
+    'prog-h3':'🪜 What next? Sizing down',
+    'prog-lede':'Beginner gear isn\'t a bad buy: it\'s a <b>rocket stage</b>. Here\'s when to drop each stage.',
+    'p1':'<div class="num">🐣</div><div><h4>Dock start & first flights</h4><p>Goal: <b>8 successful starts out of 10</b> and 10-20 s flights. Stay on the big wing — every second of flight is worth more than any upgrade. This is where your technique improves fastest.</p></div>',
+    'p2':'<div class="num">🐥</div><div><h4>You hold 30-60 s and the wing feels «slow»</h4><p>That\'s the signal: drop <b>~200-300 cm²</b> and size the stab down a notch. The wing will stall a bit higher, fly a bit faster — your technique paid for that margin.</p></div>',
+    'p3':'<div class="num">🐦</div><div><h4>You pump away: gear becomes a choice</h4><p>From here the question is no longer «what to buy to learn» but <b>«optimise for what?»</b> — endurance or speed. Good news: there\'s a page for each answer.</p></div>',
+    'next-ld':'⚡ Fly far — the wing comparator',
+    'next-vit':'🚀 Fly fast — the race for km/h',
+    'foot':'<b style="color:var(--txt)">Model</b> — steady flight (lift = weight), based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>: the recommended area targets a stall around ~10-11 km/h (<code>S ≈ weight / (½ρv²·C_Lmax)</code>); the estimated effort includes a <b>beginner-technique penalty</b> (~30% wasted watts at first — the comparator\'s #1 lever, and it only costs time). Educational estimates, not a test bench.<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
+  };
+  function applyLang(l){
+    LANG = l;
+    document.documentElement.lang = l;
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+      const k = el.getAttribute('data-i18n');
+      if(!(k in FRC)) FRC[k] = el.innerHTML;
+      if(l === 'en' && EN[k]) el.innerHTML = EN[k];
+      if(l === 'fr') el.innerHTML = FRC[k];
+    });
+    $('lang-btn').textContent = l === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
+    try{ localStorage.setItem('lcw-lang', l); }catch(e){}
+    render();
+  }
+  $('lang-btn').addEventListener('click', ()=> applyLang(LANG === 'fr' ? 'en' : 'fr'));
+
+  /* ---------- modèle ---------- */
+  // Étapes : k = cm²/kg visés · profil (cd0|clMax) · pénalité de technique (watts gaspillés)
+  // Calibré sur les chartes constructeurs : GONG Trail (AR 9,4 · ~15 % · 1660-2240 cm² · stabs 211-276)
+  // et Takoon École (AR 9,2 · ~13,5 % · 1600-2000 cm² · stab 220). minS : les marques ne font pas plus petit.
+  const STAGES = {
+    A: {k:23, minS:1600, AR:9,  cd0:0.015, clMax:1.25, stab:'210-280', mast:'60-70', tech:0.70},
+    B: {k:20, minS:1400, AR:9,  cd0:0.014, clMax:1.20, stab:'150-220', mast:'70-75', tech:0.80},
+    C: {k:17, minS:1100, AR:10, cd0:0.013, clMax:1.10, stab:'100-150', mast:'75-85', tech:0.88}
+  };
+  function model(c){
+    const AR = c.b*c.b/c.S;
+    const eta = Math.min(0.80, (0.44 + 0.015*AR)*1.06);
+    const K  = c.S*c.cd0 + A_MAST*CDM + A_FUS*CDF + 0.080*CDS;   // stab d'apprentissage : grand
+    const Ai = (c.W*c.W)/(0.5*RHO*Math.PI*c.b*c.b*E);
+    const P  = v => ((Ai/(v*v) + 0.5*RHO*v*v*K)*v + 0.5*RHO_AIR*CDA*v*v*v)/eta;
+    const cl = Math.min((2*Math.PI/(1+2/AR))*(13*Math.PI/180), c.clMax);
+    const vStall = Math.sqrt(c.W/(0.5*RHO*c.S*cl));
+    return {AR, eta, P, vStall};
+  }
+  function reco(wkg, stage){
+    const st = STAGES[stage];
+    const S = Math.max(Math.round(wkg*st.k/50)*50, st.minS);   // cm², arrondi à 50, plancher catalogue
+    const b = Math.round(Math.sqrt(st.AR*S/10000)*100);   // cm
+    const c = {S:S/10000, b:b/100, cd0:st.cd0, clMax:st.clMax, W:wkg*G};
+    const m = model(c);
+    const vCruise = Math.max(m.vStall*1.15, 11/3.6);      // croisière douce (convention du comparateur)
+    const pIdeal = m.P(vCruise);                          // watts, technique parfaite
+    return {S, b, st, m, vCruise, pIdeal};
+  }
+
+  /* ---------- rendu ---------- */
+  function render(){
+    $('v-w').textContent = $('i-w').value;
+    const wkg = +$('i-w').value;
+    const stage = $('i-stage').value;
+    const r = reco(wkg, stage);
+
+    $('o-surf').innerHTML = num(r.S) + ' <small>cm²</small>';
+    $('o-why').innerHTML =
+      t('Elle décrochera vers <b>','It will stall around <b>') + num(r.m.vStall*3.6) +
+      t(' km/h</b> et croisera tranquillement à <b>~',' km/h</b> and cruise gently at <b>~') + num(r.vCruise*3.6) +
+      ' km/h</b> — ' + t('un pump raté te fait ralentir, pas tomber.','a missed pump slows you down, it doesn\'t drop you.');
+
+    const recs = [
+      [t('Envergure','Span'), '~'+num(r.b)+' cm'],
+      [t('Allongement','Aspect ratio'), 'AR ~'+r.st.AR],
+      ['Stab', r.st.stab+' cm²'],
+      [t('Mât','Mast'), r.st.mast+' cm']
+    ];
+    $('o-rec').innerHTML = recs.map(([k,v]) =>
+      '<div class="rec"><div class="rk">'+k+'</div><div class="rv">'+v+'</div></div>').join('');
+
+    const rows = [
+      [t('🔰 Tes premiers vols','🔰 Your first flights'),          r.pIdeal/STAGES.A.tech, '#f59e0b'],
+      [t('🌱 Après quelques mois','🌱 After a few months'),        r.pIdeal/STAGES.B.tech, '#38bdf8'],
+      [t('🌳 Technique acquise','🌳 Technique acquired'),          r.pIdeal/1.0,           '#34d399']
+    ];
+    const mx = Math.max(...rows.map(x=>x[1]));
+    $('o-eff').innerHTML =
+      '<div class="bk-cat">' + t('L\'effort à prévoir à ','Effort to expect at ') + num(r.vCruise*3.6) +
+      t(' km/h — la technique est ton vrai premier upgrade',' km/h — technique is your real first upgrade') + '</div>' +
+      rows.map(([lab,w,col]) =>
+        '<div class="bkr"><span class="lab">'+lab+'</span><span class="trk"><span class="fil" style="width:'+
+        (100*w/mx).toFixed(1)+'%;background:'+col+'"></span></span><span class="v">~'+num(w)+' W</span></div>'
+      ).join('') +
+      '<p style="font-size:.78rem;color:var(--muted);margin-top:8px;text-align:center">' +
+      t('Au tout début tu ne tiendras que 20-40 s d\'affilée — c\'est normal, tout le monde passe par là.',
+        'At the very start you\'ll only hold 20-40 s at a time — that\'s normal, everyone goes through it.') + '</p>';
+  }
+
+  document.querySelectorAll('input,select').forEach(el => el.addEventListener('input', render));
+
+  /* animations d'entrée */
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window){
+    const io = new IntersectionObserver(es=>es.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('seen'); io.unobserve(e.target); }
+    }), {threshold:.12});
+    document.querySelectorAll('.a-in').forEach(el=> io.observe(el));
+  } else {
+    document.querySelectorAll('.a-in').forEach(el=> el.classList.add('seen'));
+  }
+
+  /* langue : URL ?lang=en, sinon préférence partagée */
+  let startLang = 'fr';
+  if(/[?&]lang=en/i.test(location.search)) startLang = 'en';
+  else { try{ if(localStorage.getItem('lcw-lang') === 'en') startLang = 'en'; }catch(e){} }
+  if(startLang === 'en') applyLang('en'); else render();
+})();
+</script>
+</body>
+</html>
