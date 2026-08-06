@@ -228,8 +228,8 @@
       <div class="step" data-i18n="p2">
         <div class="num">🐥</div>
         <div><h4>Tu tiens 30-60 s et l'aile te semble « lente »</h4>
-        <p>C'est le signal : descends de <b>~200-300 cm²</b> et réduis le stab d'un cran. L'aile décrochera un
-          peu plus haut, volera un peu plus vite — ta technique a payé cette marge.</p></div>
+        <p>C'est le signal : descends <b>d'une taille (~150 cm²)</b> et réduis le stab d'un cran. L'aile décrochera
+          un peu plus haut, volera un peu plus vite — ta technique a payé cette marge.</p></div>
       </div>
       <div class="step" data-i18n="p3">
         <div class="num">🐦</div>
@@ -291,7 +291,7 @@
     'prog-h3':'🪜 What next? Sizing down',
     'prog-lede':'Beginner gear isn\'t a bad buy: it\'s a <b>rocket stage</b>. Here\'s when to drop each stage.',
     'p1':'<div class="num">🐣</div><div><h4>Dock start & first flights</h4><p>Goal: <b>8 successful starts out of 10</b> and 10-20 s flights. Stay on the big wing — every second of flight is worth more than any upgrade. This is where your technique improves fastest.</p></div>',
-    'p2':'<div class="num">🐥</div><div><h4>You hold 30-60 s and the wing feels «slow»</h4><p>That\'s the signal: drop <b>~200-300 cm²</b> and size the stab down a notch. The wing will stall a bit higher, fly a bit faster — your technique paid for that margin.</p></div>',
+    'p2':'<div class="num">🐥</div><div><h4>You hold 30-60 s and the wing feels «slow»</h4><p>That\'s the signal: go down <b>one size (~150 cm²)</b> and size the stab down a notch. The wing will stall a bit higher, fly a bit faster — your technique paid for that margin.</p></div>',
     'p3':'<div class="num">🐦</div><div><h4>You pump away: gear becomes a choice</h4><p>From here the question is no longer «what to buy to learn» but <b>«optimise for what?»</b> — endurance or speed. Good news: there\'s a page for each answer.</p></div>',
     'next-ld':'⚡ Fly far — the wing comparator',
     'next-vit':'🚀 Fly fast — the race for km/h',
@@ -318,8 +318,8 @@
   // 1600-2240 cm² · stabs 210-280 cm². minS : les marques ne font pas plus petit.
   const STAGES = {
     A: {k:23, minS:1600, AR:9,  cd0:0.015, clMax:1.25, stab:'210-280', mast:'60-70', tech:0.70},
-    B: {k:20, minS:1400, AR:9,  cd0:0.014, clMax:1.20, stab:'150-220', mast:'70-75', tech:0.80},
-    C: {k:17, minS:1100, AR:10, cd0:0.013, clMax:1.10, stab:'100-150', mast:'75-85', tech:0.88}
+    B: {k:21, minS:1450, AR:9,  cd0:0.014, clMax:1.20, stab:'150-220', mast:'70-75', tech:0.80},
+    C: {k:19, minS:1300, AR:10, cd0:0.013, clMax:1.10, stab:'100-150', mast:'75-85', tech:0.88}
   };
   function model(c){
     const AR = c.b*c.b/c.S;
