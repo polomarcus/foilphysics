@@ -95,6 +95,13 @@
   .card p{font-size:.87rem; color:#cbd5e1; line-height:1.55;}
   .ok .big{color:#86efac;} .no .big{color:#fca5a5;} .meh .big{color:var(--sky);} .you .big{color:#f59e0b;}
 
+  .anat{max-width:620px; margin:0 auto 6px; display:block;}
+  .anat text{font-family:inherit; font-size:14px; font-weight:700; fill:#cbd5e1;}
+  .lex{max-width:640px; margin:14px auto 0;}
+  .lexr{display:grid; grid-template-columns:26px 1fr; gap:10px; margin:11px 0; align-items:start;}
+  .lexr .dot{width:14px; height:14px; border-radius:50%; margin-top:4px;}
+  .lexr p{font-size:.88rem; color:#cbd5e1; line-height:1.5;}
+  .lexr b:first-child{color:var(--txt);}
   .steps{max-width:680px; margin:0 auto; counter-reset:step;}
   .step{display:grid; grid-template-columns:44px 1fr; gap:14px; margin:16px 0; align-items:start;}
   .step .num{width:44px; height:44px; border-radius:50%; background:var(--panel-2); border:1px solid var(--line);
@@ -172,6 +179,43 @@
         <p>Tombe <b>loin de la machine</b>, bras autour de la tête, et ne remonte jamais « à l'aveugle »
           sous la planche. Pousser le foil loin de toi est un réflexe qui s'entraîne dès le premier jour.</p>
       </div>
+    </div>
+  </section>
+
+  <!-- ANATOMIE -->
+  <section id="anatomie" class="a-in">
+    <h3 data-i18n="lex-h3">🧩 C'est quoi, un foil ? Les 5 pièces</h3>
+    <p class="lede" data-i18n="lex-lede">Deux minutes de vocabulaire — tout le reste de la page s'appuie dessus.</p>
+    <svg class="anat" viewBox="0 0 620 260" role="img" aria-label="Schéma d'un foil vu de côté : planche, mât, fuselage, aile avant, stab">
+      <rect x="185" y="34" width="270" height="16" rx="8" fill="#94a3b8"/>
+      <rect x="312" y="50" width="11" height="150" rx="3" fill="#38bdf8"/>
+      <rect x="200" y="198" width="250" height="8" rx="4" fill="#9085e9"/>
+      <ellipse cx="435" cy="202" rx="88" ry="10" fill="#34d399"/>
+      <ellipse cx="218" cy="202" rx="42" ry="6" fill="#f59e0b"/>
+      <text x="320" y="22" text-anchor="middle" data-i18n="lxs1">planche</text>
+      <line x1="345" y1="125" x2="380" y2="125" stroke="#475569" stroke-width="1.5"/>
+      <text x="388" y="130" data-i18n="lxs2">mât</text>
+      <line x1="290" y1="192" x2="270" y2="160" stroke="#475569" stroke-width="1.5"/>
+      <text x="268" y="152" text-anchor="middle" data-i18n="lxs3">fuselage</text>
+      <text x="455" y="240" text-anchor="middle" data-i18n="lxs4">aile avant</text>
+      <text x="180" y="240" text-anchor="middle" data-i18n="lxs5">stab</text>
+    </svg>
+    <div class="lex">
+      <div class="lexr" data-i18n="lx1"><span class="dot" style="background:#94a3b8"></span>
+        <p><b>La planche</b> — tu poses les pieds dessus : elle transmet ton geste au foil. Au dock start,
+          pas besoin qu'elle flotte — juste qu'elle soit légère.</p></div>
+      <div class="lexr" data-i18n="lx2"><span class="dot" style="background:#38bdf8"></span>
+        <p><b>Le mât</b> — la colonne verticale. Sa hauteur, c'est ta marge pour pomper… et la hauteur
+          de laquelle tu tombes. Court pour apprendre.</p></div>
+      <div class="lexr" data-i18n="lx3"><span class="dot" style="background:#9085e9"></span>
+        <p><b>Le fuselage</b> — l'épine dorsale : il relie l'aile avant au stab, sous le mât.
+          Plus il est long, plus la machine est calme.</p></div>
+      <div class="lexr" data-i18n="lx4"><span class="dot" style="background:#34d399"></span>
+        <p><b>L'aile avant</b> — c'est elle qui te porte. <b>Grande</b> = de la portance même à faible
+          vitesse ; <b>longue</b> (l'envergure) = un vol stable et économe.</p></div>
+      <div class="lexr" data-i18n="lx5"><span class="dot" style="background:#f59e0b"></span>
+        <p><b>Le stab</b> — abréviation de <b>stabilisateur</b> : la petite aile arrière. Comme l'empennage
+          d'une flèche ou d'un avion, il remet la machine droite. Gros = prévisible.</p></div>
     </div>
   </section>
 
@@ -376,6 +420,14 @@
     'sc2':'<div class="k">🌊 A deep, clear spot</div><p>At least <b>1.5 m of water</b> (the mast + a real margin), a bottom free of rocks, and <b>no swimmers</b> in your fall zone. Check the depth before, not after.</p>',
     'sc3':'<div class="k">👥 Never alone</div><p>A partner on shore changes everything if something goes wrong — at the strict minimum, someone <b>knows where you are</b> and when you\'re due back. Cold water shrinks margins fast.</p>',
     'sc4':'<div class="k">🤸 Learn to fall</div><p>Fall <b>away from the machine</b>, arms around your head, and never surface «blind» under the board. Pushing the foil away from you is a reflex you train from day one.</p>',
+    'lex-h3':'🧩 What is a foil? The 5 parts',
+    'lex-lede':'Two minutes of vocabulary — the whole page builds on it.',
+    'lxs1':'board','lxs2':'mast','lxs3':'fuselage','lxs4':'front wing','lxs5':'stab',
+    'lx1':'<span class="dot" style="background:#94a3b8"></span><p><b>The board</b> — your feet go on it: it transmits your motion to the foil. For dock starts it doesn\'t need to float — just to be light.</p>',
+    'lx2':'<span class="dot" style="background:#38bdf8"></span><p><b>The mast</b> — the vertical column. Its height is your room to pump… and the height you fall from. Short to learn.</p>',
+    'lx3':'<span class="dot" style="background:#9085e9"></span><p><b>The fuselage</b> — the backbone: it links the front wing to the stab, under the mast. The longer it is, the calmer the machine.</p>',
+    'lx4':'<span class="dot" style="background:#34d399"></span><p><b>The front wing</b> — it\'s what carries you. <b>Big</b> = lift even at low speed; <b>long</b> (the span) = a stable, efficient flight.</p>',
+    'lx5':'<span class="dot" style="background:#f59e0b"></span><p><b>The stab</b> — short for <b>stabiliser</b>: the small rear wing. Like the fletching of an arrow or a plane\'s tail, it keeps the machine straight. Big = predictable.</p>',
     'dock-h3':'🪜 You learn from a dock',
     'dock-lede':'The «<b>dock start</b>»: you launch from a dock with momentum. The starting energy is <b>free</b> — all your focus goes to flying, not taking off.',
     'dk1':'<div class="num">🚶</div><div><h4>The spot</h4><p>A dock <b>knee-to-hip high</b>, deep water in front, a clear edge for two running steps — and <b>flat water</b>: no waves, no wind to start with. No usable dock near you? The <b>ladders from <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz.org</a></b> are ideal for learning: they turn any quay into a spot, at constant height.</p></div>',
