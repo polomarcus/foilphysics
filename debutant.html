@@ -157,8 +157,8 @@
       </div>
       <div class="rec-grid" id="o-rec"></div>
       <p style="font-size:.76rem;color:var(--muted);text-align:center;margin:12px auto 0;max-width:560px" data-i18n="reco-ref">
-        Cohérent avec les chartes constructeurs : <b>GONG Trail</b> conseille 1940 cm² (AR 9,4, stab 239)
-        pour 75-85 kg en dockstart ; <b>Takoon École</b> 1800 cm² + stab 220.</p>
+        Cohérent avec les chartes des grandes marques : pour 75-85 kg en dockstart, elles conseillent
+        <b>~1800-1950 cm²</b> (AR ~9) avec un stab de <b>~220-240 cm²</b>.</p>
       <div class="bk" id="o-eff"></div>
     </div>
   </section>
@@ -193,8 +193,8 @@
         <div class="big">docile avant efficace</div>
         <p><a href="./">Le comparateur</a> te dira qu'une grande envergure économise tes watts — c'est vrai,
           <b>plus tard</b>. Une aile très allongée (AR 11+) est nerveuse en roulis et décroche du bout d'aile.
-          Les ailes d'école modernes font toutes <b>AR ~9</b> (GONG Trail 9,4, Takoon 9,2) : c'est le bon
-          compromis docile/efficace, validé par le marché.</p>
+          Les ailes d'école modernes font toutes <b>AR ~9</b> : c'est le bon compromis docile/efficace,
+          validé par le marché.</p>
       </div>
       <div class="card you" data-i18n="vd5">
         <div class="k">🩳 Mât court (60-70 cm)</div>
@@ -280,12 +280,12 @@
     'reco-lede':'One physical rule behind it all: the wing must <b>stall around 10-11 km/h</b> — low enough that a missed pump isn\'t a crash. The required area mostly depends on your weight.',
     'l-w':'Your weight','l-stage':'Where you are',
     'o-st1':'🐣 Never flown / first dock starts','o-st2':'🐥 I fly for a few seconds','o-st3':'🐦 I hold 30 s and start pumping away',
-    'reco-ref':'Consistent with manufacturer charts: <b>GONG Trail</b> recommends 1940 cm² (AR 9.4, stab 239) for 75-85 kg dockstart; <b>Takoon School</b> 1800 cm² + stab 220.',
+    'reco-ref':'Consistent with the major brands\' size charts: for 75-85 kg dockstart riders they recommend <b>~1800-1950 cm²</b> (AR ~9) with a <b>~220-240 cm²</b> stab.',
     'vd-h3':'🧾 Why this setup, in 6 cards',
     'vd1':'<div class="k">📏 Area = your margin for error</div><div class="big">~20-25 cm² per kilo</div><p>A big wing stalls around <b>10 km/h</b>: when you miss a pump and slow down, it <b>catches you</b> instead of dropping you. A race blade stalls at 20+ km/h — zero room for error. Area means seconds of flight per session, which means learning per session.</p>',
     'vd2':'<div class="k">🛞 The big stab = your training wheels</div><div class="big">stability first</div><p>On <a href="vitesse.html?lang=en">the speed page</a> a stab 200 costs ~3.5 km/h — here it\'s your best ally: it <b>tames the pitch</b> and makes the machine predictable. When it starts feeling «soft», size it down: it\'s <b>the cheapest upgrade</b> on the whole foil.</p>',
     'vd3':'<div class="k">🍞 Thick profile = gentle stall</div><div class="big">it warns before letting go</div><p>A thick profile (~13-15%) sinks <b>progressively</b> when you go too slow — you feel it and correct. A thin profile <b>lets go at once</b>, no warning. The extra drag? You don\'t care: you\'re not here for speed.</p>',
-    'vd4':'<div class="k">📐 Moderate aspect ratio (AR ~9)</div><div class="big">docile before efficient</div><p><a href="./?lang=en">The comparator</a> will tell you a wide span saves your watts — true, <b>later</b>. A very elongated wing (AR 11+) is twitchy in roll and stalls from the tips. Modern school wings all sit at <b>AR ~9</b> (GONG Trail 9.4, Takoon 9.2): the docile/efficient sweet spot, validated by the market.</p>',
+    'vd4':'<div class="k">📐 Moderate aspect ratio (AR ~9)</div><div class="big">docile before efficient</div><p><a href="./?lang=en">The comparator</a> will tell you a wide span saves your watts — true, <b>later</b>. A very elongated wing (AR 11+) is twitchy in roll and stalls from the tips. Modern school wings all sit at <b>AR ~9</b>: the docile/efficient sweet spot, validated by the market.</p>',
     'vd5':'<div class="k">🩳 Short mast (60-70 cm)</div><div class="big">falling from lower</div><p>Less leverage underfoot = a <b>calmer</b> machine, softer falls, and shallow water stays usable. The downside (less room to pump high) won\'t concern you for months — then you\'ll move to 75-85 cm.</p>',
     'vd6':'<div class="k">💶 Alu and second-hand</div><div class="big">carbon can wait</div><p>At first your foil will meet docks, rocks and sand. <b>Alu</b> takes the hits and forgives your wallet; second-hand, a full learning setup is findable — and <b>resells</b> at nearly the same price when you move on. Stiff carbon is for when your technique can feel it.</p>',
     'prog-h3':'🪜 What next? Sizing down',
@@ -314,8 +314,8 @@
 
   /* ---------- modèle ---------- */
   // Étapes : k = cm²/kg visés · profil (cd0|clMax) · pénalité de technique (watts gaspillés)
-  // Calibré sur les chartes constructeurs : GONG Trail (AR 9,4 · ~15 % · 1660-2240 cm² · stabs 211-276)
-  // et Takoon École (AR 9,2 · ~13,5 % · 1600-2000 cm² · stab 220). minS : les marques ne font pas plus petit.
+  // Calibré sur les chartes de deux gammes école du marché (2025) : AR ~9,2-9,4 · ~13-15 % d'épaisseur ·
+  // 1600-2240 cm² · stabs 210-280 cm². minS : les marques ne font pas plus petit.
   const STAGES = {
     A: {k:23, minS:1600, AR:9,  cd0:0.015, clMax:1.25, stab:'210-280', mast:'60-70', tech:0.70},
     B: {k:20, minS:1400, AR:9,  cd0:0.014, clMax:1.20, stab:'150-220', mast:'70-75', tech:0.80},
