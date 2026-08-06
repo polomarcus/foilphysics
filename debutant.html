@@ -5,7 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bien débuter en pump foil — le setup qui pardonne</title>
 <meta name="description" content="Quel foil pour apprendre le pump ? Grande aile épaisse, gros stab, mât court : le setup débutant expliqué par la physique, selon ton poids.">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230f172a'/><rect x='9' y='33' width='82' height='13' rx='6.5' fill='%23f59e0b'/><path d='M57 53 L40 76 h10 l-6 18 18-24 h-10 z' fill='%2338bdf8'/></svg>">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bien débuter en pump foil — le setup qui pardonne">
+<meta property="og:description" content="Quel foil pour apprendre ? Grande aile, gros stab, mât court — le setup débutant expliqué par la physique, selon ton poids. Et la sécurité d'abord.">
+<meta property="og:url" content="https://polomarcus.github.io/foilphysics/debutant.html">
+<meta property="og:image" content="https://polomarcus.github.io/foilphysics/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230f172a'/><rect x='9' y='33' width='82' height='13' rx='6.5' fill='%2334d399'/><path d='M57 53 L40 76 h10 l-6 18 18-24 h-10 z' fill='%2338bdf8'/></svg>">
 <style>
   :root{
     --bg:#0f172a; --panel:#1e293b; --panel-2:#16213a; --line:#334155;
@@ -35,7 +41,7 @@
   .h1a .hi{background:linear-gradient(100deg,#6ee7b7,#34d399 55%,#059669); -webkit-background-clip:text; background-clip:text; color:transparent;}
   .h1b{display:block; font-size:1.2rem; font-weight:800; color:#cbd5e1; letter-spacing:.12em; text-transform:uppercase; margin-top:6px;}
   .hsub{font-size:1.05rem; color:#cbd5e1; max-width:640px; margin:14px auto 0;}
-  .hsub b{color:var(--sky);}
+  .hsub b{color:#34d399;}
 
   .tldr{text-align:center; margin:34px 0 44px;}
   .tldr .t{font-size:1.45rem; font-weight:800; letter-spacing:-.015em; line-height:1.3;}
@@ -78,6 +84,10 @@
   @media(max-width:460px){ .bkr .lab{min-width:128px; font-size:.74rem;} }
 
   .cards{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  .secu-cards .card{border-color:rgba(245,158,11,.55);}
+  .secu-cards .card .k{color:#fcd34d;}
+  .bkr.cur .lab{color:var(--txt); font-weight:800;}
+  .bkr.cur .trk{outline:2px solid rgba(226,232,240,.5); outline-offset:1px;}
   @media(max-width:640px){ .cards{grid-template-columns:1fr;} }
   .card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px;}
   .card .k{font-weight:800; margin-bottom:6px; text-align:center;}
@@ -134,6 +144,64 @@
     <a href="./">le comparateur longue distance</a> et <a href="vitesse.html">la page vitesse</a>, appliqué ici
     à la seule question qui compte au début : voler lentement sans décrocher.</div>
 
+  <!-- SÉCURITÉ -->
+  <section id="secu" class="a-in">
+    <h3 data-i18n="secu-h3">🦺 La sécurité d'abord</h3>
+    <p class="lede" data-i18n="secu-lede">Un foil a des <b>bords fins et durs</b>, et les chutes de débutant sont incontrôlées.
+      Quatre règles non négociables avant le premier départ.</p>
+    <div class="cards secu-cards">
+      <div class="card" data-i18n="sc1">
+        <div class="k">🪖 Casque + gilet d'impact</div>
+        <p>Toujours. Quand tu tombes, <b>le foil est quelque part en dessous</b> — et tu ne choisis ni où,
+          ni comment. Le casque et le gilet transforment un mauvais souvenir en anecdote.</p>
+      </div>
+      <div class="card" data-i18n="sc2">
+        <div class="k">🌊 Un spot profond et dégagé</div>
+        <p>Au moins <b>1,5 m d'eau</b> (le mât + une vraie marge), un fond sans rochers, et
+          <b>aucun baigneur</b> dans ta zone de chute. Vérifie la profondeur avant, pas après.</p>
+      </div>
+      <div class="card" data-i18n="sc3">
+        <div class="k">👥 Jamais seul</div>
+        <p>Un partenaire au bord change tout en cas de pépin — au strict minimum, quelqu'un
+          <b>sait où tu es</b> et quand tu rentres. L'eau froide raccourcit vite les marges.</p>
+      </div>
+      <div class="card" data-i18n="sc4">
+        <div class="k">🤸 Apprends à tomber</div>
+        <p>Tombe <b>loin de la machine</b>, bras autour de la tête, et ne remonte jamais « à l'aveugle »
+          sous la planche. Pousser le foil loin de toi est un réflexe qui s'entraîne dès le premier jour.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMENT ON APPREND -->
+  <section id="dock" class="a-in">
+    <h3 data-i18n="dock-h3">🪜 On apprend depuis un ponton</h3>
+    <p class="lede" data-i18n="dock-lede">Le « <b>dock start</b> » : tu pars d'un ponton avec de l'élan. L'énergie de départ est
+      <b>gratuite</b> — toute ta concentration va au vol, pas au décollage.</p>
+    <div class="steps">
+      <div class="step" data-i18n="dk1">
+        <div class="num">🚶</div>
+        <div><h4>Le spot</h4>
+        <p>Un ponton haut <b>du genou à la hanche</b>, de l'eau profonde devant, un bord dégagé pour courir
+          deux pas. Pas de ponton praticable près de chez toi ? Les <b>échelles de mise à l'eau de
+          <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz.org</a></b> sont idéales pour
+          apprendre : elles transforment n'importe quel quai en spot, à hauteur constante.</p></div>
+      </div>
+      <div class="step" data-i18n="dk2">
+        <div class="num">⏱️</div>
+        <div><h4>Les attentes honnêtes</h4>
+        <p>Compte <b>5 à 15 sessions</b> avant de tenir 30 s. Les premiers vols durent 5-20 s et finissent
+          dans l'eau — c'est le jeu, et c'est pareil pour tout le monde.</p></div>
+      </div>
+      <div class="step" data-i18n="dk3">
+        <div class="num">🔁</div>
+        <div><h4>La méthode</h4>
+        <p>Des <b>dizaines de départs courts</b> plutôt que de rares grands vols : la répétition du départ,
+          c'est ça, l'apprentissage. Un bon setup (ci-dessous) multiplie les secondes de vol par tentative.</p></div>
+      </div>
+    </div>
+  </section>
+
   <!-- RECOMMANDEUR -->
   <section id="reco" class="a-in">
     <h3 data-i18n="reco-h3">🎛️ Ton setup d'apprentissage</h3>
@@ -156,6 +224,7 @@
         <div class="win" id="o-why"></div>
       </div>
       <div class="rec-grid" id="o-rec"></div>
+      <p id="o-delta" style="font-size:.82rem;color:#6ee7b7;text-align:center;margin:12px auto 0;font-weight:600" aria-live="polite"></p>
       <p style="font-size:.76rem;color:var(--muted);text-align:center;margin:12px auto 0;max-width:560px" data-i18n="reco-ref">
         Cohérent avec les chartes des grandes marques : pour 75-85 kg en dockstart, elles conseillent
         <b>~1800-1950 cm²</b> (AR ~9) avec un stab de <b>~220-240 cm²</b>.</p>
@@ -165,7 +234,7 @@
 
   <!-- VERDICTS -->
   <section class="a-in">
-    <h3 data-i18n="vd-h3">🧾 Pourquoi ce setup, en 6 cartes</h3>
+    <h3 data-i18n="vd-h3">🧾 Pourquoi ce setup, en 8 cartes</h3>
     <div class="cards">
       <div class="card ok" data-i18n="vd1">
         <div class="k">📏 La surface = ta marge d'erreur</div>
@@ -203,6 +272,21 @@
         <p>Moins de levier sous les pieds = machine <b>moins nerveuse</b>, chutes plus douces, et l'eau peu
           profonde reste praticable. L'inconvénient (moins de marge pour pomper haut) ne te concernera que
           dans quelques mois — tu passeras alors à 75-85 cm.</p>
+      </div>
+      <div class="card meh" data-i18n="vd7">
+        <div class="k">🛹 La planche : petite et légère</div>
+        <div class="big">c'est le ponton qui porte</div>
+        <p>Au dock start, <b>pas besoin de volume</b> : l'énergie vient du ponton, pas de la flottaison.
+          Une planche courte (~110-130 cm), légère, un pad antidérapant — et chaque kilo économisé
+          se retrouve dans <a href="./">tes watts</a>. D'occasion aussi, évidemment.</p>
+      </div>
+      <div class="card ok" data-i18n="vd8">
+        <div class="k">🪜 L'échelle de mise à l'eau</div>
+        <div class="big">le dock start partout</div>
+        <p>Pas de ponton idéal près de chez toi ? Une <b>échelle de mise à l'eau</b> (comme celles de
+          <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz.org</a>) transforme n'importe quel
+          quai en spot d'apprentissage : hauteur constante, départs <b>répétables à volonté</b> — et la
+          répétition, c'est exactement ce qui fait progresser.</p>
       </div>
       <div class="card you" data-i18n="vd6">
         <div class="k">💶 Alu et occasion</div>
@@ -283,7 +367,20 @@
     'l-w':'Your weight','l-stage':'Where you are',
     'o-st1':'🐣 Never flown / first dock starts','o-st2':'🐥 I fly for a few seconds','o-st3':'🐦 I hold 30 s and start pumping away',
     'reco-ref':'Consistent with the major brands\' size charts: for 75-85 kg dockstart riders they recommend <b>~1800-1950 cm²</b> (AR ~9) with a <b>~220-240 cm²</b> stab.',
-    'vd-h3':'🧾 Why this setup, in 6 cards',
+    'secu-h3':'🦺 Safety first',
+    'secu-lede':'A foil has <b>thin, hard edges</b>, and beginner falls are uncontrolled. Four non-negotiable rules before the first start.',
+    'sc1':'<div class="k">🪖 Helmet + impact vest</div><p>Always. When you fall, <b>the foil is somewhere below</b> — and you choose neither where nor how. Helmet and vest turn a bad memory into an anecdote.</p>',
+    'sc2':'<div class="k">🌊 A deep, clear spot</div><p>At least <b>1.5 m of water</b> (the mast + a real margin), a bottom free of rocks, and <b>no swimmers</b> in your fall zone. Check the depth before, not after.</p>',
+    'sc3':'<div class="k">👥 Never alone</div><p>A partner on shore changes everything if something goes wrong — at the strict minimum, someone <b>knows where you are</b> and when you\'re due back. Cold water shrinks margins fast.</p>',
+    'sc4':'<div class="k">🤸 Learn to fall</div><p>Fall <b>away from the machine</b>, arms around your head, and never surface «blind» under the board. Pushing the foil away from you is a reflex you train from day one.</p>',
+    'dock-h3':'🪜 You learn from a dock',
+    'dock-lede':'The «<b>dock start</b>»: you launch from a dock with momentum. The starting energy is <b>free</b> — all your focus goes to flying, not taking off.',
+    'dk1':'<div class="num">🚶</div><div><h4>The spot</h4><p>A dock <b>knee-to-hip high</b>, deep water in front, a clear edge for two running steps. No usable dock near you? The <b>water-entry ladders from <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz.org</a></b> are ideal for learning: they turn any quay into a spot, at constant height.</p></div>',
+    'dk2':'<div class="num">⏱️</div><div><h4>Honest expectations</h4><p>Count on <b>5 to 15 sessions</b> before holding 30 s. First flights last 5-20 s and end in the water — that\'s the game, and it\'s the same for everyone.</p></div>',
+    'dk3':'<div class="num">🔁</div><div><h4>The method</h4><p><b>Dozens of short starts</b> rather than a few long flights: repeating the start IS the learning. A good setup (below) multiplies the seconds of flight per attempt.</p></div>',
+    'vd7':'<div class="k">🛹 The board: small and light</div><div class="big">the dock does the carrying</div><p>For dock starts, <b>no volume needed</b>: the energy comes from the dock, not from buoyancy. A short (~110-130 cm), light board, a grippy pad — and every kilo saved comes back as <a href="./?lang=en">watts</a>. Second-hand too, obviously.</p>',
+    'vd8':'<div class="k">🪜 The water-entry ladder</div><div class="big">dock starts anywhere</div><p>No ideal dock near you? A <b>water-entry ladder</b> (like the ones from <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz.org</a>) turns any quay into a learning spot: constant height, starts <b>repeatable at will</b> — and repetition is exactly what makes you progress.</p>',
+    'vd-h3':'🧾 Why this setup, in 8 cards',
     'vd1':'<div class="k">📏 Area = your margin for error</div><div class="big">~20-25 cm² per kilo</div><p>A big wing stalls around <b>10 km/h</b>: when you miss a pump and slow down, it <b>catches you</b> instead of dropping you. A race blade stalls at 20+ km/h — zero room for error. Area means seconds of flight per session, which means learning per session.</p>',
     'vd2':'<div class="k">🛞 The big stab = your training wheels</div><div class="big">stability first</div><p>On <a href="vitesse.html?lang=en">the speed page</a> a stab 200 costs ~3.5 km/h — here it\'s your best ally: it <b>tames the pitch</b> and makes the machine predictable. And there\'s no rush: a big stab <b>keeps for a long time</b> — you\'ll size it down well after the wing, when it truly starts holding you back. It\'ll then be <b>the cheapest upgrade</b> on the whole foil.</p>',
     'vd3':'<div class="k">🍞 Thick profile = gentle stall</div><div class="big">it warns before letting go</div><p>A thick profile (~13-15%) sinks <b>progressively</b> when you go too slow — you feel it and correct. A thin profile <b>lets go at once</b>, no warning. The extra drag? You don\'t care: you\'re not here for speed.</p>',
@@ -319,14 +416,14 @@
   // Calibré sur les chartes de deux gammes école du marché (2025) : AR ~9,2-9,4 · ~13-15 % d'épaisseur ·
   // 1600-2240 cm² · stabs 210-280 cm². minS : les marques ne font pas plus petit.
   const STAGES = {
-    A: {k:23, minS:1600, AR:9,  cd0:0.015, clMax:1.25, stab:'210-280', mast:'60-70', tech:0.70},
-    B: {k:21, minS:1450, AR:9,  cd0:0.014, clMax:1.20, stab:'210-280', mast:'70-75', tech:0.80},
-    C: {k:19, minS:1300, AR:10, cd0:0.013, clMax:1.10, stab:'150-220', mast:'75-85', tech:0.88}
+    A: {k:23, minS:1250, AR:9,  cd0:0.015, clMax:1.25, As:0.080, stab:'210-280', mast:'60-70', tech:0.70},
+    B: {k:21, minS:1150, AR:9,  cd0:0.014, clMax:1.20, As:0.080, stab:'210-280', mast:'70-75', tech:0.80},
+    C: {k:19, minS:1050, AR:10, cd0:0.013, clMax:1.10, As:0.065, stab:'150-220', mast:'75-85', tech:0.88}
   };
   function model(c){
     const AR = c.b*c.b/c.S;
     const eta = Math.min(0.80, (0.44 + 0.015*AR)*1.06);
-    const K  = c.S*c.cd0 + A_MAST*CDM + A_FUS*CDF + 0.080*CDS;   // stab d'apprentissage : grand
+    const K  = c.S*c.cd0 + A_MAST*CDM + A_FUS*CDF + c.As*CDS;
     const Ai = (c.W*c.W)/(0.5*RHO*Math.PI*c.b*c.b*E);
     const P  = v => ((Ai/(v*v) + 0.5*RHO*v*v*K)*v + 0.5*RHO_AIR*CDA*v*v*v)/eta;
     const cl = Math.min((2*Math.PI/(1+2/AR))*(13*Math.PI/180), c.clMax);
@@ -335,13 +432,14 @@
   }
   function reco(wkg, stage){
     const st = STAGES[stage];
-    const S = Math.max(Math.round(wkg*st.k/50)*50, st.minS);   // cm², arrondi à 50, plancher catalogue
+    const raw = Math.round(wkg*st.k/50)*50;
+    const S = Math.max(raw, st.minS);                     // cm², arrondi à 50, plancher catalogue
     const b = Math.round(Math.sqrt(st.AR*S/10000)*100);   // cm
-    const c = {S:S/10000, b:b/100, cd0:st.cd0, clMax:st.clMax, W:wkg*G};
+    const c = {S:S/10000, b:b/100, cd0:st.cd0, clMax:st.clMax, As:st.As, W:wkg*G};
     const m = model(c);
     const vCruise = Math.max(m.vStall*1.15, 11/3.6);      // croisière douce (convention du comparateur)
     const pIdeal = m.P(vCruise);                          // watts, technique parfaite
-    return {S, b, st, m, vCruise, pIdeal};
+    return {S, b, st, m, vCruise, pIdeal, floored: S > raw};
   }
 
   /* ---------- rendu ---------- */
@@ -355,7 +453,10 @@
     $('o-why').innerHTML =
       t('Elle décrochera vers <b>','It will stall around <b>') + num(r.m.vStall*3.6) +
       t(' km/h</b> et croisera tranquillement à <b>~',' km/h</b> and cruise gently at <b>~') + num(r.vCruise*3.6) +
-      ' km/h</b> — ' + t('un pump raté te fait ralentir, pas tomber.','a missed pump slows you down, it doesn\'t drop you.');
+      ' km/h</b> — ' + t('un pump raté te fait ralentir, pas tomber.','a missed pump slows you down, it doesn\'t drop you.') +
+      (r.floored ? '<br><span style="color:var(--dim);font-size:.82rem">' +
+        t('(le plus petit des gammes école — pour les gabarits légers, les marques ne font guère plus petit)',
+          '(the smallest in school ranges — for light riders, brands hardly make smaller)') + '</span>' : '');
 
     const recs = [
       [t('Envergure','Span'), '~'+num(r.b)+' cm'],
@@ -366,22 +467,34 @@
     $('o-rec').innerHTML = recs.map(([k,v]) =>
       '<div class="rec"><div class="rk">'+k+'</div><div class="rv">'+v+'</div></div>').join('');
 
+    const delta = {
+      A: t('Le point de départ : tout est réglé pour pardonner.',
+           'The starting point: everything is set to forgive.'),
+      B: t('Ce qui change : l\'aile descend d\'une taille, le mât s\'allonge d\'un cran — le stab reste.',
+           'What changes: the wing drops one size, the mast grows a notch — the stab stays.'),
+      C: t('Ce qui change : encore une taille de moins, mât 75-85 — le stab peut enfin descendre.',
+           'What changes: one more size down, 75-85 mast — the stab can finally shrink.')
+    }[stage];
+    $('o-delta').innerHTML = '↳ ' + delta;
+
     const rows = [
       [t('🔰 Tes premiers vols','🔰 Your first flights'),          r.pIdeal/STAGES.A.tech, '#f59e0b'],
       [t('🌱 Après quelques mois','🌱 After a few months'),        r.pIdeal/STAGES.B.tech, '#38bdf8'],
       [t('🌳 Technique acquise','🌳 Technique acquired'),          r.pIdeal/1.0,           '#34d399']
     ];
+    const cur = {A:0, B:1, C:2}[stage];
     const mx = Math.max(...rows.map(x=>x[1]));
     $('o-eff').innerHTML =
-      '<div class="bk-cat">' + t('L\'effort à prévoir à ','Effort to expect at ') + num(r.vCruise*3.6) +
-      t(' km/h — la technique est ton vrai premier upgrade',' km/h — technique is your real first upgrade') + '</div>' +
-      rows.map(([lab,w,col]) =>
-        '<div class="bkr"><span class="lab">'+lab+'</span><span class="trk"><span class="fil" style="width:'+
+      '<div class="bk-cat">' + t('L\'effort pendant tes vols — la technique est ton vrai premier upgrade',
+                                  'The effort during your flights — technique is your real first upgrade') + '</div>' +
+      rows.map(([lab,w,col],i) =>
+        '<div class="bkr'+(i===cur?' cur':'')+'"><span class="lab">'+lab+'</span><span class="trk"><span class="fil" style="width:'+
         (100*w/mx).toFixed(1)+'%;background:'+col+'"></span></span><span class="v">~'+num(w)+' W</span></div>'
       ).join('') +
       '<p style="font-size:.78rem;color:var(--muted);margin-top:8px;text-align:center">' +
-      t('Au tout début tu ne tiendras que 20-40 s d\'affilée — c\'est normal, tout le monde passe par là.',
-        'At the very start you\'ll only hold 20-40 s at a time — that\'s normal, everyone goes through it.') + '</p>';
+      t('C\'est pour ça que les premiers vols durent 20-40 s : personne ne tient ','That\'s why first flights last 20-40 s: nobody holds ') + num(rows[0][1]) +
+      t(' W longtemps. La bonne nouvelle : ces watts fondent avec la technique — gratuitement.',
+        ' W for long. Good news: those watts melt away with technique — for free.') + '</p>';
   }
 
   document.querySelectorAll('input,select').forEach(el => el.addEventListener('input', render));
