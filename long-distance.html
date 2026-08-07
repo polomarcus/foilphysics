@@ -442,6 +442,9 @@
   .reg-card{background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:14px;}
   .reg-card .rh{font-weight:800; margin-bottom:6px; text-align:center;}
   .reg-card p{font-size:.85rem; color:#cbd5e1; line-height:1.55;}
+  .reg-why{background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:14px 16px;
+    font-size:.86rem; color:#cbd5e1; line-height:1.6; max-width:680px; margin:4px auto 12px;}
+  .reg-why b{color:var(--txt);}
   .reg-note{font-size:.8rem; color:var(--muted); text-align:center; max-width:640px; margin:8px auto 0;}
   .turn-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:6px;}
   @media(max-width:560px){ .turn-grid{grid-template-columns:1fr;} }
@@ -1223,6 +1226,14 @@
             La planche <b>pique</b> ? Recule — ou remets de la cale. Quand plus rien ne force, c'est réglé.</p>
         </div>
       </div>
+      <div class="reg-why" data-i18n="reg-why">
+        <b>Pourquoi le rake positif aide en longue distance ?</b> Le stab travaille comme l'empennage d'un
+        avion : il <b>appuie vers le bas</b> pour stabiliser. Une cale positive augmente cet appui → le nez
+        se relève → l'aile avant prend <b>plus d'incidence</b> et porte plus, à vitesse égale. Résultat :
+        tu peux <b>croiser plus lentement sans décrocher</b> — pile vers le creux de la courbe, là où le
+        vol coûte le moins — et chaque coup de pompe « rend » plus de portance. Le prix : un stab plus
+        chargé traîne un peu plus, et ta vitesse max recule. C'est exactement l'arbitrage inverse de
+        <a href="vitesse.html">la page vitesse</a> — qui, elle, veut du rake neutre.</div>
       <p class="reg-note" data-i18n="reg-note">Nos simulateurs ne modélisent pas ces angles : ils jouent sur l'<b>assiette</b> (le trim),
         pas sur le budget de traînée. Mais une assiette juste, c'est un pompage qui rend mieux — des watts
         gratuits, à condition de noter ce que tu changes.</p>
@@ -2132,6 +2143,7 @@
     'reg1':'<div class="rh">📐 The rake shim</div><p>A wedge of <b>±0.5 to 2°</b> under the stab that changes the trim of the whole foil. <b>More angle</b>: more lift, easier pumping — a bit more drag. <b>Less angle</b>: faster, more neutral, more demanding. Long distance: slight positive rake; speed: neutral.</p>',
     'reg2':'<div class="rh">↔️ Mast position on the board</div><p>In the tracks: <b>forward</b> = more lift, more playful (the nose wants to rise); <b>back</b> = more stable and fast, but you must load the front. Move in <b>~5 mm</b> steps — it\'s huge underfoot.</p>',
     'reg3':'<div class="rh">🦶 Your feet</div><p>The permanent tuning. <b>Fighting the nose-up</b>? Move forward 1-2 cm (or move the mast back). Board <b>diving</b>? Step back — or add shim. When nothing forces anymore, it\'s tuned.</p>',
+    'reg-why':'<b>Why does positive rake help for long distance?</b> The stab works like a plane\'s tailplane: it <b>pushes down</b> to stabilise. A positive shim increases that push → the nose rises → the front wing takes <b>more incidence</b> and lifts more, at equal speed. Result: you can <b>cruise slower without stalling</b> — right at the bottom of the power curve, where flying is cheapest — and each pump stroke pays back more lift. The price: a more loaded stab drags a bit more, and your top speed drops. Exactly the opposite trade-off of <a href="vitesse.html?lang=en">the speed page</a> — which wants neutral rake.',
     'reg-note':'Our simulators don\'t model these angles: they act on <b>trim</b>, not on the drag budget. But a right trim means pumping that pays back better — free watts, as long as you write down what you change.',
     'mental-h3':'🧠 Mental comfort & cognitive load',
     'mental-lede':'For a comparable physical effort, wings don\'t all demand the same <b>focus</b>. <b>Performance = physical energy + mental energy.</b><br><span style="color:#fcd34d">⚠️ The paradox:</span> the <b>most watt-efficient</b> wing can be the one that costs most <i>mentally</i> — little effort, but non-stop concentration. And near your max heart rate, the <b>brain runs short of resources</b>: the «silly» falls at the end of a session are often just that.',
