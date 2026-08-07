@@ -437,6 +437,12 @@
   @media(max-width:560px){ .whrow{grid-template-columns:118px 1fr 38px; font-size:.72rem; gap:6px;} }
 
   /* Virages / maniabilité */
+  .reg-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:10px;}
+  @media(max-width:760px){ .reg-grid{grid-template-columns:1fr;} }
+  .reg-card{background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:14px;}
+  .reg-card .rh{font-weight:800; margin-bottom:6px; text-align:center;}
+  .reg-card p{font-size:.85rem; color:#cbd5e1; line-height:1.55;}
+  .reg-note{font-size:.8rem; color:var(--muted); text-align:center; max-width:640px; margin:8px auto 0;}
   .turn-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:6px;}
   @media(max-width:560px){ .turn-grid{grid-template-columns:1fr;} }
   .turn-col{background:var(--panel-2); border-radius:12px; padding:14px;}
@@ -1191,6 +1197,38 @@
   </div>
 
   </div><!-- /SLIDE E4 -->
+
+  <div class="sslide xo" id="reglages"><!-- SLIDE E4b · réglages -->
+  <div class="shock">
+      <h3 data-i18n="reg-h3">🔧 Les réglages : les watts gratuits</h3>
+      <p class="lede" data-i18n="reg-lede">Avant de changer d'aile, deux vis et tes pieds. Effets réels, coût nul —
+        mais <b>un seul changement à la fois</b>, sinon tu ne sauras jamais lequel a agi.</p>
+      <div class="reg-grid">
+        <div class="reg-card" data-i18n="reg1">
+          <div class="rh">📐 La cale de rake (shim)</div>
+          <p>Un coin de <b>±0,5 à 2°</b> sous le stab, qui change l'assiette de tout le foil.
+            <b>Plus d'angle</b> : ça porte plus, ça pompe plus facile — un peu plus de traînée.
+            <b>Moins d'angle</b> : plus rapide, plus neutre, plus exigeant. Longue distance : léger rake
+            positif ; vitesse : neutre.</p>
+        </div>
+        <div class="reg-card" data-i18n="reg2">
+          <div class="rh">↔️ Le mât sur la planche</div>
+          <p>Dans les rails : <b>avancer</b> le mât = plus porteur, plus joueur (le nez veut monter) ;
+            <b>reculer</b> = plus stable et rapide, mais il faut charger l'avant. Déplace par crans
+            de <b>~5 mm</b> — c'est énorme sous les pieds.</p>
+        </div>
+        <div class="reg-card" data-i18n="reg3">
+          <div class="rh">🦶 Tes pieds</div>
+          <p>Le réglage permanent. Tu <b>luttes contre le cabré</b> ? Avance d'1-2 cm (ou recule le mât).
+            La planche <b>pique</b> ? Recule — ou remets de la cale. Quand plus rien ne force, c'est réglé.</p>
+        </div>
+      </div>
+      <p class="reg-note" data-i18n="reg-note">Nos simulateurs ne modélisent pas ces angles : ils jouent sur l'<b>assiette</b> (le trim),
+        pas sur le budget de traînée. Mais une assiette juste, c'est un pompage qui rend mieux — des watts
+        gratuits, à condition de noter ce que tu changes.</p>
+  </div>
+
+  </div><!-- /SLIDE E4b -->
 
   <div class="sslide xo" id="mental"><!-- SLIDE E5 · confort mental -->
   <!-- CONFORT MENTAL -->
@@ -2089,6 +2127,12 @@
     'opt-cffus3':'Ultra short (52 cm)',
     'turn-h3':'🔄 Turns & handling',
     'turn-lede':'The long span that wins glide costs you at the controls: the longer a wing, the more it <b>turns like a barge</b> (inertia rises with the square of the span).',
+    'reg-h3':'🔧 Tuning: the free watts',
+    'reg-lede':'Before changing wings, two screws and your feet. Real effects, zero cost — but <b>one change at a time</b>, or you\'ll never know which one acted.',
+    'reg1':'<div class="rh">📐 The rake shim</div><p>A wedge of <b>±0.5 to 2°</b> under the stab that changes the trim of the whole foil. <b>More angle</b>: more lift, easier pumping — a bit more drag. <b>Less angle</b>: faster, more neutral, more demanding. Long distance: slight positive rake; speed: neutral.</p>',
+    'reg2':'<div class="rh">↔️ Mast position on the board</div><p>In the tracks: <b>forward</b> = more lift, more playful (the nose wants to rise); <b>back</b> = more stable and fast, but you must load the front. Move in <b>~5 mm</b> steps — it\'s huge underfoot.</p>',
+    'reg3':'<div class="rh">🦶 Your feet</div><p>The permanent tuning. <b>Fighting the nose-up</b>? Move forward 1-2 cm (or move the mast back). Board <b>diving</b>? Step back — or add shim. When nothing forces anymore, it\'s tuned.</p>',
+    'reg-note':'Our simulators don\'t model these angles: they act on <b>trim</b>, not on the drag budget. But a right trim means pumping that pays back better — free watts, as long as you write down what you change.',
     'mental-h3':'🧠 Mental comfort & cognitive load',
     'mental-lede':'For a comparable physical effort, wings don\'t all demand the same <b>focus</b>. <b>Performance = physical energy + mental energy.</b><br><span style="color:#fcd34d">⚠️ The paradox:</span> the <b>most watt-efficient</b> wing can be the one that costs most <i>mentally</i> — little effort, but non-stop concentration. And near your max heart rate, the <b>brain runs short of resources</b>: the «silly» falls at the end of a session are often just that.',
     'tol-head':'Usable speed range before stall <b id="tol-range">—</b>',
