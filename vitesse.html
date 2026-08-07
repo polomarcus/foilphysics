@@ -26,13 +26,35 @@
   :focus-visible{outline:2px solid var(--sky); outline-offset:2px; border-radius:4px;}
 
   .topbar{position:fixed; top:0; left:0; right:0; z-index:50; display:flex; gap:8px; flex-wrap:wrap;
-    justify-content:flex-end; padding:8px 12px;
+    justify-content:space-between; padding:8px 12px;
     background:linear-gradient(180deg, rgba(15,23,42,.96), rgba(15,23,42,.82));
     -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
     border-bottom:1px solid rgba(51,65,85,.4);}
   .topbar a, .topbar button{background:var(--panel); border:1px solid var(--line); color:var(--txt);
     border-radius:999px; padding:6px 12px; font-size:.78rem; font-weight:700; text-decoration:none; cursor:pointer;}
   .topbar a:hover, .topbar button:hover{border-color:var(--sky); color:var(--sky);}
+  .tb-nav{display:flex; background:var(--panel); border:1px solid var(--line); border-radius:999px; padding:3px; gap:2px;}
+  .tb-nav .tb-tab{background:none; border:none; color:var(--muted); border-radius:999px; padding:5px 12px;
+    font-size:.78rem; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:5px; white-space:nowrap;}
+  .tb-nav .tb-tab:hover{color:var(--txt); border:none;}
+  .tb-nav .tb-tab.on{background:var(--sky); color:#04121f;}
+  .tb-nav .tb-tab.on:hover{color:#04121f;}
+  .tb-ctrl{display:flex; gap:8px; align-items:center;}
+  .tb-more{position:relative;}
+  .tb-more summary{list-style:none; cursor:pointer; background:var(--panel); border:1px solid var(--line);
+    color:var(--txt); border-radius:999px; padding:6px 12px; font-size:.78rem; font-weight:700;
+    display:inline-flex; align-items:center; gap:5px;}
+  .tb-more summary::-webkit-details-marker{display:none;}
+  .tb-more summary:hover{border-color:var(--sky); color:var(--sky);}
+  .tb-more[open] summary{border-color:var(--sky);}
+  .tb-menu{position:absolute; right:0; top:calc(100% + 6px); background:var(--panel); border:1px solid var(--line);
+    border-radius:12px; padding:6px; display:flex; flex-direction:column; gap:2px; min-width:190px; z-index:60;
+    box-shadow:0 10px 30px rgba(0,0,0,.45);}
+  .tb-menu a{background:none; border:none; color:var(--txt); border-radius:8px; padding:8px 10px;
+    font-size:.82rem; font-weight:700; text-decoration:none; display:flex; align-items:center; gap:7px; white-space:nowrap;}
+  .tb-menu a:hover{background:var(--panel-2); color:var(--sky); border:none;}
+  @media(max-width:680px){ .tb-menu{right:auto; left:50%; transform:translateX(-50%);} }
+
   @media(max-width:680px){ .topbar{position:static; justify-content:center; background:none; border:none;} }
 
   main{max-width:960px; margin:0 auto; padding:64px 16px 40px;}
@@ -125,12 +147,23 @@
 <body>
 <a class="skip" href="#contenu">Aller au contenu / Skip to content</a>
 <nav class="topbar" aria-label="Navigation">
-  <a href="long-distance.html" data-i18n="tb-ld">⚡ Le Choc des Watts (longue distance)</a>
-  <a href="debutant.html" data-i18n="tb-deb">🎓 Bien débuter</a>
-  <a href="https://github.com/polomarcus/foilphysics" target="_blank" rel="noopener">🐙 Code</a>
-  <a href="https://piouz.org/" target="_blank" rel="noopener">⚡ Piouz</a>
-  <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">📸 PoloFoil</a>
-  <button id="lang-btn" type="button">🇬🇧 EN</button>
+  <div class="tb-nav">
+    <a class="tb-tab" href="long-distance.html" data-i18n="tb-ld">⚡ Longue distance</a>
+    <span class="tb-tab on" aria-current="page" data-i18n="tb-vit">🚀 Vitesse</span>
+    <a class="tb-tab" href="debutant.html" data-i18n="tb-deb">🎓 Débuter</a>
+  </div>
+  <div class="tb-ctrl">
+    <button id="lang-btn" type="button">🇬🇧 EN</button>
+    <details class="tb-more">
+      <summary data-i18n="tb-more">Liens ▾</summary>
+      <div class="tb-menu">
+        <a href="https://github.com/polomarcus/foilphysics" target="_blank" rel="noopener">🐙 Code</a>
+        <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener" data-i18n="tb-model">💻 Modèle physique</a>
+        <a href="https://piouz.org/" target="_blank" rel="noopener">⚡ Piouz</a>
+        <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">📸 PoloFoil</a>
+      </div>
+    </details>
+  </div>
 </nav>
 <main id="contenu">
 
@@ -303,8 +336,7 @@
   const num = (x,d=1)=> x.toLocaleString(LANG==='fr'?'fr-FR':'en-GB',{maximumFractionDigits:d, minimumFractionDigits:d});
   const FRC = {};   // cache des textes FR d'origine
   const EN = {
-    'tb-ld':'⚡ The Watts Clash (long distance)',
-    'tb-deb':'🎓 Learning it right',
+    'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-more':'Links ▾','tb-model':'💻 Physics model',
     'h1a':'The Race for <span class="hi">km/h</span>',
     'h1b':'🚀 what makes a foil fast?',
     'hsub':'You think only a <b>small 600-800 cm² wing</b> matters, and the stab plays no role? The model agrees with the first part… and not at all with the second.',
