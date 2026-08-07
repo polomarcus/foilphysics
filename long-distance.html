@@ -67,6 +67,10 @@
   .tb-more summary::-webkit-details-marker{display:none;}
   .tb-more summary:hover{border-color:var(--sky); color:var(--sky);}
   .tb-more[open] summary{border-color:var(--sky);}
+  .tb-made{color:var(--muted); font-size:.78rem; font-weight:600; display:inline-flex; align-items:center; gap:5px; white-space:nowrap;}
+  .tb-made a{background:none; border:none; padding:0; color:var(--muted); font-weight:600;}
+  .tb-made a b{color:var(--txt); font-weight:800;}
+  .tb-made a:hover, .tb-made a:hover b{color:var(--sky); border:none;}
   .tb-menu{position:absolute; right:0; top:calc(100% + 6px); background:var(--panel); border:1px solid var(--line);
     border-radius:12px; padding:6px; display:flex; flex-direction:column; gap:2px; min-width:190px; z-index:60;
     box-shadow:0 10px 30px rgba(0,0,0,.45);}
@@ -625,10 +629,11 @@
       <div class="tb-menu">
         <a href="https://github.com/polomarcus/foilphysics" target="_blank" rel="noopener">🐙 Code</a>
         <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener" data-i18n="tb-model">💻 Modèle physique</a>
-        <a href="https://piouz.org/" target="_blank" rel="noopener">⚡ Piouz</a>
-        <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">📸 PoloFoil</a>
       </div>
     </details>
+    <span class="tb-made">made by
+      <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">📸 <b>PoloFoil</b></a> &amp;
+      <a href="https://piouz.org/" target="_blank" rel="noopener">⚡ <b>Piouz</b></a></span>
   </div>
 </nav>
 <main class="wrap" id="contenu">
