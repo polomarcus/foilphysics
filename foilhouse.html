@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FoilHouse — coming soon</title>
+<meta name="description" content="FoilHouse : connecter tout ce qui fait vivre le foil — riders, clubs, professionnels, événements, services et innovations.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="FoilHouse — coming soon">
+<meta property="og:description" content="Une seule porte d'entrée. Une infinité de possibilités.">
+<meta property="og:url" content="https://foil-house.com/">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b1220'/><path d='M50 22 L80 48 H68 V70 H32 V48 H20 Z' fill='%2338bdf8'/><path d='M18 80 q8 -8 16 0 t16 0 t16 0 t16 0' stroke='%2334d399' stroke-width='6' fill='none' stroke-linecap='round'/></svg>">
+<style>
+  *{margin:0; padding:0; box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    background:#0b1220;
+    color:#e2e8f0;
+    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+    display:flex; align-items:center; justify-content:center;
+    padding:24px;
+    position:relative; overflow:hidden;
+  }
+  body::before{
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background:
+      radial-gradient(700px 420px at 20% 12%, rgba(56,189,248,.14), transparent 65%),
+      radial-gradient(700px 420px at 82% 88%, rgba(52,211,153,.12), transparent 65%);
+  }
+  main{max-width:660px; text-align:center; position:relative;}
+  h1{
+    font-size:clamp(2.6rem, 9vw, 4.2rem);
+    font-weight:900; letter-spacing:-.03em; line-height:1;
+    margin-bottom:28px;
+  }
+  h1 .foil{color:#e2e8f0;}
+  h1 .house{
+    background:linear-gradient(100deg, #38bdf8, #34d399);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .wave{display:block; font-size:1.6rem; margin-bottom:18px;}
+  p.pitch{
+    font-size:clamp(1.02rem, 2.6vw, 1.2rem);
+    line-height:1.65; color:#cbd5e1;
+    margin-bottom:26px;
+  }
+  p.pitch b{color:#e2e8f0;}
+  p.tagline{
+    font-size:clamp(1.1rem, 3vw, 1.35rem);
+    font-weight:800; letter-spacing:-.01em;
+    margin-bottom:38px;
+  }
+  p.tagline .a{color:#38bdf8;}
+  p.tagline .b{color:#34d399;}
+  .soon{
+    display:inline-block;
+    font-size:.95rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+    color:#94a3b8;
+    border:1px solid #334155; border-radius:999px;
+    padding:12px 26px;
+  }
+  .soon .dot{
+    display:inline-block; width:9px; height:9px; border-radius:50%;
+    background:#34d399; margin-right:10px; vertical-align:1px;
+  }
+  @media (prefers-reduced-motion: no-preference){
+    .soon .dot{animation:pulse 2.2s ease-in-out infinite;}
+    @keyframes pulse{
+      0%,100%{opacity:1; transform:scale(1);}
+      50%{opacity:.35; transform:scale(.75);}
+    }
+    main{animation:rise .9s cubic-bezier(.22,1,.36,1) both;}
+    @keyframes rise{
+      from{opacity:0; transform:translateY(18px);}
+      to{opacity:1; transform:none;}
+    }
+  }
+</style>
+</head>
+<body>
+<main>
+  <span class="wave" aria-hidden="true">🌊</span>
+  <h1><span class="foil">Foil</span><span class="house">House</span></h1>
+  <p class="pitch"><b>FoilHouse</b> pour connecter tout ce qui fait vivre le foil :
+    les riders, les clubs, les professionnels, les événements, les services et les innovations.</p>
+  <p class="tagline"><span class="a">Une seule porte d'entrée.</span><br>
+    <span class="b">Une infinité de possibilités.</span></p>
+  <div class="soon"><span class="dot" aria-hidden="true"></span>Coming soon…</div>
+</main>
+</body>
+</html>
