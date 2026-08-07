@@ -1,6 +1,6 @@
 # ⚡ Le Choc des Watts — pump foil physics, made friendly
 
-**👉 [polomarcus.github.io/foilphysics](https://polomarcus.github.io/foilphysics/)** · [English version](https://polomarcus.github.io/foilphysics/?lang=en)
+**👉 [simulator.foil-house.com](https://simulator.foil-house.com/)** · [English version](https://simulator.foil-house.com/?lang=en)
 
 ![Le Choc des Watts](og.png)
 
@@ -11,9 +11,9 @@ each one interactive, bilingual FR/EN, and honest about its numbers.
 
 | Page | Question | What you get |
 |---|---|---|
-| **[⚡ Le Choc des Watts](https://polomarcus.github.io/foilphysics/)** (home) | *How do I fly **far**?* | Compare two real wings (~30 presets) — watts, **Wh/km**, power-vs-speed chart, drag breakdown, sensitivity analysis. The secret: wide span + light weight. |
-| **[🚀 La Course aux km/h](https://polomarcus.github.io/foilphysics/vitesse.html)** | *How do I fly **fast**?* | Top-speed simulator (wing, profile, stab, mast, straps, your sprint watts), calibrated on real race speeds (30-38 km/h) and real race blades (AR ~10, ~11% thickness). Spoiler: the stab matters, and straps are the game changer. |
-| **[🎓 Bien débuter](https://polomarcus.github.io/foilphysics/debutant.html)** | *How do I **learn**?* | Safety first, dock start explained with honest expectations (5-15 sessions), and a weight-based setup recommender calibrated on school-range size charts — big thick wing, big stab, short mast: the setup that forgives. |
+| **[⚡ Le Choc des Watts](https://simulator.foil-house.com/)** (home) | *How do I fly **far**?* | Compare two real wings (~30 presets) — watts, **Wh/km**, power-vs-speed chart, drag breakdown, sensitivity analysis. The secret: wide span + light weight. |
+| **[🚀 La Course aux km/h](https://simulator.foil-house.com/vitesse.html)** | *How do I fly **fast**?* | Top-speed simulator (wing, profile, stab, mast, straps, your sprint watts), calibrated on real race speeds (30-38 km/h) and real race blades (AR ~10, ~11% thickness). Spoiler: the stab matters, and straps are the game changer. |
+| **[🎓 Bien débuter](https://simulator.foil-house.com/debutant.html)** | *How do I **learn**?* | Safety first, dock start explained with honest expectations (5-15 sessions), and a weight-based setup recommender calibrated on school-range size charts — big thick wing, big stab, short mast: the setup that forgives. |
 
 ## The physics model (honesty first)
 
@@ -46,6 +46,6 @@ so the model and the copy can't silently drift apart.
 
 - ⚙️ Physics engine: **[foilphysics](https://lsegessemann.github.io/foilphysics/)** by
   [@lsegessemann](https://github.com/lsegessemann) — the original pumping simulator is
-  preserved here: [pump-simulator.html](https://polomarcus.github.io/foilphysics/pump-simulator.html)
+  preserved here: [pump-simulator.html](https://simulator.foil-house.com/pump-simulator.html)
 - ⚡ Powered by [Piouz](https://piouz.org/) — their water-entry ladders are ideal for learning
 - 📸 [PoloFoil](https://www.instagram.com/polofoil/)
