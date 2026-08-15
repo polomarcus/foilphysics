@@ -1862,7 +1862,7 @@
       badge.className = 'badge '+v.cls;
       badge.querySelector('.dot').textContent = v.dot;
       document.getElementById('badge'+i+'t').textContent =
-        v.title + ' — ' + num(r.P,0) + ' W · ' + num(r.P/(r.v*3.6),1) + ' Wh/km';
+        v.title + ' — ' + num(r.P,0) + ' W à ' + num(r.v*3.6,0) + ' km/h · ' + num(r.P/(r.v*3.6),1) + ' Wh/km';
       document.getElementById('badge'+i+'s').textContent = v.sub + (v.fast ? ' ' + v.fast : '') + '  ' + fmtTime(r.time);
 
       document.getElementById('sw'+i).textContent =
