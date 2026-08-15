@@ -1486,11 +1486,16 @@
     return {AR,Cm,CL,LD,Di,Dprofile,Dtot,P,time,stall,eta,parts,v,vSweetKmh,Psweet,span:b*100,clMax};
   }
 
-  function verdictClass(P){
+  function verdictClass(P, vKmh){
     const cp = riderCP();
-    if(P < cp)      return {cls:'green', dot:'🟢', title:t('Mode Endurance Facile','Easy Endurance Mode'), sub:t('Sous ta puissance critique — rythme de croisière.','Below your critical power — cruising pace.')};
-    if(P < cp+90)   return {cls:'amber', dot:'🟠', title:t('Mode Tempo Soutenu','Sustained Tempo Mode'), sub:t('Ça pousse — tenable plusieurs minutes, pas la journée.','Working hard — holds for several minutes, not all day.')};
-    return {cls:'red', dot:'🔴', title:t('Mode Effort Violent','Hard Effort Mode'), sub:t('Au-dessus de ton seuil : tu plafonnes et tu tombes vite.','Above your threshold: you plateau then drop fast.')};
+    let r;
+    if(P < cp)      r = {cls:'green', dot:'🟢', title:t('Mode Endurance Facile','Easy Endurance Mode'), sub:t('Sous ta puissance critique — rythme de croisière.','Below your critical power — cruising pace.')};
+    else if(P < cp+90) r = {cls:'amber', dot:'🟠', title:t('Mode Tempo Soutenu','Sustained Tempo Mode'), sub:t('Ça pousse — tenable plusieurs minutes, pas la journée.','Working hard — holds for several minutes, not all day.')};
+    else            r = {cls:'red', dot:'🔴', title:t('Mode Effort Violent','Hard Effort Mode'), sub:t('Au-dessus de ton seuil : tu plafonnes et tu tombes vite.','Above your threshold: you plateau then drop fast.')};
+    // Nuance : peu de watts ≠ facile si l'aile est forcée de voler vite (fine → croisière haute)
+    if(vKmh > 15.5) r.fast = t('⚡ Mais « facile » = cardio seulement : elle croise à '+num(vKmh,0)+' km/h (fine, nerveuse) — du pilotage, pas une balade.',
+                               '⚡ But «easy» = cardio only: it cruises at '+num(vKmh,0)+' km/h (thin, twitchy) — skill, not a stroll.');
+    return r;
   }
 
   function appliance(P){
@@ -1852,13 +1857,13 @@
         '<span class="pwh">'+num(r.P/(r.v*3.6),1)+' Wh/km</span>';
       document.getElementById('appl'+i).textContent = appliance(r.P);
 
-      const v = verdictClass(r.P);
+      const v = verdictClass(r.P, r.v*3.6);
       const badge = document.getElementById('badge'+i);
       badge.className = 'badge '+v.cls;
       badge.querySelector('.dot').textContent = v.dot;
       document.getElementById('badge'+i+'t').textContent =
         v.title + ' — ' + num(r.P,0) + ' W · ' + num(r.P/(r.v*3.6),1) + ' Wh/km';
-      document.getElementById('badge'+i+'s').textContent = v.sub + '  ' + fmtTime(r.time);
+      document.getElementById('badge'+i+'s').textContent = v.sub + (v.fast ? ' ' + v.fast : '') + '  ' + fmtTime(r.time);
 
       document.getElementById('sw'+i).textContent =
         num(r.vSweetKmh,1)+' km/h · '+num(r.Psweet,0)+' W';
