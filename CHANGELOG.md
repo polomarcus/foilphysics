@@ -6,7 +6,58 @@ live at [simulator.foil-house.com](https://simulator.foil-house.com/).
 The project follows [Keep a Changelog](https://keepachangelog.com/) conventions.
 It is a set of single-file, dependency-free, bilingual (FR/EN) educational pages.
 
-## 2026-08
+## 2026-08 — Physics refinement (community feedback)
+
+Sparked by feedback from **Tom Lolies** (paraglider/kite designer) and repeated
+field input from Paul (PoloFoil). All numbers are traceable — links in the
+Expert-mode "Method & assumptions" note.
+
+### The metric that matters
+- **Wh/km — energy per kilometre — is the backbone of every comparison.** Because
+  wings cruise at different speeds, comparing raw watts is unfair; Wh/km is the
+  only honest scale. It's shown on every wing card and drives the drag breakdown.
+
+### Added
+- **Expert slide — 🌀 Cadence & Strouhal**: models the unsteady-propulsion blind
+  spot of the steady model. Why raising cadence helps (thrust ∝ (cadence×amplitude)²,
+  the "fish tail" analogy), how to reach the useful regime (St ≈ 0.3, only really
+  approached at low speed = "survival pumping"), calibrated on measured field
+  kinematics (~100 pumps/min, ~20 cm amplitude → St ≈ 0.07). Sourced (Garrick 1936,
+  Anderson 1998, Taylor 2003).
+- **Insight callout — "fly high on the mast / thin ≠ efficient"**: at 18 km/h,
+  friction (wing + mast + stab + fuselage) is ~85% of drag, induced only ~15% — the
+  opposite of a slow-flying wing. A thin wing pays for being forced to fly fast; the
+  real endurance combo is high aspect ratio **+ able to fly slowly + high on the mast**.
+- **New wing preset**: Takoon Pump (1500 / 1700 / 1900).
+
+### Changed (physics)
+- **Span efficiency `e` = 0.91** (was 1.0) — realistic for a high-CL pump foil
+  ([Oswald efficiency](https://en.wikipedia.org/wiki/Oswald_efficiency_number)).
+- **Trim drag added** to the breakdown, with **Cm0 tied to each wing's camber**
+  (thin blade ≈ −0.06 → thick school wing ≈ −0.12), from real XFOIL polars
+  ([E817](http://airfoiltools.com/polar/details?polar=xf-e817-il-200000), NACA 4412/6412).
+  It stays modest (~1–2.5%).
+- **Cavitation threshold** raised ~30 → ~45 km/h (subcavitating sections).
+- **Mast counted ~55% immersed** — you fly high (~15–20 cm of mast in the water),
+  which halves the mast's share; the fast-flying thin wings benefit most.
+- **Minimum flying speed = stall +30%** (you don't pump at the edge of stall) —
+  a 1600 no longer "flies" at an unrealistic 12 km/h.
+- **F-One Jam → medium profile** (~13–14%, not thick).
+- **Weight scaling** clarified: at natural cruise, power ∝ **weight^1.5**.
+- **Harmonised** e + trim drag across all three pages (a wing now drags the same
+  everywhere).
+
+### Fixed
+- Trim-drag figure corrected (was overstated ~4–5%, actually ~1–2.5%).
+- Default wing selection made robust to catalogue reindexing.
+- Citation and community links made readable on the muted note backgrounds.
+
+### Thanks
+- **Tom Lolies** — the unsteady-aero feedback and the span-efficiency / camber sanity checks.
+- Paul (PoloFoil) — field calibration throughout (mast immersion, Jam thickness,
+  min flight speed, pump cadence & amplitude).
+
+## 2026-08 — Launch (three pages)
 
 ### Added
 - **New page — 🎓 Learning it right** (`debutant.html`): the beginner-focused
