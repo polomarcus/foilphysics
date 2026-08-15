@@ -196,6 +196,7 @@
   .law-sq .sqcap{font-size:.68rem; color:var(--muted);}
   .imp-big{font-size:1.85rem; font-weight:800; color:var(--txt); letter-spacing:-.02em; margin:6px 0 10px; line-height:1.1; text-align:center;}
   .imp-s{font-size:.88rem; color:#cbd5e1; line-height:1.6;}
+  .imp-s a{color:#7dd3fc; text-decoration:underline; font-weight:700;}
   .imp-rank{margin-top:10px; font-size:.8rem; color:var(--muted); line-height:1.6; text-align:center;}
   .imp-rank b{color:var(--txt);}
   /* Matrice confort mental : 3 ailes comparées, lignes cliquables */
@@ -2041,8 +2042,13 @@
   }
   populatePresets();
   ['1','2'].forEach(i=> document.getElementById('preset'+i).addEventListener('change', ()=>applyPreset(i)));
-  document.getElementById('preset1').value = '0|Jam 1900';
-  document.getElementById('preset2').value = '5|Fireball 1750';
+  const setDefaultPreset = (i, name) => {   // robuste au réindexage des groupes du CATALOG
+    const sel = document.getElementById('preset'+i);
+    const opt = [...sel.options].find(o => o.value.endsWith('|'+name));
+    if(opt) sel.value = opt.value;
+  };
+  setDefaultPreset('1', 'Jam 1900');
+  setDefaultPreset('2', 'Fireball 1750');
 
   function applyPreset(i){
     const p = FLAT[document.getElementById('preset'+i).value];
