@@ -1311,7 +1311,12 @@
           <p class="cad-read" id="cad-read" aria-live="polite">—</p>
         </div>
       </div>
-      <div class="cad-how" data-i18n="cad-how">🎯 <b>Comment s'en rapprocher ?</b> St = f·A/U grimpe si tu pompes
+      <div class="cad-how" data-i18n="cad-why" style="border-left-color:#38bdf8">🐟 <b>Pourquoi ça marche&nbsp;?</b>
+        Pomper, c'est <b>propulser en jetant de l'eau vers l'arrière</b> — comme un poisson bat de la queue. La poussée
+        dépend du <b>carré</b> de la vitesse de ton geste (cadence × amplitude) : <b>pomper 2× plus vite ou plus ample
+        = 4× plus de poussée</b>. À geste mou, le foil ne crée que de petits remous inefficaces ; à bon rythme, le
+        sillage s'organise en un <b>vrai jet propulsif</b>. C'est exactement ce que le modèle stationnaire ne voit pas.</div>
+      <div class="cad-how" data-i18n="cad-how">🎯 <b>Comment s\'en rapprocher ?</b> St = f·A/U grimpe si tu pompes
         <b>plus vite</b> (f), <b>plus ample</b> (A), ou — le plus efficace — <b>à basse vitesse</b> (U petit).
         Conséquence : à 18 km/h l'optimum est <b>hors de portée</b> (il faudrait ~4 Hz) → tu glisses, tu pompes doucement.
         Mais <b>quand tu ralentis et menaces de retomber</b>, une salve de coups amples et rapides fait bondir St vers
@@ -2288,6 +2293,7 @@
     'cad-h3':'🌀 Cadence & Strouhal — the model\'s blind spot',
     'cad-lede':'The model assumes <b>steady flight</b>: its efficiency does <b>not</b> depend on your cadence. But pumping is <b>flapping propulsion</b> — thrust comes from unsteadiness, and it has an optimal regime. Here\'s what the model can\'t see.',
     'cad-lf':'Pump cadence','cad-la':'Amplitude (foil travel)','cad-lu':'Speed','cad-st':'Strouhal',
+    'cad-why':'🐟 <b>Why does it work?</b> Pumping means <b>propelling by throwing water backward</b> — like a fish beating its tail. Thrust depends on the <b>square</b> of your stroke speed (cadence × amplitude): <b>pumping 2× faster or bigger = 4× more thrust</b>. With a lazy stroke the foil just makes weak eddies; at a good rhythm the wake organises into a <b>real propulsive jet</b>. That\'s exactly what the steady model can\'t see.',
     'cad-how':'🎯 <b>How do you get closer to it?</b> St = f·A/U rises if you pump <b>faster</b> (f), <b>bigger</b> (A), or — most effective — <b>at low speed</b> (small U). So: at 18 km/h the optimum is <b>out of reach</b> (you\'d need ~4 Hz) → you glide and pump gently. But <b>when you slow down and start to sink</b>, a burst of big fast pumps makes St jump to <b>0.2-0.25</b>: you enter the efficient regime and recover flight cheaply. That\'s the physics of «survival pumping» — and why it works better on a <b>big wing</b> (it flies slowly → higher St at equal cadence).',
     'cad-note':'⚠️ <b>Illustrative</b>, from the oscillating-foil propulsion literature (<a href="https://digital.library.unt.edu/ark:/67531/metadc66225/" target="_blank" rel="noopener">Garrick 1936</a>; <a href="https://www.cambridge.org/core/journals/journal-of-fluid-mechanics/article/abs/oscillating-foils-of-high-propulsive-efficiency/22E5CD028D92318AFC88ED104E55786B" target="_blank" rel="noopener">Anderson <i>et al.</i> 1998</a>, <i>JFM</i> 360:41-72; <a href="https://www.nature.com/articles/nature02000" target="_blank" rel="noopener">Taylor <i>et al.</i>, Nature 2003</a>): thrust grows steeply with St, and the only <b>useful</b> regime (high thrust + high efficiency) is near <b>St ≈ 0.3</b> — the efficiency peak at St≈0.15 is set aside as it produces almost <b>no thrust</b>. Field-anchored (Paul): ~20 cm peak-to-peak, ~100 pumps/min cadence; absolute St stays uncertain, but the <b>shape</b> — we operate below the useful regime, so raising cadence helps — is robust. The simulator itself stays tuned to a «typical» cadence.',
     'reg-h3':'🔧 Tuning: the free watts',
