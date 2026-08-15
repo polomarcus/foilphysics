@@ -424,7 +424,7 @@
 
 <script>
 (function(){
-  const RHO=1025, G=9.81, E=1.0, CDM=0.008, CDF=0.008, CDS=0.016, A_FUS=0.028, A_MAST=0.050;
+  const RHO=1025, G=9.81, E=0.91, CDM=0.008, CDF=0.008, CDS=0.016, A_FUS=0.028, A_MAST=0.050;
   const CDA=0.55, RHO_AIR=1.2;   // débutant : debout, mât immergé en entier (on vole bas)
   const $ = id => document.getElementById(id);
 
@@ -512,7 +512,8 @@
     const eta = Math.min(0.80, (0.44 + 0.015*AR)*1.06);
     const K  = c.S*c.cd0 + A_MAST*CDM + A_FUS*CDF + c.As*CDS;
     const Ai = (c.W*c.W)/(0.5*RHO*Math.PI*c.b*c.b*E);
-    const P  = v => ((Ai/(v*v) + 0.5*RHO*v*v*K)*v + 0.5*RHO_AIR*CDA*v*v*v)/eta;
+    const Dt = 2*c.W*(6*c.cd0+0.012)*(c.S/c.b)*c.S/(0.65*Math.PI*c.b*c.b*E);   // trim drag : Cm0 lié à la cambrure du profil
+    const P  = v => ((Ai/(v*v) + 0.5*RHO*v*v*K + Dt)*v + 0.5*RHO_AIR*CDA*v*v*v)/eta;
     const cl = Math.min((2*Math.PI/(1+2/AR))*(13*Math.PI/180), c.clMax);
     const vStall = Math.sqrt(c.W/(0.5*RHO*c.S*cl));
     return {AR, eta, P, vStall};

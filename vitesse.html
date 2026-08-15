@@ -313,7 +313,7 @@
     <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a> :
     <code>P(v) = [poids²/(½ρv²·π·envergure²) + ½ρv²·(surface·C_D0 + mât + fuselage + stab)] · v / η</code> ;
     Vmax résout P(v) = ton sprint, <b>traînée aérienne du rider incluse</b> (CdA ≈ 0,45 groupé — ~90 W à 25 km/h !).
-    ρ = 1025 · η estimé (croît avec l'allongement) · fuselage court fixé · mât compté à ~55 % immergé (à Vmax tu voles haut) ·
+    ρ = 1025 · span efficiency e=0,91 + trim drag (cohérent avec l'index) · η estimé (croît avec l'allongement) · fuselage court fixé · mât compté à ~55 % immergé (à Vmax tu voles haut) ·
     C_D stab et fuselage = milieux de fourchette, <b>calibrés sur les vitesses de course réelles</b> (30-38 km/h observés,
     specs Takoon Flow / GONG Veloce H) · cavitation ignorée (négligeable sous ~45 km/h : le 37 km/h du champion reste sous le seuil) · hors houle, hors départ ·
     straps = +20 % de rendement (traction à la remontée, cf. le clamp « unstrapped » du modèle d'origine). Estimations pédagogiques, pas un banc d'essai.<br>
@@ -325,7 +325,7 @@
 
 <script>
 (function(){
-  const RHO=1025, G=9.81, E=1.0, CDM=0.008, CDF=0.006, CDS=0.012, A_FUS=0.028;
+  const RHO=1025, G=9.81, E=0.91, CDM=0.008, CDF=0.006, CDS=0.012, A_FUS=0.028;
   const M_IMM=0.55;              // à Vmax tu voles haut : ~55 % du mât immergé
   const CDA=0.45, RHO_AIR=1.2;   // traînée aérienne du rider (groupé en pointe)
   const $ = id => document.getElementById(id);
@@ -365,7 +365,7 @@
     'l-straps':'🦶 Straps — you also pull on the upstroke, like clipless pedals (+~20% efficiency)',
     'vd5':'<div class="k">🦶 The game changer: straps</div><div class="big">like clipless pedals</div><p>Strapless, you can only <b>push</b> — half the cycle is wasted. Strapped in, you <b>also pull on the upstroke</b>: ~+20% efficiency ≈ <b>+2 km/h</b> at equal watts. And the model matches reality, calibrated on real blades (Takoon Flow, GONG Veloce H — AR ~10, ~11% thickness): strapped on a 600, <b>30 km/h ≈ 750 W</b>, <b>33 km/h ≈ 1,000 W</b>… and the French champion\'s <b>~37 km/h</b> ≈ <b>1,300 W</b> burst — exactly an elite sprinter\'s peak. It checks out.</p>',
     'vd4':'<div class="k">🫀 The real ceiling: your sprint</div><div class="big">Vmax ∝ ∛watts</div><p>Required power rises with the <b>cube</b> of speed: to go <b>2× faster</b>, you need <b>8× more watts</b>. Doubling your sprint only gives <b>+26%</b> Vmax. Pure speed is first a <b>sprinter\'s</b> exercise — then a gear one.</p>',
-    'foot':'<b style="color:var(--txt)">Model</b> — steady flight (lift = weight), based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>: <code>P(v) = [weight²/(½ρv²·π·span²) + ½ρv²·(area·C_D0 + mast + fuselage + stab)] · v / η</code>; Vmax solves P(v) = your sprint, <b>rider air drag included</b> (CdA ≈ 0.45 tucked — ~90 W at 25 km/h!). ρ = 1025 · estimated η (grows with aspect ratio) · short fuselage fixed · mast counted ~55% immersed (at Vmax you fly high) · stab & fuselage C_D mid-range, <b>calibrated on real race speeds</b> (observed 30-38 km/h, Takoon Flow / GONG Veloce H specs) · cavitation ignored (negligible below ~45 km/h: the champion\'s 37 km/h stays under the threshold) · no swell, no take-off · straps = +20% efficiency (upstroke pull, cf. the original model\'s «unstrapped» clamp). Educational estimates, not a test bench.<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
+    'foot':'<b style="color:var(--txt)">Model</b> — steady flight (lift = weight), based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>: <code>P(v) = [weight²/(½ρv²·π·span²) + ½ρv²·(area·C_D0 + mast + fuselage + stab)] · v / η</code>; Vmax solves P(v) = your sprint, <b>rider air drag included</b> (CdA ≈ 0.45 tucked — ~90 W at 25 km/h!). ρ = 1025 · span efficiency e=0.91 + trim drag (consistent with the index) · estimated η (grows with aspect ratio) · short fuselage fixed · mast counted ~55% immersed (at Vmax you fly high) · stab & fuselage C_D mid-range, <b>calibrated on real race speeds</b> (observed 30-38 km/h, Takoon Flow / GONG Veloce H specs) · cavitation ignored (negligible below ~45 km/h: the champion\'s 37 km/h stays under the threshold) · no swell, no take-off · straps = +20% efficiency (upstroke pull, cf. the original model\'s «unstrapped» clamp). Educational estimates, not a test bench.<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
   };
   function applyLang(l){
     LANG = l;
@@ -401,7 +401,8 @@
     const eta = Math.min(0.92, (0.44 + 0.015*AR)*1.06*(c.straps||1));
     const K  = c.S*c.cd0 + c.Am*M_IMM*CDM + A_FUS*CDF + c.As*CDS;
     const Ai = (c.W*c.W)/(0.5*RHO*Math.PI*c.b*c.b*E);
-    const P  = v => ((Ai/(v*v) + 0.5*RHO*v*v*K)*v + 0.5*RHO_AIR*CDA*v*v*v)/eta;
+    const Dt = 2*c.W*(6*c.cd0+0.012)*(c.S/c.b)*c.S/(0.65*Math.PI*c.b*c.b*E);   // trim drag : Cm0 lié à la cambrure du profil (~constant)
+    const P  = v => ((Ai/(v*v) + 0.5*RHO*v*v*K + Dt)*v + 0.5*RHO_AIR*CDA*v*v*v)/eta;
     const cl = Math.min((2*Math.PI/(1+2/AR))*(13*Math.PI/180), c.clMax);
     const vStall = Math.sqrt(c.W/(0.5*RHO*c.S*cl));
     return {AR, eta, K, Ai, P, vStall};
