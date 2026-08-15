@@ -1493,8 +1493,8 @@
     else if(P < cp+90) r = {cls:'amber', dot:'🟠', title:t('Mode Tempo Soutenu','Sustained Tempo Mode'), sub:t('Ça pousse — tenable plusieurs minutes, pas la journée.','Working hard — holds for several minutes, not all day.')};
     else            r = {cls:'red', dot:'🔴', title:t('Mode Effort Violent','Hard Effort Mode'), sub:t('Au-dessus de ton seuil : tu plafonnes et tu tombes vite.','Above your threshold: you plateau then drop fast.')};
     // Nuance : peu de watts ≠ facile si l'aile est forcée de voler vite (fine → croisière haute)
-    if(vKmh > 15.5) r.fast = t('⚡ Mais « facile » = cardio seulement : elle croise à '+num(vKmh,0)+' km/h (fine, nerveuse) — du pilotage, pas une balade.',
-                               '⚡ But «easy» = cardio only: it cruises at '+num(vKmh,0)+' km/h (thin, twitchy) — skill, not a stroll.');
+    if(vKmh > 15.5) r.fast = t('⚡ Peu de watts, mais pas une balade : fine, elle ne sait pas voler lentement (~'+num(vKmh,0)+' km/h minimum) et se pilote au millimètre. Facile pour le cœur, exigeant en technique.',
+                               '⚡ Low watts, but no easy cruise: being thin, it can\'t fly slowly (~'+num(vKmh,0)+' km/h minimum) and needs precise control. Easy on the heart, demanding on skill.');
     return r;
   }
 
