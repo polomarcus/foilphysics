@@ -203,9 +203,9 @@
           <input type="range" id="i-s" min="600" max="2200" step="10" value="890"></div>
         <div class="field"><label for="i-fus" data-i18n="l-fus">Fuselage</label>
           <select id="i-fus">
-            <option value="court" data-i18n="o-f1">Court — pivote librement (surfy)</option>
-            <option value="moyen" selected data-i18n="o-f2">Moyen — équilibré</option>
-            <option value="long" data-i18n="o-f3">Long — verrouillé (tracke)</option>
+            <option value="court" data-i18n="o-f1">Court (~60 cm) — pivote librement (surfy)</option>
+            <option value="moyen" selected data-i18n="o-f2">Moyen (~70 cm) — équilibré</option>
+            <option value="long" data-i18n="o-f3">Long (~80 cm) — verrouillé (tracke)</option>
           </select></div>
         <div class="field"><label for="i-stab" data-i18n="l-stab">Stab</label>
           <select id="i-stab">
@@ -239,11 +239,12 @@
           elle flotte et refuse de pivoter.</p>
       </div>
       <div class="card" data-i18n="vd3">
-        <div class="k">🔩 Le fuselage court = pivot</div>
-        <div class="big">lâche vs verrouillé</div>
-        <p>Un <b>fuselage court</b> réduit l'amortissement en tangage/lacet (∝ longueur²) : l'aile <b>pivote
-          librement</b>, tu enroules serré — mais elle ne se rattrape plus toute seule (nerveux). Long fuselage =
-          elle <b>tracke</b> tout droit, rassurant mais paresseux en virage.</p>
+        <div class="k">🔩 Le fuselage — le tube qui relie aile et stab</div>
+        <div class="big">court = pivot, long = tracke</div>
+        <p>C'est la <b>barre horizontale</b> entre l'aile avant et le stab ; sa longueur fait le bras de levier
+          qui stabilise le tangage. <b>Court (~60 cm)</b> → peu d'amortissement (∝ longueur²) : l'aile <b>pivote
+          librement</b>, tu enroules serré, mais elle ne se rattrape plus toute seule (nerveux). <b>Long (~80 cm)</b>
+          → elle <b>file droit</b>, rassurante mais paresseuse en virage.</p>
       </div>
       <div class="card" data-i18n="vd4">
         <div class="k">🪶 Le stab : lâcher ou tenir</div>
@@ -317,12 +318,12 @@
     'sim-lede':'<b>Roll agility</b> = how snappily you roll into a turn. It varies as <b>1/span²</b> — the #1 carve factor. Area, fuselage and stab tune the character (drive, pivot).',
     'p-surge':'🏄 Axis Surge 890 (89 cm · 835 cm²)','p-rsx':'🌀 Alpine RSX Carve (112 cm)','p-jam':'🌊 F-One Jam 1400 (120 cm)','p-ld':'📏 Long-distance wing (140 cm)',
     'l-b':'Span','l-s':'Area','l-fus':'Fuselage','l-stab':'Stab',
-    'o-f1':'Short — pivots freely (surfy)','o-f2':'Medium — balanced','o-f3':'Long — locked in (tracks)',
+    'o-f1':'Short (~60 cm) — pivots freely (surfy)','o-f2':'Medium (~70 cm) — balanced','o-f3':'Long (~80 cm) — locked in (tracks)',
     'o-s1':'60 cm² — very loose / skate','o-s2':'70 cm² — endurance (thin, low drag)','o-s3':'90 cm² — all-round','o-s4':'110 cm²','o-s5':'130 cm² — waves (grip, control)',
     'vd-h3':'🧾 What makes it turn, in 5 cards',
     'vd1':'<div class="k">📐 Span — the #1 lever</div><div class="big">inertia ∝ span²</div><p>Flipping rail to rail means <b>rolling</b> the wing. Its roll inertia grows with the <b>square of the span</b>: going from 111 to 89 cm is <b>−36% inertia</b> → the wing rolls in far faster. That\'s <i>the</i> reason surf wings are short. <b>Field note</b>: strong wave riders go very short — often <b>~90 cm</b>, sometimes much smaller (Axis riders sit around 92 cm, even less).</p>',
     'vd2':'<div class="k">🎯 Small area — the drive</div><div class="big">lively & fast</div><p>Less area = the wing <b>flies faster</b> and loads on the back foot: it has <b>drive</b> to project down the wave, and forgives hard inputs without «planting». Too big and it floats and refuses to pivot.</p>',
-    'vd3':'<div class="k">🔩 Short fuselage = pivot</div><div class="big">loose vs locked</div><p>A <b>short fuselage</b> cuts pitch/yaw damping (∝ length²): the wing <b>pivots freely</b>, you carve tight — but it no longer self-corrects (twitchy). Long fuselage = it <b>tracks</b> straight, reassuring but lazy in turns.</p>',
+    'vd3':'<div class="k">🔩 The fuselage — the tube linking wing to stab</div><div class="big">short = pivot, long = tracks</div><p>It\'s the <b>horizontal bar</b> between front wing and stab; its length is the lever arm that steadies pitch. <b>Short (~60 cm)</b> → little damping (∝ length²): the wing <b>pivots freely</b>, you carve tight, but it no longer self-corrects (twitchy). <b>Long (~80 cm)</b> → it <b>tracks straight</b>, reassuring but lazy in turns.</p>',
     'vd4':'<div class="k">🪶 The stab: loose or held</div><div class="big">a matter of style</div><p>A <b>small stab (~70 cm²)</b> = free tail, skatey, low drag → great for <b>endurance</b>. A <b>big stab (~130 cm²)</b> = more <b>grip and control</b> to hold committed carves in the wave — many riders\' pick (Paul\'s too). Not «smaller is better»: pivot tight <i>or</i> hold the line, your call.</p>',
     'vd5':'<div class="k">⚖️ The price: you lose glide</div><div class="big">you can\'t have it all</div><p>A short span means a foil that <b>drags hugely as soon as you slow down</b>: staying airborne costs it a lot (the «price of lift», detailed on <a href="long-distance.html?lang=en">the long-distance page</a>). You turn hard but you <b>pump short</b> and glide poorly. Carve and long distance sit at <b>opposite ends</b> — pick your playground.</p>',
     'next-ld':'⚡ Fly far — the other extreme','next-vit':'🚀 Fly fast',
