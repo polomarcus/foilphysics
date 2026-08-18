@@ -373,8 +373,8 @@
       (agility >= 70 ? t('<b>Très vive</b> — elle s\'enroule au quart de tour. ','<b>Very lively</b> — it rolls in a snap. ')
        : agility >= 45 ? t('<b>Équilibrée</b>. ','<b>Balanced</b>. ')
        : t('<b>Posée</b> — elle tracke plus qu\'elle ne tourne. ','<b>Steady</b> — it tracks more than it turns. '))
-      + t('Score sur 100 (100 = l\'aile la plus courte). L\'inertie de roulis, elle, varie en <b>envergure²</b>.',
-          'Score out of 100 (100 = the shortest wing). Roll inertia itself varies as <b>span²</b>.');
+      + t('L\'inertie de roulis varie en <b>envergure²</b> : plus l\'aile est courte, plus elle bascule vite.',
+          'Roll inertia varies as <b>span²</b>: the shorter the wing, the faster it flips.');
 
     const qual = (v, w) => v < 40 ? w[0] : v < 70 ? w[1] : w[2];   // mot-clé selon le score
     const AX = [
