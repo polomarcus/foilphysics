@@ -395,11 +395,12 @@
         [t('faible','poor'),t('correcte','fair'),t('excellente','great')],
         t('sa capacité à glisser loin sans pomper (voler longtemps)','its ability to glide far without pumping')]
     ];
-    $('o-bk').innerHTML = '<div class="bk-cat">' + t('Le caractère de l\'aile — chaque trait noté sur 100','The wing\'s character — each trait scored out of 100') + '</div>' +
+    const hsl = v => 'hsl('+Math.round(v*1.2)+',68%,55%)';   // 0 rouge → 100 vert (intensité du trait, pas une note)
+    $('o-bk').innerHTML = '<div class="bk-cat">' + t('Le caractère de l\'aile — <span style="color:hsl(8,68%,55%)">🔴 peu</span> · <span style="color:hsl(120,68%,55%)">🟢 beaucoup</span> de ce trait','The wing\'s character — <span style="color:hsl(8,68%,55%)">🔴 little</span> · <span style="color:hsl(120,68%,55%)">🟢 lots</span> of this trait') + '</div>' +
       AX.map(([name,v,col,w,gloss]) =>
-        '<div class="axr"><div class="axr-top"><span class="axr-name">'+name+' <span class="qtag">'+qual(v,w)+'</span></span><span class="axr-v">'+v+'</span></div>'+
+        '<div class="axr"><div class="axr-top"><span class="axr-name">'+name+' <span class="qtag" style="color:'+hsl(v)+'">'+qual(v,w)+'</span></span><span class="axr-v" style="color:'+hsl(v)+'">'+v+'</span></div>'+
         '<div class="axr-gloss">'+gloss+'</div>'+
-        '<span class="trk"><span class="fil" style="width:'+v+'%;background:'+col+'"></span></span></div>'
+        '<span class="trk"><span class="fil" style="width:'+v+'%;background:'+hsl(v)+'"></span></span></div>'
       ).join('');
   }
 
