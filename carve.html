@@ -99,6 +99,15 @@
   .bk-cat{font-size:.74rem; color:var(--muted); margin:10px 0 5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; text-align:center;}
   .bkr{display:grid; grid-template-columns:150px 1fr 74px; gap:8px; align-items:center; margin:5px 0;}
   .bkr .lab{font-size:.8rem; color:#cbd5e1;}
+  .bkr .qtag{color:var(--carve); font-weight:800; font-size:.74rem;}
+  .axr{margin:14px 0;}
+  .axr-top{display:flex; justify-content:space-between; align-items:baseline; gap:8px;}
+  .axr-name{font-size:.9rem; color:var(--txt); font-weight:700;}
+  .axr-name .qtag{color:var(--carve); font-weight:800; font-size:.78rem; margin-left:5px;}
+  .axr-v{font-size:.95rem; font-weight:800; font-variant-numeric:tabular-nums; color:var(--carve);}
+  .axr-gloss{font-size:.76rem; color:var(--muted); margin:1px 0 5px;}
+  .axr .trk{height:13px; background:var(--panel-2); border-radius:5px; overflow:hidden; display:block;}
+  .axr .fil{display:block; height:100%; border-radius:5px; transition:width .6s cubic-bezier(.22,1,.36,1);}
   .bkr .trk{height:15px; background:var(--panel-2); border-radius:5px; overflow:hidden; display:block;}
   .bkr .fil{display:block; height:100%; border-radius:5px; transition:width .6s cubic-bezier(.22,1,.36,1);}
   .bkr .v{font-size:.8rem; font-weight:800; text-align:right; font-variant-numeric:tabular-nums;}
@@ -179,7 +188,7 @@
     <div class="panel">
       <div class="presets">
         <button class="preset-btn" type="button" data-p="89|890|court|0.85" data-i18n="p-surge">🏄 Axis Surge (89 cm)</button>
-        <button class="preset-btn" type="button" data-p="111|1100|moyen|0.92" data-i18n="p-rsx">🌀 Alpine RSX Carve (111 cm)</button>
+        <button class="preset-btn" type="button" data-p="112|1100|moyen|0.92" data-i18n="p-rsx">🌀 Alpine RSX Carve (112 cm)</button>
         <button class="preset-btn" type="button" data-p="120|1400|moyen|1.0" data-i18n="p-jam">🌊 F-One Jam 1400 (120 cm)</button>
         <button class="preset-btn" type="button" data-p="140|1900|long|1.10" data-i18n="p-ld">📏 Aile longue distance (140 cm)</button>
       </div>
@@ -279,7 +288,7 @@
     grandit avec le carré de la demi-envergure) ; l'agilité affichée est son inverse, normalisée à 90 cm.
     Le <b>caractère</b> (pivot/track) combine fuselage et stab (amortissement en tangage/lacet ∝ longueur²).
     Le carve réel dépend surtout de la <b>technique</b>, de la vague et du réglage — ce sont des <b>ordres de
-    grandeur pédagogiques</b>. Specs ailes : <a href="https://www.realwatersports.com/products/axis-surge-front-wing" target="_blank" rel="noopener">Axis Surge</a> (surf, AR ~9-11) · Alpine RSX Carve (~111 cm) — surfaces estimées.<br>
+    grandeur pédagogiques</b>. Specs ailes : <a href="https://www.realwatersports.com/products/axis-surge-front-wing" target="_blank" rel="noopener">Axis Surge</a> (surf, AR ~9-11) · Alpine RSX Carve (gamme AR 11 : 700→1100, soit 89→112 cm).<br>
     ⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> ·
     📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> ·
     ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>
@@ -306,7 +315,7 @@
     'disc':'⚠️ <b>Estimated figures</b> — carving depends heavily on <b>technique</b> and the wave. This simulator compares the wings\' <b>intrinsic agility</b> (roll inertia ∝ span²), not your style.',
     'sim-h3':'🎛️ Compare two wings',
     'sim-lede':'<b>Roll agility</b> = how snappily you roll into a turn. It varies as <b>1/span²</b> — the #1 carve factor. Area, fuselage and stab tune the character (drive, pivot).',
-    'p-surge':'🏄 Axis Surge (89 cm)','p-rsx':'🌀 Alpine RSX Carve (111 cm)','p-jam':'🌊 F-One Jam 1400 (120 cm)','p-ld':'📏 Long-distance wing (140 cm)',
+    'p-surge':'🏄 Axis Surge (89 cm)','p-rsx':'🌀 Alpine RSX Carve (112 cm)','p-jam':'🌊 F-One Jam 1400 (120 cm)','p-ld':'📏 Long-distance wing (140 cm)',
     'l-b':'Span','l-s':'Area','l-fus':'Fuselage','l-stab':'Stab',
     'o-f1':'Short — pivots freely (surfy)','o-f2':'Medium — balanced','o-f3':'Long — locked in (tracks)',
     'o-s1':'60 cm² — very loose / skate','o-s2':'70 cm² — endurance (thin, low drag)','o-s3':'90 cm² — all-round','o-s4':'110 cm²','o-s5':'130 cm² — waves (grip, control)',
@@ -325,7 +334,7 @@
     't4':'<span class="ti">⏱️</span><p><b>Anticipate the lag.</b> Even lively, the wing turns with a delay (inertia): start your move slightly <b>before</b> the moment you want it.</p>',
     't5':'<span class="ti">💨</span><p><b>Keep speed into the turn.</b> The foil needs flow: entering too slow = stalling mid-carve. Come in <b>fast</b>, even if you slow on exit.</p>',
     't6':'<span class="ti">🌊</span><p><b>Turn in the pocket.</b> Where the wave pushes, you have the energy to carve tight — with <b>progressive</b> inputs: a brutal stomp makes the wing ventilate/break out.</p>',
-    'foot':'<b style="color:var(--txt)">Model</b> — a maneuverability index, not a test bench. <b>Roll inertia</b> is taken ∝ span² (a wing\'s moment of inertia about the roll axis grows with the square of the half-span); the agility shown is its inverse, normalised to 90 cm. The <b>character</b> (pivot/track) combines fuselage and stab (pitch/yaw damping ∝ length²). Real carving depends mostly on <b>technique</b>, the wave and tuning — these are <b>educational orders of magnitude</b>. Wing specs: <a href="https://www.realwatersports.com/products/axis-surge-front-wing" target="_blank" rel="noopener">Axis Surge</a> (surf, AR ~9-11) · Alpine RSX Carve (~111 cm) — areas estimated.<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
+    'foot':'<b style="color:var(--txt)">Model</b> — a maneuverability index, not a test bench. <b>Roll inertia</b> is taken ∝ span² (a wing\'s moment of inertia about the roll axis grows with the square of the half-span); the agility shown is its inverse, normalised to 90 cm. The <b>character</b> (pivot/track) combines fuselage and stab (pitch/yaw damping ∝ length²). Real carving depends mostly on <b>technique</b>, the wave and tuning — these are <b>educational orders of magnitude</b>. Wing specs: <a href="https://www.realwatersports.com/products/axis-surge-front-wing" target="_blank" rel="noopener">Axis Surge</a> (surf, AR ~9-11) · Alpine RSX Carve (AR 11 range: 700→1100, i.e. 89→112 cm).<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
   };
   function applyLang(l){
     LANG = l;
@@ -359,7 +368,7 @@
     const takeoff  = clamp(100*(S-600)/1600);                   // grande surface → démarre facile (l'inverse)
     const pivot    = clamp(100*(FUS[fus]*stab-0.68)/(1.44-0.68));
 
-    $('o-agil').innerHTML = agility + ' <small>/ 100 ' + t('agilité','agility') + '</small>';
+    $('o-agil').innerHTML = agility + ' <small>/ 100 ' + t('vivacité','liveliness') + '</small>';
     $('o-why').innerHTML =
       (agility >= 70 ? t('<b>Très vive</b> — elle s\'enroule au quart de tour. ','<b>Very lively</b> — it rolls in a snap. ')
        : agility >= 45 ? t('<b>Équilibrée</b>. ','<b>Balanced</b>. ')
@@ -367,17 +376,29 @@
       + t('Score sur 100 (100 = l\'aile la plus courte). L\'inertie de roulis, elle, varie en <b>envergure²</b>.',
           'Score out of 100 (100 = the shortest wing). Roll inertia itself varies as <b>span²</b>.');
 
-    const rows = [
-      [t('🌀 Agilité de roulis','🌀 Roll agility'),        agility,  '#c084fc'],
-      [t('🔩 Pivot (lâche)','🔩 Pivot (loose)'),           pivot,    '#38bdf8'],
-      [t('🎯 Drive (petite aile)','🎯 Drive (small wing)'), drive,   '#34d399'],
-      [t('🚀 Facilité de démarrage','🚀 Ease of takeoff'),  takeoff,  '#fbbf24'],
-      [t('🌊 Glisse / endurance','🌊 Glide / endurance'),   glisse,   '#818cf8']
+    const qual = (v, w) => v < 40 ? w[0] : v < 70 ? w[1] : w[2];   // mot-clé selon le score
+    const AX = [
+      ['🌀 '+t('Vivacité en virage','Turn liveliness'), agility, '#c084fc',
+        [t('posée','steady'),t('équilibrée','balanced'),t('très vive','very lively')],
+        t('la vitesse à basculer d\'un rail à l\'autre pour enrouler un virage','how fast it flips rail to rail to start a turn')],
+      ['🔩 '+t('Lâcher de l\'arrière','Tail release'), pivot, '#38bdf8',
+        [t('file droit','tracks straight'),t('neutre','neutral'),t('très lâche','very loose')],
+        t('elle tourne court et pivote (lâche) ou file tout droit (verrouillé)','it pivots tight (loose) or tracks straight (locked)')],
+      ['🎯 '+t('Appui / drive','Back-foot drive'), drive, '#34d399',
+        [t('doux','soft'),t('équilibré','balanced'),t('gros drive','strong')],
+        t('la pousse et l\'accroche quand tu charges le pied arrière','the push and grip when you load the back foot')],
+      ['🚀 '+t('Facilité de démarrage','Ease of takeoff'), takeoff, '#fbbf24',
+        [t('technique','tricky'),t('moyen','medium'),t('facile','easy')],
+        t('à quel point elle décolle et se met à voler facilement','how easily it gets up and flying')],
+      ['🌊 '+t('Glisse / endurance','Glide / endurance'), glisse, '#818cf8',
+        [t('faible','poor'),t('correcte','fair'),t('excellente','great')],
+        t('sa capacité à glisser loin sans pomper (voler longtemps)','its ability to glide far without pumping')]
     ];
-    $('o-bk').innerHTML = '<div class="bk-cat">' + t('Le profil de l\'aile — chaque axe noté sur 100','The wing\'s profile — each axis scored out of 100') + '</div>' +
-      rows.map(([lab,v,col]) =>
-        '<div class="bkr"><span class="lab">'+lab+'</span><span class="trk"><span class="fil" style="width:'+
-        v+'%;background:'+col+'"></span></span><span class="v">'+v+'</span></div>'
+    $('o-bk').innerHTML = '<div class="bk-cat">' + t('Le caractère de l\'aile — chaque trait noté sur 100','The wing\'s character — each trait scored out of 100') + '</div>' +
+      AX.map(([name,v,col,w,gloss]) =>
+        '<div class="axr"><div class="axr-top"><span class="axr-name">'+name+' <span class="qtag">'+qual(v,w)+'</span></span><span class="axr-v">'+v+'</span></div>'+
+        '<div class="axr-gloss">'+gloss+'</div>'+
+        '<span class="trk"><span class="fil" style="width:'+v+'%;background:'+col+'"></span></span></div>'
       ).join('');
   }
 
