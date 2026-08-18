@@ -178,9 +178,10 @@
       c'est le facteur n°1 du carve. Surface, fuselage et stab ajustent le caractère (drive, pivot).</p>
     <div class="panel">
       <div class="presets">
-        <button class="preset-btn" type="button" data-p="89|890|court|petit" data-i18n="p-surge">🏄 Axis Surge (89 cm)</button>
-        <button class="preset-btn" type="button" data-p="111|1100|moyen|moyen" data-i18n="p-rsx">🌀 Alpine RSX Carve (111 cm)</button>
-        <button class="preset-btn" type="button" data-p="140|1900|long|gros" data-i18n="p-ld">📏 Aile longue distance (140 cm)</button>
+        <button class="preset-btn" type="button" data-p="89|890|court|0.85" data-i18n="p-surge">🏄 Axis Surge (89 cm)</button>
+        <button class="preset-btn" type="button" data-p="111|1100|moyen|0.92" data-i18n="p-rsx">🌀 Alpine RSX Carve (111 cm)</button>
+        <button class="preset-btn" type="button" data-p="120|1400|moyen|1.0" data-i18n="p-jam">🌊 F-One Jam 1400 (120 cm)</button>
+        <button class="preset-btn" type="button" data-p="140|1900|long|1.10" data-i18n="p-ld">📏 Aile longue distance (140 cm)</button>
       </div>
       <div class="vout" aria-live="polite">
         <div class="n" id="o-agil">—</div>
@@ -199,9 +200,11 @@
           </select></div>
         <div class="field"><label for="i-stab" data-i18n="l-stab">Stab</label>
           <select id="i-stab">
-            <option value="petit" data-i18n="o-s1">Petit — libère le pivot</option>
-            <option value="moyen" selected data-i18n="o-s2">Moyen</option>
-            <option value="gros" data-i18n="o-s3">Gros — stabilise, freine le lacet</option>
+            <option value="1.15" data-i18n="o-s1">60 cm² — très lâche / skate</option>
+            <option value="1.10" data-i18n="o-s2">70 cm² — endurance (fin, peu de traînée)</option>
+            <option value="1.0" selected data-i18n="o-s3">90 cm² — polyvalent</option>
+            <option value="0.92" data-i18n="o-s4">110 cm²</option>
+            <option value="0.85" data-i18n="o-s5">130 cm² — vagues (grip, contrôle)</option>
           </select></div>
       </div>
       <div class="bk" id="o-bk"></div>
@@ -234,18 +237,20 @@
           elle <b>tracke</b> tout droit, rassurant mais paresseux en virage.</p>
       </div>
       <div class="card" data-i18n="vd4">
-        <div class="k">🪶 Le petit stab libère l'arrière</div>
-        <div class="big">moins de frein en lacet</div>
-        <p>Un gros stab stabilise mais <b>freine la rotation</b> (surface de frein à l'arrière). Un petit stab
-          laisse le foil <b>tourner court</b>. Les setups de carve courent en stab minuscule — comme les setups de
-          vitesse, mais pour une autre raison.</p>
+        <div class="k">🪶 Le stab : lâcher ou tenir</div>
+        <div class="big">une question de style</div>
+        <p>Un <b>petit stab (~70 cm²)</b> = arrière libre, skatey, et peu de traînée → idéal <b>endurance</b>.
+          Un <b>gros stab (~130 cm²)</b> = plus de <b>grip et de contrôle</b> pour tenir des carves appuyés dans
+          la vague — le choix de beaucoup de riders (dont Paul). Pas « petit = mieux » : pivoter court <i>ou</i>
+          tenir la ligne, à toi de choisir.</p>
       </div>
       <div class="card warn" data-i18n="vd5">
         <div class="k">⚖️ Le prix : tu perds le glide</div>
         <div class="big">on ne peut pas tout avoir</div>
-        <p>Une envergure courte, c'est une <b>énorme traînée induite</b> (elle varie en 1/envergure²) : tu tournes
-          fort mais tu <b>pompes court</b> et tu glisses mal. Le carve et la longue distance sont aux <b>deux bouts
-          opposés</b> : à toi de choisir ton terrain de jeu.</p>
+        <p>Une envergure courte, c'est un foil qui <b>traîne énormément dès que tu ralentis</b> : rester en l'air
+          lui coûte très cher (c'est le « prix de la portance », détaillé sur <a href="long-distance.html">la page
+          longue distance</a>). Tu tournes fort, mais tu <b>pompes court</b> et tu glisses mal. Carve et longue
+          distance sont aux <b>deux bouts opposés</b> : choisis ton terrain de jeu.</p>
       </div>
     </div>
   </section>
@@ -301,16 +306,16 @@
     'disc':'⚠️ <b>Estimated figures</b> — carving depends heavily on <b>technique</b> and the wave. This simulator compares the wings\' <b>intrinsic agility</b> (roll inertia ∝ span²), not your style.',
     'sim-h3':'🎛️ Compare two wings',
     'sim-lede':'<b>Roll agility</b> = how snappily you roll into a turn. It varies as <b>1/span²</b> — the #1 carve factor. Area, fuselage and stab tune the character (drive, pivot).',
-    'p-surge':'🏄 Axis Surge (89 cm)','p-rsx':'🌀 Alpine RSX Carve (111 cm)','p-ld':'📏 Long-distance wing (140 cm)',
+    'p-surge':'🏄 Axis Surge (89 cm)','p-rsx':'🌀 Alpine RSX Carve (111 cm)','p-jam':'🌊 F-One Jam 1400 (120 cm)','p-ld':'📏 Long-distance wing (140 cm)',
     'l-b':'Span','l-s':'Area','l-fus':'Fuselage','l-stab':'Stab',
     'o-f1':'Short — pivots freely (surfy)','o-f2':'Medium — balanced','o-f3':'Long — locked in (tracks)',
-    'o-s1':'Small — frees the pivot','o-s2':'Medium','o-s3':'Big — stabilises, brakes yaw',
+    'o-s1':'60 cm² — very loose / skate','o-s2':'70 cm² — endurance (thin, low drag)','o-s3':'90 cm² — all-round','o-s4':'110 cm²','o-s5':'130 cm² — waves (grip, control)',
     'vd-h3':'🧾 What makes it turn, in 5 cards',
     'vd1':'<div class="k">📐 Span — the #1 lever</div><div class="big">inertia ∝ span²</div><p>Flipping rail to rail means <b>rolling</b> the wing. Its roll inertia grows with the <b>square of the span</b>: going from 111 to 89 cm is <b>−36% inertia</b> → the wing rolls in far faster. That\'s <i>the</i> reason surf wings are short.</p>',
     'vd2':'<div class="k">🎯 Small area — the drive</div><div class="big">lively & fast</div><p>Less area = the wing <b>flies faster</b> and loads on the back foot: it has <b>drive</b> to project down the wave, and forgives hard inputs without «planting». Too big and it floats and refuses to pivot.</p>',
     'vd3':'<div class="k">🔩 Short fuselage = pivot</div><div class="big">loose vs locked</div><p>A <b>short fuselage</b> cuts pitch/yaw damping (∝ length²): the wing <b>pivots freely</b>, you carve tight — but it no longer self-corrects (twitchy). Long fuselage = it <b>tracks</b> straight, reassuring but lazy in turns.</p>',
-    'vd4':'<div class="k">🪶 Small stab frees the tail</div><div class="big">less yaw brake</div><p>A big stab stabilises but <b>brakes rotation</b> (braking surface at the back). A small stab lets the foil <b>turn tight</b>. Carve setups run tiny stabs — like speed setups, but for a different reason.</p>',
-    'vd5':'<div class="k">⚖️ The price: you lose glide</div><div class="big">you can\'t have it all</div><p>A short span means <b>huge induced drag</b> (it varies as 1/span²): you turn hard but you <b>pump short</b> and glide poorly. Carve and long distance sit at <b>opposite ends</b> — pick your playground.</p>',
+    'vd4':'<div class="k">🪶 The stab: loose or held</div><div class="big">a matter of style</div><p>A <b>small stab (~70 cm²)</b> = free tail, skatey, low drag → great for <b>endurance</b>. A <b>big stab (~130 cm²)</b> = more <b>grip and control</b> to hold committed carves in the wave — many riders\' pick (Paul\'s too). Not «smaller is better»: pivot tight <i>or</i> hold the line, your call.</p>',
+    'vd5':'<div class="k">⚖️ The price: you lose glide</div><div class="big">you can\'t have it all</div><p>A short span means a foil that <b>drags hugely as soon as you slow down</b>: staying airborne costs it a lot (the «price of lift», detailed on <a href="long-distance.html?lang=en">the long-distance page</a>). You turn hard but you <b>pump short</b> and glide poorly. Carve and long distance sit at <b>opposite ends</b> — pick your playground.</p>',
     'next-ld':'⚡ Fly far — the other extreme','next-vit':'🚀 Fly fast',
     'tech-h3':'🎯 Gear helps, technique makes the carve',
     'tech-lede':'A short wing <b>gives you the right</b> to turn tight — but 80% of the turn is you. Six fundamentals, all tied to the physics above.',
@@ -339,45 +344,40 @@
 
   /* ---------- modèle : indices relatifs de maniabilité ---------- */
   const FUS = {court:1.25, moyen:1.0, long:0.80};   // pivot : court = plus vif
-  const STB = {petit:1.15, moyen:1.0, gros:0.85};   // petit stab = moins de frein en lacet
 
   function render(){
     $('v-b').textContent = $('i-b').value;
     $('v-s').textContent = $('i-s').value;
     const b = +$('i-b').value, S = +$('i-s').value;
-    const fus = $('i-fus').value, stab = $('i-stab').value;
+    const fus = $('i-fus').value, stab = parseFloat($('i-stab').value);
 
-    // agilité de roulis : ∝ 1/envergure², normalisée à REF_B (indice 100)
-    const agility = Math.round(100 * Math.pow(REF_B/b, 2));
-    // caractère pivot : fuselage × stab (indice 100 = neutre)
-    const pivot = Math.round(100 * FUS[fus] * STB[stab]);
-    // drive : charge alaire relative (petite surface = plus de drive), réf 1100 cm²
-    const drive = Math.round(100 * 1100/S);
-    // traînée induite relative (le prix) : ∝ 1/envergure², réf 90 cm
-    const glideCost = Math.round(100 * Math.pow(b/REF_B, 2));
-    // facilité de démarrage : ∝ surface (grande aile = porte tôt, décolle facile), réf 1100 cm²
-    const takeoff = Math.round(100 * S/1100);
+    // Scores 0-100 = position sur chaque axe (bornes = extrêmes des curseurs). La physique (∝ envergure²) est dans les cartes.
+    const clamp = x => Math.max(0, Math.min(100, Math.round(x)));
+    const agility  = clamp(100*(150-b)/80);                     // envergure courte → agile
+    const glisse   = clamp(100*(b-70)/80);                      // envergure longue → glisse (l'inverse)
+    const drive    = clamp(100*(2200-S)/1600);                  // petite surface → drive
+    const takeoff  = clamp(100*(S-600)/1600);                   // grande surface → démarre facile (l'inverse)
+    const pivot    = clamp(100*(FUS[fus]*stab-0.68)/(1.44-0.68));
 
-    $('o-agil').innerHTML = agility + ' <small>' + t('agilité','agility') + '</small>';
+    $('o-agil').innerHTML = agility + ' <small>/ 100 ' + t('agilité','agility') + '</small>';
     $('o-why').innerHTML =
-      (agility >= 115 ? t('<b>Très vive</b> — elle s\'enroule au quart de tour. ','<b>Very lively</b> — it rolls in a snap. ')
-       : agility >= 90 ? t('<b>Équilibrée</b>. ','<b>Balanced</b>. ')
+      (agility >= 70 ? t('<b>Très vive</b> — elle s\'enroule au quart de tour. ','<b>Very lively</b> — it rolls in a snap. ')
+       : agility >= 45 ? t('<b>Équilibrée</b>. ','<b>Balanced</b>. ')
        : t('<b>Posée</b> — elle tracke plus qu\'elle ne tourne. ','<b>Steady</b> — it tracks more than it turns. '))
-      + t('Indice 100 = une aile de 90 cm ; l\'agilité varie en <b>1/envergure²</b>.',
-          'Index 100 = a 90 cm wing; agility varies as <b>1/span²</b>.');
+      + t('Score sur 100 (100 = l\'aile la plus courte). L\'inertie de roulis, elle, varie en <b>envergure²</b>.',
+          'Score out of 100 (100 = the shortest wing). Roll inertia itself varies as <b>span²</b>.');
 
     const rows = [
-      [t('🌀 Agilité de roulis','🌀 Roll agility'),   agility, '#c084fc'],
-      [t('🔩 Pivot (lâche)','🔩 Pivot (loose)'),      pivot,   '#38bdf8'],
-      [t('🎯 Drive (petite aile)','🎯 Drive (small)'), drive,   '#34d399'],
-      [t('🚀 Facilité de démarrage','🚀 Ease of takeoff'), takeoff, '#fbbf24'],
-      [t('⚖️ Prix : traînée induite','⚖️ Price: induced drag'), glideCost, '#f43f5e']
+      [t('🌀 Agilité de roulis','🌀 Roll agility'),        agility,  '#c084fc'],
+      [t('🔩 Pivot (lâche)','🔩 Pivot (loose)'),           pivot,    '#38bdf8'],
+      [t('🎯 Drive (petite aile)','🎯 Drive (small wing)'), drive,   '#34d399'],
+      [t('🚀 Facilité de démarrage','🚀 Ease of takeoff'),  takeoff,  '#fbbf24'],
+      [t('🌊 Glisse / endurance','🌊 Glide / endurance'),   glisse,   '#818cf8']
     ];
-    const mx = Math.max(...rows.map(r=>r[1]), 100);
-    $('o-bk').innerHTML = '<div class="bk-cat">' + t('Profil de l\'aile (indice, 100 = aile de 90 cm)','Wing profile (index, 100 = 90 cm wing)') + '</div>' +
+    $('o-bk').innerHTML = '<div class="bk-cat">' + t('Le profil de l\'aile — chaque axe noté sur 100','The wing\'s profile — each axis scored out of 100') + '</div>' +
       rows.map(([lab,v,col]) =>
         '<div class="bkr"><span class="lab">'+lab+'</span><span class="trk"><span class="fil" style="width:'+
-        (100*v/mx).toFixed(1)+'%;background:'+col+'"></span></span><span class="v">'+v+'</span></div>'
+        v+'%;background:'+col+'"></span></span><span class="v">'+v+'</span></div>'
       ).join('');
   }
 
