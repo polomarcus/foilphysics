@@ -112,6 +112,11 @@
   .card p{font-size:.87rem; color:#cbd5e1; line-height:1.55;}
   .card.warn{border-color:rgba(245,158,11,.5);} .card.warn .big{color:#fcd34d;}
 
+  .tips{max-width:680px; margin:0 auto; display:flex; flex-direction:column; gap:12px;}
+  .tip{display:grid; grid-template-columns:38px 1fr; gap:12px; align-items:start;
+    background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--carve); border-radius:12px; padding:12px 14px;}
+  .tip .ti{font-size:1.3rem; line-height:1.2;}
+  .tip p{font-size:.88rem; color:#cbd5e1; line-height:1.5;} .tip b{color:var(--txt);}
   .next{text-align:center; margin-top:8px;}
   .next a{display:inline-block; background:var(--panel); border:1px solid var(--line); border-radius:999px;
     padding:9px 16px; margin:4px; font-weight:700; font-size:.88rem; text-decoration:none;}
@@ -243,6 +248,21 @@
           opposés</b> : à toi de choisir ton terrain de jeu.</p>
       </div>
     </div>
+  </section>
+
+  <!-- TECHNIQUE -->
+  <section id="tech" class="a-in">
+    <h3 data-i18n="tech-h3">🎯 Le matos aide, la technique fait le carve</h3>
+    <p class="lede" data-i18n="tech-lede">L'aile courte te <b>donne le droit</b> de tourner serré — mais 80 % du virage,
+      c'est toi. Six fondamentaux, tous reliés à la physique ci-dessus.</p>
+    <div class="tips">
+      <div class="tip" data-i18n="t1"><span class="ti">👀</span><p><b>Regarde où tu vas.</b> Le regard initie tout : tête → épaules → hanches → foil. Fixe la sortie du virage, pas tes pieds.</p></div>
+      <div class="tip" data-i18n="t2"><span class="ti">🦵</span><p><b>Charge le pied arrière.</b> Le carve vient de l'arrière : appuie pour enfoncer le rail et faire mordre l'aile. C'est le <b>drive</b> qu'offre la petite surface.</p></div>
+      <div class="tip" data-i18n="t3"><span class="ti">🌀</span><p><b>Incline le corps, le foil suit.</b> Bascule par les hanches et les épaules (le <i>bank</i>), ne braque pas les pieds. La courte envergure rend ce roulis quasi instantané — c'est tout l'intérêt.</p></div>
+      <div class="tip" data-i18n="t4"><span class="ti">⏱️</span><p><b>Anticipe le délai.</b> Même vive, l'aile tourne avec un temps de retard (inertie) : déclenche ton mouvement un peu <b>avant</b> le moment voulu.</p></div>
+      <div class="tip" data-i18n="t5"><span class="ti">💨</span><p><b>Garde de la vitesse dans le virage.</b> Le foil a besoin de flux : entrer trop lent = décrochage au milieu du carve. Rentre <b>rapide</b>, quitte à ralentir en sortie.</p></div>
+      <div class="tip" data-i18n="t6"><span class="ti">🌊</span><p><b>Tourne dans la pente (le pocket).</b> Là où la vague pousse, tu as l'énergie pour enrouler serré — et des inputs <b>progressifs</b> : un coup brutal fait ventiler/sortir l'aile.</p></div>
+    </div>
     <div class="next">
       <a href="long-distance.html" data-i18n="next-ld">⚡ Voler loin — l'autre extrême</a>
       <a href="vitesse.html" data-i18n="next-vit">🚀 Voler vite</a>
@@ -292,6 +312,14 @@
     'vd4':'<div class="k">🪶 Small stab frees the tail</div><div class="big">less yaw brake</div><p>A big stab stabilises but <b>brakes rotation</b> (braking surface at the back). A small stab lets the foil <b>turn tight</b>. Carve setups run tiny stabs — like speed setups, but for a different reason.</p>',
     'vd5':'<div class="k">⚖️ The price: you lose glide</div><div class="big">you can\'t have it all</div><p>A short span means <b>huge induced drag</b> (it varies as 1/span²): you turn hard but you <b>pump short</b> and glide poorly. Carve and long distance sit at <b>opposite ends</b> — pick your playground.</p>',
     'next-ld':'⚡ Fly far — the other extreme','next-vit':'🚀 Fly fast',
+    'tech-h3':'🎯 Gear helps, technique makes the carve',
+    'tech-lede':'A short wing <b>gives you the right</b> to turn tight — but 80% of the turn is you. Six fundamentals, all tied to the physics above.',
+    't1':'<span class="ti">👀</span><p><b>Look where you\'re going.</b> Your eyes lead everything: head → shoulders → hips → foil. Fix the exit of the turn, not your feet.</p>',
+    't2':'<span class="ti">🦵</span><p><b>Load the back foot.</b> The carve comes from the back: press to bury the rail and make the wing bite. That\'s the <b>drive</b> a small area gives you.</p>',
+    't3':'<span class="ti">🌀</span><p><b>Lean the body, the foil follows.</b> Roll from the hips and shoulders (the <i>bank</i>), don\'t steer with your feet. A short span makes that roll near-instant — the whole point.</p>',
+    't4':'<span class="ti">⏱️</span><p><b>Anticipate the lag.</b> Even lively, the wing turns with a delay (inertia): start your move slightly <b>before</b> the moment you want it.</p>',
+    't5':'<span class="ti">💨</span><p><b>Keep speed into the turn.</b> The foil needs flow: entering too slow = stalling mid-carve. Come in <b>fast</b>, even if you slow on exit.</p>',
+    't6':'<span class="ti">🌊</span><p><b>Turn in the pocket.</b> Where the wave pushes, you have the energy to carve tight — with <b>progressive</b> inputs: a brutal stomp makes the wing ventilate/break out.</p>',
     'foot':'<b style="color:var(--txt)">Model</b> — a maneuverability index, not a test bench. <b>Roll inertia</b> is taken ∝ span² (a wing\'s moment of inertia about the roll axis grows with the square of the half-span); the agility shown is its inverse, normalised to 90 cm. The <b>character</b> (pivot/track) combines fuselage and stab (pitch/yaw damping ∝ length²). Real carving depends mostly on <b>technique</b>, the wave and tuning — these are <b>educational orders of magnitude</b>. Wing specs: <a href="https://www.realwatersports.com/products/axis-surge-front-wing" target="_blank" rel="noopener">Axis Surge</a> (surf, AR ~9-11) · Alpine RSX Carve (~111 cm) — areas estimated.<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
   };
   function applyLang(l){
