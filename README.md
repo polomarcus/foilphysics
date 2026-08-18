@@ -4,7 +4,7 @@
 
 ![Le Choc des Watts](og.png)
 
-Three educational, single-file pages that answer the three questions every pump foiler asks —
+Four educational, single-file pages that answer the questions every pump foiler asks —
 each one interactive, bilingual FR/EN, and honest about its numbers.
 
 ## The three pages
@@ -14,6 +14,7 @@ each one interactive, bilingual FR/EN, and honest about its numbers.
 | **[⚡ Le Choc des Watts](https://simulator.foil-house.com/)** (home) | *How do I fly **far**?* | Compare two real wings (~30 presets) — watts, **Wh/km**, power-vs-speed chart, drag breakdown, sensitivity analysis. The secret: wide span + light weight. |
 | **[🚀 La Course aux km/h](https://simulator.foil-house.com/vitesse.html)** | *How do I fly **fast**?* | Top-speed simulator (wing, profile, stab, mast, straps, your sprint watts), calibrated on real race speeds (30-38 km/h) and real race blades (AR ~10, ~11% thickness). Spoiler: the stab matters, and straps are the game changer. |
 | **[🎓 Bien débuter](https://simulator.foil-house.com/debutant.html)** | *How do I **learn**?* | Safety first, dock start explained with honest expectations (5-15 sessions), and a weight-based setup recommender calibrated on school-range size charts — big thick wing, big stab, short mast: the setup that forgives. |
+| **[🌊 Le Carve](https://simulator.foil-house.com/carve.html)** | *How do I **turn tight**?* | Maneuverability in the waves: roll inertia ∝ span², so a short span flips rail-to-rail fast. Compare wings (Axis Surge, Alpine RSX Carve…) on agility, drive and pivot. The price: short span kills glide. |
 
 ## The physics model (honesty first)
 
