@@ -355,6 +355,8 @@
     const drive = Math.round(100 * 1100/S);
     // traînée induite relative (le prix) : ∝ 1/envergure², réf 90 cm
     const glideCost = Math.round(100 * Math.pow(b/REF_B, 2));
+    // facilité de démarrage : ∝ surface (grande aile = porte tôt, décolle facile), réf 1100 cm²
+    const takeoff = Math.round(100 * S/1100);
 
     $('o-agil').innerHTML = agility + ' <small>' + t('agilité','agility') + '</small>';
     $('o-why').innerHTML =
@@ -368,6 +370,7 @@
       [t('🌀 Agilité de roulis','🌀 Roll agility'),   agility, '#c084fc'],
       [t('🔩 Pivot (lâche)','🔩 Pivot (loose)'),      pivot,   '#38bdf8'],
       [t('🎯 Drive (petite aile)','🎯 Drive (small)'), drive,   '#34d399'],
+      [t('🚀 Facilité de démarrage','🚀 Ease of takeoff'), takeoff, '#fbbf24'],
       [t('⚖️ Prix : traînée induite','⚖️ Price: induced drag'), glideCost, '#f43f5e']
     ];
     const mx = Math.max(...rows.map(r=>r[1]), 100);
