@@ -852,8 +852,18 @@
           <div class="txt"><b id="badge1t">—</b><span id="badge1s">—</span></div></div>
         <div class="field"><label for="b1"><span data-i18n="l-span">Envergure</span> : <span class="fval" id="b1v">120</span> cm</label><input type="range" id="b1" min="90" max="250" step="1" value="120"></div>
         <div class="field"><label for="s1"><span data-i18n="l-surf">Surface</span> : <span class="fval" id="s1v">1400</span> cm²</label><input type="range" id="s1" min="800" max="3100" step="1" value="1400"></div>
+        <div class="field"><label for="prof1" data-i18n="l-prof">Profil de l'aile (section)</label>
+          <select id="prof1">
+            <option value="0.008" data-i18n="opt-prof1">Fin (~11-12 %) — glisse, vole vite</option>
+            <option value="0.011" data-i18n="opt-prof2">Fin+ (~13 %)</option>
+            <option value="0.013" selected data-i18n="opt-prof3">Moyen (~14-15 %)</option>
+            <option value="0.016" data-i18n="opt-prof4">Moyen-épais (~16 %)</option>
+            <option value="0.018" data-i18n="opt-prof5">Épais (~17 %) — porte fort, pardonne</option>
+          </select>
+          <div class="fhint" data-i18n="fh-prof">fin = moins de frottement mais nerveux ; épais = porte à basse vitesse, tolérant</div>
+        </div>
         <div class="field"><label for="v1"><span data-i18n="l-speed">Vitesse</span> : <span class="fval" id="v1v">12,5</span> km/h</label><input type="range" id="v1" min="8" max="25" step="0.5" value="12.5"></div>
-        <div class="field"><label for="mst1" data-i18n="l-mast">Mât (profil)</label>
+        <div class="field"><label for="mst1" data-i18n="l-mast">Mât (épaisseur)</label>
           <select id="mst1">
             <option value="0.050" data-i18n="opt-mast1">13 mm — fin (perf)</option>
             <option value="0.065" selected data-i18n="opt-mast2">16 mm — standard</option>
@@ -924,8 +934,18 @@
           <div class="txt"><b id="badge2t">—</b><span id="badge2s">—</span></div></div>
         <div class="field"><label for="b2"><span data-i18n="l-span">Envergure</span> : <span class="fval" id="b2v">175</span> cm</label><input type="range" id="b2" min="90" max="250" step="1" value="175"></div>
         <div class="field"><label for="s2"><span data-i18n="l-surf">Surface</span> : <span class="fval" id="s2v">1525</span> cm²</label><input type="range" id="s2" min="800" max="3100" step="1" value="1525"></div>
+        <div class="field"><label for="prof2" data-i18n="l-prof">Profil de l'aile (section)</label>
+          <select id="prof2">
+            <option value="0.008" selected data-i18n="opt-prof1">Fin (~11-12 %) — glisse, vole vite</option>
+            <option value="0.011" data-i18n="opt-prof2">Fin+ (~13 %)</option>
+            <option value="0.013" data-i18n="opt-prof3">Moyen (~14-15 %)</option>
+            <option value="0.016" data-i18n="opt-prof4">Moyen-épais (~16 %)</option>
+            <option value="0.018" data-i18n="opt-prof5">Épais (~17 %) — porte fort, pardonne</option>
+          </select>
+          <div class="fhint" data-i18n="fh-prof">fin = moins de frottement mais nerveux ; épais = porte à basse vitesse, tolérant</div>
+        </div>
         <div class="field"><label for="v2"><span data-i18n="l-speed">Vitesse</span> : <span class="fval" id="v2v">17</span> km/h</label><input type="range" id="v2" min="8" max="25" step="0.5" value="17"></div>
-        <div class="field"><label for="mst2" data-i18n="l-mast">Mât (profil)</label>
+        <div class="field"><label for="mst2" data-i18n="l-mast">Mât (épaisseur)</label>
           <select id="mst2">
             <option value="0.050" data-i18n="opt-mast1">13 mm — fin (perf)</option>
             <option value="0.065" data-i18n="opt-mast2">16 mm — standard</option>
@@ -2098,6 +2118,7 @@
   }
   populatePresets();
   ['1','2'].forEach(i=> document.getElementById('preset'+i).addEventListener('change', ()=>applyPreset(i)));
+  ['1','2'].forEach(i=> document.getElementById('prof'+i).addEventListener('change', ()=>{ CFG[i].cd0 = parseFloat(document.getElementById('prof'+i).value); render(); }));  // profil réglable → pilote le cd0 de l'aile
   const setDefaultPreset = (i, name) => {   // robuste au réindexage des groupes du CATALOG
     const sel = document.getElementById('preset'+i);
     const opt = [...sel.options].find(o => o.value.endsWith('|'+name));
@@ -2105,6 +2126,9 @@
   };
   setDefaultPreset('1', 'Jam 1900');
   setDefaultPreset('2', 'Fireball 1750');
+
+  const PROF_BUCKETS = [0.008, 0.011, 0.013, 0.016, 0.018];   // options du sélecteur de profil (cd0)
+  const nearestProf = cd0 => String(PROF_BUCKETS.reduce((a,b)=> Math.abs(b-cd0) < Math.abs(a-cd0) ? b : a));
 
   function applyPreset(i){
     const p = FLAT[document.getElementById('preset'+i).value];
@@ -2116,6 +2140,7 @@
     if(p.fus)  document.getElementById('fus'+i).value = p.fus;    // ex. Fireball → fuselage hyper court
     if(p.stb)  document.getElementById('stb'+i).value = p.stb;    // ex. Fireball → stab 50
     CFG[i].cd0 = p.cd0; CFG[i].clMax = p.clMax;
+    document.getElementById('prof'+i).value = nearestProf(p.cd0);   // le sélecteur affiche le bucket le plus proche (compute garde le cd0 exact du preset)
     const r = compute(CFG[i]);
     if(r) document.getElementById('v'+i).value = (Math.round(r.vSweetKmh*2)/2).toFixed(1);
     const ar = ((p.b/100)*(p.b/100))/(p.s/10000);
@@ -2294,8 +2319,10 @@
     'mh-note':'⚡ At <b>peak</b> (a ~5 s sprint), a track cyclist puts out <b>&gt; 1200 W</b> — enough to power a toaster. And each pump stroke is a <b>mini-jump</b>: jumping 40 cm ≈ <b>1,000 W</b> for 0.3 s. Your <i>average</i> is 200 W, but every stroke spikes far higher — that\'s why 200 W of pumping «stings» more than 200 W of smooth cycling. To <i>fly long</i>, only <b>sustained</b> power counts.',
     'model1':'Wing 1','model2':'Wing 2','l-preset':'Wing (real preset)',
     'h2-1':'🪽 Classic wing','h2-2':'🌊 Long-distance wing',
-    'l-span':'Span','l-surf':'Surface','l-speed':'Cruise speed','l-mast':'Mast (profile)','l-mat':'Mast material','l-fus':'Fuselage','l-stab':'Stab',
+    'l-span':'Span','l-surf':'Surface','l-speed':'Cruise speed','l-prof':'Wing profile (section)','l-mast':'Mast (thickness)','l-mat':'Mast material','l-fus':'Fuselage','l-stab':'Stab',
     'opt-mast1':'13 mm — thin (perf)','opt-mast2':'16 mm — standard','opt-mast3':'19 mm — big (Fatty)',
+    'opt-prof1':'Thin (~11-12 %) — glides, flies fast','opt-prof2':'Thin+ (~13 %)','opt-prof3':'Medium (~14-15 %)','opt-prof4':'Medium-thick (~16 %)','opt-prof5':'Thick (~17 %) — lots of lift, forgiving',
+    'fh-prof':'thin = less drag but twitchy; thick = lift at low speed, forgiving',
     'opt-mat1':'Aluminium (soft, heavy)','opt-mat2':'Carbon','opt-mat3':'UHM carbon (ultra stiff)',
     'opt-fus1':'Long (70 cm)','opt-fus2':'Short (60 cm)','opt-fus3':'Ultra short (Psychoshort 520 mm)',
     'opt-stab1':'Stab 50','opt-stab2':'Stab 70','opt-stab3':'Stab 100','opt-stab4':'Stab 150','opt-stab5':'Stab 200',
