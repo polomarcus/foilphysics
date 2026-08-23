@@ -279,6 +279,11 @@
           lui coûte très cher (c'est le « prix de la portance », détaillé sur <a href="long-distance.html">la page
           longue distance</a>). Tu tournes fort, mais tu <b>pompes court</b> et tu glisses mal. Carve et longue
           distance sont aux <b>deux bouts opposés</b> : choisis ton terrain de jeu.</p>
+        <p style="margin-top:10px; font-size:.92em; color:var(--dim)">* La <b>durée « de vol continu »</b> de l'axe glisse
+          est une <b>estimation</b> (même modèle que la page longue distance, rider ~85 kg entraîné). Calée sur le
+          terrain : une aile de carve ~112 cm tient <b>≈ 2 min</b>, une grande aile de distance (~150 cm+, gros
+          allongement) passe à <b>35 min+</b> — même rider. Tout se joue au <b>seuil</b> : sous ta puissance
+          soutenable tu voles « à l'infini », au-dessus tu puises dans la réserve et tu tombes en quelques minutes.</p>
       </div>
     </div>
   </section>
@@ -343,7 +348,7 @@
     'vd2':'<div class="k">🎯 Small area — the drive</div><div class="big">lively & fast</div><p>Less area = the wing <b>flies faster</b> and loads on the back foot: it has <b>drive</b> to project down the wave, and forgives hard inputs without «planting». Too big and it floats and refuses to pivot.</p>',
     'vd3':'<div class="k">🔩 The fuselage — the tube linking wing to stab</div><div class="big">short = pivot, long = tracks</div><p>It\'s the <b>horizontal bar</b> between front wing and stab; its length is the lever arm that steadies pitch. <b>Short (60 cm)</b> → little damping (∝ length²): the wing <b>pivots freely</b>, you carve tight, but it no longer self-corrects (twitchy). <b>Long (70 cm)</b> → it <b>tracks straight</b>, reassuring but lazy in turns.</p>',
     'vd4':'<div class="k">🪶 The stab: loose or held</div><div class="big">a matter of style</div><p>A <b>small stab (~70 cm²)</b> = free tail, skatey, low drag → great for <b>endurance</b>. A <b>big stab (~130 cm²)</b> = more <b>grip and control</b> to hold committed carves in the wave — many riders\' pick (PoloFoil\'s too). Not «smaller is better»: pivot tight <i>or</i> hold the line, your call.</p>',
-    'vd5':'<div class="k">⚖️ The price: you lose glide</div><div class="big">you can\'t have it all</div><p>A short span means a foil that <b>drags hugely as soon as you slow down</b>: staying airborne costs it a lot (the «price of lift», detailed on <a href="long-distance.html?lang=en">the long-distance page</a>). You turn hard but you <b>pump short</b> and glide poorly. Carve and long distance sit at <b>opposite ends</b> — pick your playground.</p>',
+    'vd5':'<div class="k">⚖️ The price: you lose glide</div><div class="big">you can\'t have it all</div><p>A short span means a foil that <b>drags hugely as soon as you slow down</b>: staying airborne costs it a lot (the «price of lift», detailed on <a href="long-distance.html?lang=en">the long-distance page</a>). You turn hard but you <b>pump short</b> and glide poorly. Carve and long distance sit at <b>opposite ends</b> — pick your playground.</p><p style="margin-top:10px; font-size:.92em; color:var(--dim)">* The <b>«continuous flight» time</b> on the glide axis is an <b>estimate</b> (same model as the long-distance page, ~85 kg trained rider). Calibrated on the field: a ~112 cm carve wing holds <b>≈ 2 min</b>, a big high-aspect distance wing (~150 cm+) jumps to <b>35 min+</b> — same rider. It all hinges on the <b>threshold</b>: below your sustainable power you fly «forever», above it you burn your reserve and drop within minutes.</p>',
     'next-ld':'⚡ Fly far — the other extreme','next-vit':'🚀 Fly fast',
     'tech-h3':'🎯 Gear helps, technique makes the carve',
     'tech-lede':'A short wing <b>gives you the right</b> to turn tight — but 80% of the turn is you. Six fundamentals, all tied to the physics above.',
@@ -372,6 +377,26 @@
 
   /* ---------- modèle : indices relatifs de maniabilité ---------- */
   const FUS = {court:1.25, moyen:1.0, long:0.80};   // pivot : court = plus vif
+
+  // Endurance estimée (vol continu) — même modèle de vol stabilisé que la page longue distance,
+  // pour un rider de référence ~85 kg entraîné. Calé sur le terrain : RSX Carve 1100 (112 cm, 1100 cm²) ≈ 2 min.
+  function endurance(b_cm, S_cm2){
+    const RHO=1025, G=9.81, E=0.91, M_IMM=0.55, WKG=85, CP=250, cd0=0.014, W_ANAER=12300;
+    const S=S_cm2/1e4, b=b_cm/100, W=WKG*G, AR=b*b/S;
+    const Kpar = S*cd0 + 0.065*M_IMM*0.008 + 0.028*0.010 + 0.020*0.020;   // profil + mât + fuselage + stab
+    const Aind = (W*W)/(0.5*RHO*Math.PI*b*b*E);
+    const Dt   = 2*W*(6*cd0+0.012)*(S/b)*S/(0.65*Math.PI*b*b*E);
+    const vOpt = Math.pow(Aind/(3*0.5*RHO*Kpar), 0.25);
+    const cl   = Math.min((2*Math.PI/(1+2/AR))*(13*Math.PI/180), 1.15);
+    const v    = Math.max(vOpt, Math.sqrt(W/(0.5*RHO*S*cl))*1.30, 11/3.6);
+    const eta  = Math.min(0.80, 0.44+0.015*AR);
+    const P    = ((Aind/(v*v) + 0.5*RHO*v*v*Kpar + Dt)*v)/eta;
+    const min  = P>CP ? (W_ANAER/(P-CP))/60 : Infinity;                   // réserve anaérobie / (P au-dessus du seuil)
+    if(!isFinite(min) || min>=35) return t('35 min+','35 min+');
+    if(min>=10) return '~'+Math.round(min)+' min';
+    if(min>=1)  return '~'+Math.round(min)+' min';
+    return t('< 1 min','< 1 min');
+  }
 
   function render(){
     $('v-b').textContent = $('i-b').value;
@@ -411,7 +436,8 @@
         t('à quel point elle décolle et se met à voler facilement','how easily it gets up and flying')],
       ['🌊 '+t('Glisse / endurance','Glide / endurance'), glisse, '#818cf8',
         [t('faible','poor'),t('correcte','fair'),t('excellente','great')],
-        t('sa capacité à glisser loin sans pomper (voler longtemps)','its ability to glide far without pumping')]
+        t('sa capacité à glisser loin sans pomper (voler longtemps)','its ability to glide far without pumping')
+        + ' · <b style="color:#818cf8">≈ '+endurance(b,S)+'</b> '+t('de vol continu*','of continuous flight*')]
     ];
     const hsl = v => 'hsl('+Math.round(v*1.2)+',68%,55%)';   // 0 rouge → 100 vert (intensité du trait, pas une note)
     $('o-bk').innerHTML = '<div class="bk-cat">' + t('Le caractère de l\'aile — <span style="color:hsl(8,68%,55%)">🔴 peu</span> · <span style="color:hsl(120,68%,55%)">🟢 beaucoup</span> de ce trait','The wing\'s character — <span style="color:hsl(8,68%,55%)">🔴 little</span> · <span style="color:hsl(120,68%,55%)">🟢 lots</span> of this trait') + '</div>' +
