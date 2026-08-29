@@ -86,7 +86,8 @@
   .pg-btns{display:flex; gap:6px; flex-wrap:wrap;}
   .pg-btns .preset-btn{padding:6px 11px; font-size:.82rem;}
   @media(max-width:560px){ .pg-label{min-width:100%;} }
-  .inputs{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:8px 16px; margin-top:4px;}
+  .inputs{display:grid; grid-template-columns:repeat(2,minmax(180px,1fr)); gap:10px 16px; margin-top:4px;}
+  @media(min-width:820px){ .inputs{grid-template-columns:repeat(4,1fr);} }
   .field label{display:block; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em;
     color:var(--muted); font-weight:700; margin-bottom:5px;}
   .field .fval{color:var(--carve); font-weight:800; font-size:.95rem; text-transform:none; letter-spacing:0;}
