@@ -110,6 +110,7 @@
   .ar-mark{position:absolute; top:50%; width:14px; height:14px; border-radius:50%; background:#fff;
     border:2px solid var(--panel-2); transform:translate(-50%,-50%); box-shadow:0 1px 4px rgba(0,0,0,.55); transition:left .5s cubic-bezier(.22,1,.36,1);}
   .ar-ticks{display:flex; justify-content:space-between; font-size:.64rem; color:var(--dim); font-variant-numeric:tabular-nums; margin:0 -2px;}
+  .ar-ends{display:flex; justify-content:space-between; gap:8px; font-size:.7rem; color:var(--muted); font-weight:600; margin-top:4px;}
   .ar-desc{font-size:.85rem; color:var(--muted); margin-top:7px;}
   .ar-desc b{color:var(--txt);}
   .bk{max-width:640px; margin:12px auto 0;}
@@ -324,6 +325,18 @@
         <p style="margin-top:10px; font-size:.92em; color:var(--dim)">* Estimation pour un rider <b>~85 kg</b>, CL max ~1,2 (aile de carve).
           Plus tu es <b>lourd</b>, plus la vitesse de décollage monte (en <b>√poids</b>).</p>
       </div>
+      <div class="card" data-i18n="vd7">
+        <div class="k">🌊 Deux sous-types de surf</div>
+        <div class="big">pivot ↔ connexion</div>
+        <p>Le même curseur AR sépare <b>deux façons de surfer</b> — à toi de choisir la tienne :</p>
+        <p>🔥 <b>Surf pur et dur — 1-2 vagues</b> (AR bas ~7-8, envergure courte, type F-One Sushi) : elle
+          <b>pivote radical</b> dans la vague, parfaite en vagues franches. Le prix : <b>peu de glisse</b>, tu
+          <b>te reposes vite</b> entre deux — pas faite pour franchir les sections molles.</p>
+        <p>🌀 <b>Surf « pseudo-endurance » — connecter</b> (AR haut ~10-12, envergure longue, type Alpine RSX Carve 1100) :
+          elle <b>glisse et relance</b> → tu franchis les trous et tu <b>enchaînes les vagues pendant 10 min</b>.
+          Le prix : <b>démarre plus haut</b> et <b>pivote moins court</b>. C'est le compromis quand ton plaisir,
+          c'est de <b>rester en l'air et de connecter</b>.</p>
+      </div>
     </div>
   </section>
 
@@ -389,6 +402,7 @@
     'vd4':'<div class="k">🪶 The stab: loose or held</div><div class="big">a matter of style</div><p>A <b>small stab (~70 cm²)</b> = free tail, skatey, low drag → great for <b>endurance</b>. A <b>big stab (~130 cm²)</b> = more <b>grip and control</b> to hold committed carves in the wave — many riders\' pick (PoloFoil\'s too). Not «smaller is better»: pivot tight <i>or</i> hold the line, your call.</p>',
     'vd5':'<div class="k">⚖️ The price: you lose glide</div><div class="big">you can\'t have it all</div><p>A short span means a foil that <b>drags hugely as soon as you slow down</b>: staying airborne costs it a lot (the «price of lift», detailed on <a href="long-distance.html?lang=en">the long-distance page</a>). You turn hard but you <b>pump short</b> and glide poorly. Carve and long distance sit at <b>opposite ends</b> — pick your playground.</p><p style="margin-top:10px; font-size:.92em; color:var(--dim)">* The <b>«continuous flight» time</b> on the glide axis is an <b>estimate</b> (same model as the long-distance page, ~85 kg trained rider). Calibrated on the field: a ~112 cm carve wing holds <b>≈ 2 min</b>, a big high-aspect distance wing (~150 cm+) jumps to <b>35 min+</b> — same rider. It all hinges on the <b>threshold</b>: below your sustainable power you fly «forever», above it you burn your reserve and drop within minutes.</p>',
     'vd6':'<div class="k">🛫 Takeoff speed</div><div class="big">why carve wings start hard</div><p>A foil flies when lift = your weight; lift falls with <b>speed²</b>. Below a threshold the wing can\'t hold you up: that\'s the <b>takeoff speed</b>, <b>V = √(weight / (½·ρ·area·CL<sub>max</sub>))</b>. It depends on your <b>weight</b>, the <b>area</b> and the <b>CL max</b> (thickness/camber) — <b>not on span</b>.</p><p><b>Double penalty for carve:</b> small <b>area</b> → <b>high</b> takeoff (you must build speed first); short <b>span</b> → huge drag as you slow → hard to <b>accelerate up to it</b> by pumping. A ~1100 cm² carve wing lifts off around <b>14-15 km/h</b>; a big distance wing around <b>9-10 km/h</b> — it «leaves on its own». The estimated speed shows on the 🚀 takeoff axis.</p><p><b>Two ways to take off:</b><br>• <b>Running / gliding start</b> (beach or dock) → you first build <b>horizontal speed</b> up to this takeoff speed, then the wing carries you. Natural on a big wing; <b>hard on a small one</b> (you really have to get moving).<br>• <b>Jumped / popped start</b> → you jump on the board and give one <b>big vertical pump</b>: the <b>unsteady lift</b> (added mass + dynamic overshoot — the physics of <a href="long-distance.html?lang=en#cadence">cadence &amp; Strouhal</a>) gets you flying <b>below</b> the steady speed. Explosive and technical, but often the <b>only way to launch a small carve wing</b>.</p><p style="margin-top:10px; font-size:.92em; color:var(--dim)">* Estimate for a <b>~85 kg</b> rider, CL max ~1.2 (carve wing). The <b>heavier</b> you are, the higher the takeoff speed (as <b>√weight</b>).</p>',
+    'vd7':'<div class="k">🌊 Two sub-types of surf</div><div class="big">pivot ↔ connect</div><p>The same AR slider splits <b>two ways to surf</b> — pick yours:</p><p>🔥 <b>Pure surf — 1-2 waves</b> (low AR ~7-8, short span, F-One Sushi type): it <b>pivots radically</b> in the wave, perfect in clean surf. The price: <b>little glide</b>, you <b>run out fast</b> between waves — not made to cross flat sections.</p><p>🌀 <b>«Pseudo-endurance» surf — connect</b> (high AR ~10-12, long span, Alpine RSX Carve 1100 type): it <b>glides and pumps back</b> → you cross the gaps and <b>link waves for 10 min</b>. The price: <b>higher takeoff</b> and <b>less tight pivot</b>. That\'s the compromise when your thing is <b>staying up and connecting</b>.</p>',
     'next-ld':'⚡ Fly far — the other extreme','next-vit':'🚀 Fly fast',
     'tech-h3':'🎯 Gear helps, technique makes the carve',
     'tech-lede':'A short wing <b>gives you the right</b> to turn tight — but 80% of the turn is you. Six fundamentals, all tied to the physics above.',
@@ -479,6 +493,7 @@
       + '<span class="ar-badge" style="color:'+arBand.c+';background:'+arBand.c+'22">'+arBand.l+'</span></div>'
       + '<div class="ar-gauge"><span class="ar-mark" style="left:'+arPos+'%"></span></div>'
       + '<div class="ar-ticks"><span>5</span><span>7</span><span>9</span><span>11</span><span>13</span></div>'
+      + '<div class="ar-ends"><span>◄ '+t('surf pur · 1-2 vagues','pure surf · 1-2 waves')+'</span><span>'+t('connecter · pseudo-endurance','connect · pseudo-endurance')+' ►</span></div>'
       + '<div class="ar-desc">'+arBand.d+' · '+t('cible surf pour','surf target for')+' '+b+' cm : <b>~'+sLo+'-'+sHi+' cm²</b> (AR 8-10)</div>';
 
     $('o-agil').innerHTML = agility + ' <small>/ 100 ' + t('vivacité','liveliness') + '</small>';
