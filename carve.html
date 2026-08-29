@@ -208,26 +208,26 @@
     <div class="panel">
       <div class="presets">
         <div class="preset-grp"><span class="pg-label">🏄 Axis Surge</span><div class="pg-btns">
-          <button class="preset-btn" type="button" data-p="89|835|moyen|90">890</button>
-          <button class="preset-btn" type="button" data-p="95|949|moyen|90">950</button>
-          <button class="preset-btn" type="button" data-p="101|1076|moyen|90">1010</button>
+          <button class="preset-btn" type="button" data-p="89|835|65|90">890</button>
+          <button class="preset-btn" type="button" data-p="95|949|65|90">950</button>
+          <button class="preset-btn" type="button" data-p="101|1076|65|90">1010</button>
         </div></div>
         <div class="preset-grp"><span class="pg-label">🌀 Alpine RSX Carve</span><div class="pg-btns">
-          <button class="preset-btn" type="button" data-p="96|820|moyen|90">820</button>
-          <button class="preset-btn" type="button" data-p="103|960|moyen|90">960</button>
-          <button class="preset-btn" type="button" data-p="112|1100|moyen|90">1100</button>
+          <button class="preset-btn" type="button" data-p="96|820|65|90">820</button>
+          <button class="preset-btn" type="button" data-p="103|960|65|90">960</button>
+          <button class="preset-btn" type="button" data-p="112|1100|65|90">1100</button>
         </div></div>
         <div class="preset-grp"><span class="pg-label">🌊 Alpine DW</span><div class="pg-btns">
-          <button class="preset-btn" type="button" data-p="81|840|moyen|90">840</button>
-          <button class="preset-btn" type="button" data-p="93|980|moyen|90">980</button>
-          <button class="preset-btn" type="button" data-p="94|1180|moyen|90">1180</button>
+          <button class="preset-btn" type="button" data-p="81|840|65|90">840</button>
+          <button class="preset-btn" type="button" data-p="93|980|65|90">980</button>
+          <button class="preset-btn" type="button" data-p="94|1180|65|90">1180</button>
         </div></div>
         <div class="preset-grp"><span class="pg-label">🌊 F-One Jam</span><div class="pg-btns">
-          <button class="preset-btn" type="button" data-p="120|1400|moyen|90">1400</button>
-          <button class="preset-btn" type="button" data-p="128|1600|moyen|90">1600</button>
+          <button class="preset-btn" type="button" data-p="120|1400|65|90">1400</button>
+          <button class="preset-btn" type="button" data-p="128|1600|65|90">1600</button>
         </div></div>
         <div class="preset-grp"><span class="pg-label" data-i18n="pg-ref">📏 Repère glisse</span><div class="pg-btns">
-          <button class="preset-btn" type="button" data-p="140|1900|moyen|90" data-i18n="p-ld">longue distance (140 cm)</button>
+          <button class="preset-btn" type="button" data-p="140|1900|65|90" data-i18n="p-ld">longue distance (140 cm)</button>
         </div></div>
       </div>
       <div class="vout" aria-live="polite">
@@ -239,12 +239,8 @@
           <input type="range" id="i-b" min="70" max="150" step="1" value="89"></div>
         <div class="field"><label for="i-s"><span data-i18n="l-s">Surface</span> : <span class="fval" id="v-s">890</span> cm²</label>
           <input type="range" id="i-s" min="600" max="2200" step="10" value="890"></div>
-        <div class="field"><label for="i-fus" data-i18n="l-fus">Fuselage</label>
-          <select id="i-fus">
-            <option value="court" data-i18n="o-f1">Court (60 cm) — pivote librement (surfy)</option>
-            <option value="moyen" selected data-i18n="o-f2">Moyen (65 cm) — équilibré</option>
-            <option value="long" data-i18n="o-f3">Long (70 cm) — verrouillé (tracke)</option>
-          </select></div>
+        <div class="field"><label for="i-fus"><span data-i18n="l-fus">Fuselage</span> : <span class="fval" id="v-fus">65</span> cm <span id="v-fusq" style="color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0"></span></label>
+          <input type="range" id="i-fus" min="58" max="72" step="1" value="65"></div>
         <div class="field"><label for="i-stab"><span data-i18n="l-stab">Stab</span> : <span class="fval" id="v-stab">90</span> cm² <span id="v-stabq" style="color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0"></span></label>
           <input type="range" id="i-stab" min="60" max="130" step="5" value="90"></div>
       </div>
@@ -278,6 +274,10 @@
           qui stabilise le tangage. <b>Court (60 cm)</b> → peu d'amortissement (∝ longueur²) : l'aile <b>pivote
           librement</b>, tu enroules serré, mais elle ne se rattrape plus toute seule (nerveux). <b>Long (70 cm)</b>
           → elle <b>file droit</b>, rassurante mais paresseuse en virage.</p>
+        <p style="margin-top:8px"><b>Côté pump :</b> un fuselage <b>court</b> rend chaque coup de pump <b>plus réactif</b> —
+          l'aile <b>répond vite au tangage</b>, ça relance sec (mais il faut doser, elle rebondit). Un fuselage <b>long</b>
+          <b>lisse le pompage</b> : plus stable et régulier, mais relance plus <b>molle</b>. Pour <b>connecter en surf</b>,
+          un <b>moyen (~65 cm)</b> garde du répondant sans devenir ingérable.</p>
       </div>
       <div class="card" data-i18n="vd4">
         <div class="k">🪶 Le stab : lâcher ou tenir</div>
@@ -394,7 +394,7 @@
     'vd-h3':'🧾 What makes it turn, in 5 cards',
     'vd1':'<div class="k">📐 Span — the #1 lever</div><div class="big">inertia ∝ span²</div><p>Flipping rail to rail means <b>rolling</b> the wing. Its roll inertia grows with the <b>square of the span</b>: going from 111 to 89 cm is <b>−36% inertia</b> → the wing rolls in far faster. That\'s <i>the</i> reason surf wings are short.</p>',
     'vd2':'<div class="k">🎯 Small area — the drive</div><div class="big">lively & fast</div><p>Less area = the wing <b>flies faster</b> and loads on the back foot: it has <b>drive</b> to project down the wave, and forgives hard inputs without «planting». Too big and it floats and refuses to pivot.</p>',
-    'vd3':'<div class="k">🔩 The fuselage — the tube linking wing to stab</div><div class="big">short = pivot, long = tracks</div><p>It\'s the <b>horizontal bar</b> between front wing and stab; its length is the lever arm that steadies pitch. <b>Short (60 cm)</b> → little damping (∝ length²): the wing <b>pivots freely</b>, you carve tight, but it no longer self-corrects (twitchy). <b>Long (70 cm)</b> → it <b>tracks straight</b>, reassuring but lazy in turns.</p>',
+    'vd3':'<div class="k">🔩 The fuselage — the tube linking wing to stab</div><div class="big">short = pivot, long = tracks</div><p>It\'s the <b>horizontal bar</b> between front wing and stab; its length is the lever arm that steadies pitch. <b>Short (60 cm)</b> → little damping (∝ length²): the wing <b>pivots freely</b>, you carve tight, but it no longer self-corrects (twitchy). <b>Long (70 cm)</b> → it <b>tracks straight</b>, reassuring but lazy in turns.</p><p style="margin-top:8px"><b>Pump side:</b> a <b>short</b> fuselage makes each pump <b>more reactive</b> — the wing <b>responds fast in pitch</b>, snappy rebound (but you must meter it, it bounces). A <b>long</b> fuselage <b>smooths the pumping</b>: steadier, but a <b>softer</b> rebound. To <b>connect in surf</b>, a <b>medium (~65 cm)</b> keeps response without becoming unruly.</p>',
     'vd4':'<div class="k">🪶 The stab: loose or held</div><div class="big">a matter of style</div><p>A <b>small stab (~70 cm²)</b> = free tail, skatey, low drag → great for <b>endurance</b>. A <b>big stab (~130 cm²)</b> = more <b>grip and control</b> to hold committed carves in the wave — many riders\' pick (PoloFoil\'s too). Not «smaller is better»: pivot tight <i>or</i> hold the line, your call.</p>',
     'vd5':'<div class="k">⚖️ The price: you lose glide</div><div class="big">you can\'t have it all</div><p>A short span means a foil that <b>drags hugely as soon as you slow down</b>: staying airborne costs it a lot (the «price of lift», detailed on <a href="long-distance.html?lang=en">the long-distance page</a>). You turn hard but you <b>pump short</b> and glide poorly. Carve and long distance sit at <b>opposite ends</b> — pick your playground.</p><p style="margin-top:10px; font-size:.92em; color:var(--dim)">* The <b>«continuous flight» time</b> on the glide axis is an <b>estimate</b> (same model as the long-distance page, ~85 kg trained rider). Calibrated on the field: a ~112 cm carve wing holds <b>≈ 2 min</b>, a big high-aspect distance wing (~150 cm+) jumps to <b>35 min+</b> — same rider. It all hinges on the <b>threshold</b>: below your sustainable power you fly «forever», above it you burn your reserve and drop within minutes.</p>',
     'vd6':'<div class="k">🛫 Takeoff speed</div><div class="big">why carve wings start hard</div><p>A foil flies when lift = your weight; lift falls with <b>speed²</b>. Below a threshold the wing can\'t hold you up: that\'s the <b>takeoff speed</b>, <b>V = √(weight / (½·ρ·area·CL<sub>max</sub>))</b>. It depends on your <b>weight</b>, the <b>area</b> and the <b>CL max</b> (thickness/camber) — <b>not on span</b>.</p><p><b>Double penalty for carve:</b> small <b>area</b> → <b>high</b> takeoff (you must build speed first); short <b>span</b> → huge drag as you slow → hard to <b>accelerate up to it</b> by pumping. A ~1100 cm² carve wing lifts off around <b>14-15 km/h</b>; a big distance wing around <b>9-10 km/h</b> — it «leaves on its own». The estimated speed shows on the 🚀 takeoff axis.</p><p><b>Two ways to take off:</b><br>• <b>Running / gliding start</b> (beach or dock) → you first build <b>horizontal speed</b> up to this takeoff speed, then the wing carries you. Natural on a big wing; <b>hard on a small one</b> (you really have to get moving).<br>• <b>Jumped / popped start</b> → you jump on the board and give one <b>big vertical pump</b>: the <b>unsteady lift</b> (added mass + dynamic overshoot — the physics of <a href="long-distance.html?lang=en#cadence">cadence &amp; Strouhal</a>) gets you flying <b>below</b> the steady speed. Explosive and technical, but often the <b>only way to launch a small carve wing</b>.</p><p style="margin-top:10px; font-size:.92em; color:var(--dim)">* Estimate for a <b>~85 kg</b> rider, CL max ~1.2 (carve wing). The <b>heavier</b> you are, the higher the takeoff speed (as <b>√weight</b>).</p>',
@@ -426,7 +426,6 @@
   $('lang-btn').addEventListener('click', ()=> applyLang(LANG === 'fr' ? 'en' : 'fr'));
 
   /* ---------- modèle : indices relatifs de maniabilité ---------- */
-  const FUS = {court:1.25, moyen:1.0, long:0.80};   // pivot : court = plus vif
 
   // Endurance estimée (vol continu) — même modèle de vol stabilisé que la page longue distance,
   // pour un rider de référence ~85 kg entraîné. Calé sur le terrain : RSX Carve 1100 (112 cm, 1100 cm²) ≈ 2 min.
@@ -460,7 +459,15 @@
     $('v-b').textContent = $('i-b').value;
     $('v-s').textContent = $('i-s').value;
     const b = +$('i-b').value, S = +$('i-s').value;
-    const fus = $('i-fus').value;
+    // Fuselage : slider en cm. Converti en facteur de pivot (court → pivote ; long → tracke).
+    // Amortissement en tangage ≈ ∝ longueur² → facteur = (65/L)^2,9, calé sur 60→1,25 · 65→1,0 · 70→0,80.
+    const fusLen = +$('i-fus').value;
+    $('v-fus').textContent = fusLen;
+    const fusFactor = Math.pow(65/fusLen, 2.9);
+    const fusQ = fusLen<=61 ? t('court — pivote librement (surfy)','short — pivots freely (surfy)')
+      : fusLen<=68 ? t('moyen — équilibré','medium — balanced')
+      :              t('long — verrouillé (tracke)','long — locked (tracks)');
+    $('v-fusq').textContent = '· '+fusQ;
     // Stab : slider en cm². Converti en facteur de pivot (petit stab = arrière lâche → pivote ; gros = grip/amorti).
     // Calé sur les anciens paliers : 60→1,15 · 90→1,0 · 130→0,85 (droite 1,4071 − 0,004286·aire, bornée).
     const stabArea = +$('i-stab').value;
@@ -479,7 +486,7 @@
     const glisse   = clamp(100*(b-70)/80);                      // envergure longue → glisse (l'inverse)
     const drive    = clamp(100*(2200-S)/1600);                  // petite surface → drive
     const takeoff  = clamp(100*(S-600)/1600);                   // grande surface → démarre facile (l'inverse)
-    const pivot    = clamp(100*(FUS[fus]*stab-0.68)/(1.44-0.68));
+    const pivot    = clamp(100*(fusFactor*stab-0.68)/(1.44-0.68));
 
     // Allongement AR = envergure²/surface : le ratio maître du compromis carve ↔ glisse.
     // Spectre de CARACTÈRE de carve : les vraies ailes de carve vont jusqu'à ~11-12 (RSX Carve 11,4, Jam 10,3) ;
