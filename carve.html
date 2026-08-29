@@ -454,7 +454,7 @@
     const arBand = ar<6.5 ? {c:'#fb923c', l:t('AR bas — corde épaisse','low AR — thick chord'), d:t('ça traîne, ventile et pompe mal (aile pataude)','draggy, ventilates, pumps poorly (sluggish)')}
       : ar<8   ? {c:'#a3e635', l:t('carve serré / petites vagues','tight carve / small waves'), d:t('très maniable, mais décolle un peu haut','very agile, but takes off a bit high')}
       : ar<=10 ? {c:'#34d399', l:t('sweet-spot surf ✓','surf sweet spot ✓'), d:t('tourne ET glisse/relance — le compromis roi en surf','turns AND glides/pumps back out — the king compromise for surf')}
-      :          {c:'#fb923c', l:t('racé','racy'), d:t('vole vite et glisse, mais moins vif et décolle haut','fast and glides, but less lively and high takeoff')};
+      :          {c:'#fb923c', l:t('typé vitesse/glisse','tuned for speed/glide'), d:t('vole vite et glisse, mais moins vif et décolle haut','fast and glides, but less lively and high takeoff')};
     const sLo = Math.round(b*b/10/10)*10, sHi = Math.round(b*b/8/10)*10;   // surface pour AR 10 → 8
     $('o-ar').innerHTML =
       '<div style="display:flex;align-items:baseline;gap:9px;flex-wrap:wrap">'
