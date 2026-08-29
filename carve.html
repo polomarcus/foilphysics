@@ -100,6 +100,18 @@
   .vout .win{color:var(--muted); font-size:.85rem; margin-top:4px; max-width:600px; margin-left:auto; margin-right:auto;}
   .vout .win b{color:var(--txt);}
 
+  .ar-read{max-width:640px; margin:12px auto 2px; background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:11px 14px;}
+  .ar-head{display:flex; align-items:baseline; gap:9px; flex-wrap:wrap;}
+  .ar-lab{font-size:.72rem; color:var(--dim); text-transform:uppercase; letter-spacing:.06em; font-weight:700;}
+  .ar-num{font-size:1.5rem; font-weight:800; line-height:1; font-variant-numeric:tabular-nums;}
+  .ar-badge{font-weight:700; font-size:.85rem; padding:2px 10px; border-radius:999px;}
+  .ar-gauge{position:relative; height:7px; border-radius:999px; margin:11px 2px 5px;
+    background:linear-gradient(90deg,#fb923c 0%,#a3e635 20%,#34d399 42%,#34d399 64%,#a3e635 84%,#fb923c 100%);}
+  .ar-mark{position:absolute; top:50%; width:14px; height:14px; border-radius:50%; background:#fff;
+    border:2px solid var(--panel-2); transform:translate(-50%,-50%); box-shadow:0 1px 4px rgba(0,0,0,.55); transition:left .5s cubic-bezier(.22,1,.36,1);}
+  .ar-ticks{display:flex; justify-content:space-between; font-size:.64rem; color:var(--dim); font-variant-numeric:tabular-nums; margin:0 -2px;}
+  .ar-desc{font-size:.85rem; color:var(--muted); margin-top:7px;}
+  .ar-desc b{color:var(--txt);}
   .bk{max-width:640px; margin:12px auto 0;}
   .bk-cat{font-size:.72rem; color:var(--muted); margin:4px 0 6px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; text-align:center;}
   .bkr{display:grid; grid-template-columns:150px 1fr 74px; gap:8px; align-items:center; margin:5px 0;}
@@ -239,7 +251,7 @@
             <option value="0.85" data-i18n="o-s5">130 cm² — vagues (grip, contrôle)</option>
           </select></div>
       </div>
-      <div class="ar-read" id="o-ar" style="margin:8px 0 2px"></div>
+      <div class="ar-read" id="o-ar"></div>
       <div class="bk" id="o-bk"></div>
     </div>
   </section>
@@ -449,19 +461,25 @@
     const pivot    = clamp(100*(FUS[fus]*stab-0.68)/(1.44-0.68));
 
     // Allongement AR = envergure²/surface : le ratio maître du compromis carve ↔ glisse.
-    // Calé sur le ressenti surf : sweet spot 8-10 (la vague fournit l'énergie de décollage → on peut monter l'AR).
+    // Spectre de CARACTÈRE de carve : les vraies ailes de carve vont jusqu'à ~11-12 (RSX Carve 11,4, Jam 10,3) ;
+    // ce n'est qu'au-delà de ~12 qu'on quitte le carve (downwind/race).
     const ar = b*b/S;
-    const arBand = ar<6.5 ? {c:'#fb923c', l:t('AR bas — corde épaisse','low AR — thick chord'), d:t('ça traîne, ventile et pompe mal (aile pataude)','draggy, ventilates, pumps poorly (sluggish)')}
-      : ar<8   ? {c:'#a3e635', l:t('carve serré / petites vagues','tight carve / small waves'), d:t('très maniable, mais décolle un peu haut','very agile, but takes off a bit high')}
-      : ar<=10 ? {c:'#34d399', l:t('sweet-spot surf ✓','surf sweet spot ✓'), d:t('tourne ET glisse/relance — le compromis roi en surf','turns AND glides/pumps back out — the king compromise for surf')}
-      :          {c:'#fb923c', l:t('typé vitesse/glisse','tuned for speed/glide'), d:t('vole vite et glisse, mais moins vif et décolle haut','fast and glides, but less lively and high takeoff')};
+    const arBand =
+        ar<6.5   ? {c:'#fb923c', l:t('AR bas — corde épaisse','low AR — thick chord'), d:t('ça traîne, ventile et pompe mal (aile pataude)','draggy, ventilates, pumps poorly (sluggish)')}
+      : ar<8     ? {c:'#a3e635', l:t('carve serré — petites vagues','tight carve — small waves'), d:t('pivote très court, mais décolle un peu haut','pivots very tight, but takes off a bit high')}
+      : ar<=10.5 ? {c:'#34d399', l:t('surf-carve polyvalent ✓','all-round surf-carve ✓'), d:t('tourne ET glisse/relance — le compromis roi en surf','turns AND glides/pumps back out — the king compromise for surf')}
+      : ar<=12   ? {c:'#a3e635', l:t('carve allongé — glisse & vitesse','long carve — glide & speed'), d:t('reste une aile de carve, taillée grandes vagues / down-the-line : glisse et vitesse, un peu moins vive','still a carve wing, tuned for bigger waves / down-the-line: glide and speed, a touch less lively')}
+      :            {c:'#fb923c', l:t('typé vitesse/glisse (downwind/race)','tuned for speed/glide (downwind/race)'), d:t('très élancé : distance et vitesse, plus vraiment un profil de carve','very slender: distance and speed, no longer really a carve shape')};
+    const arPos = Math.max(0, Math.min(100, (ar-5)/8*100));   // jauge 5 → 13
     const sLo = Math.round(b*b/10/10)*10, sHi = Math.round(b*b/8/10)*10;   // surface pour AR 10 → 8
     $('o-ar').innerHTML =
-      '<div style="display:flex;align-items:baseline;gap:9px;flex-wrap:wrap">'
-      + '<span style="font-size:.82em;color:var(--dim);text-transform:uppercase;letter-spacing:.04em">'+t('Allongement','Aspect ratio')+' AR</span>'
-      + '<b style="font-size:1.45em;color:'+arBand.c+'">'+ar.toFixed(1)+'</b>'
-      + '<b style="color:'+arBand.c+'">'+arBand.l+'</b></div>'
-      + '<div style="font-size:.9em;color:var(--dim);margin-top:2px">'+arBand.d+' · '+t('cible surf pour','surf target for')+' '+b+' cm : <b>~'+sLo+'-'+sHi+' cm²</b> (AR 8-10)</div>';
+      '<div class="ar-head">'
+      + '<span class="ar-lab">'+t('Allongement','Aspect ratio')+' AR</span>'
+      + '<span class="ar-num" style="color:'+arBand.c+'">'+ar.toFixed(1)+'</span>'
+      + '<span class="ar-badge" style="color:'+arBand.c+';background:'+arBand.c+'22">'+arBand.l+'</span></div>'
+      + '<div class="ar-gauge"><span class="ar-mark" style="left:'+arPos+'%"></span></div>'
+      + '<div class="ar-ticks"><span>5</span><span>7</span><span>9</span><span>11</span><span>13</span></div>'
+      + '<div class="ar-desc">'+arBand.d+' · '+t('cible surf pour','surf target for')+' '+b+' cm : <b>~'+sLo+'-'+sHi+' cm²</b> (AR 8-10)</div>';
 
     $('o-agil').innerHTML = agility + ' <small>/ 100 ' + t('vivacité','liveliness') + '</small>';
     $('o-why').innerHTML =
