@@ -88,6 +88,8 @@
   @media(max-width:560px){ .pg-label{min-width:100%;} }
   .inputs{display:grid; grid-template-columns:repeat(2,minmax(180px,1fr)); gap:10px 16px; margin-top:4px;}
   @media(min-width:820px){ .inputs{grid-template-columns:repeat(4,1fr);} }
+  .inputs .field{display:flex; flex-direction:column;}
+  .inputs .field input[type=range]{margin-top:auto;}   /* curseur ancré en bas → sliders alignés même si un label passe sur 2 lignes */
   .field label{display:block; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em;
     color:var(--muted); font-weight:700; margin-bottom:5px;}
   .field .fval{color:var(--carve); font-weight:800; font-size:.95rem; text-transform:none; letter-spacing:0;}
@@ -116,6 +118,10 @@
   .ar-ends span:last-child{text-align:right;}
   .ar-desc{font-size:.85rem; color:var(--muted); margin-top:7px;}
   .ar-desc b{color:var(--txt);}
+  .hero{display:grid; grid-template-columns:1fr; gap:12px; margin:12px 0 4px; align-items:center;}
+  @media(min-width:820px){ .hero{grid-template-columns:0.85fr 1.15fr;} }
+  .hero .vout{margin:0;}
+  .hero .ar-read{margin:0; max-width:none;}
   .bk{max-width:640px; margin:12px auto 0;}
   .bk-cat{font-size:.72rem; color:var(--muted); margin:4px 0 6px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; text-align:center;}
   .bkr{display:grid; grid-template-columns:150px 1fr 74px; gap:8px; align-items:center; margin:5px 0;}
@@ -231,10 +237,6 @@
           <button class="preset-btn" type="button" data-p="140|1900|65|90" data-i18n="p-ld">longue distance (140 cm)</button>
         </div></div>
       </div>
-      <div class="vout" aria-live="polite">
-        <div class="n" id="o-agil">—</div>
-        <div class="win" id="o-why"></div>
-      </div>
       <div class="inputs">
         <div class="field"><label for="i-b"><span data-i18n="l-b">Envergure</span> : <span class="fval" id="v-b">89</span> cm</label>
           <input type="range" id="i-b" min="70" max="150" step="1" value="89"></div>
@@ -245,7 +247,13 @@
         <div class="field"><label for="i-stab"><span data-i18n="l-stab">Stab</span> : <span class="fval" id="v-stab">90</span> cm² <span id="v-stabq" style="color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0"></span></label>
           <input type="range" id="i-stab" min="60" max="130" step="5" value="90"></div>
       </div>
-      <div class="ar-read" id="o-ar"></div>
+      <div class="hero">
+        <div class="vout" aria-live="polite">
+          <div class="n" id="o-agil">—</div>
+          <div class="win" id="o-why"></div>
+        </div>
+        <div class="ar-read" id="o-ar"></div>
+      </div>
       <div class="bk" id="o-bk"></div>
     </div>
   </section>
@@ -512,7 +520,7 @@
       + '<div class="ar-ends"><span>◄ '+t('corde large · porte fort, traîne','wide chord · lift, drag')+'</span><span>'+t('élancé · glisse & relance','slender · glide &amp; pump')+' ►</span></div>'
       + '<div class="ar-desc">'+arBand.d+' · '+t('cible surf pour','surf target for')+' '+b+' cm : <b>~'+sLo+'-'+sHi+' cm²</b> (AR 8-10)</div>';
 
-    $('o-agil').innerHTML = agility + ' <small>/ 100 ' + t('vivacité','liveliness') + '</small>';
+    $('o-agil').innerHTML = '<span style="color:hsl('+Math.round(agility*1.2)+',68%,55%)">' + agility + '</span> <small>/ 100 ' + t('vivacité','liveliness') + '</small>';
     $('o-why').innerHTML =
       (agility >= 70 ? t('<b>Très vive</b> — elle s\'enroule au quart de tour. ','<b>Very lively</b> — it rolls in a snap. ')
        : agility >= 45 ? t('<b>Équilibrée</b>. ','<b>Balanced</b>. ')
@@ -522,9 +530,6 @@
 
     const qual = (v, w) => v < 40 ? w[0] : v < 70 ? w[1] : w[2];   // mot-clé selon le score
     const AX = [
-      ['🌀 '+t('Vivacité en virage','Turn liveliness'), agility, '#c084fc',
-        [t('posée','steady'),t('équilibrée','balanced'),t('très vive','very lively')],
-        t('la vitesse à basculer d\'un rail à l\'autre pour enrouler un virage','how fast it flips rail to rail to start a turn')],
       ['🔩 '+t('Lâcher de l\'arrière','Tail release'), pivot, '#38bdf8',
         [t('file droit','tracks straight'),t('neutre','neutral'),t('très lâche','very loose')],
         t('elle tourne court et pivote (lâche) ou file tout droit (verrouillé)','it pivots tight (loose) or tracks straight (locked)')],
