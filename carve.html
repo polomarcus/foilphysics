@@ -210,8 +210,8 @@
   <!-- SIMULATEUR -->
   <section id="sim" class="a-in">
     <h3 data-i18n="sim-h3">🎛️ Compare deux ailes</h3>
-    <p class="lede" data-i18n="sim-lede">L'<b>agilité de roulis</b> = la vivacité à enrouler un virage. Elle varie en <b>1/envergure²</b> —
-      c'est le facteur n°1 du carve. Surface, fuselage et stab ajustent le caractère (drive, pivot).</p>
+    <p class="lede" data-i18n="sim-lede">L'<b>agilité de roulis</b> = la vivacité à enrouler un virage. L'inertie ≈ <b>masse × envergure²</b> :
+      l'<b>envergure</b> domine (facteur n°1), mais une grande <b>surface</b> alourdit l'aile et la ralentit. Fuselage et stab ajustent le caractère (drive, pivot).</p>
     <div class="panel">
       <div class="presets">
         <div class="preset-grp"><span class="pg-label">🏄 Axis Surge</span><div class="pg-btns">
@@ -264,10 +264,13 @@
     <div class="cards">
       <div class="card" data-i18n="vd1">
         <div class="k">📐 L'envergure — le levier n°1</div>
-        <div class="big">inertie ∝ envergure²</div>
+        <div class="big">inertie ≈ masse × envergure²</div>
         <p>Basculer d'un rail à l'autre, c'est faire <b>rouler</b> l'aile. Son inertie de roulis grimpe au
           <b>carré de l'envergure</b> : passer de 111 à 89 cm, c'est <b>−36 % d'inertie</b> → l'aile s'enroule
           bien plus vite. C'est <i>la</i> raison pour laquelle les wings de surf sont courtes.</p>
+        <p style="margin-top:8px">La <b>surface</b> compte aussi : elle fait la <b>masse</b>. À envergure égale, une aile
+          à <b>grosse corde</b> (basse AR) est plus <b>lourde</b> → plus d'inertie → moins vive. Une grande aile très
+          large n'est donc <b>pas</b> maniable, même si l'envergure reste courte.</p>
       </div>
       <div class="card" data-i18n="vd2">
         <div class="k">🎯 La petite surface — le drive</div>
@@ -367,8 +370,9 @@
   </section>
 
   <footer data-i18n="foot"><b style="color:var(--txt)">Modèle</b> — indice de maniabilité, pas un banc d'essai.
-    L'<b>inertie de roulis</b> est prise ∝ envergure² (le moment d'inertie d'une aile autour de l'axe de roulis
-    grandit avec le carré de la demi-envergure) ; l'agilité affichée est son inverse, normalisée à 90 cm.
+    L'<b>inertie de roulis</b> est prise ∝ <b>masse × envergure²</b> (soit ∝ surface × envergure² : le moment d'inertie
+    autour de l'axe de roulis grandit avec le carré de la demi-envergure, et la masse suit la surface) ; l'agilité
+    affichée est son inverse. Une grande surface alourdit donc l'aile et la rend moins vive, même à envergure courte.
     Le <b>caractère</b> (pivot/track) combine fuselage et stab (amortissement en tangage/lacet ∝ longueur²).
     Le carve réel dépend surtout de la <b>technique</b>, de la vague et du réglage — ce sont des <b>ordres de
     grandeur pédagogiques</b>. Specs ailes : <a href="https://www.realwatersports.com/products/axis-surge-front-wing" target="_blank" rel="noopener">Axis Surge</a> (surf, AR ~9,5 — table officielle : 740→1010 mm) · Alpine RSX Carve (gamme AR 11 : 700→1100, soit 89→112 cm).<br>
@@ -397,13 +401,13 @@
     'tldr-s':'The exact opposite of long distance. Roll inertia grows with the <b>square of the span</b>: a wing 20% shorter turns ~1.5× faster.',
     'disc':'⚠️ <b>Estimated figures</b> — carving depends heavily on <b>technique</b> and the wave. This simulator compares the wings\' <b>intrinsic agility</b> (roll inertia ∝ span²), not your style.',
     'sim-h3':'🎛️ Compare two wings',
-    'sim-lede':'<b>Roll agility</b> = how snappily you roll into a turn. It varies as <b>1/span²</b> — the #1 carve factor. Area, fuselage and stab tune the character (drive, pivot).',
+    'sim-lede':'<b>Roll agility</b> = how snappily you roll into a turn. Inertia ≈ <b>mass × span²</b>: <b>span</b> dominates (the #1 factor), but a big <b>area</b> makes the wing heavier and slower. Fuselage and stab tune the character (drive, pivot).',
     'pg-ref':'📏 Glide reference','p-ld':'long-distance (140 cm)',
     'l-b':'Span','l-s':'Area','l-fus':'Fuselage','l-stab':'Stab',
     'o-f1':'Short (60 cm) — pivots freely (surfy)','o-f2':'Medium (65 cm) — balanced','o-f3':'Long (70 cm) — locked in (tracks)',
     'o-s1':'60 cm² — very loose / skate','o-s2':'70 cm² — endurance (thin, low drag)','o-s3':'90 cm² — all-round','o-s4':'110 cm²','o-s5':'130 cm² — waves (grip, control)',
     'vd-h3':'🧾 What makes it turn, in 5 cards',
-    'vd1':'<div class="k">📐 Span — the #1 lever</div><div class="big">inertia ∝ span²</div><p>Flipping rail to rail means <b>rolling</b> the wing. Its roll inertia grows with the <b>square of the span</b>: going from 111 to 89 cm is <b>−36% inertia</b> → the wing rolls in far faster. That\'s <i>the</i> reason surf wings are short.</p>',
+    'vd1':'<div class="k">📐 Span — the #1 lever</div><div class="big">inertia ≈ mass × span²</div><p>Flipping rail to rail means <b>rolling</b> the wing. Its roll inertia grows with the <b>square of the span</b>: going from 111 to 89 cm is <b>−36% inertia</b> → the wing rolls in far faster. That\'s <i>the</i> reason surf wings are short.</p><p style="margin-top:8px"><b>Area</b> matters too: it makes the <b>mass</b>. At equal span, a <b>wide-chord</b> (low-AR) wing is <b>heavier</b> → more inertia → less lively. So a big, very wide wing is <b>not</b> agile, even with a short span.</p>',
     'vd2':'<div class="k">🎯 Small area — the drive</div><div class="big">lively & fast</div><p>Less area = the wing <b>flies faster</b> and loads on the back foot: it has <b>drive</b> to project down the wave, and forgives hard inputs without «planting». Too big and it floats and refuses to pivot.</p>',
     'vd3':'<div class="k">🔩 The fuselage — the tube linking wing to stab</div><div class="big">short = pivot, long = tracks</div><p>It\'s the <b>horizontal bar</b> between front wing and stab; its length is the lever arm that steadies pitch. <b>Short (60 cm)</b> → little damping (∝ length²): the wing <b>pivots freely</b>, you carve tight, but it no longer self-corrects (twitchy). <b>Long (70 cm)</b> → it <b>tracks straight</b>, reassuring but lazy in turns.</p><p style="margin-top:8px"><b>Pump side:</b> a <b>short</b> fuselage makes each pump <b>more reactive</b> — the wing <b>responds fast in pitch</b>, snappy rebound (but you must meter it, it bounces). A <b>long</b> fuselage <b>smooths the pumping</b>: steadier, but a <b>softer</b> rebound. To <b>connect in surf</b>, a <b>medium (~65 cm)</b> keeps response without becoming unruly.</p>',
     'vd4':'<div class="k">🪶 The stab: loose or held</div><div class="big">a matter of style</div><p>A <b>small stab (~70 cm²)</b> = free tail, skatey, low drag → great for <b>endurance</b>. A <b>big stab (~130 cm²)</b> = more <b>grip and control</b> to hold committed carves in the wave — many riders\' pick (PoloFoil\'s too). Not «smaller is better»: pivot tight <i>or</i> hold the line, your call.</p>',
@@ -419,7 +423,7 @@
     't4':'<span class="ti">⏱️</span><p><b>Anticipate the lag.</b> Even lively, the wing turns with a delay (inertia): start your move slightly <b>before</b> the moment you want it.</p>',
     't5':'<span class="ti">💨</span><p><b>Keep speed into the turn.</b> The foil needs flow: entering too slow = stalling mid-carve. Come in <b>fast</b>, even if you slow on exit.</p>',
     't6':'<span class="ti">🌊</span><p><b>Turn in the pocket.</b> Where the wave pushes, you have the energy to carve tight — with <b>progressive</b> inputs: a brutal stomp makes the wing ventilate/break out.</p>',
-    'foot':'<b style="color:var(--txt)">Model</b> — a maneuverability index, not a test bench. <b>Roll inertia</b> is taken ∝ span² (a wing\'s moment of inertia about the roll axis grows with the square of the half-span); the agility shown is its inverse, normalised to 90 cm. The <b>character</b> (pivot/track) combines fuselage and stab (pitch/yaw damping ∝ length²). Real carving depends mostly on <b>technique</b>, the wave and tuning — these are <b>educational orders of magnitude</b>. Wing specs: <a href="https://www.realwatersports.com/products/axis-surge-front-wing" target="_blank" rel="noopener">Axis Surge</a> (surf, AR ~9,5 — table officielle : 740→1010 mm) · Alpine RSX Carve (AR 11 range: 700→1100, i.e. 89→112 cm).<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
+    'foot':'<b style="color:var(--txt)">Model</b> — a maneuverability index, not a test bench. <b>Roll inertia</b> is taken ∝ <b>mass × span²</b> (i.e. ∝ area × span²: the moment of inertia about the roll axis grows with the square of the half-span, and mass follows area); the agility shown is its inverse. A big area therefore makes the wing heavier and less lively, even at a short span. The <b>character</b> (pivot/track) combines fuselage and stab (pitch/yaw damping ∝ length²). Real carving depends mostly on <b>technique</b>, the wave and tuning — these are <b>educational orders of magnitude</b>. Wing specs: <a href="https://www.realwatersports.com/products/axis-surge-front-wing" target="_blank" rel="noopener">Axis Surge</a> (surf, AR ~9,5 — table officielle : 740→1010 mm) · Alpine RSX Carve (AR 11 range: 700→1100, i.e. 89→112 cm).<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
   };
   function applyLang(l){
     LANG = l;
@@ -493,7 +497,8 @@
 
     // Scores 0-100 = position sur chaque axe (bornes = extrêmes des curseurs). La physique (∝ envergure²) est dans les cartes.
     const clamp = x => Math.max(0, Math.min(100, Math.round(x)));
-    const agility  = clamp(100*(150-b)/80);                     // envergure courte → agile
+    const Iroll    = S*b*b/1e6;                                 // inertie de roulis relative ∝ masse × envergure² (masse ∝ surface)
+    const agility  = clamp(100*(24 - Iroll)/18);                // courte ET légère → agile ; grosse surface = lourde = moins vive
     const glisse   = clamp(100*(b-70)/80);                      // envergure longue → glisse (l'inverse)
     const drive    = clamp(100*(2200-S)/1600);                  // petite surface → drive
     const takeoff  = clamp(100*(S-600)/1600);                   // grande surface → démarre facile (l'inverse)
@@ -525,8 +530,8 @@
       (agility >= 70 ? t('<b>Très vive</b> — elle s\'enroule au quart de tour. ','<b>Very lively</b> — it rolls in a snap. ')
        : agility >= 45 ? t('<b>Équilibrée</b>. ','<b>Balanced</b>. ')
        : t('<b>Posée</b> — elle tracke plus qu\'elle ne tourne. ','<b>Steady</b> — it tracks more than it turns. '))
-      + t('L\'inertie de roulis varie en <b>envergure²</b> : plus l\'aile est courte, plus elle bascule vite.',
-          'Roll inertia varies as <b>span²</b>: the shorter the wing, the faster it flips.');
+      + t('L\'inertie de roulis ≈ <b>masse × envergure²</b> : plus l\'aile est <b>courte ET petite en surface</b> (légère), plus elle bascule vite.',
+          'Roll inertia ≈ <b>mass × span²</b>: the <b>shorter AND smaller in area</b> (lighter) the wing, the faster it flips.');
 
     const qual = (v, w) => v < 40 ? w[0] : v < 70 ? w[1] : w[2];   // mot-clé selon le score
     const AX = [
