@@ -272,7 +272,7 @@
 
   <!-- VERDICTS -->
   <section class="a-in">
-    <h3 data-i18n="vd-h3">🧾 Le verdict, en 5 cartes</h3>
+    <h3 data-i18n="vd-h3">🧾 Le verdict, en 7 cartes</h3>
     <div class="cards">
       <div class="card ok" data-i18n="vd1">
         <div class="k">✅ Ton intuition : la petite aile fine</div>
@@ -310,6 +310,29 @@
         <p>La puissance requise grimpe au <b>cube</b> de la vitesse : pour aller <b>2× plus vite</b>, il faut
           <b>8× plus de watts</b>. Doubler ton sprint ne donne que <b>+26 %</b> de Vmax. La vitesse pure est
           d'abord un exercice de <b>sprinteur</b> — puis de matos.</p>
+      </div>
+      <div class="card meh" data-i18n="vd6">
+        <div class="k">🌡️ L'eau froide ≠ plus dense</div>
+        <div class="big">c'est la viscosité</div>
+        <p>Fausse croyance : « l'eau froide est plus dense, donc ça change tout ». En fait la <b>densité</b> ne
+          bouge que <b>~0,3 %</b> sur 20 °C. Ce qui change vraiment, c'est la <b>viscosité</b> : entre l'<b>hiver
+          (~5 °C)</b> et l'<b>été (~25 °C)</b> elle <b>chute d'~40 %</b> → le <b>nombre de Reynolds grimpe d'~70 %</b>,
+          donc à quel point l'écoulement <b>reste collé au profil</b>. Résultat : une
+          même aile <b>décroche et glisse différemment</b> en hiver et en été — sa <b>plage de fonctionnement se
+          déplace</b>. (La viscosité, c'est le « collant » : huile froide gluante, huile chaude fluide.)</p>
+        <p style="margin-top:8px; font-size:.92em; color:var(--dim)"><b>Sens &amp; ampleur :</b> froid = plus visqueux
+          = Reynolds plus bas = un peu <b>plus de traînée</b> → légèrement plus lent, mais <b>~1 % sur la Vmax</b> (dans
+          le bruit). Ce que tu sens vraiment : <b>moins de marge au décrochage</b> et une glisse basse vitesse en retrait
+          — pas « tu perds 5 km/h ».</p>
+      </div>
+      <div class="card you" data-i18n="vd7">
+        <div class="k">⚖️ Le poids : à double tranchant</div>
+        <div class="big">lourd = plus de watts</div>
+        <p>Pour l'endurance, le poids <b>pénalise</b> (traînée ∝ portance²) — d'où « léger = distance ». Mais en
+          <b>vitesse pure</b>, plus lourd = <b>plus de puissance absolue</b> : à watts/kg comparables, le plus lourd
+          peut <b>aller plus vite en ligne droite</b> et <b>lancer une petite aile</b> plus fort (drop start). En
+          course, les gros costauds battent souvent les petits légers. <b>Efficacité vs puissance brute</b> — ça
+          dépend de ce que tu cherches.</p>
       </div>
     </div>
   </section>
@@ -364,7 +387,9 @@
     'cb2-k':'Sprint ~800 W — top sprinter',
     'cb2-p':'Thin profile, stab 50, 13 mm mast → <b>~30 km/h</b>, flight window 26-30 km/h. The small blade of your intuition — but it <b>demands</b> that engine (and straps to aim higher).',
     'cb-btn':'⚙️ Apply this combo',
-    'vd-h3':'🧾 The verdict, in 5 cards',
+    'vd-h3':'🧾 The verdict, in 7 cards',
+    'vd6':'<div class="k">🌡️ Cold water ≠ denser</div><div class="big">it\'s the viscosity</div><p>Common myth: «cold water is denser, so it changes everything». Actually <b>density</b> shifts only <b>~0.3%</b> over 20 °C. What really changes is the <b>viscosity</b>: between <b>winter (~5 °C)</b> and <b>summer (~25 °C)</b> it <b>drops ~40%</b> → the <b>Reynolds number rises ~70%</b>, i.e. how well the flow <b>stays attached to the profile</b>. So the same wing <b>stalls and glides differently</b> in winter vs summer — its <b>working range moves</b>. (Viscosity = «stickiness»: cold oil gloopy, hot oil runny.)</p><p style="margin-top:8px; font-size:.92em; color:var(--dim)"><b>Direction &amp; size:</b> cold = more viscous = lower Reynolds = a bit <b>more drag</b> → slightly slower, but <b>~1% on Vmax</b> (in the noise). What you actually feel: <b>less stall margin</b> and slightly worse low-speed glide — not «you lose 5 km/h».</p>',
+    'vd7':'<div class="k">⚖️ Weight: double-edged</div><div class="big">heavier = more watts</div><p>For endurance, weight <b>hurts</b> (drag ∝ lift²) — hence «light = distance». But in <b>pure speed</b>, heavier = <b>more absolute power</b>: at comparable watts/kg, the heavier rider can go <b>faster in a straight line</b> and <b>launch a small wing</b> harder (drop start). In races, the big strong riders often beat the small light ones. <b>Efficiency vs raw power</b> — depends what you\'re after.</p>',
     'vd1':'<div class="k">✅ Your intuition: the small thin wing</div><div class="big">lever #1</div><p>Wing friction costs <b>area × v³</b>: at 25 km/h, every cm² is expensive. Going from a cruise wing (1500 cm², medium profile) to a thin 700 cm² blade ≈ <b>+7 km/h</b> at 800 W. And a small wing <b>cannot</b> fly slowly — it forces you to speed.</p>',
     'vd2':'<div class="k">❌ «The stab plays no role»</div><div class="big">it does — a lot</div><p>Per cm², the stab is the foil\'s <b>dirtiest</b> appendage (it works in disturbed water, often loaded). A <b>stab 200 costs ~3.5 km/h</b> vs a stab 50 — as much as changing wings! Even a stab 100 leaves ~1.3 km/h. Speed setups run tiny stabs for a reason.</p>',
     'vd3':'<div class="k">🔄 The surprise: span still helps</div><div class="big">+15 cm ≈ +1.4 km/h</div><p>Even at 25 km/h, staying airborne costs ~10 N if the span is short. At equal area, lengthening the wing cuts that bill <b>without adding friction</b>. The limit lies elsewhere: stiffness, control, turns — not hydrodynamics.</p>',
