@@ -324,8 +324,10 @@
       <div class="rec-grid" id="o-rec"></div>
       <p id="o-delta" style="font-size:.82rem;color:#6ee7b7;text-align:center;margin:12px auto 0;font-weight:600" aria-live="polite"></p>
       <p style="font-size:.76rem;color:var(--muted);text-align:center;margin:12px auto 0;max-width:560px" data-i18n="reco-ref">
-        Cohérent avec les chartes des grandes marques : pour 75-85 kg en dockstart, elles conseillent
-        <b>~1800-1950 cm²</b> (AR ~9) avec un stab de <b>~220-240 cm²</b>.</p>
+        Cohérent avec les chartes des grandes marques (pour 75-85 kg : <b>~1800-2050 cm²</b>, AR ~9, stab
+        <b>~190-220 cm²</b>) — et on <b>vise volontairement grand</b> pour l'aile : <b>tout le monde gagne à démarrer
+        entre ~1500 et 2000+ cm²</b>, même léger. Plus grand = décroche plus bas = plus tolérant = tu apprends plus
+        vite. (Un stab <b>~220 cm² suffit</b> ; au-delà, surtout plus de traînée.)</p>
       <div class="bk" id="o-eff"></div>
     </div>
   </section>
@@ -463,7 +465,7 @@
     'reco-lede':'One physical rule behind it all: the wing must <b>stall around 10-11 km/h</b> — low enough that a missed pump isn\'t a crash. The required area mostly depends on your weight.',
     'l-w':'Your weight','l-stage':'Where you are',
     'o-st1':'🐣 Never flown / first dock starts','o-st2':'🐥 I fly for a few seconds','o-st3':'🐦 I hold 30 s and start pumping away',
-    'reco-ref':'Consistent with the major brands\' size charts: for 75-85 kg dockstart riders they recommend <b>~1800-1950 cm²</b> (AR ~9) with a <b>~220-240 cm²</b> stab.',
+    'reco-ref':'Consistent with the major brands\' size charts (for 75-85 kg: <b>~1800-2050 cm²</b>, AR ~9, <b>~190-220 cm²</b> stab) — and we <b>deliberately aim big</b> for the wing: <b>everyone is better off starting between ~1500 and 2000+ cm²</b>, even light riders. Bigger = stalls lower = more forgiving = you learn faster. (A <b>~220 cm² stab is plenty</b>; beyond that, mostly extra drag.)',
     'secu-h3':'🦺 Safety first',
     'secu-lede':'A foil has <b>thin, hard edges</b>, and beginner falls are uncontrolled. Four non-negotiable rules before the first start.',
     'sc1':'<div class="k">🪖 Helmet, impact vest + booties</div><p>Always. When you fall, <b>the foil is somewhere below</b> — and you choose neither where nor how. Add <b>neoprene booties</b>: between the dock, the rocks and the wing\'s edges, your feet take it all. Helmet, vest and booties turn a bad memory into an anecdote.</p>',
@@ -520,11 +522,11 @@
   /* ---------- modèle ---------- */
   // Étapes : k = cm²/kg visés · profil (cd0|clMax) · pénalité de technique (watts gaspillés)
   // Calibré sur les chartes de deux gammes école du marché (2025) : AR ~9,2-9,4 · ~13-15 % d'épaisseur ·
-  // 1600-2240 cm² · stabs 210-280 cm². minS : les marques ne font pas plus petit.
+  // ~1500-2350 cm² · stabs 210-280 cm². minS relevé : pour apprendre on vise GRAND (plus tolérant), même léger.
   const STAGES = {
-    A: {k:23, minS:1250, AR:9,  cd0:0.015, clMax:1.25, As:0.080, stab:'210-280', mast:'60-70', tech:0.70},
-    B: {k:21, minS:1150, AR:9,  cd0:0.014, clMax:1.20, As:0.080, stab:'210-280', mast:'70-75', tech:0.80},
-    C: {k:19, minS:1050, AR:10, cd0:0.013, clMax:1.10, As:0.065, stab:'150-220', mast:'75-85', tech:0.88}
+    A: {k:24, minS:1500, AR:9,  cd0:0.015, clMax:1.25, As:0.080, stab:'190-220', mast:'60-70', tech:0.70},
+    B: {k:21, minS:1350, AR:9,  cd0:0.014, clMax:1.20, As:0.080, stab:'190-220', mast:'70-75', tech:0.80},
+    C: {k:19, minS:1200, AR:10, cd0:0.013, clMax:1.10, As:0.065, stab:'150-210', mast:'75-85', tech:0.88}
   };
   function model(c){
     const AR = c.b*c.b/c.S;
