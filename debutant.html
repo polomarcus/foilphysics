@@ -222,6 +222,17 @@
   </section>
 
   <!-- ANATOMIE -->
+  <section id="methode" class="a-in">
+    <h3 data-i18n="method-h3">🎯 La méthode qui marche — 4 principes</h3>
+    <p class="lede" data-i18n="method-lede">Le matos aide, mais l'apprentissage tient surtout à ça. Applique les quatre, tu voleras bien plus vite.</p>
+    <div class="cards">
+      <div class="card" data-i18n="m1"><div class="k">🔁 ~10 sessions</div><div class="big">la répétition fait tout</div><p>Compte <b>~10 sorties</b> avant de tenir 30 s de vol. Les premiers essais finissent dans l'eau — normal, c'est pareil pour tout le monde. Ce sont des <b>dizaines de départs courts</b> qui t'apprennent, pas quelques grands vols.</p></div>
+      <div class="card" data-i18n="m2"><div class="k">🎯 Toujours le même matos</div><div class="big">un seul setup, maîtrisé</div><p>Garde <b>la même aile, le même stab, le même mât</b>. Chaque changement te fait <b>repartir de zéro</b> (feeling, décollage, équilibre). Tu descendras de taille bien plus tard, une fois que tu tiens 30-60 s.</p></div>
+      <div class="card" data-i18n="m3"><div class="k">📍 Toujours au même endroit</div><div class="big">moins d'inconnues = plus de vol</div><p>Un <b>spot que tu connais</b> (profondeur, bord, vent, courant) enlève des variables. Tes repères se construisent vite : tu te concentres sur <b>le geste</b>, pas sur le lieu. Eau plate, pas de vagues pour commencer.</p></div>
+      <div class="card" data-i18n="m4"><div class="k">👥 Avec du monde autour</div><div class="big">plus fun ET plus sûr</div><p>Jamais seul : quelqu'un qui te <b>voit</b>, qui te <b>file l'astuce</b>, qui filme et partage la bonne rigolade. On progresse <b>mieux à plusieurs</b> — et une session encadrée (club, pote qui gère) en vaut cinq en solo.</p></div>
+    </div>
+  </section>
+
   <section id="anatomie" class="a-in">
     <h3 data-i18n="lex-h3">🧩 C'est quoi, un foil ? Les 5 pièces</h3>
     <p class="lede" data-i18n="lex-lede">Deux minutes de vocabulaire — tout le reste de la page s'appuie dessus.</p>
@@ -472,6 +483,12 @@
     'sc2':'<div class="k">🌊 A deep, clear spot</div><p>At least <b>1.5 m of water</b> (the mast + a real margin), a bottom free of rocks, and <b>no swimmers</b> in your fall zone. Check the depth before, not after.</p>',
     'sc3':'<div class="k">👥 Never alone</div><p>A partner on shore changes everything if something goes wrong — at the strict minimum, someone <b>knows where you are</b> and when you\'re due back. Cold water shrinks margins fast.</p>',
     'sc4':'<div class="k">🤸 Learn to fall</div><p>Fall <b>away from the machine</b>, arms around your head, and never surface «blind» under the board. Pushing the foil away from you is a reflex you train from day one.</p>',
+    'method-h3':'🎯 The method that works — 4 principles',
+    'method-lede':'Gear helps, but learning comes down mostly to this. Apply all four and you\'ll fly far sooner.',
+    'm1':'<div class="k">🔁 ~10 sessions</div><div class="big">repetition is everything</div><p>Count on <b>~10 outings</b> before you hold 30 s of flight. The first tries end in the water — normal, same for everyone. It\'s <b>dozens of short starts</b> that teach you, not a few long flights.</p>',
+    'm2':'<div class="k">🎯 Always the same gear</div><div class="big">one setup, mastered</div><p>Keep <b>the same wing, stab and mast</b>. Every change sends you <b>back to zero</b> (feel, takeoff, balance). You\'ll size down much later, once you hold 30-60 s.</p>',
+    'm3':'<div class="k">📍 Always the same spot</div><div class="big">fewer unknowns = more flight</div><p>A <b>spot you know</b> (depth, edge, wind, current) removes variables. Your bearings build fast: you focus on <b>the movement</b>, not the place. Flat water, no waves to begin.</p>',
+    'm4':'<div class="k">👥 With people around</div><div class="big">more fun AND safer</div><p>Never alone: someone who <b>watches</b> you, <b>shares the tip</b>, films and shares the laugh. You progress <b>better together</b> — and one coached session is worth five solo.</p>',
     'lex-h3':'🧩 What is a foil? The 5 parts',
     'lex-lede':'Two minutes of vocabulary — the whole page builds on it.',
     'lxs1':'board','lxs2':'mast','lxs3':'fuselage','lxs4':'front wing','lxs5':'stab',
@@ -522,11 +539,11 @@
   /* ---------- modèle ---------- */
   // Étapes : k = cm²/kg visés · profil (cd0|clMax) · pénalité de technique (watts gaspillés)
   // Calibré sur les chartes de deux gammes école du marché (2025) : AR ~9,2-9,4 · ~13-15 % d'épaisseur ·
-  // ~1500-2350 cm² · stabs 210-280 cm². minS relevé : pour apprendre on vise GRAND (plus tolérant), même léger.
+  // ~1500-2100 cm² · stabs ≤~220 cm². Plancher 1500 (même léger) + plafond ~2100 (un lourd décroche déjà bas vers 2000, pas besoin de démesuré).
   const STAGES = {
-    A: {k:24, minS:1500, AR:9,  cd0:0.015, clMax:1.25, As:0.080, stab:'190-220', mast:'60-70', tech:0.70},
-    B: {k:21, minS:1350, AR:9,  cd0:0.014, clMax:1.20, As:0.080, stab:'190-220', mast:'70-75', tech:0.80},
-    C: {k:19, minS:1200, AR:10, cd0:0.013, clMax:1.10, As:0.065, stab:'150-210', mast:'75-85', tech:0.88}
+    A: {k:24, minS:1500, maxS:2100, AR:9,  cd0:0.015, clMax:1.25, As:0.080, stab:'190-220', mast:'60-70', tech:0.70},
+    B: {k:21, minS:1350, maxS:2000, AR:9,  cd0:0.014, clMax:1.20, As:0.080, stab:'190-220', mast:'70-75', tech:0.80},
+    C: {k:19, minS:1200, maxS:1900, AR:10, cd0:0.013, clMax:1.10, As:0.065, stab:'150-210', mast:'75-85', tech:0.88}
   };
   function model(c){
     const AR = c.b*c.b/c.S;
@@ -542,7 +559,7 @@
   function reco(wkg, stage){
     const st = STAGES[stage];
     const raw = Math.round(wkg*st.k/50)*50;
-    const S = Math.max(raw, st.minS);                     // cm², arrondi à 50, plancher catalogue
+    const S = Math.min(Math.max(raw, st.minS), st.maxS);  // cm², arrondi à 50, plancher 1500 + plafond (léger = grand, lourd ≠ démesuré)
     const b = Math.round(Math.sqrt(st.AR*S/10000)*100);   // cm
     const c = {S:S/10000, b:b/100, cd0:st.cd0, clMax:st.clMax, As:st.As, W:wkg*G};
     const m = model(c);
