@@ -87,6 +87,7 @@
     padding:8px 14px; font-weight:700; font-size:.85rem; cursor:pointer;}
   .preset-btn:hover{border-color:var(--carve); color:var(--carve);}
   .preset-btn:active{transform:scale(.98);}
+  .preset-btn.on{border-color:var(--carve); color:var(--carve); background:rgba(192,132,252,.14); font-weight:800;}
   .preset-grp{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:0;}
   .pg-label{font-size:.72rem; font-weight:800; color:var(--muted); min-width:132px; text-transform:uppercase; letter-spacing:.03em;}
   .pg-btns{display:flex; gap:6px; flex-wrap:wrap;}
@@ -586,12 +587,18 @@
       ).join('');
   }
 
-  document.querySelectorAll('.preset-btn').forEach(btn => btn.addEventListener('click', ()=>{
+  function applyPresetBtn(btn){
     const [b,s,fus,stab] = btn.dataset.p.split('|');
     $('i-b').value = b; $('i-s').value = s; $('i-fus').value = fus; $('i-stab').value = stab;
+    document.querySelectorAll('.preset-btn').forEach(x => x.classList.toggle('on', x === btn));
+    render();
+  }
+  document.querySelectorAll('.preset-btn').forEach(btn => btn.addEventListener('click', ()=> applyPresetBtn(btn)));
+  document.querySelectorAll('input,select').forEach(el => el.addEventListener('input', ()=>{
+    document.querySelectorAll('.preset-btn.on').forEach(x => x.classList.remove('on'));   // réglage manuel = config custom
     render();
   }));
-  document.querySelectorAll('input,select').forEach(el => el.addEventListener('input', render));
+  applyPresetBtn(document.querySelector('.preset-btn[data-p^="89|835"]'));   // défaut : Axis Surge 890
 
   if(!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window){
     const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('seen'); io.unobserve(e.target); } }), {threshold:.12});
