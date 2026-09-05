@@ -761,7 +761,11 @@
       tourbillonnaire continu</b> derrière l'aile.<br>
       Ce sillage, c'est de l'<b>énergie dépensée qui ne revient jamais</b>. Une <b>petite aile</b> les crée
       <b>plus proches et plus énergétiques</b> (ils perturbent davantage l'écoulement) ; une <b>grande envergure les
-      éloigne</b> l'un de l'autre → ils gênent beaucoup moins l'aile → moins d'énergie perdue.
+      éloigne</b> l'un de l'autre → ils gênent beaucoup moins l'aile → moins d'énergie perdue.<br>
+      Autre façon de le voir : au bout de l'aile, surpression et dépression <b>se rejoignent et s'annulent</b> →
+      cette bande de bout est une <b>zone morte</b> qui <b>freine sans porter</b>. Chaque aile paie cette
+      <b>taxe de bout d'aile</b> — fixe. Sur une aile <b>courte</b>, les bouts morts sont une <b>grosse fraction</b>
+      de l'envergure ; sur une aile <b>longue</b>, la même taxe est <b>diluée</b> dans plein d'envergure qui porte.
 
       <h4>4. La traînée induite, en clair</h4>
       <b>La portance n'est jamais gratuite</b> : pour te pousser vers le haut, le foil doit donner une <b>impulsion
@@ -1052,16 +1056,28 @@
     <div class="kid-def" data-i18n="kid-def">👉 Ici, « <b>grande aile</b> » veut dire <b>grande envergure</b> (longue d'un bout à l'autre) — <b>pas</b> forcément grande surface. Et c'est l'<b>envergure</b> le vrai levier, pas la surface — <b>oui, c'est très contre-intuitif</b>, on y vient.</div>
     <div class="kid-cols">
       <figure class="f-long">
-        <div class="wing long"></div>
-        <div class="flow"><span class="arr">↓</span><span class="arr" style="animation-delay:.25s">↓</span><span class="arr" style="animation-delay:.55s">↓</span><span class="arr" style="animation-delay:.1s">↓</span><span class="arr" style="animation-delay:.4s">↓</span><span class="arr" style="animation-delay:.7s">↓</span><span class="arr" style="animation-delay:.15s">↓</span></div>
+        <svg viewBox="0 0 360 76" aria-hidden="true" style="display:block;width:100%;margin:0 auto 4px">
+          <path d="M28 56 Q180 40 332 56 Q180 64 28 56 Z" fill="#38bdf8"/>
+          <g stroke="#38bdf8" stroke-width="2.6" fill="none" stroke-linecap="round">
+            <path d="M68 46 v-10"/><path d="M96 44 v-15"/><path d="M124 43 v-18"/><path d="M152 42 v-20"/><path d="M180 42 v-21"/><path d="M208 42 v-20"/><path d="M236 43 v-18"/><path d="M264 44 v-15"/><path d="M292 46 v-10"/>
+          </g>
+          <path d="M22 56 a8 8 0 1 1 8 8" fill="none" stroke="#f87171" stroke-width="2.2"/>
+          <path d="M338 56 a8 8 0 1 0 -8 8" fill="none" stroke="#f87171" stroke-width="2.2"/>
+        </svg>
         <div class="f-eff"><span class="fe-lab">effort</span><span class="fe-trk"><span class="fe-fil" style="width:25%;background:#38bdf8">1×</span></span></div>
-        <figcaption data-i18n="kid-cap1"><b>Grande envergure</b><br>balaie un <b>large</b> ruban d'eau → poussée douce</figcaption>
+        <figcaption data-i18n="kid-cap1"><b>Grande envergure</b><br>les bouts morts 🔴 = une <b>petite part</b> → presque tout porte</figcaption>
       </figure>
       <figure class="f-short">
-        <div class="wing short"></div>
-        <div class="flow"><span class="arr">⇊</span><span class="arr" style="animation-delay:.35s">⇊</span></div>
+        <svg viewBox="0 0 360 76" aria-hidden="true" style="display:block;width:100%;margin:0 auto 4px">
+          <path d="M110 56 Q180 36 250 56 Q180 70 110 56 Z" fill="#f59e0b"/>
+          <g stroke="#f59e0b" stroke-width="2.6" fill="none" stroke-linecap="round">
+            <path d="M152 42 v-11"/><path d="M180 40 v-15"/><path d="M208 42 v-11"/>
+          </g>
+          <path d="M103 56 a10 10 0 1 1 10 10" fill="none" stroke="#f87171" stroke-width="2.6"/>
+          <path d="M257 56 a10 10 0 1 0 -10 10" fill="none" stroke="#f87171" stroke-width="2.6"/>
+        </svg>
         <div class="f-eff"><span class="fe-lab">effort</span><span class="fe-trk"><span class="fe-fil" style="width:100%;background:#f59e0b">4×</span></span></div>
-        <figcaption data-i18n="kid-cap2"><b>Petite envergure</b><br>ne balaie qu'un ruban <b>étroit</b> → doit fouetter</figcaption>
+        <figcaption data-i18n="kid-cap2"><b>Petite envergure</b> (même surface)<br>les bouts morts 🔴 <b>mangent l'aile</b> → freine autant qu'elle porte</figcaption>
       </figure>
     </div>
     <div class="kid-txt" data-i18n="kid-txt">
@@ -1070,6 +1086,9 @@
       🟦 <b>pousser beaucoup d'eau, doucement</b> · 🟧 <b>fouetter un peu d'eau, très fort</b>.<br><br>
       Or le gaspillage explose <b>au carré de la vitesse</b> → la douceur gagne, toujours.
       Comme à la nage : <b>palmes</b> vs <b>mains nues</b>.<br><br>
+      Les 🔴 du schéma ? Ce sont les <b>bouts d'aile</b> : l'eau les contourne en tourbillon → ils <b>freinent sans
+      porter</b>. Ces <b>zones mortes</b> ont la même taille sur toutes les ailes — une aile <b>courte</b> est donc
+      presque <b>toute en bouts morts</b>, une <b>longue</b> les dilue dans de l'envergure qui porte.<br><br>
       Et la quantité d'eau ne dépend que d'une chose : la <b>largeur balayée = l'envergure</b>. Ajouter de la corde
       (donc de la surface) <b>n'élargit rien</b> — <b>⚠️ la surface fait la portance, l'envergure fait l'économie</b>.
       Contre-intuitif, mais c'est la loi :<br><br>
@@ -1142,7 +1161,37 @@
       pousse un <b>petit paquet d'eau violemment</b> → gros tourbillons de bout d'aile = énergie gaspillée.<br>
       Résultat : la traînée « portance » varie en <b>1/envergure²</b> — <b>doubler l'envergure la divise par ~4</b>.
       Et une <b>grande surface</b> te laisse voler <b>lentement</b>, ce qui réduit le frottement.
-      <b>Grande + fine + lente = effort minimal.</b>
+      <b>Grande + fine + lente = effort minimal.</b><br>
+      Image utile : les <b>bouts d'aile sont des zones mortes</b> — l'eau y contourne l'aile (tourbillon), donc
+      <b>traînée maximale, portance nulle</b>. À surface égale, une aile <b>courte</b> est <i>proportionnellement</i>
+      « toute en bouts morts » ; une aile <b>longue</b> dilue cette taxe fixe dans de l'envergure qui porte.
+    </div>
+    <div class="note-fig" aria-hidden="true" style="margin-bottom:16px">
+      <svg viewBox="0 0 380 168">
+        <!-- Aile longue (haut AR) : zones mortes = petite fraction -->
+        <g>
+          <path d="M28 46 Q190 30 352 46 Q190 54 28 46 Z" fill="#38bdf8"/>
+          <!-- flèches de portance (s'éteignent aux bouts) -->
+          <g stroke="#38bdf8" stroke-width="2.4" fill="none" stroke-linecap="round">
+            <path d="M70 36 v-9"/><path d="M100 34 v-13"/><path d="M130 33 v-16"/><path d="M160 32 v-18"/><path d="M190 32 v-19"/><path d="M220 32 v-18"/><path d="M250 33 v-16"/><path d="M280 34 v-13"/><path d="M310 36 v-9"/>
+          </g>
+          <!-- tourbillons de bout -->
+          <path d="M22 46 a8 8 0 1 1 8 8" fill="none" stroke="#f87171" stroke-width="2"/>
+          <path d="M358 46 a8 8 0 1 0 -8 8" fill="none" stroke="#f87171" stroke-width="2"/>
+          <text x="190" y="70" font-size="11" fill="#94a3b8" text-anchor="middle" font-weight="700" data-i18n="fig-tip-l1">longue : bouts morts = petite fraction</text>
+        </g>
+        <!-- Aile courte (bas AR, même surface) : zones mortes = grosse fraction -->
+        <g>
+          <path d="M118 120 Q190 100 262 120 Q190 134 118 120 Z" fill="#f59e0b"/>
+          <g stroke="#f59e0b" stroke-width="2.4" fill="none" stroke-linecap="round">
+            <path d="M160 106 v-10"/><path d="M190 104 v-14"/><path d="M220 106 v-10"/>
+          </g>
+          <path d="M112 120 a9 9 0 1 1 9 9" fill="none" stroke="#f87171" stroke-width="2.4"/>
+          <path d="M268 120 a9 9 0 1 0 -9 9" fill="none" stroke="#f87171" stroke-width="2.4"/>
+          <text x="190" y="150" font-size="11" fill="#94a3b8" text-anchor="middle" font-weight="700" data-i18n="fig-tip-l2">courte (même surface) : presque toute en bouts morts</text>
+        </g>
+      </svg>
+      <div class="nf-caps" data-i18n="fig-tip-cap"><span>🔵 <b>flèches</b> — la portance (nulle aux bouts)</span><span>🔴 <b>tourbillons</b> — la zone morte qui freine sans porter</span></div>
     </div>
     <div class="legend">
       <span data-i18n="leg-ind"><i class="i-ind"></i><b>🔴 Freinage « portance »</b> — le prix à payer juste pour rester en l'air. Explose si tu voles lentement ou avec une aile courte.</span>
@@ -2271,7 +2320,11 @@
       below tries to wrap around the wing → it rolls up <b>vortices</b> trailing from the wingtips (like the swirl
       above a bathtub drain). In a hydrofoil they form a <b>continuous vortical wake</b> behind the wing.<br>
       That wake is <b>energy spent that never comes back</b>. A <b>small wing</b> makes them <b>closer together and more
-      energetic</b> (they disturb the flow more); a <b>long span pushes them apart</b> → they disturb the wing far less → less energy lost.
+      energetic</b> (they disturb the flow more); a <b>long span pushes them apart</b> → they disturb the wing far less → less energy lost.<br>
+      Another way to see it: at the very tip, high and low pressure <b>meet and cancel</b> → that tip strip is a
+      <b>dead zone</b> that <b>drags without lifting</b>. Every wing pays this fixed <b>tip tax</b>. On a <b>short</b>
+      wing the dead tips are a <b>big fraction</b> of the span; on a <b>long</b> wing the same tax is <b>diluted</b>
+      across lots of lifting span.
 
       <h4>4. Induced drag, plainly</h4>
       <b>Lift is never free</b>: to push you up, the foil must give an <b>equal and opposite impulse to the water</b>
@@ -2307,9 +2360,9 @@
     'imp-matos':'<div class="imp-h">🛠️ 1. Your gear</div><div class="imp-big">−30% effort</div><div class="imp-s">with a <b>wide span</b> (long &amp; thin wing, high AR) — the only lever you can buy.</div><div class="mini-cmp"><div class="mrow"><span class="mlab">short wing</span><span class="mtrk"><span class="mfil" style="width:100%;background:#f59e0b">4× the effort</span></span></div><div class="mrow"><span class="mlab">doubled span</span><span class="mtrk"><span class="mfil" style="width:26%;background:#38bdf8">1×</span></span></div></div><div class="imp-rank"><b>🥇 Span ~30%</b> · 🥈 Thin profile ~10% · mast / stab / fuselage ~1-5%</div>',
     'kid-h':'🧒 Why does a big wing tire you less?',
     'kid-def':'👉 Here, «<b>big wing</b>» means <b>wide span</b> (long tip-to-tip) — <b>not</b> necessarily more surface. And span, not surface, is the real lever — <b>yes, it\'s very counter-intuitive</b>, we\'ll get there.',
-    'kid-cap1':'<b>Wide span</b><br>sweeps a <b>broad</b> ribbon of water → gentle push',
-    'kid-cap2':'<b>Short span</b><br>sweeps only a <b>narrow</b> ribbon → must whip',
-    'kid-txt':'To hold you up, the wing <b>pushes water downward</b> — and <b>force = amount of water × pushing speed</b>. Two ways to get the same push: 🟦 <b>push lots of water, gently</b> · 🟧 <b>whip a little water, hard</b>.<br><br>But waste explodes <b>with the square of speed</b> → gentle always wins. Like swimming: <b>fins</b> vs <b>bare hands</b>.<br><br>And the amount of water depends on one thing only: the <b>swept width = the span</b>. Adding chord (hence surface) <b>widens nothing</b> — <b>⚠️ surface makes the lift, span makes the savings</b>. Counter-intuitive, but it\'s the law:<br><br><div class="kid-law"><div class="kid-law-t">📐 The law of foiling</div><div class="kid-law-f">wasted effort = 1 / span²</div><div class="law-sq"><span class="sqcap">short wing</span><span class="lq4"><i></i><i></i><i></i><i></i></span><span class="qar">→</span><span class="lq1"></span><span class="sqcap">doubled span</span></div><div class="kid-law-s">Double the span → <b>4× less</b> effort lost.</div><div class="law-proof">The proof, at <b>equal area (1900 cm²)</b> — each wing\'s wasted effort:<div class="lawbars"><div class="lbar"><span class="llab">🟦 Long · 190 cm</span><span class="trk"><span class="fil" style="width:40%;background:#38bdf8">1×</span></span></div><div class="lbar"><span class="llab">🟧 Short · 120 cm</span><span class="trk"><span class="fil" style="width:100%;background:#f59e0b">2.5× the effort</span></span></div></div><span class="proof-cap">same area, same lift — but 1.6× less span = <b>1.6² ≈ 2.5×</b> more effort</span></div></div><b>👉 The longer and thinner the wing, the less you strain to go just as far.</b><div class="kid-warn">⚠️ <b>But it doesn\'t pump for you!</b> A wide span makes each pump stroke <b>more rewarding</b> — it doesn\'t fly on its own. To last 1 h you <b>also</b> need technique (linking bumps well, keeping speed) and <b>fitness</b>. Change your «fitness» above: you\'ll see flight time move a lot, on the very same wing.</div>',
+    'kid-cap1':'<b>Wide span</b><br>the dead tips 🔴 = a <b>small share</b> → almost all of it lifts',
+    'kid-cap2':'<b>Short span</b> (same area)<br>the dead tips 🔴 <b>eat the wing</b> → it brakes as much as it lifts',
+    'kid-txt':'To hold you up, the wing <b>pushes water downward</b> — and <b>force = amount of water × pushing speed</b>. Two ways to get the same push: 🟦 <b>push lots of water, gently</b> · 🟧 <b>whip a little water, hard</b>.<br><br>But waste explodes <b>with the square of speed</b> → gentle always wins. Like swimming: <b>fins</b> vs <b>bare hands</b>.<br><br>The 🔴 on the drawing? Those are the <b>wingtips</b>: the water wraps around them in a vortex → they <b>brake without lifting</b>. These <b>dead zones</b> are about the same size on every wing — so a <b>short</b> wing is almost <b>all dead tips</b>, a <b>long</b> one dilutes them across lifting span.<br><br>And the amount of water depends on one thing only: the <b>swept width = the span</b>. Adding chord (hence surface) <b>widens nothing</b> — <b>⚠️ surface makes the lift, span makes the savings</b>. Counter-intuitive, but it\'s the law:<br><br><div class="kid-law"><div class="kid-law-t">📐 The law of foiling</div><div class="kid-law-f">wasted effort = 1 / span²</div><div class="law-sq"><span class="sqcap">short wing</span><span class="lq4"><i></i><i></i><i></i><i></i></span><span class="qar">→</span><span class="lq1"></span><span class="sqcap">doubled span</span></div><div class="kid-law-s">Double the span → <b>4× less</b> effort lost.</div><div class="law-proof">The proof, at <b>equal area (1900 cm²)</b> — each wing\'s wasted effort:<div class="lawbars"><div class="lbar"><span class="llab">🟦 Long · 190 cm</span><span class="trk"><span class="fil" style="width:40%;background:#38bdf8">1×</span></span></div><div class="lbar"><span class="llab">🟧 Short · 120 cm</span><span class="trk"><span class="fil" style="width:100%;background:#f59e0b">2.5× the effort</span></span></div></div><span class="proof-cap">same area, same lift — but 1.6× less span = <b>1.6² ≈ 2.5×</b> more effort</span></div></div><b>👉 The longer and thinner the wing, the less you strain to go just as far.</b><div class="kid-warn">⚠️ <b>But it doesn\'t pump for you!</b> A wide span makes each pump stroke <b>more rewarding</b> — it doesn\'t fly on its own. To last 1 h you <b>also</b> need technique (linking bumps well, keeping speed) and <b>fitness</b>. Change your «fitness» above: you\'ll see flight time move a lot, on the very same wing.</div>',
     'kid-src':'📚 <b>And how does the wing actually make lift?</b> It tilts by a <b>tiny angle</b> in the water and deflects the flow: the bigger the angle, the more it lifts (but the more it drags too). That\'s the ABC of <b>thin airfoil theory</b> — the century-old physics that makes <i>every</i> foil (and aircraft) fly. <a href="https://en.wikipedia.org/wiki/Thin_airfoil_theory" target="_blank" rel="noopener">Read on Wikipedia →</a>',
     'story-sum-s':'📖 The idea in 30 seconds',
     'story-body-s':'<p><b>1. To go far, the enemy is braking.</b> A good distance wing doesn\'t try to lift harder — it tries to <b>lose less energy</b> between pump strokes. Like a road cyclist: one push, then <b>let it roll</b>.</p><p><b>2. The biggest brake is the price of staying airborne.</b> To hold you up, the wing pushes water down — and that energy leaves in the wake, <b>lost forever</b>. Good news: that price <b>collapses as span grows</b> (double the span → <b>4× less</b>).</p><p><b>3. Hence long, thin wings.</b> For the same effort they glide further per stroke → you fly <b>longer, less tired</b>. Nothing new in the physics (gliders, albatrosses…): what\'s <b>recent</b> is that we can finally <b>build</b> these wings thin and stiff enough for pump foiling.</p><p style="margin-top:10px;font-weight:600;color:var(--txt)">A good distance wing works no magic: it just <b>wastes less</b> of what you give it.</p>',
@@ -2359,7 +2412,10 @@
     'note-visco':'<div class="note-title">🌡️ Cold vs warm water — viscosity, not density</div>Common myth: «cold water is denser». In fact <b>density</b> shifts only <b>~0.3%</b> over 20 °C. What really changes is the <b>viscosity</b>: between <b>winter (~5 °C)</b> and <b>summer (~25 °C)</b> it <b>drops ~40%</b> → the <b>Reynolds number rises ~70%</b> → how well the flow <b>stays attached to the profile</b>. In <b>cold water</b> (more viscous, lower Reynolds): a bit <b>more drag</b>, and above all <b>less stall margin</b> — your wing <b>can\'t fly quite as slowly</b> and glides a touch less. On <b>power</b> the effect stays <b>modest (~1%)</b>, but it <b>shifts the working range</b>: the same wing doesn\'t handle the same in January and July.',
     'note-fus':'<div class="note-title">🔧 Fuselage — it\'s a lever arm</div>The stab acts at a distance <b>L</b> behind the wing (= the fuselage length). The <b>restoring moment</b> in pitch is proportional to this arm (<b>∝ L</b>), and <b>damping</b> (what slows rotation) rises even faster (<b>∝ L²</b>):<br>• <b>Long (70 cm)</b> → long arm → strong restoring + strong damping: the foil <b>self-corrects</b>, pitch is slow and smooth (stable, reassuring) — but you must <b>force</b> to pitch it, so pumping is softer, and more surface in the water = more drag.<br>• <b>Short (60 cm) / ultra short (52 cm)</b> → short arm → little restoring and damping: pitch <b>reacts instantly</b>, you trigger the pump with less effort and carve tighter — but the foil <b>no longer self-corrects</b> → twitchy, active piloting required.',
     'note-stab':'<div class="note-title">🔧 Stab — the rear lifting surface that balances the foil</div>Its (negative) lift counters the wing\'s nose-down moment. <b>Big (100)</b> = large stabilising force + big damping → forgiving, but more surface in the water = more drag. <b>Small (50)</b> = less drag and a livelier wing, but the balance is finer to hold (reduced error margin). Since the foil is <b>lightly damped</b>, you pump it at <b>higher cadence but with less force</b> each stroke; a big stab forces the opposite — bigger, harder strokes, less often.<br><span style="color:var(--muted)">In the post-by-post detail, fuselage and stab weigh on "friction" — efficiency is paid in stability, and vice versa.</span>',
-    'why-hiar':'<div class="note-title">🪽 Why does a big thin wing (high AR) save energy?</div>To stay airborne, the wing pushes water downward. A <b>long</b> wing (high aspect ratio) moves a <b>large sheet of water gently</b> → very little energy lost. A <b>short</b> wing pushes a <b>small parcel of water violently</b> → big wingtip vortices = wasted energy.<br>So "lift" drag scales as <b>1/span²</b> — <b>doubling the span cuts it ~4×</b>. And a <b>big area</b> lets you fly <b>slow</b>, which cuts friction. <b>Big + thin + slow = minimal effort.</b>',
+    'why-hiar':'<div class="note-title">🪽 Why does a big thin wing (high AR) save energy?</div>To stay airborne, the wing pushes water downward. A <b>long</b> wing (high aspect ratio) moves a <b>large sheet of water gently</b> → very little energy lost. A <b>short</b> wing pushes a <b>small parcel of water violently</b> → big wingtip vortices = wasted energy.<br>So "lift" drag scales as <b>1/span²</b> — <b>doubling the span cuts it ~4×</b>. And a <b>big area</b> lets you fly <b>slow</b>, which cuts friction. <b>Big + thin + slow = minimal effort.</b><br>Useful image: <b>wingtips are dead zones</b> — the water wraps around them (vortex), so <b>maximum drag, zero lift</b>. At equal area, a <b>short</b> wing is <i>proportionally</i> «all dead tips»; a <b>long</b> wing dilutes that fixed tax across lifting span.',
+    'fig-tip-l1':'long: dead tips = a tiny fraction',
+    'fig-tip-l2':'short (same area): almost all dead tips',
+    'fig-tip-cap':'<span>🔵 <b>arrows</b> — the lift (zero at the tips)</span><span>🔴 <b>vortices</b> — the dead zone that drags without lifting</span>',
     'choc-h3':'⚡ What slows you down (and burns your watts)',
     'choc-lede':'Two drags add up. The classic wing pays mostly the <b style="color:var(--induced)">"lift" drag</b>: slow + short span = big wingtip vortices. The long-distance wing cuts it ~3×.',
     'leg-ind':'<i class="i-ind"></i><b>🔴 "Lift" drag</b> — the price to pay just to stay airborne. Explodes if you fly slow or with a short span.',
