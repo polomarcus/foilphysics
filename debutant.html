@@ -146,6 +146,11 @@
   .lexr .dot{width:14px; height:14px; border-radius:50%; margin-top:4px;}
   .lexr p{font-size:.88rem; color:#cbd5e1; line-height:1.5;}
   .lexr b:first-child{color:var(--txt);}
+  .note-fig{background:var(--panel-2); border-radius:10px; margin-top:6px; padding:10px 12px;}
+  .note-fig svg{display:block; width:100%; max-width:400px; margin:0 auto;}
+  .nf-caps{display:flex; justify-content:center; gap:10px 22px; margin-top:8px; font-size:.78rem;
+    color:#cbd5e1; text-align:center; flex-wrap:wrap;}
+  .nf-caps b{color:var(--txt);}
   .steps{max-width:680px; margin:0 auto; counter-reset:step;}
   .step{display:grid; grid-template-columns:44px 1fr; gap:14px; margin:16px 0; align-items:start;}
   .step .num{width:44px; height:44px; border-radius:50%; background:var(--panel-2); border:1px solid var(--line);
@@ -299,12 +304,35 @@
         <div><h4>Pourquoi une grande aile : la vitesse de décollage</h4>
         <p>Le foil te porte seulement <b>au-dessus d'une vitesse mini</b> — la <b>vitesse de décollage</b>. Plus
           l'aile est <b>grande et épaisse</b>, plus cette vitesse est <b>basse</b> : une aile de débutant décolle
-          vers <b>~10 km/h</b>, l'élan de deux pas de ponton suffit. Une petite aile exigerait <b>15 km/h et plus</b>,
-          hors de portée au début. C'est <b>toute la raison de commencer grand</b> : tu décolles tôt, tu voles plus
-          longtemps, tu apprends plus vite.<br><b>On progresse en réussissant, pas en s'acharnant</b> : mieux vaut
-          enchaîner des <b>départs réussis</b> sur une grande aile — chaque décollage t'apprend quelque chose — que
-          de t'épuiser et te dégoûter sur une aile <b>trop petite</b> qui ne veut pas voler. Tu passeras au plus petit
-          bien assez tôt.</p></div>
+          vers <b>~10 km/h</b>, l'élan de deux pas de ponton suffit. C'est <b>toute la raison de commencer grand</b> :
+          tu décolles tôt, tu voles plus longtemps, tu apprends plus vite.<br><b>On progresse en réussissant, pas en
+          s'acharnant</b> : mieux vaut enchaîner des <b>départs réussis</b> sur une grande aile — chaque décollage
+          t'apprend quelque chose — que de t'épuiser et te dégoûter sur une aile <b>trop petite</b> qui ne veut pas
+          voler. Tu passeras au plus petit bien assez tôt.</p>
+        <div class="note-fig" aria-hidden="true">
+          <svg viewBox="0 0 360 110">
+            <rect x="20" y="64" width="176" height="9" rx="2" fill="#34d399" opacity=".18"/>
+            <text x="106" y="57" text-anchor="middle" font-size="10" font-weight="700" fill="#6ee7b7">élan de 2 pas de ponton</text>
+            <line x1="20" y1="73" x2="344" y2="73" stroke="#64748b" stroke-width="2"/>
+            <path d="M352 73 l-9 -4.5 v9 Z" fill="#64748b"/>
+            <g stroke="#475569" stroke-width="1.5">
+              <line x1="20" y1="69" x2="20" y2="77"/><line x1="100" y1="69" x2="100" y2="77"/>
+              <line x1="180" y1="69" x2="180" y2="77"/><line x1="260" y1="69" x2="260" y2="77"/>
+              <line x1="340" y1="69" x2="340" y2="77"/>
+            </g>
+            <g font-size="11" font-weight="700" fill="#94a3b8" text-anchor="middle">
+              <text x="20" y="92">0</text><text x="100" y="92">5</text><text x="180" y="92">10</text>
+              <text x="260" y="92">15</text><text x="340" y="92">20</text>
+            </g>
+            <text x="352" y="106" text-anchor="end" font-size="10" fill="#64748b">km/h</text>
+            <line x1="180" y1="22" x2="180" y2="70" stroke="#34d399" stroke-width="2.5"/>
+            <circle cx="180" cy="73" r="4.5" fill="#34d399"/>
+            <text x="180" y="16" text-anchor="middle" font-size="12" font-weight="800" fill="#6ee7b7">grande aile décolle ici ✓</text>
+            <line x1="268" y1="44" x2="268" y2="70" stroke="#fb923c" stroke-width="2.5"/>
+            <circle cx="268" cy="73" r="4" fill="#fb923c"/>
+            <text x="270" y="38" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fdba74">petite aile : hors de portée</text>
+          </svg>
+        </div></div>
       </div>
     </div>
   </section>
@@ -419,6 +447,37 @@
     <h3 data-i18n="prog-h3">🪜 Et ensuite ? La descente de taille</h3>
     <p class="lede" data-i18n="prog-lede">Le matos de débutant n'est pas un mauvais achat : c'est un <b>étage de fusée</b>.
       Voici quand larguer chaque étage.</p>
+    <div class="note-fig" aria-hidden="true" style="max-width:680px;margin:0 auto 18px">
+      <svg viewBox="0 0 380 112">
+        <line x1="98" y1="16" x2="182" y2="16" stroke="#334155" stroke-width="2"/>
+        <line x1="218" y1="16" x2="302" y2="16" stroke="#334155" stroke-width="2"/>
+        <text x="80" y="22" text-anchor="middle" font-size="18">🐣</text>
+        <text x="200" y="22" text-anchor="middle" font-size="18">🐥</text>
+        <text x="320" y="22" text-anchor="middle" font-size="18">🐦</text>
+        <text x="2" y="43" font-size="9" fill="#64748b" data-i18n="fig-prog-l1">aile</text>
+        <rect x="35" y="34" width="90" height="12" rx="3" fill="#34d399"/>
+        <rect x="163" y="34" width="74" height="12" rx="3" fill="#34d399"/>
+        <rect x="291" y="34" width="58" height="12" rx="3" fill="#34d399"/>
+        <g font-size="8" font-weight="800" fill="#0f172a" text-anchor="middle">
+          <text x="80" y="43">1800</text><text x="200" y="43">1650</text><text x="320" y="43">1500</text>
+        </g>
+        <text x="2" y="80" font-size="9" fill="#64748b" data-i18n="fig-prog-l2">mât</text>
+        <rect x="75.5" y="70" width="9" height="16" rx="2" fill="#38bdf8"/>
+        <rect x="195.5" y="65" width="9" height="21" rx="2" fill="#38bdf8"/>
+        <rect x="315.5" y="60" width="9" height="26" rx="2" fill="#38bdf8"/>
+        <g font-size="8" fill="#94a3b8">
+          <text x="88" y="80">60</text><text x="208" y="80">70</text><text x="328" y="80">80</text>
+        </g>
+        <text x="2" y="101" font-size="9" fill="#64748b" data-i18n="fig-prog-l3">stab</text>
+        <rect x="58" y="94" width="44" height="8" rx="2" fill="#f59e0b"/>
+        <rect x="178" y="94" width="44" height="8" rx="2" fill="#f59e0b"/>
+        <rect x="305" y="94" width="30" height="8" rx="2" fill="#f59e0b"/>
+        <g font-size="11" font-weight="800" fill="#f59e0b" text-anchor="middle">
+          <text x="140" y="102">=</text><text x="260" y="102">↓</text>
+        </g>
+      </svg>
+      <div class="nf-caps" data-i18n="fig-prog-cap"><span>🟢 aile ↓ à chaque palier</span><span>🔵 mât ↑</span><span>🟠 stab = (longtemps)</span></div>
+    </div>
     <div class="steps">
       <div class="step" data-i18n="p1">
         <div class="num">🐣</div>
@@ -506,7 +565,7 @@
     'dock-h3':'🪜 You learn from a dock',
     'dock-lede':'The «<b>dock start</b>»: you launch from a dock with momentum. The starting energy is <b>free</b> — all your focus goes to flying, not taking off.',
     'dk1':'<div class="num">🚶</div><div><h4>The spot</h4><p>A dock <b>knee-to-hip high</b>, deep water in front, a clear edge for two running steps — and <b>flat water</b>: no waves, no wind to start with. No usable dock? The <b><a href="https://piouz.org/" target="_blank" rel="noopener">Piouz.org</a> ladders</b> turn any quay into a spot (details in the gear section below 👇).</p></div>',
-    'dk4':'<div class="num">🛫</div><div><h4>Why a big wing: the takeoff speed</h4><p>A foil only carries you <b>above a minimum speed</b> — the <b>takeoff speed</b>. The <b>bigger and thicker</b> the wing, the <b>lower</b> it is: a beginner wing lifts off around <b>~10 km/h</b>, the momentum of two dock steps is enough. A small wing would need <b>15 km/h and up</b>, out of reach at first. That\'s <b>the whole reason to start big</b>: you lift off early, fly longer, learn faster.<br><b>You progress by succeeding, not by grinding</b>: better to string together <b>clean starts</b> on a big wing — every takeoff teaches you something — than to exhaust and discourage yourself on a <b>too-small</b> wing that won\'t fly. You\'ll size down soon enough.</p></div>',
+    'dk4':'<div class="num">🛫</div><div><h4>Why a big wing: the takeoff speed</h4><p>A foil only carries you <b>above a minimum speed</b> — the <b>takeoff speed</b>. The <b>bigger and thicker</b> the wing, the <b>lower</b> it is: a beginner wing lifts off around <b>~10 km/h</b>, the momentum of two dock steps is enough. That\'s <b>the whole reason to start big</b>: you lift off early, fly longer, learn faster.<br><b>You progress by succeeding, not by grinding</b>: better to string together <b>clean starts</b> on a big wing — every takeoff teaches you something — than to exhaust and discourage yourself on a <b>too-small</b> wing that won\'t fly. You\'ll size down soon enough.</p><div class="note-fig" aria-hidden="true"><svg viewBox="0 0 360 110"><rect x="20" y="64" width="176" height="9" rx="2" fill="#34d399" opacity=".18"/><text x="106" y="57" text-anchor="middle" font-size="10" font-weight="700" fill="#6ee7b7">2 dock steps of momentum</text><line x1="20" y1="73" x2="344" y2="73" stroke="#64748b" stroke-width="2"/><path d="M352 73 l-9 -4.5 v9 Z" fill="#64748b"/><g stroke="#475569" stroke-width="1.5"><line x1="20" y1="69" x2="20" y2="77"/><line x1="100" y1="69" x2="100" y2="77"/><line x1="180" y1="69" x2="180" y2="77"/><line x1="260" y1="69" x2="260" y2="77"/><line x1="340" y1="69" x2="340" y2="77"/></g><g font-size="11" font-weight="700" fill="#94a3b8" text-anchor="middle"><text x="20" y="92">0</text><text x="100" y="92">5</text><text x="180" y="92">10</text><text x="260" y="92">15</text><text x="340" y="92">20</text></g><text x="352" y="106" text-anchor="end" font-size="10" fill="#64748b">km/h</text><line x1="180" y1="22" x2="180" y2="70" stroke="#34d399" stroke-width="2.5"/><circle cx="180" cy="73" r="4.5" fill="#34d399"/><text x="180" y="16" text-anchor="middle" font-size="12" font-weight="800" fill="#6ee7b7">big wing lifts off here ✓</text><line x1="268" y1="44" x2="268" y2="70" stroke="#fb923c" stroke-width="2.5"/><circle cx="268" cy="73" r="4" fill="#fb923c"/><text x="270" y="38" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fdba74">small wing: out of reach</text></svg></div></div>',
     'vd7':'<div class="k">🛹 The board: small and light</div><div class="big">the dock does the carrying</div><p class="xpl">For dock starts, <b>no volume needed</b>: the energy comes from the dock, not from buoyancy. A short board (80-110 cm, usually ~90 cm), light, a grippy pad — and every kilo saved comes back as <a href="long-distance.html?lang=en">watts</a>. Second-hand too, obviously.</p>',
     'vd8':'<div class="k">🪜 The learning accelerators</div><div class="big">ladder &amp; scooter</div><p class="xpl">A <b>water-entry ladder</b> turns any quay into a spot: constant height, starts <b>repeatable at will</b>. And the <b>pump scooter</b> — a foil with a <b>handlebar</b> — gives a third point of contact: the motion is learned much faster, then transfers as-is to the regular board.</p>',
     'vd-h3':'🧾 The complete gear, in 8 cards',
@@ -517,6 +576,8 @@
     'vd5':'<div class="k">🩳 Short mast (60-70 cm)</div><div class="big">falling from lower</div><p class="xpl">Less leverage underfoot = a <b>calmer</b> foil, softer falls, and shallow water stays usable. The downside (less room to pump high) won\'t concern you for months — then you\'ll move to 75-85 cm.</p>',
     'vd6':'<div class="k">💶 Alu and second-hand</div><div class="big">carbon can wait</div><p class="xpl">At first your foil will meet docks, rocks and sand. <b>Alu</b> takes the hits and forgives your wallet; second-hand, a full learning setup is easy to find — and <b>resells</b> at nearly the same price when you move on. Stiff carbon is for when your technique can feel it.</p>',
     'prog-h3':'🪜 What next? Sizing down',
+    'fig-prog-l1':'wing','fig-prog-l2':'mast','fig-prog-l3':'stab',
+    'fig-prog-cap':'<span>🟢 wing ↓ at each step</span><span>🔵 mast ↑</span><span>🟠 stab = (a long time)</span>',
     'prog-lede':'Beginner gear isn\'t a bad buy: it\'s a <b>rocket stage</b>. Here\'s when to drop each stage.',
     'p1':'<div class="num">🐣</div><div><h4>Dock start & first flights</h4><p>Goal: <b>8 successful starts out of 10</b> and 10-20 s flights. Stay on the big wing — every second of flight is worth more than any upgrade. This is where your technique improves fastest.</p></div>',
     'p2':'<div class="num">🐥</div><div><h4>You hold 30-60 s and the wing feels «slow»</h4><p>That\'s the signal: go down <b>one size (~150 cm²)</b>. The stab <b>can stay</b> — it stays with you a long time and gets changed well after the wing. The wing will stall a bit higher, fly a bit faster — your technique paid for that margin.</p></div>',

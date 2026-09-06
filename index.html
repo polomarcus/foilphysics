@@ -1131,20 +1131,44 @@
   <div class="sslide so" id="velo"><!-- SLIDE 6 · vélo vs foil -->
   <div class="kid">
     <h3 data-i18n="velo-h">🚴 Vélo vs foil : le même moteur, deux factures</h3>
+    <div class="note-fig" aria-hidden="true">
+      <svg viewBox="0 0 380 122">
+        <line x1="190" y1="10" x2="190" y2="112" stroke="#94a3b8" stroke-width="1" opacity=".25"/>
+        <!-- gauche : vélo — la route porte gratis -->
+        <g>
+          <text x="95" y="58" font-size="34" text-anchor="middle">🚴</text>
+          <line x1="25" y1="64" x2="165" y2="64" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/>
+          <text x="95" y="88" font-size="11" fill="#94a3b8" text-anchor="middle" font-weight="700" data-i18n="fig-velo-l1">la route te porte gratis</text>
+          <rect x="28" y="100" width="52" height="11" rx="5.5" fill="#22c55e"/>
+          <text x="88" y="109" font-size="11" fill="#22c55e" font-weight="700">~6 Wh/km</text>
+        </g>
+        <!-- droite : foil — la portance se paie en continu -->
+        <g>
+          <text x="285" y="30" font-size="26" text-anchor="middle">🏄</text>
+          <path d="M212 38 q9 -4 18 0 t18 0 t18 0 t18 0 t18 0 t18 0 t18 0 t18 0" fill="none" stroke="#38bdf8" stroke-width="1.5" opacity=".55"/>
+          <line x1="285" y1="36" x2="285" y2="62" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/>
+          <ellipse cx="285" cy="64" rx="26" ry="4.5" fill="#38bdf8"/>
+          <g stroke="#38bdf8" stroke-width="2" fill="none" stroke-linecap="round">
+            <path d="M269 71 v11 m-4 -5 l4 5 l4 -5"/>
+            <path d="M285 71 v11 m-4 -5 l4 5 l4 -5"/>
+            <path d="M301 71 v11 m-4 -5 l4 5 l4 -5"/>
+          </g>
+          <text x="285" y="94" font-size="11" fill="#94a3b8" text-anchor="middle" font-weight="700" data-i18n="fig-velo-l2">tu fabriques ta portance</text>
+          <rect x="220" y="100" width="130" height="11" rx="5.5" fill="#f59e0b"/>
+          <text x="285" y="109" font-size="11" fill="#0f172a" text-anchor="middle" font-weight="700">~15 Wh/km</text>
+        </g>
+      </svg>
+      <div class="nf-caps" data-i18n="fig-velo-cap"><span>🚴 la route porte — tu ne paies que le <b>frottement</b></span><span>🏄 le foil paie <b>aussi</b> la portance, en continu</span></div>
+    </div>
     <div class="kid-txt" data-i18n="velo-txt">
       <b>Le moteur, c'est toi — et c'est le même.</b> Les watts que tu sors en pompant sont ceux que tu
-      sortirais au vélo : 150 W de balade, 220 W de sportif régulier. C'est pour ça qu'on peut comparer.<br><br>
-      <b>La différence, c'est la facture.</b> À vélo, la route te porte <b>gratuitement</b> : tu ne paies que le
-      frottement (l'air, les pneus). En foil, personne ne te porte — tu dois <b>fabriquer ta route</b> en continu,
-      en poussant de l'eau vers le bas. Cette deuxième facture, le vélo ne la connaît pas.<br><br>
+      sortirais au vélo : 150 W de balade, 220 W de sportif régulier. Seule la facture change — c'est le dessin
+      ci-dessus : la route te porte gratis, l'eau non.<br><br>
       <b>Conséquence bizarre n° 1 :</b> à vélo, ralentir = toujours plus facile. En foil, <b>trop lent = plus
-      dur</b> — la facture « rester en l'air » explose à basse vitesse. C'est comme rouler dans une <b>côte qui
-      s'aplanit quand tu accélères</b>. D'où la courbe en U du graphe plus haut, et la croisière éco au creux.<br><br>
-      <b>Conséquence bizarre n° 2 :</b> pas de roue libre. Tu arrêtes de pédaler, le vélo roule ; tu arrêtes de
-      pomper, le foil se pose. Ta « roue libre », c'est la <b>glisse de l'aile</b> — exactement ce qu'une grande
-      envergure achète.<br><br>
-      <b>Dernière différence :</b> le vélo n'utilise que tes jambes. Le pump mobilise <b>jambes, bras, gainage et
-      équilibre</b> — à watts égaux, ça tire sur tout le corps.<br><br>
+      dur</b> — la facture « rester en l'air » explose à basse vitesse. D'où la courbe en U du graphe plus haut,
+      et la croisière éco au creux.<br><br>
+      <b>Conséquence bizarre n° 2 :</b> pas de roue libre. Tu arrêtes de pomper, le foil se pose. Ta « roue
+      libre », c'est la <b>glisse de l'aile</b> — exactement ce qu'une grande envergure achète.<br><br>
       <b>Au final :</b> une bonne aile te ramène à ~15 Wh/km — le niveau de la marche. Le vélo reste imbattable — ~6 Wh/km,
       soit 2× moins — mais lui n'a <b>jamais payé pour voler</b>.
     </div>
@@ -1257,6 +1281,31 @@
       décroche haut → obligée de croiser vite → mât et frottement grimpent en <b>v²/v³</b> et reprennent tout ce
       que sa finesse avait économisé sur la portance. Concrètement, chez la Fireball à 18 km/h les <b>frottements (aile + mât + stab + fuselage) pèsent ~85 %</b> de la traînée, l'induite à peine 15 % — l'inverse d'une aile qui vole lentement, où l'induite domine. <b>Pour l'endurance, le vrai combo c'est : grand allongement
       + capable de voler LENTEMENT + haut sur le mât</b> — pas forcément la lame la plus fine.</div>
+    <div class="note-fig" aria-hidden="true">
+      <svg viewBox="0 0 360 132">
+        <!-- ligne d'eau (vaguelettes) -->
+        <path d="M0 58 q9 -4 18 0 t18 0 t18 0 t18 0 t18 0 t18 0 t18 0 t18 0 t18 0 t18 0 t18 0 t18 0 t18 0 t18 0 t18 0 t18 0 t18 0 t18 0 t18 0" fill="none" stroke="#38bdf8" stroke-width="1.5" opacity=".55"/>
+        <!-- gauche : vole haut — ~20 % du mât immergé -->
+        <g>
+          <text x="90" y="10" font-size="11" fill="#34d399" text-anchor="middle" font-weight="700" data-i18n="fig-mast-t1">vole haut ✓</text>
+          <rect x="58" y="16" width="64" height="8" rx="4" fill="#94a3b8"/>
+          <line x1="90" y1="24" x2="90" y2="68" stroke="#94a3b8" stroke-width="4" stroke-linecap="round"/>
+          <line x1="90" y1="58" x2="90" y2="68" stroke="#34d399" stroke-width="5" stroke-linecap="round"/>
+          <ellipse cx="90" cy="70" rx="32" ry="5" fill="#38bdf8"/>
+          <text x="90" y="92" font-size="11" fill="#34d399" text-anchor="middle" font-weight="700" data-i18n="fig-mast-l1">~15-20 cm immergés ✓</text>
+        </g>
+        <!-- droite : vole bas — mât enfoncé aux 2/3 -->
+        <g>
+          <text x="270" y="10" font-size="11" fill="#f87171" text-anchor="middle" font-weight="700" data-i18n="fig-mast-t2">vole bas</text>
+          <rect x="238" y="30" width="64" height="8" rx="4" fill="#94a3b8"/>
+          <line x1="270" y1="38" x2="270" y2="102" stroke="#94a3b8" stroke-width="4" stroke-linecap="round"/>
+          <line x1="270" y1="58" x2="270" y2="102" stroke="#f87171" stroke-width="8" stroke-linecap="round"/>
+          <ellipse cx="270" cy="104" rx="32" ry="5" fill="#38bdf8"/>
+          <text x="270" y="126" font-size="11" fill="#f87171" text-anchor="middle" font-weight="700" data-i18n="fig-mast-l2">40 cm+ = gros frein</text>
+        </g>
+      </svg>
+      <div class="nf-caps" data-i18n="fig-mast-cap"><span>🟢 <b>haut</b> = mât presque sec</span><span>🔴 <b>bas</b> = chaque cm traîne</span></div>
+    </div>
     <!-- (le glossaire « profil en tranche » vit désormais une seule fois, dans la slide du duel — visible dans les deux modes) -->
     <div class="scale-note xpl" style="margin-top:12px; line-height:1.55" data-i18n="note-visco">
       <div class="note-title">🌡️ Eau froide vs chaude — la viscosité, pas la densité</div>
@@ -2348,7 +2397,10 @@
     'tldr-t':'The secret to flying long:<br><b>wide span</b> + <b>light weight</b>.',
     'tldr-s':'Everything else (profile, mast, stab…) plays out in single digits — and your cardio sets the duration.',
     'velo-h':'🚴 Cycling vs foiling: same engine, two bills',
-    'velo-txt':'<b>The engine is you — and it\'s the same one.</b> The watts you put out pumping are the ones you\'d put out cycling: 150 W cruising, 220 W as a regular athlete. That\'s why the comparison works.<br><br><b>The difference is the bill.</b> On a bike, the road carries you <b>for free</b>: you only pay friction (air, tyres). On a foil, nothing carries you — you must <b>build your own road</b>, continuously, by pushing water down. That second bill simply doesn\'t exist in cycling.<br><br><b>Weird consequence #1:</b> on a bike, slowing down = always easier. On a foil, <b>too slow = harder</b> — the «staying airborne» bill explodes at low speed. It\'s like riding a <b>hill that flattens as you accelerate</b>. Hence the U-shaped curve in the chart above, and the eco cruise at the bottom of the U.<br><br><b>Weird consequence #2:</b> no freewheel. Stop pedalling, the bike rolls on; stop pumping, the foil settles down. Your «freewheel» is the <b>wing\'s glide</b> — exactly what a wide span buys.<br><br><b>Last difference:</b> cycling only uses your legs. Pumping recruits <b>legs, arms, core and balance</b> — at equal watts, it pulls on the whole body.<br><br><b>Bottom line:</b> a good wing brings you to ~15 Wh/km — walking level. The bike stays unbeatable — ~6 Wh/km, half as much — but it <b>never paid to fly</b>.',
+    'velo-txt':'<b>The engine is you — and it\'s the same one.</b> The watts you put out pumping are the ones you\'d put out cycling: 150 W cruising, 220 W as a regular athlete. Only the bill changes — that\'s the drawing above: the road carries you for free, the water doesn\'t.<br><br><b>Weird consequence #1:</b> on a bike, slowing down = always easier. On a foil, <b>too slow = harder</b> — the «staying airborne» bill explodes at low speed. Hence the U-shaped curve in the chart above, and the eco cruise at the bottom of the U.<br><br><b>Weird consequence #2:</b> no freewheel. Stop pumping, the foil settles down. Your «freewheel» is the <b>wing\'s glide</b> — exactly what a wide span buys.<br><br><b>Bottom line:</b> a good wing brings you to ~15 Wh/km — walking level. The bike stays unbeatable — ~6 Wh/km, half as much — but it <b>never paid to fly</b>.',
+    'fig-velo-l1':'the road carries you for free',
+    'fig-velo-l2':'you build your own lift',
+    'fig-velo-cap':'<span>🚴 the road carries you — you only pay <b>friction</b></span><span>🏄 the foil <b>also</b> pays for lift, continuously</span>',
     'fig-profil-cap':'<span>🔵 <b>Thin</b> — slices the water, flies fast</span><span>🟠 <b>Thick</b> — lifts hard, forgives</span>',
     'fig-fus-cap':'<span>🔵 wing</span><span>⬜ fuselage = lever arm <b>L</b></span><span>🟠 stab</span>',
     'fig-stab-cap':'<span>🔵 stabilising force</span><span>🟠 drag</span><span>— the big stab does more of both</span>',
@@ -2415,6 +2467,11 @@
     'note-fus':'<div class="note-title">🔧 Fuselage — it\'s a lever arm</div>The stab acts at a distance <b>L</b> behind the wing (= the fuselage length). The <b>restoring moment</b> in pitch is proportional to this arm (<b>∝ L</b>), and <b>damping</b> (what slows rotation) rises even faster (<b>∝ L²</b>):<br>• <b>Long (70 cm)</b> → long arm → strong restoring + strong damping: the foil <b>self-corrects</b>, pitch is slow and smooth (stable, reassuring) — but you must <b>force</b> to pitch it, so pumping is softer, and more surface in the water = more drag.<br>• <b>Short (60 cm) / ultra short (52 cm)</b> → short arm → little restoring and damping: pitch <b>reacts instantly</b>, you trigger the pump with less effort and carve tighter — but the foil <b>no longer self-corrects</b> → twitchy, active piloting required.',
     'note-stab':'<div class="note-title">🔧 Stab — the rear lifting surface that balances the foil</div>Its (negative) lift counters the wing\'s nose-down moment. <b>Big (100)</b> = large stabilising force + big damping → forgiving, but more surface in the water = more drag. <b>Small (50)</b> = less drag and a livelier wing, but the balance is finer to hold (reduced error margin). Since the foil is <b>lightly damped</b>, you pump it at <b>higher cadence but with less force</b> each stroke; a big stab forces the opposite — bigger, harder strokes, less often.<br><span style="color:var(--muted)">In the post-by-post detail, fuselage and stab weigh on "friction" — efficiency is paid in stability, and vice versa.</span>',
     'why-hiar':'<div class="note-title">🪽 Why does a big thin wing (high AR) save energy?</div>To stay airborne, the wing pushes water downward. A <b>long</b> wing (high aspect ratio) moves a <b>large sheet of water gently</b> → very little energy lost. A <b>short</b> wing pushes a <b>small parcel of water violently</b> → big wingtip vortices = wasted energy.<br>So "lift" drag scales as <b>1/span²</b> — <b>doubling the span cuts it ~4×</b>. And a <b>big area</b> lets you fly <b>slow</b>, which cuts friction. <b>Big + thin + slow = minimal effort.</b><br>Useful image: <b>wingtips are dead zones</b> — the water wraps around them (vortex), so <b>maximum drag, zero lift</b>. At equal area, a <b>short</b> wing is <i>proportionally</i> «all dead tips»; a <b>long</b> wing dilutes that fixed tax across lifting span.<br>⚠️ <b>No need for an extreme AR</b> though: at equal span, the gains flatten past <b>AR ~14-16</b> (~−20% watts from AR 10 to 15… barely −6% from 15 to 22) — while the <b>stall speed climbs</b> and your margin shrinks (edgy pumping, real heart rate up). <b>Span first, AR second.</b>',
+    'fig-mast-t1':'flying high ✓',
+    'fig-mast-t2':'flying low',
+    'fig-mast-l1':'~15-20 cm immersed ✓',
+    'fig-mast-l2':'40 cm+ = a big brake',
+    'fig-mast-cap':'<span>🟢 <b>high</b> = mast almost dry</span><span>🔴 <b>low</b> = every cm drags</span>',
     'fig-tip-l1':'long: dead tips = a tiny fraction',
     'fig-tip-l2':'short (same area): almost all dead tips',
     'fig-tip-cap':'<span>🔵 <b>arrows</b> — the lift (zero at the tips)</span><span>🔴 <b>vortices</b> — the dead zone that drags without lifting</span>',

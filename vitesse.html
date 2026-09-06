@@ -119,6 +119,12 @@
   .xp-btn.on{border-color:var(--sky); color:var(--sky);}
   body.noexp .xpl{display:none;}
 
+  .note-fig{background:var(--panel-2); border-radius:10px; margin-top:6px; padding:10px 12px;}
+  .note-fig svg{display:block; width:100%; max-width:400px; margin:0 auto;}
+  .nf-caps{display:flex; justify-content:center; gap:10px 22px; margin-top:8px; font-size:.78rem;
+    color:#cbd5e1; text-align:center; flex-wrap:wrap;}
+  .nf-caps b{color:var(--txt);}
+
   .bk{max-width:640px; margin:20px auto 0;}
   .bk-cat{font-size:.74rem; color:var(--muted); margin:10px 0 3px; font-weight:700; text-transform:uppercase; letter-spacing:.04em;}
   .bkr{display:grid; grid-template-columns:auto 1fr 64px; gap:8px; align-items:center; margin:3px 0;}
@@ -322,19 +328,69 @@
       <div class="card you" data-i18n="vd4">
         <div class="k">🫀 Le vrai plafond : ton sprint</div>
         <div class="big">Vmax ∝ ∛watts</div>
-        <p class="xpl">La puissance requise grimpe au <b>cube</b> de la vitesse : pour aller <b>2× plus vite</b>, il faut
-          <b>8× plus de watts</b>. Doubler ton sprint ne donne que <b>+26 %</b> de Vmax. La vitesse pure est
+        <p class="xpl">Ta Vmax, c'est là où la courbe de puissance croise ton sprint. Doubler ton sprint ne donne que <b>+26 %</b> de Vmax. La vitesse pure est
           d'abord un exercice de <b>sprinteur</b> — puis de matos.</p>
+        <div class="note-fig" aria-hidden="true">
+          <svg viewBox="0 0 360 170" role="img">
+            <defs><pattern id="vf-h1" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="7" stroke="#94a3b8" stroke-width="1" opacity=".35"/></pattern></defs>
+            <rect x="40" y="12" width="46" height="128" fill="#94a3b8" opacity=".08"/>
+            <rect x="40" y="12" width="46" height="128" fill="url(#vf-h1)"/>
+            <text x="66" y="78" transform="rotate(-90 66 78)" text-anchor="middle" font-size="11" fill="#94a3b8">décrochage</text>
+            <line x1="40" y1="12" x2="40" y2="140" stroke="#64748b"/>
+            <line x1="40" y1="140" x2="345" y2="140" stroke="#64748b"/>
+            <text x="40" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">15</text>
+            <text x="116" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">20</text>
+            <text x="192" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">25</text>
+            <text x="268" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">30</text>
+            <text x="344" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">35</text>
+            <text x="192" y="167" text-anchor="middle" font-size="10" fill="#64748b">vitesse (km/h)</text>
+            <text x="35" y="143" text-anchor="end" font-size="10" fill="#94a3b8">0</text>
+            <text x="35" y="100" text-anchor="end" font-size="10" fill="#94a3b8">400</text>
+            <text x="35" y="58" text-anchor="end" font-size="10" fill="#94a3b8">800</text>
+            <text x="35" y="16" text-anchor="end" font-size="10" fill="#94a3b8">1200</text>
+            <text x="10" y="80" transform="rotate(-90 10 80)" text-anchor="middle" font-size="10" fill="#64748b">watts</text>
+            <line x1="40" y1="55" x2="345" y2="55" stroke="#f59e0b" stroke-width="1.6" stroke-dasharray="6 5"/>
+            <text x="92" y="48" font-size="11" fill="#f59e0b" font-weight="700">ton sprint (800 W)</text>
+            <path d="M40,130 C110,118 180,100 235,76 C285,54 320,36 345,13" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+            <text x="160" y="84" text-anchor="middle" font-size="11" fill="#38bdf8">×2 vitesse = ×8 watts</text>
+            <line x1="279" y1="61" x2="279" y2="140" stroke="#f59e0b" stroke-dasharray="3 4" opacity=".55"/>
+            <circle cx="279" cy="55" r="5" fill="#f59e0b" stroke="#0f172a" stroke-width="1.5"/>
+            <text x="286" y="94" font-size="12" fill="#f59e0b" font-weight="800">Vmax</text>
+          </svg>
+          <div class="nf-caps"><span>🔵 <b>P(v)</b> — puissance requise, grimpe au cube</span><span>🟠 l'intersection avec <b>ton sprint</b> = ta Vmax</span></div>
+        </div>
       </div>
       <div class="card meh" data-i18n="vd6">
         <div class="k">🌡️ L'eau froide ≠ plus dense</div>
         <div class="big">c'est la viscosité</div>
         <p class="xpl">Fausse croyance : « l'eau froide est plus dense, donc ça change tout ». En fait la <b>densité</b> ne
-          bouge que <b>~0,3 %</b> sur 20 °C. Ce qui change vraiment, c'est la <b>viscosité</b> : entre l'<b>hiver
-          (~5 °C)</b> et l'<b>été (~25 °C)</b> elle <b>chute d'~40 %</b> → le <b>nombre de Reynolds grimpe d'~70 %</b>,
-          donc à quel point l'écoulement <b>reste collé au profil</b>. Résultat : une
+          bouge que <b>~0,3 %</b> sur 20 °C. Ce qui change vraiment, c'est la <b>viscosité</b> — à quel point
+          l'écoulement <b>reste collé au profil</b> (nombre de Reynolds). Résultat : une
           même aile <b>décroche et glisse différemment</b> en hiver et en été — sa <b>plage de fonctionnement se
           déplace</b>. (La viscosité, c'est le « collant » : huile froide gluante, huile chaude fluide.)</p>
+        <div class="note-fig" aria-hidden="true">
+          <svg viewBox="0 0 360 90" role="img">
+            <defs><marker id="vf-ar2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#64748b"/></marker></defs>
+            <rect x="2" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.3"/>
+            <text x="40" y="20" text-anchor="middle" font-size="10" fill="#38bdf8" font-weight="700">eau froide</text>
+            <text x="40" y="32" text-anchor="middle" font-size="10" fill="#38bdf8">5 °C</text>
+            <line x1="80" y1="22" x2="90" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/>
+            <rect x="92" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="1.3"/>
+            <text x="130" y="20" text-anchor="middle" font-size="10" fill="#cbd5e1" font-weight="700">viscosité</text>
+            <text x="130" y="32" text-anchor="middle" font-size="10" fill="#cbd5e1">+40 %</text>
+            <line x1="170" y1="22" x2="180" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/>
+            <rect x="182" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="1.3"/>
+            <text x="220" y="20" text-anchor="middle" font-size="10" fill="#cbd5e1" font-weight="700">Reynolds</text>
+            <text x="220" y="32" text-anchor="middle" font-size="10" fill="#cbd5e1">−40 %</text>
+            <line x1="260" y1="22" x2="270" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/>
+            <rect x="272" y="6" width="86" height="32" rx="8" fill="#1e293b" stroke="#f87171" stroke-width="1.3"/>
+            <text x="315" y="20" text-anchor="middle" font-size="10" fill="#f87171" font-weight="700">marge</text>
+            <text x="315" y="32" text-anchor="middle" font-size="10" fill="#f87171">décrochage ↓</text>
+            <rect x="95" y="56" width="170" height="26" rx="13" fill="none" stroke="#34d399" stroke-width="1.3"/>
+            <text x="180" y="73" text-anchor="middle" font-size="10.5" fill="#34d399" font-weight="700">Vmax : ~−1 % seulement</text>
+          </svg>
+          <div class="nf-caps"><span>l'eau froide déplace la <b>plage d'utilisation</b> — pas ta vitesse max</span></div>
+        </div>
         <p class="xpl" style="margin-top:8px; font-size:.92em; color:var(--dim)"><b>Sens &amp; ampleur :</b> froid = plus visqueux
           = Reynolds plus bas = un peu <b>plus de traînée</b> → légèrement plus lent, mais <b>~1 % sur la Vmax</b> (dans
           le bruit). Ce que tu sens vraiment : <b>moins de marge au décrochage</b> et une glisse basse vitesse en retrait
@@ -403,14 +459,14 @@
     'vd-h3':'🧾 The verdict, in 7 cards',
     'xp-lbl':'Explanations',
     'vd-lede':'Card figures computed for a <b>800 W · 75 kg</b> reference — the tornado above follows <b>your</b> config.',
-    'vd6':'<div class="k">🌡️ Cold water ≠ denser</div><div class="big">it\'s the viscosity</div><p class="xpl">Common myth: «cold water is denser, so it changes everything». Actually <b>density</b> shifts only <b>~0.3%</b> over 20 °C. What really changes is the <b>viscosity</b>: between <b>winter (~5 °C)</b> and <b>summer (~25 °C)</b> it <b>drops ~40%</b> → the <b>Reynolds number rises ~70%</b>, i.e. how well the flow <b>stays attached to the profile</b>. So the same wing <b>stalls and glides differently</b> in winter vs summer — its <b>working range moves</b>. (Viscosity = «stickiness»: cold oil gloopy, hot oil runny.)</p><p class="xpl" style="margin-top:8px; font-size:.92em; color:var(--dim)"><b>Direction &amp; size:</b> cold = more viscous = lower Reynolds = a bit <b>more drag</b> → slightly slower, but <b>~1% on Vmax</b> (in the noise). What you actually feel: <b>less stall margin</b> and slightly worse low-speed glide — not «you lose 5 km/h».</p>',
+    'vd6':'<div class="k">🌡️ Cold water ≠ denser</div><div class="big">it\'s the viscosity</div><p class="xpl">Common myth: «cold water is denser, so it changes everything». Actually <b>density</b> shifts only <b>~0.3%</b> over 20 °C. What really changes is the <b>viscosity</b> — how well the flow <b>stays attached to the profile</b> (Reynolds number). So the same wing <b>stalls and glides differently</b> in winter vs summer — its <b>working range moves</b>. (Viscosity = «stickiness»: cold oil gloopy, hot oil runny.)</p><div class="note-fig" aria-hidden="true"><svg viewBox="0 0 360 90" role="img"><defs><marker id="vf-ar2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#64748b"/></marker></defs><rect x="2" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.3"/><text x="40" y="20" text-anchor="middle" font-size="10" fill="#38bdf8" font-weight="700">cold water</text><text x="40" y="32" text-anchor="middle" font-size="10" fill="#38bdf8">5 °C</text><line x1="80" y1="22" x2="90" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/><rect x="92" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="1.3"/><text x="130" y="20" text-anchor="middle" font-size="10" fill="#cbd5e1" font-weight="700">viscosity</text><text x="130" y="32" text-anchor="middle" font-size="10" fill="#cbd5e1">+40%</text><line x1="170" y1="22" x2="180" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/><rect x="182" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="1.3"/><text x="220" y="20" text-anchor="middle" font-size="10" fill="#cbd5e1" font-weight="700">Reynolds</text><text x="220" y="32" text-anchor="middle" font-size="10" fill="#cbd5e1">−40%</text><line x1="260" y1="22" x2="270" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/><rect x="272" y="6" width="86" height="32" rx="8" fill="#1e293b" stroke="#f87171" stroke-width="1.3"/><text x="315" y="20" text-anchor="middle" font-size="10" fill="#f87171" font-weight="700">stall</text><text x="315" y="32" text-anchor="middle" font-size="10" fill="#f87171">margin ↓</text><rect x="95" y="56" width="170" height="26" rx="13" fill="none" stroke="#34d399" stroke-width="1.3"/><text x="180" y="73" text-anchor="middle" font-size="10.5" fill="#34d399" font-weight="700">Vmax: only ~−1%</text></svg><div class="nf-caps"><span>cold water shifts the <b>working range</b> — not your top speed</span></div></div><p class="xpl" style="margin-top:8px; font-size:.92em; color:var(--dim)"><b>Direction &amp; size:</b> cold = more viscous = lower Reynolds = a bit <b>more drag</b> → slightly slower, but <b>~1% on Vmax</b> (in the noise). What you actually feel: <b>less stall margin</b> and slightly worse low-speed glide — not «you lose 5 km/h».</p>',
     'vd7':'<div class="k">⚖️ Weight: double-edged</div><div class="big">heavier = more watts</div><p class="xpl">For endurance, weight <b>hurts</b> (drag ∝ lift²) — hence «light = distance». But in <b>pure speed</b>, heavier = <b>more absolute power</b>: at comparable watts/kg, the heavier rider can go <b>faster in a straight line</b> and <b>launch a small wing</b> harder (drop start). In races, the big strong riders often beat the small light ones. <b>Efficiency vs raw power</b> — depends what you\'re after.</p>',
     'vd1':'<div class="k">✅ Your intuition: the small thin wing</div><div class="big">lever #1</div><p class="xpl">Wing friction costs <b>area × v³</b>: at 25 km/h, every cm² is expensive. Going from a cruise wing (1500 cm², medium profile) to a thin 700 cm² blade ≈ <b>+7 km/h</b> at 800 W. And a small wing <b>cannot</b> fly slowly — it forces you to speed.</p>',
     'vd2':'<div class="k">❌ «The stab plays no role»</div><div class="big">it does — a lot</div><p class="xpl">Per cm², the stab is the foil\'s <b>dirtiest</b> appendage (it works in disturbed water, often loaded). A <b>stab 200 costs ~3.5 km/h</b> vs a stab 50 — as much as changing wings! Even a stab 100 leaves ~1.3 km/h. Speed setups run tiny stabs for a reason.</p>',
     'vd3':'<div class="k">🔄 The surprise: span still helps</div><div class="big">+15 cm ≈ +1.4 km/h</div><p class="xpl">Even at 25 km/h, staying airborne costs ~10 N if the span is short. At equal area, lengthening the wing cuts that bill <b>without adding friction</b>. The limit lies elsewhere: stiffness, control, turns — not hydrodynamics.</p>',
     'l-straps':'🦶 Straps — you also pull on the upstroke, like clipless pedals (+~20% efficiency)',
     'vd5':'<div class="k">🦶 The game changer: straps</div><div class="big">like clipless pedals</div><p class="xpl">Strapless, you can only <b>push</b> — half the cycle is wasted. Strapped in, you <b>also pull on the upstroke</b>: ~+20% efficiency ≈ <b>+2 km/h</b> at equal watts — the biggest «free» gain on the page.</p>',
-    'vd4':'<div class="k">🫀 The real ceiling: your sprint</div><div class="big">Vmax ∝ ∛watts</div><p class="xpl">Required power rises with the <b>cube</b> of speed: to go <b>2× faster</b>, you need <b>8× more watts</b>. Doubling your sprint only gives <b>+26%</b> Vmax. Pure speed is first a <b>sprinter\'s</b> exercise — then a gear one.</p>',
+    'vd4':'<div class="k">🫀 The real ceiling: your sprint</div><div class="big">Vmax ∝ ∛watts</div><p class="xpl">Your Vmax is where the power curve crosses your sprint. Doubling your sprint only gives <b>+26%</b> Vmax. Pure speed is first a <b>sprinter\'s</b> exercise — then a gear one.</p><div class="note-fig" aria-hidden="true"><svg viewBox="0 0 360 170" role="img"><defs><pattern id="vf-h1" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="7" stroke="#94a3b8" stroke-width="1" opacity=".35"/></pattern></defs><rect x="40" y="12" width="46" height="128" fill="#94a3b8" opacity=".08"/><rect x="40" y="12" width="46" height="128" fill="url(#vf-h1)"/><text x="66" y="78" transform="rotate(-90 66 78)" text-anchor="middle" font-size="11" fill="#94a3b8">stall</text><line x1="40" y1="12" x2="40" y2="140" stroke="#64748b"/><line x1="40" y1="140" x2="345" y2="140" stroke="#64748b"/><text x="40" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">15</text><text x="116" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">20</text><text x="192" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">25</text><text x="268" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">30</text><text x="344" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">35</text><text x="192" y="167" text-anchor="middle" font-size="10" fill="#64748b">speed (km/h)</text><text x="35" y="143" text-anchor="end" font-size="10" fill="#94a3b8">0</text><text x="35" y="100" text-anchor="end" font-size="10" fill="#94a3b8">400</text><text x="35" y="58" text-anchor="end" font-size="10" fill="#94a3b8">800</text><text x="35" y="16" text-anchor="end" font-size="10" fill="#94a3b8">1200</text><text x="10" y="80" transform="rotate(-90 10 80)" text-anchor="middle" font-size="10" fill="#64748b">watts</text><line x1="40" y1="55" x2="345" y2="55" stroke="#f59e0b" stroke-width="1.6" stroke-dasharray="6 5"/><text x="92" y="48" font-size="11" fill="#f59e0b" font-weight="700">your sprint (800 W)</text><path d="M40,130 C110,118 180,100 235,76 C285,54 320,36 345,13" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/><text x="160" y="84" text-anchor="middle" font-size="11" fill="#38bdf8">×2 speed = ×8 watts</text><line x1="279" y1="61" x2="279" y2="140" stroke="#f59e0b" stroke-dasharray="3 4" opacity=".55"/><circle cx="279" cy="55" r="5" fill="#f59e0b" stroke="#0f172a" stroke-width="1.5"/><text x="286" y="94" font-size="12" fill="#f59e0b" font-weight="800">Vmax</text></svg><div class="nf-caps"><span>🔵 <b>P(v)</b> — required power, rises as the cube</span><span>🟠 where it crosses <b>your sprint</b> = your Vmax</span></div></div>',
     'foot':'<b style="color:var(--txt)">Model</b> — steady flight (lift = weight), based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>: <code>P(v) = [weight²/(½ρv²·π·span²) + ½ρv²·(area·C_D0 + mast + fuselage + stab)] · v / η</code>; Vmax solves P(v) = your sprint, <b>rider air drag included</b> (CdA ≈ 0.45 tucked — ~90 W at 25 km/h!). ρ = 1025 · span efficiency e=0.91 + trim drag (consistent with the index) · estimated η (grows with aspect ratio) · short fuselage fixed · mast counted ~55% immersed (at Vmax you fly high) · stab & fuselage C_D mid-range, <b>calibrated on real race speeds</b> (observed 30-38 km/h, Takoon Flow / GONG Veloce H specs — anchor points: strapped on a 600, 30 km/h ≈ 750 W · 33 ≈ 1,000 W · the champion\'s ~37 km/h ≈ 1,300 W burst) · cavitation ignored (negligible below ~45 km/h: the champion\'s 37 km/h stays under the threshold) · no swell, no take-off · straps = +20% efficiency (upstroke pull, cf. the original model\'s «unstrapped» clamp). Educational estimates, not a test bench.<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
   };
   function applyLang(l){

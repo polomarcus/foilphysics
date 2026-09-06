@@ -163,6 +163,11 @@
   .card .big{font-size:1.4rem; font-weight:800; text-align:center; margin:4px 0 8px; letter-spacing:-.02em; color:var(--carve);}
   .card p{font-size:.87rem; color:#cbd5e1; line-height:1.55;}
   .card.warn{border-color:rgba(245,158,11,.5);} .card.warn .big{color:#fcd34d;}
+  .note-fig{background:var(--panel-2); border-radius:10px; margin-top:6px; padding:10px 12px;}
+  .note-fig svg{display:block; width:100%; max-width:400px; margin:0 auto;}
+  .nf-caps{display:flex; justify-content:center; gap:10px 22px; margin-top:8px; font-size:.78rem;
+    color:#cbd5e1; text-align:center; flex-wrap:wrap;}
+  .nf-caps b{color:var(--txt);}
 
   .tips{max-width:680px; margin:0 auto; display:flex; flex-direction:column; gap:12px;}
   .tip{display:grid; grid-template-columns:38px 1fr; gap:12px; align-items:start;
@@ -370,21 +375,55 @@
         <p>🌀 <b>Surf « pseudo-endurance » — connecter</b> (<b>envergure longue ET élancée / AR ~10-12</b>, type Alpine
           RSX Carve 1100) : elle <b>carve très bien aussi</b>, et <b>en plus</b> la longue envergure élancée <b>glisse et
           repompe</b> → tu <b>enchaînes 10 min</b>. Le prix : <b>moins vive</b>, <b>démarre plus haut</b>.</p>
-        <p style="margin-top:8px; font-size:.92em; color:var(--dim)">⚠️ Le « connecter » demande les <b>deux</b> : longue
-          envergure <i>et</i> corde élancée. Une longue envergure avec une <b>corde très large</b> (AR bas) ne glisse pas
-          pour autant — tu obtiens une <b>grosse aile portante</b>, facile à lancer mais <b>ni vive ni glissante</b>.</p>
+        <div class="note-fig" aria-hidden="true" style="margin:10px 0 0">
+          <svg viewBox="0 0 360 190">
+            <rect x="205" y="20" width="135" height="66" rx="8" fill="#c084fc" opacity="0.12"/>
+            <text x="272" y="34" font-size="10.5" font-weight="700" fill="#c084fc" text-anchor="middle" data-i18n="fig-q-z1">connecter ⏱️</text>
+            <text x="98" y="40" font-size="10.5" font-weight="700" fill="#38bdf8" text-anchor="middle" data-i18n="fig-q-z2">surf pur 🛹</text>
+            <rect x="228" y="118" width="112" height="42" rx="8" fill="#94a3b8" opacity="0.12"/>
+            <text x="284" y="136" font-size="9" fill="#94a3b8" text-anchor="middle" data-i18n="fig-q-z3">grosse aile portante<tspan x="284" dy="11">(ni vive ni glissante)</tspan></text>
+            <line x1="40" y1="160" x2="336" y2="160" stroke="#94a3b8" stroke-width="1.5"/>
+            <polygon points="344,160 335,156 335,164" fill="#94a3b8"/>
+            <line x1="40" y1="160" x2="40" y2="26" stroke="#94a3b8" stroke-width="1.5"/>
+            <polygon points="40,18 36,27 44,27" fill="#94a3b8"/>
+            <text x="190" y="180" font-size="10" fill="#94a3b8" text-anchor="middle" data-i18n="fig-q-x">envergure (courte → longue)</text>
+            <text x="16" y="95" font-size="10" fill="#94a3b8" text-anchor="middle" transform="rotate(-90 16 95)" data-i18n="fig-q-y">élancement AR (bas → haut)</text>
+            <circle cx="115" cy="111" r="5" fill="#f59e0b"/>
+            <text x="115" y="127" font-size="10" fill="#cbd5e1" text-anchor="middle" data-i18n="fig-q-p1">Sushi</text>
+            <circle cx="175" cy="90" r="5" fill="#38bdf8"/>
+            <text x="175" y="106" font-size="10" fill="#cbd5e1" text-anchor="middle" data-i18n="fig-q-p2">DW 980</text>
+            <circle cx="190" cy="73" r="5" fill="#34d399"/>
+            <text x="190" y="62" font-size="10" fill="#cbd5e1" text-anchor="middle" data-i18n="fig-q-p3">Surge</text>
+            <circle cx="274" cy="51" r="5" fill="#c084fc"/>
+            <text x="274" y="68" font-size="10" fill="#cbd5e1" text-anchor="middle" data-i18n="fig-q-p4">RSX Carve 1100</text>
+          </svg>
+          <div class="nf-caps" data-i18n="fig-q-cap"><span>🛹 courte — pivot radical</span><span>⏱️ longue + AR haut — connecte</span></div>
+        </div>
       </div>
       <div class="card" data-i18n="vd8">
         <div class="k">📐 Le dièdre — l'angle en « U » de l'aile</div>
         <div class="big">tracke ↔ tombe dans le virage</div>
-        <p>Vu de face, l'aile forme un <b>U</b> (pointes relevées = <b>dièdre</b>) ou un <b>U inversé ∩</b> (pointes vers
-          le bas = <b>anhédral</b>).</p>
-        <p>• <b>U (dièdre)</b> → <b>auto-stable en roulis</b> : si l'aile dérape, l'aile basse reprend de la portance et
-          la <b>remet à plat toute seule</b> → elle <b>tracke</b> et <b>résiste au rail</b>, tu dois la forcer. Choix des
-          ailes de <b>distance / débutant</b>.<br>
-          • <b>U inversé ∩ (anhédral)</b> → <b>instable en roulis</b> : une fois inclinée, elle <b>tombe dans le virage</b>
-          → engagement rail-à-rail immédiat, carve joueur mais plus nerveux. <b>C'est le ∩ qui tourne le mieux</b> — d'où
-          beaucoup d'ailes de surf <b>plates à légèrement anhédrales</b>.</p>
+        <p>Vu de face : <b>U</b> = <b>dièdre</b> (pointes relevées), <b>∩</b> = <b>anhédral</b> (pointes vers le bas).</p>
+        <p>• <b>U (dièdre)</b> → <b>auto-stable en roulis</b> : l'aile basse reprend de la portance et <b>se remet à plat
+          toute seule</b> → elle <b>tracke</b> et <b>résiste au rail</b>. Choix des ailes de <b>distance / débutant</b>.<br>
+          • <b>∩ (anhédral)</b> → <b>instable en roulis</b> : inclinée, elle <b>tombe dans le virage</b> → carve joueur,
+          plus nerveux. <b>C'est le ∩ qui tourne le mieux</b> — d'où beaucoup d'ailes de surf <b>plates à légèrement
+          anhédrales</b>.</p>
+        <div class="note-fig" aria-hidden="true" style="margin:10px 0 0">
+          <svg viewBox="0 0 360 150">
+            <path d="M88 20 Q110 6 132 20" fill="none" stroke="#34d399" stroke-width="2.5"/>
+            <polygon points="135.4,22.1 127.6,21.4 131.4,15.4" fill="#34d399"/>
+            <path d="M110 46 L48 30 M110 46 L172 30" stroke="#38bdf8" stroke-width="7" stroke-linecap="round" fill="none"/>
+            <text x="186" y="38" font-size="11.5" font-weight="700" fill="#38bdf8" data-i18n="fig-di-u1">U (dièdre)</text>
+            <text x="186" y="52" font-size="10.5" fill="#94a3b8" data-i18n="fig-di-u2">se remet à plat</text>
+            <path d="M110 100 L48 118 M110 100 L172 118" stroke="#f59e0b" stroke-width="7" stroke-linecap="round" fill="none"/>
+            <path d="M88 136 Q110 148 132 134" fill="none" stroke="#f87171" stroke-width="2.5"/>
+            <polygon points="135.4,131.9 131.6,139 127.4,132.2" fill="#f87171"/>
+            <text x="186" y="104" font-size="11.5" font-weight="700" fill="#f59e0b" data-i18n="fig-di-a1">∩ (anhédral)</text>
+            <text x="186" y="118" font-size="10.5" fill="#94a3b8" data-i18n="fig-di-a2">tombe dans le virage</text>
+          </svg>
+          <div class="nf-caps" data-i18n="fig-di-cap"><span>🟦 U — stable, tracke</span><span>🟧 ∩ — engage, tourne</span></div>
+        </div>
         <p style="margin-top:8px">💡 <b>Combo malin</b> : une <b>aile avant anhédrale</b> (∩, engage le virage) + un <b>stab en dièdre</b>
           (U, stabilise le roulis) = tu gardes l'engagement de l'aile <b>sans</b> perdre le contrôle. Beaucoup de sets de
           surf montent les deux dièdres <b>opposés</b> exactement pour ça.</p>
@@ -465,9 +504,15 @@
     'vd4':'<div class="k">🪶 The stab: loose or held</div><div class="big">a matter of style</div><p>A <b>small stab (~70 cm²)</b> = free tail, skatey, low drag → great for <b>endurance</b>. A <b>big stab (~130 cm²)</b> = more <b>grip and control</b> to hold committed carves in the wave — many riders\' pick (PoloFoil\'s too). Not «smaller is better»: pivot tight <i>or</i> hold the line, your call.</p>',
     'vd5':'<div class="k">⚖️ The price: you lose glide</div><div class="big">you can\'t have it all</div><p>A short span means a foil that <b>drags hugely as soon as you slow down</b>: staying airborne costs it a lot (the «price of lift», detailed on <a href="long-distance.html?lang=en">the long-distance page</a>). You turn hard but you <b>pump short</b> and glide poorly. Carve and long distance sit at <b>opposite ends</b> — pick your playground.</p>',
     'vd6':'<div class="k">🛫 Takeoff speed</div><div class="big">why carve wings start hard</div><p>A foil flies when lift = your weight; lift falls with <b>speed²</b>. Below a threshold the wing can\'t hold you up: that\'s the <b>takeoff speed</b>, <b>V = √(weight / (½·ρ·area·CL<sub>max</sub>))</b>. It depends on your <b>weight</b>, the <b>area</b> and the <b>CL max</b> (thickness/camber) — <b>not on span</b>.</p><p><b>Double penalty for carve:</b> small <b>area</b> → <b>high</b> takeoff (you must build speed first); short <b>span</b> → huge drag as you slow → hard to <b>accelerate up to it</b> by pumping. A ~1100 cm² carve wing lifts off around <b>14-15 km/h</b>; a big distance wing around <b>9-10 km/h</b> — it «leaves on its own». The estimated speed shows on the 🚀 takeoff axis.</p><p><b>Two ways to take off:</b><br>• <b>Running / gliding start</b> (beach or dock) → you first build <b>horizontal speed</b> up to this takeoff speed, then the wing carries you. Natural on a big wing; <b>hard on a small one</b> (you really have to get moving).<br>• <b>Jumped / popped start</b> → you jump on the board and give one <b>big vertical pump</b>: the <b>unsteady lift</b> (added mass + dynamic overshoot — the physics of <a href="long-distance.html?lang=en#cadence">cadence &amp; Strouhal</a>) gets you flying <b>below</b> the steady speed. Explosive and technical, but often the <b>only way to launch a small carve wing</b>.</p>',
-    'vd7':'<div class="k">🌊 Two sub-types of surf</div><div class="big">pivot ↔ connect</div><p><b>Both carve well.</b> What places you is <b>span</b> (agility) crossed with <b>aspect / AR</b> (glide):</p><p>🔥 <b>Pure surf — 1-2 waves</b> (<b>short span</b> ~84-95 cm, F-One Sushi type): very <b>lively</b>, ultra-radical pivot in a clean wave. The price: short span = <b>huge induced drag</b> → <b>little glide</b>, you run out fast.</p><p>🌀 <b>«Pseudo-endurance» surf — connect</b> (<b>long AND slender span / AR ~10-12</b>, Alpine RSX Carve 1100 type): it <b>carves very well too</b>, and <b>on top</b> the long slender span <b>glides and pumps back</b> → you <b>link waves for 10 min</b>. The price: <b>less lively</b>, <b>higher takeoff</b>.</p><p style="margin-top:8px; font-size:.92em; color:var(--dim)">⚠️ «Connecting» needs <b>both</b>: long span <i>and</i> slender chord. A long span with a <b>very wide chord</b> (low AR) still won\'t glide — you get a <b>big lifty wing</b>, easy to launch but <b>neither lively nor gliding</b>.</p>',
+    'vd7':'<div class="k">🌊 Two sub-types of surf</div><div class="big">pivot ↔ connect</div><p><b>Both carve well.</b> What places you is <b>span</b> (agility) crossed with <b>aspect / AR</b> (glide):</p><p>🔥 <b>Pure surf — 1-2 waves</b> (<b>short span</b> ~84-95 cm, F-One Sushi type): very <b>lively</b>, ultra-radical pivot in a clean wave. The price: short span = <b>huge induced drag</b> → <b>little glide</b>, you run out fast.</p><p>🌀 <b>«Pseudo-endurance» surf — connect</b> (<b>long AND slender span / AR ~10-12</b>, Alpine RSX Carve 1100 type): it <b>carves very well too</b>, and <b>on top</b> the long slender span <b>glides and pumps back</b> → you <b>link waves for 10 min</b>. The price: <b>less lively</b>, <b>higher takeoff</b>.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><svg viewBox="0 0 360 190"><rect x="205" y="20" width="135" height="66" rx="8" fill="#c084fc" opacity="0.12"/><text x="272" y="34" font-size="10.5" font-weight="700" fill="#c084fc" text-anchor="middle">connect ⏱️</text><text x="98" y="40" font-size="10.5" font-weight="700" fill="#38bdf8" text-anchor="middle">pure surf 🛹</text><rect x="228" y="118" width="112" height="42" rx="8" fill="#94a3b8" opacity="0.12"/><text x="284" y="136" font-size="9" fill="#94a3b8" text-anchor="middle">big lifty wing<tspan x="284" dy="11">(not lively, no glide)</tspan></text><line x1="40" y1="160" x2="336" y2="160" stroke="#94a3b8" stroke-width="1.5"/><polygon points="344,160 335,156 335,164" fill="#94a3b8"/><line x1="40" y1="160" x2="40" y2="26" stroke="#94a3b8" stroke-width="1.5"/><polygon points="40,18 36,27 44,27" fill="#94a3b8"/><text x="190" y="180" font-size="10" fill="#94a3b8" text-anchor="middle">span (short → long)</text><text x="16" y="95" font-size="10" fill="#94a3b8" text-anchor="middle" transform="rotate(-90 16 95)">aspect / AR (low → high)</text><circle cx="115" cy="111" r="5" fill="#f59e0b"/><text x="115" y="127" font-size="10" fill="#cbd5e1" text-anchor="middle">Sushi</text><circle cx="175" cy="90" r="5" fill="#38bdf8"/><text x="175" y="106" font-size="10" fill="#cbd5e1" text-anchor="middle">DW 980</text><circle cx="190" cy="73" r="5" fill="#34d399"/><text x="190" y="62" font-size="10" fill="#cbd5e1" text-anchor="middle">Surge</text><circle cx="274" cy="51" r="5" fill="#c084fc"/><text x="274" y="68" font-size="10" fill="#cbd5e1" text-anchor="middle">RSX Carve 1100</text></svg><div class="nf-caps"><span>🛹 short — radical pivot</span><span>⏱️ long + high AR — connects</span></div></div>',
     'cards-note':'* «Continuous flight» time and takeoff speed: <b>estimates</b> for a <b>~85 kg trained</b> rider (long-distance page model). It all hinges on the <b>threshold</b>: below your sustainable power you fly «long» (field: big distance wing 35 min+), above it you drop within minutes (~112 cm carve wing ≈ 2 min). Takeoff rises with weight (√weight).',
-    'vd8':'<div class="k">📐 Dihedral — the wing\'s « U » angle</div><div class="big">tracks ↔ falls into the turn</div><p>Seen head-on, the wing forms a <b>U</b> (tips raised = <b>dihedral</b>) or an <b>inverted U ∩</b> (tips down = <b>anhedral</b>).</p><p>• <b>U (dihedral)</b> → <b>roll-stable</b>: if it sideslips, the low wing regains lift and <b>self-levels</b> → it <b>tracks</b> and <b>resists the rail</b>, you must force it. The pick for <b>distance / beginner</b> wings.<br>• <b>Inverted U ∩ (anhedral)</b> → <b>roll-unstable</b>: once banked it <b>falls into the turn</b> → instant rail-to-rail engagement, a playful carve but twitchier. <b>The ∩ is what turns best</b> — hence many surf wings are <b>flat to slightly anhedral</b>.</p><p style="margin-top:8px">💡 <b>Smart combo</b>: an <b>anhedral front wing</b> (∩, engages the turn) + a <b>dihedral stab</b> (U, stabilises roll) = you keep the wing\'s engagement <b>without</b> losing control. Many surf setups run the two opposite on purpose.</p><p style="margin-top:8px; font-size:.92em; color:var(--dim)">⚠️ No slider here: dihedral is <b>almost never specified</b> by brands and often <b>progressive</b> (curved «gull» wing) — not a single settable angle. Remember it as a <b>character</b>, not a numeric setting.</p>',
+    'vd8':'<div class="k">📐 Dihedral — the wing\'s « U » angle</div><div class="big">tracks ↔ falls into the turn</div><p>Seen head-on: <b>U</b> = <b>dihedral</b> (tips up), <b>∩</b> = <b>anhedral</b> (tips down).</p><p>• <b>U (dihedral)</b> → <b>roll-stable</b>: the low wing regains lift and <b>self-levels</b> → it <b>tracks</b> and <b>resists the rail</b>. The pick for <b>distance / beginner</b> wings.<br>• <b>∩ (anhedral)</b> → <b>roll-unstable</b>: once banked it <b>falls into the turn</b> → a playful but twitchier carve. <b>The ∩ is what turns best</b> — hence many surf wings are <b>flat to slightly anhedral</b>.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><svg viewBox="0 0 360 150"><path d="M88 20 Q110 6 132 20" fill="none" stroke="#34d399" stroke-width="2.5"/><polygon points="135.4,22.1 127.6,21.4 131.4,15.4" fill="#34d399"/><path d="M110 46 L48 30 M110 46 L172 30" stroke="#38bdf8" stroke-width="7" stroke-linecap="round" fill="none"/><text x="186" y="38" font-size="11.5" font-weight="700" fill="#38bdf8">U (dihedral)</text><text x="186" y="52" font-size="10.5" fill="#94a3b8">self-levels</text><path d="M110 100 L48 118 M110 100 L172 118" stroke="#f59e0b" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M88 136 Q110 148 132 134" fill="none" stroke="#f87171" stroke-width="2.5"/><polygon points="135.4,131.9 131.6,139 127.4,132.2" fill="#f87171"/><text x="186" y="104" font-size="11.5" font-weight="700" fill="#f59e0b">∩ (anhedral)</text><text x="186" y="118" font-size="10.5" fill="#94a3b8">falls into the turn</text></svg><div class="nf-caps"><span>🟦 U — stable, tracks</span><span>🟧 ∩ — engages, turns</span></div></div><p style="margin-top:8px">💡 <b>Smart combo</b>: an <b>anhedral front wing</b> (∩, engages the turn) + a <b>dihedral stab</b> (U, stabilises roll) = you keep the wing\'s engagement <b>without</b> losing control. Many surf setups run the two opposite on purpose.</p><p style="margin-top:8px; font-size:.92em; color:var(--dim)">⚠️ No slider here: dihedral is <b>almost never specified</b> by brands and often <b>progressive</b> (curved «gull» wing) — not a single settable angle. Remember it as a <b>character</b>, not a numeric setting.</p>',
+    'fig-q-z1':'connect ⏱️','fig-q-z2':'pure surf 🛹','fig-q-z3':'big lifty wing<tspan x="284" dy="11">(not lively, no glide)</tspan>',
+    'fig-q-x':'span (short → long)','fig-q-y':'aspect / AR (low → high)',
+    'fig-q-p1':'Sushi','fig-q-p2':'DW 980','fig-q-p3':'Surge','fig-q-p4':'RSX Carve 1100',
+    'fig-q-cap':'<span>🛹 short — radical pivot</span><span>⏱️ long + high AR — connects</span>',
+    'fig-di-u1':'U (dihedral)','fig-di-u2':'self-levels','fig-di-a1':'∩ (anhedral)','fig-di-a2':'falls into the turn',
+    'fig-di-cap':'<span>🟦 U — stable, tracks</span><span>🟧 ∩ — engages, turns</span>',
     'next-ld':'⚡ Fly far — the other extreme','next-vit':'🚀 Fly fast',
     'tech-h3':'🎯 Gear helps, technique makes the carve',
     'tech-lede':'A short wing <b>gives you the right</b> to turn tight — but 80% of the turn is you. Seven fundamentals, all tied to the physics above.',
