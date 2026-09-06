@@ -175,17 +175,14 @@
 
   <header>
     <h1><span class="h1a" data-i18n="h1a">La Course aux <span class="hi">km/h</span> en pump foil</span><span class="h1b" data-i18n="h1b">🚀 qu'est-ce qui fait aller un foil vite ?</span></h1>
-    <p class="hsub" data-i18n="hsub">Petite aile = vite, et « le stab ne joue pas » ? Le modèle n'est d'accord qu'à <b>moitié</b>.</p>
   </header>
 
   <div class="tldr">
     <div class="t" data-i18n="tldr-t">Pour la vitesse pure : <b>petite aile fine</b> + <b>petit stab</b><br>+ tes <b>watts de sprint</b>.</div>
-    <div class="s" data-i18n="tldr-s">Et deux surprises : l'envergure aide encore… et à 25 km/h, <b>l'air te freine autant qu'un stab 100</b>.</div>
   </div>
 
   <div class="disclaimer" data-i18n="disc">⚠️ <b>Chiffres estimés</b> (± ~15 %) — même modèle physique que
-    <a href="long-distance.html">le comparateur longue distance</a>, résolu ici « à fond » : Vmax = la vitesse où la
-    puissance requise atteint ton sprint.</div>
+    <a href="long-distance.html">la longue distance</a> ; Vmax = la vitesse où la puissance requise atteint ton sprint.</div>
 
   <!-- SIMULATEUR : résultat d'abord, réglages dessous -->
   <section id="sim" class="a-in">
@@ -201,7 +198,7 @@
       <div class="inputs">
         <div class="field"><label for="i-s"><span data-i18n="l-s">Surface aile</span> : <span class="fval" id="v-s">900</span> cm²</label>
           <input type="range" id="i-s" min="450" max="1800" step="10" value="900"></div>
-        <div class="field"><label for="i-b"><span data-i18n="l-b">Envergure</span> : <span class="fval" id="v-b">100</span> cm</label>
+        <div class="field"><label for="i-b"><span data-i18n="l-b">Envergure</span> : <span class="fval" id="v-b">100</span> cm <span id="v-ar" style="color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0"></span></label>
           <input type="range" id="i-b" min="55" max="110" step="1" value="100"></div>
         <div class="field"><label for="i-prof" data-i18n="l-prof">Profil de l'aile</label>
           <select id="i-prof">
@@ -366,10 +363,8 @@
     'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve','tb-more':'Links ▾','tb-model':'💻 Physics model',
     'h1a':'The Race for <span class="hi">km/h</span> in pump foil',
     'h1b':'🚀 what makes a foil fast?',
-    'hsub':'Small wing = fast, and «the stab doesn\'t matter»? The model only <b>half</b> agrees.',
-    'tldr-t':'For pure speed: <b>small thin wing</b> + <b>small stab</b><br>+ your <b>sprint watts</b>.',
-    'tldr-s':'And two surprises: span still helps… and at 25 km/h, <b>the air brakes you as much as a stab 100</b>.',
-    'disc':'⚠️ <b>Estimated figures</b> (± ~15%) — same physics model as <a href="long-distance.html?lang=en">long distance</a>; Vmax = the speed where required power reaches your sprint.',
+        'tldr-t':'For pure speed: <b>small thin wing</b> + <b>small stab</b><br>+ your <b>sprint watts</b>.',
+        'disc':'⚠️ <b>Estimated figures</b> (± ~15%) — same physics model as <a href="long-distance.html?lang=en">long distance</a>; Vmax = the speed where required power reaches your sprint.',
     'sim-h3':'🎛️ Your top speed',
     'sim-lede':'Set your watts (anaerobic): <b>held sprint</b> 30 s-1 min ≈ <b>400-900 W</b> depending on level · <b>race burst</b> 10-20 s ≈ <b>1,000-1,400 W</b> — where the 30-38 km/h of races happen.',
     'l-s':'Wing area','l-b':'Span','l-prof':'Wing profile','l-mast':'Mast','l-stab':'Stab',
@@ -451,6 +446,8 @@
   /* ---------- rendu ---------- */
   function render(){
     ['s','b','w','p'].forEach(k => $('v-'+k).textContent = $('i-'+k).value);
+    // AR = envergure²/surface (avec cm et cm² : b²/S) — l'allongement de la config courante
+    $('v-ar').textContent = '· AR ' + num((+$('i-b').value)**2 / (+$('i-s').value), 1);
     const c = cfg();
     const {v, m, vlow, need} = vmax(c);
 
