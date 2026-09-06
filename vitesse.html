@@ -175,8 +175,7 @@
 
   <header>
     <h1><span class="h1a" data-i18n="h1a">La Course aux <span class="hi">km/h</span> en pump foil</span><span class="h1b" data-i18n="h1b">🚀 qu'est-ce qui fait aller un foil vite ?</span></h1>
-    <p class="hsub" data-i18n="hsub">Tu penses que seule compte une <b>petite aile de 600-800 cm²</b>, et que le stab ne joue pas ?
-      Le modèle est d'accord sur la première partie… et pas du tout sur la seconde.</p>
+    <p class="hsub" data-i18n="hsub">Petite aile = vite, et « le stab ne joue pas » ? Le modèle n'est d'accord qu'à <b>moitié</b>.</p>
   </header>
 
   <div class="tldr">
@@ -191,9 +190,8 @@
   <!-- SIMULATEUR : résultat d'abord, réglages dessous -->
   <section id="sim" class="a-in">
     <h3 data-i18n="sim-h3">🎛️ Ta vitesse max</h3>
-    <p class="lede" data-i18n="sim-lede">La vitesse pure se joue en <b>anaérobie</b>. Deux échelles : le <b>sprint tenu</b> (30 s-1 min :
-      400-600 W pour un sportif, 700-900 W pour un très bon athlète) et la <b>pointe de course</b> (10-20 s :
-      un coureur entraîné monte à <b>1 000-1 400 W</b> — c'est là que se font les 30-38 km/h des races).</p>
+    <p class="lede" data-i18n="sim-lede">Règle tes watts (anaérobie) : <b>sprint tenu</b> 30 s-1 min ≈ <b>400-900 W</b> selon ton niveau ·
+      <b>pointe de course</b> 10-20 s ≈ <b>1 000-1 400 W</b> — les 30-38 km/h des races.</p>
     <div class="panel">
       <div class="vout" aria-live="polite">
         <div class="n" id="o-vmax">— <small>km/h</small></div>
@@ -286,7 +284,7 @@
         <div class="big">si — beaucoup</div>
         <p>Par cm², le stab est l'appendice <b>le plus sale</b> du foil (il travaille dans l'eau perturbée,
           souvent chargé). Un <b>stab 200 coûte ~3,5 km/h</b> face à un stab 50 — autant que changer
-          d'aile ! Même un stab 100 laisse ~1,3 km/h. Les setups de vitesse courent en stab minuscule pour une raison.</p>
+          d'aile ! Même un stab 100 laisse ~1,3 km/h. Si les setups de vitesse courent tous en stab minuscule, ce n'est pas pour rien.</p>
       </div>
       <div class="card meh" data-i18n="vd3">
         <div class="k">🔄 La surprise : l'envergure aide encore</div>
@@ -368,12 +366,12 @@
     'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve','tb-more':'Links ▾','tb-model':'💻 Physics model',
     'h1a':'The Race for <span class="hi">km/h</span> in pump foil',
     'h1b':'🚀 what makes a foil fast?',
-    'hsub':'You think only a <b>small 600-800 cm² wing</b> matters, and the stab plays no role? The model agrees with the first part… and not at all with the second.',
+    'hsub':'Small wing = fast, and «the stab doesn\'t matter»? The model only <b>half</b> agrees.',
     'tldr-t':'For pure speed: <b>small thin wing</b> + <b>small stab</b><br>+ your <b>sprint watts</b>.',
     'tldr-s':'And two surprises: span still helps… and at 25 km/h, <b>the air brakes you as much as a stab 100</b>.',
-    'disc':'⚠️ <b>Estimated figures</b> (± ~15%) — same physics model as <a href="long-distance.html?lang=en">the long-distance comparator</a>, solved here "flat out": Vmax = the speed where required power reaches your sprint.',
+    'disc':'⚠️ <b>Estimated figures</b> (± ~15%) — same physics model as <a href="long-distance.html?lang=en">long distance</a>; Vmax = the speed where required power reaches your sprint.',
     'sim-h3':'🎛️ Your top speed',
-    'sim-lede':'Pure speed is an <b>anaerobic</b> game. Two scales: the <b>held sprint</b> (30 s-1 min: 400-600 W for a sporty rider, 700-900 W for a top athlete) and the <b>race burst</b> (10-20 s: a trained racer hits <b>1,000-1,400 W</b> — that\'s where the 30-38 km/h of races happen).',
+    'sim-lede':'Set your watts (anaerobic): <b>held sprint</b> 30 s-1 min ≈ <b>400-900 W</b> depending on level · <b>race burst</b> 10-20 s ≈ <b>1,000-1,400 W</b> — where the 30-38 km/h of races happen.',
     'l-s':'Wing area','l-b':'Span','l-prof':'Wing profile','l-mast':'Mast','l-stab':'Stab',
     'l-w':'Weight (you + gear)','l-p':'Your watts (sprint or burst)',
     'o-p1':'Thin (~8-10%) — speed blade','o-p4':'Sharp (~11%) — real race blade (Flow-like)','o-p2':'Medium (~13-15%)','o-p3':'Thick (~17%) — school wing',
@@ -382,7 +380,7 @@
     'tor-lede':'Effect of each change on <b>your</b> Vmax, at equal sprint. <span style="color:#86efac">Green = faster</span>, <span style="color:#fca5a5">red = slower</span>.',
     'cb-h3':'🏆 The perfect combo (for YOUR watts)',
     'cb-lede':'Optimisation under the pump constraint: you need a <b>flight window</b> of at least ~4 km/h to pump up to speed. Result: <b>the more watts you have, the smaller the blade you can afford</b> — the window decides, not the catalogue. Computed for 75 kg, strapless.',
-    'cb1-k':'Sprint ~600 W — athlete',
+    'cb1-k':'Sprint ~600 W — sporty rider',
     'cb1-p':'Thin profile, stab 50, 13 mm mast → <b>~27 km/h</b>, flight window 22-27 km/h. The 550 blade stalls too high: <b>no window to launch it</b> at these watts.',
     'cb2-k':'Sprint ~800 W — top sprinter',
     'cb2-p':'Thin profile, stab 50, 13 mm mast → <b>~30 km/h</b>, flight window 26-30 km/h. The small blade of your intuition — but it <b>demands</b> that engine (and straps to aim higher).',
