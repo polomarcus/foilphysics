@@ -241,19 +241,36 @@
   <section id="anatomie" class="a-in">
     <h3 data-i18n="lex-h3">🧩 C'est quoi, un foil ? Les 5 pièces</h3>
     <p class="lede" data-i18n="lex-lede">Deux minutes de vocabulaire — tout le reste de la page s'appuie dessus.</p>
-    <svg class="anat" viewBox="0 0 620 260" role="img" aria-label="Schéma d'un foil vu de côté : planche, mât, fuselage, aile avant, stab">
+    <svg class="anat" viewBox="0 0 620 260" role="img" aria-label="Schéma d'un foil vu de côté : la planche vole au-dessus de l'eau, le mât traverse la surface, fuselage, aile avant et stab portent sous l'eau">
+      <!-- pièces (couleurs synchronisées avec les pastilles du lexique) -->
       <rect x="236" y="34" width="290" height="16" rx="8" fill="#94a3b8"/>
       <rect x="295" y="50" width="11" height="148" rx="3" fill="#38bdf8"/>
       <rect x="112" y="198" width="304" height="8" rx="4" fill="#9085e9"/>
-      <ellipse cx="352" cy="202" rx="86" ry="10" fill="#34d399"/>
-      <ellipse cx="148" cy="202" rx="40" ry="6" fill="#f59e0b"/>
+      <path d="M266 204 C290 192,320 189,352 189 C384 189,414 192,438 204 C414 209,384 211,352 211 C320 211,290 209,266 204 Z" fill="#34d399"/>
+      <path d="M108 203 C120 197,134 195,148 195 C162 195,176 197,188 203 C176 207,162 208,148 208 C134 208,120 207,108 203 Z" fill="#f59e0b"/>
+      <!-- ligne d'eau : la planche vole au-dessus, tout le reste travaille dessous -->
+      <path d="M4 96 q17 -7 34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" opacity=".42"/>
+      <path d="M4 105 q17 -5 34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" opacity=".14"/>
+      <!-- sens d'avance -->
+      <line x1="538" y1="42" x2="592" y2="42" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M604 42 l-11 -5.5 v11 Z" fill="#94a3b8"/>
+      <text x="612" y="26" text-anchor="end" style="font-size:11.5px;fill:#94a3b8" data-i18n="lxs6">sens d'avance</text>
+      <!-- labels + traits de rappel -->
       <text x="400" y="22" text-anchor="middle" data-i18n="lxs1">planche</text>
-      <line x1="293" y1="115" x2="255" y2="115" stroke="#475569" stroke-width="1.5"/>
+      <line x1="400" y1="26" x2="400" y2="38" stroke="#64748b" stroke-width="1.2"/>
+      <circle cx="400" cy="42" r="2.4" fill="#cbd5e1" stroke="#0f172a" stroke-width="1"/>
       <text x="248" y="120" text-anchor="end" data-i18n="lxs2">mât</text>
-      <line x1="230" y1="194" x2="212" y2="162" stroke="#475569" stroke-width="1.5"/>
+      <line x1="254" y1="115" x2="295" y2="115" stroke="#64748b" stroke-width="1.2"/>
+      <circle cx="300" cy="115" r="2.4" fill="#cbd5e1" stroke="#0f172a" stroke-width="1"/>
       <text x="210" y="154" text-anchor="middle" data-i18n="lxs3">fuselage</text>
+      <line x1="216" y1="160" x2="229" y2="197" stroke="#64748b" stroke-width="1.2"/>
+      <circle cx="230" cy="201" r="2.4" fill="#cbd5e1" stroke="#0f172a" stroke-width="1"/>
       <text x="380" y="240" text-anchor="middle" data-i18n="lxs4">aile avant</text>
+      <line x1="380" y1="230" x2="380" y2="213" stroke="#64748b" stroke-width="1.2"/>
+      <circle cx="380" cy="207" r="2.4" fill="#cbd5e1" stroke="#0f172a" stroke-width="1"/>
       <text x="128" y="240" text-anchor="middle" data-i18n="lxs5">stab</text>
+      <line x1="128" y1="230" x2="128" y2="211" stroke="#64748b" stroke-width="1.2"/>
+      <circle cx="128" cy="205" r="2.4" fill="#cbd5e1" stroke="#0f172a" stroke-width="1"/>
     </svg>
     <div class="lex">
       <div class="lexr" data-i18n="lx1"><span class="dot" style="background:#94a3b8"></span>
@@ -354,7 +371,7 @@
           </select></div>
       </div>
 
-      <div class="xp-row"><button type="button" id="xp-btn" class="xp-btn" aria-pressed="false">💡 <span data-i18n="xp-lbl">Explications</span></button></div>
+      <div class="xp-row"><button type="button" id="xp-btn" class="xp-btn" aria-pressed="false">💡 <span data-i18n="xp-lbl">Explications</span><span class="xp-state"></span></button></div>
 
       <div class="vout" aria-live="polite">
         <div class="n" id="o-surf">—</div>
@@ -391,7 +408,7 @@
         <div class="k">🛞 Le gros stab = tes roues d'entraînement</div>
         <div class="big">la stabilité d'abord</div>
         <p class="xpl">Sur <a href="vitesse.html">la page vitesse</a>, un stab 200 coûte ~3,5 km/h — ici c'est ton meilleur
-          allié : il <b>calme le tangage</b> et rend le foil prévisible. Et rien ne presse : un gros stab
+          allié : il <b>calme le tangage</b> (piqué du nez) et rend le foil prévisible. Et rien ne presse : un gros stab
           <b>se garde longtemps</b> — tu le réduiras bien après l'aile, quand il commencera vraiment à te
           freiner. Ce sera alors <b>l'upgrade le moins cher</b> de tout le foil.</p>
       </div>
@@ -406,7 +423,7 @@
         <div class="k">📐 Allongement modéré (AR ~9)</div>
         <div class="big">docile avant efficace</div>
         <p class="xpl"><a href="long-distance.html">Le comparateur</a> te dira qu'une grande envergure économise tes watts — c'est vrai,
-          <b>plus tard</b>. Une aile très allongée (AR 11+) est nerveuse en roulis et décroche du bout d'aile.
+          <b>plus tard</b>. Une aile très allongée (AR 11+) est nerveuse en roulis (bascule gauche-droite) et décroche du bout d'aile.
           Les ailes d'école modernes font toutes <b>AR ~9</b> : c'est le bon compromis docile/efficace,
           validé par le marché.</p>
       </div>
@@ -556,7 +573,7 @@
     'm4':'<div class="k">👥 With people around</div><div class="big">more fun AND safer</div><p>Never alone: someone who <b>watches</b> you, <b>gives you the tip you need</b>, films and shares the laugh. You progress <b>better together</b> — and one coached session is worth five solo.</p>',
     'lex-h3':'🧩 What is a foil? The 5 parts',
     'lex-lede':'Two minutes of vocabulary — the whole page builds on it.',
-    'lxs1':'board','lxs2':'mast','lxs3':'fuselage','lxs4':'front wing','lxs5':'stab',
+    'lxs1':'board','lxs2':'mast','lxs3':'fuselage','lxs4':'front wing','lxs5':'stab','lxs6':'direction of travel',
     'lx1':'<span class="dot" style="background:#94a3b8"></span><p><b>The board</b> — your feet go on it: it transmits your motion to the foil. For dock starts it doesn\'t need to float — just to be light.</p>',
     'lx2':'<span class="dot" style="background:#38bdf8"></span><p><b>The mast</b> — the vertical column. Its height is your room to pump… and the height you fall from. Short to learn.</p>',
     'lx3':'<span class="dot" style="background:#9085e9"></span><p><b>The fuselage</b> — the backbone: it links the front wing to the stab, under the mast. The longer it is, the calmer the foil.</p>',
@@ -570,9 +587,9 @@
     'vd8':'<div class="k">🪜 The learning accelerators</div><div class="big">ladder &amp; scooter</div><p class="xpl">A <b>water-entry ladder</b> turns any quay into a spot: constant height, starts <b>repeatable at will</b>. And the <b>pump scooter</b> — a foil with a <b>handlebar</b> — gives a third point of contact: the motion is learned much faster, then transfers as-is to the regular board.</p>',
     'vd-h3':'🧾 The complete gear, in 8 cards',
     'vd1':'<div class="k">📏 Area = your margin for error</div><div class="big">~20-25 cm²/kg · never under ~1500</div><p class="xpl">A big wing stalls around <b>10 km/h</b>: when you miss a pump and slow down, it <b>catches you</b> instead of dropping you. A race blade stalls at 20+ km/h — zero room for error. Area means seconds of flight per session, which means learning per session.</p>',
-    'vd2':'<div class="k">🛞 The big stab = your training wheels</div><div class="big">stability first</div><p class="xpl">On <a href="vitesse.html?lang=en">the speed page</a> a stab 200 costs ~3.5 km/h — here it\'s your best ally: it <b>tames the pitch</b> and makes the foil predictable. And there\'s no rush: a big stab <b>stays with you a long time</b> — you\'ll size it down well after the wing, when it truly starts holding you back. It\'ll then be <b>the cheapest upgrade</b> on the whole foil.</p>',
+    'vd2':'<div class="k">🛞 The big stab = your training wheels</div><div class="big">stability first</div><p class="xpl">On <a href="vitesse.html?lang=en">the speed page</a> a stab 200 costs ~3.5 km/h — here it\'s your best ally: it <b>tames the pitch</b> (nose dive) and makes the foil predictable. And there\'s no rush: a big stab <b>stays with you a long time</b> — you\'ll size it down well after the wing, when it truly starts holding you back. It\'ll then be <b>the cheapest upgrade</b> on the whole foil.</p>',
     'vd3':'<div class="k">🍞 Thick profile = gentle stall</div><div class="big">it warns before letting go</div><p class="xpl">A thick profile (~13-15%) sinks <b>progressively</b> when you go too slow — you feel it and correct. A thin profile <b>lets go at once</b>, no warning. The extra drag? You don\'t care: you\'re not here for speed.</p>',
-    'vd4':'<div class="k">📐 Moderate aspect ratio (AR ~9)</div><div class="big">docile before efficient</div><p class="xpl"><a href="long-distance.html?lang=en">The comparator</a> will tell you a wide span saves your watts — true, <b>later</b>. A very elongated wing (AR 11+) is twitchy in roll and stalls from the tips. Modern school wings all sit at <b>AR ~9</b>: the docile/efficient sweet spot, validated by the market.</p>',
+    'vd4':'<div class="k">📐 Moderate aspect ratio (AR ~9)</div><div class="big">docile before efficient</div><p class="xpl"><a href="long-distance.html?lang=en">The comparator</a> will tell you a wide span saves your watts — true, <b>later</b>. A very elongated wing (AR 11+) is twitchy in roll (side-to-side tip) and stalls from the tips. Modern school wings all sit at <b>AR ~9</b>: the docile/efficient sweet spot, validated by the market.</p>',
     'vd5':'<div class="k">🩳 Short mast (60-70 cm)</div><div class="big">falling from lower</div><p class="xpl">Less leverage underfoot = a <b>calmer</b> foil, softer falls, and shallow water stays usable. The downside (less room to pump high) won\'t concern you for months — then you\'ll move to 75-85 cm.</p>',
     'vd6':'<div class="k">💶 Alu and second-hand</div><div class="big">carbon can wait</div><p class="xpl">At first your foil will meet docks, rocks and sand. <b>Alu</b> takes the hits and forgives your wallet; second-hand, a full learning setup is easy to find — and <b>resells</b> at nearly the same price when you move on. Stiff carbon is for when your technique can feel it.</p>',
     'prog-h3':'🪜 What next? Sizing down',
@@ -652,12 +669,14 @@
 
     const recs = [
       [t('Envergure','Span'), '~'+num(r.b)+' cm'],
-      [t('Allongement','Aspect ratio'), 'AR ~'+r.st.AR],
+      [t('Allongement','Aspect ratio'), 'AR ~'+r.st.AR, t('envergure²/surface — élancé ou trapu','span²/area — slender or stubby')],
       ['Stab', r.st.stab+' cm²'],
       [t('Mât','Mast'), r.st.mast+' cm']
     ];
-    $('o-rec').innerHTML = recs.map(([k,v]) =>
-      '<div class="rec"><div class="rk">'+k+'</div><div class="rv">'+v+'</div></div>').join('');
+    $('o-rec').innerHTML = recs.map(([k,v,n]) =>
+      '<div class="rec"><div class="rk">'+k+'</div><div class="rv">'+v+'</div>'+
+      (n ? '<div class="rk" style="margin-top:3px;text-transform:none;letter-spacing:normal;font-weight:600;color:var(--dim)">'+n+'</div>' : '')+
+      '</div>').join('');
 
     const delta = {
       A: t('Le point de départ : tout est réglé pour pardonner.',
@@ -695,6 +714,7 @@
   function setXp(on){
     document.body.classList.toggle('noexp', !on);
     const b = $('xp-btn'); b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on));
+    document.querySelector('#xp-btn .xp-state').textContent = on ? ' ✓' : '';
     try{ localStorage.setItem('lcw-deb-xp', on ? '1' : '0'); }catch(e){}
   }
   $('xp-btn').addEventListener('click', ()=> setXp(document.body.classList.contains('noexp')));

@@ -267,7 +267,7 @@
         <div class="field"><label for="i-stab"><span data-i18n="l-stab">Stab</span> : <span class="fval" id="v-stab">90</span> cm² <span id="v-stabq" style="color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0"></span></label>
           <input type="range" id="i-stab" min="60" max="130" step="5" value="90"></div>
       </div>
-      <div class="xp-row"><button type="button" id="xp-btn" class="xp-btn" aria-pressed="false">💡 <span data-i18n="xp-lbl">Explications</span></button></div>
+      <div class="xp-row"><button type="button" id="xp-btn" class="xp-btn" aria-pressed="false">💡 <span data-i18n="xp-lbl">Explications</span><span class="xp-state"></span></button></div>
       <div class="hero">
         <div class="vout" aria-live="polite">
           <div class="n" id="o-agil">—</div>
@@ -701,7 +701,11 @@
     document.querySelectorAll('.preset-btn').forEach(x => x.classList.toggle('on', x === btn));
     render();
   }
-  document.querySelectorAll('.preset-btn').forEach(btn => btn.addEventListener('click', ()=> applyPresetBtn(btn)));
+  document.querySelectorAll('.preset-btn').forEach(btn => {
+    const grp = btn.closest('.preset-grp'); const lab = grp ? grp.querySelector('.pg-label') : null;
+    if(lab) btn.setAttribute('aria-label', lab.textContent.replace(/^[^A-Za-zÀ-ÿ0-9]+/,'').trim() + ' ' + btn.textContent.trim());
+    btn.addEventListener('click', ()=> applyPresetBtn(btn));
+  });
   document.querySelectorAll('input,select').forEach(el => el.addEventListener('input', ()=>{
     document.querySelectorAll('.preset-btn.on').forEach(x => x.classList.remove('on'));   // réglage manuel = config custom
     render();
@@ -713,6 +717,7 @@
   function setXp(on){
     simPanel.classList.toggle('noexp', !on);
     const b = $('xp-btn'); b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on));
+    b.querySelector('.xp-state').textContent = on ? ' ✓' : '';
     try{ localStorage.setItem('lcw-carve-xp', on ? '1' : '0'); }catch(e){}
   }
   $('xp-btn').addEventListener('click', ()=> setXp(simPanel.classList.contains('noexp')));

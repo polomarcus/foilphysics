@@ -647,7 +647,7 @@
   </div>
   <div class="tb-ctrl">
     <button id="tb-mode" type="button" title="Simple ⇄ Expert">⚙️ Expert</button>
-    <button id="xp-btn" type="button" aria-pressed="true">💡 <span data-i18n="xp-lbl">Explications</span></button>
+    <button id="xp-btn" type="button" aria-pressed="true">💡 <span data-i18n="xp-lbl">Explications</span><span class="xp-state"></span></button>
     <button id="lang-btn" type="button">🇬🇧 EN</button>
     <details class="tb-more">
       <summary data-i18n="tb-more">Liens ▾</summary>
@@ -1409,17 +1409,44 @@
       <div class="reg-grid">
         <div class="reg-card" data-i18n="reg1">
           <div class="rh">📐 Les cales (shims)</div>
-          <p><b>Sous le stab</b> (rake, ±0,5 à 2°) : change l'assiette de tout le foil. <b>Plus d'angle</b> = ça
-            porte plus, ça pompe facile (un peu plus de traînée) ; <b>moins</b> = plus rapide, plus exigeant.
+          <div class="note-fig" aria-hidden="true">
+            <svg viewBox="0 0 360 100">
+              <path d="M108 30 Q72 10 42 22" stroke="#34d399" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <path d="M42 22 l13 -7 M42 22 l6 12" stroke="#34d399" stroke-width="3" stroke-linecap="round"/>
+              <text x="118" y="18" font-size="12" fill="#34d399" font-weight="700">le nez se lève</text>
+              <rect x="64" y="48" width="228" height="6" rx="3" fill="#64748b"/>
+              <ellipse cx="60" cy="51" rx="50" ry="9" fill="#38bdf8"/>
+              <ellipse cx="306" cy="47" rx="26" ry="5" fill="#94a3b8" transform="rotate(-8 306 47)"/>
+              <path d="M282 55 L330 55 L330 70 Z" fill="#f59e0b"/>
+              <text x="306" y="86" font-size="12" fill="#f59e0b" font-weight="700" text-anchor="middle">cale</text>
+            </svg>
+          </div>
+          <p><b>Sous le stab</b> (rake, ±0,5 à 2°) : <b>plus d'angle</b> = ça porte plus, ça pompe facile ;
+            <b>moins</b> = plus rapide, plus exigeant.
             Longue distance : léger rake positif ; vitesse : neutre.<br>
             <b>À la base du mât</b> (si ton matos le permet) : incline <b>tout le foil d'un bloc</b> par rapport à
-            la planche → agit direct sur la <b>vitesse de décollage</b>. Nez relevé = décolle tôt / pump facile ;
-            nez baissé = décolle plus tard mais plus rapide.</p>
+            la planche → agit direct sur la <b>vitesse de décollage</b>. Nez relevé = décolle tôt ;
+            nez baissé = plus tard mais plus rapide.</p>
         </div>
         <div class="reg-card" data-i18n="reg2">
           <div class="rh">↔️ Le mât sur la planche</div>
-          <p>Dans les rails : <b>avancer</b> le mât = plus porteur, plus joueur (le nez veut monter) ;
-            <b>reculer</b> = plus stable et rapide, mais il faut charger l'avant. Déplace par crans
+          <div class="note-fig" aria-hidden="true">
+            <svg viewBox="0 0 360 94">
+              <path d="M60 22 H300" stroke="#34d399" stroke-width="3" stroke-linecap="round"/>
+              <path d="M60 22 l11 -6 M60 22 l11 6" stroke="#34d399" stroke-width="3" stroke-linecap="round"/>
+              <path d="M300 22 l-11 -6 M300 22 l-11 6" stroke="#34d399" stroke-width="3" stroke-linecap="round"/>
+              <text x="60" y="12" font-size="12" fill="#34d399" font-weight="700">avancer = joueur</text>
+              <text x="300" y="12" font-size="12" fill="#34d399" font-weight="700" text-anchor="end">reculer = stable</text>
+              <path d="M30 46 q2 -12 30 -14 h240 q28 0 28 12 v6 H30 z" fill="#64748b"/>
+              <rect x="150" y="43" width="96" height="5" rx="2" fill="#0f172a"/>
+              <rect x="178" y="41" width="38" height="8" rx="2" fill="#38bdf8"/>
+              <rect x="193" y="49" width="7" height="36" rx="2" fill="#38bdf8"/>
+              <text x="46" y="64" font-size="11" fill="#94a3b8" text-anchor="middle">nez</text>
+              <text x="208" y="80" font-size="11" fill="#94a3b8">mât</text>
+            </svg>
+          </div>
+          <p>Dans les rails : <b>avancer</b> le mât = plus porteur, plus joueur ;
+            <b>reculer</b> = plus stable et rapide. Déplace par crans
             de <b>~5 mm</b> — c'est énorme sous les pieds.</p>
         </div>
         <div class="reg-card" data-i18n="reg3">
@@ -1495,6 +1522,8 @@
       <span style="color:#fcd34d">⚠️ Le paradoxe :</span> l'aile la plus <b>économe en watts</b> peut être celle qui coûte le
       plus <i>mentalement</i> — peu d'effort, mais une concentration de tous les instants. Et près de ta fréquence
       cardiaque max, le <b>cerveau manque de ressources</b> : les chutes « bêtes » de fin de session, c'est souvent ça.</p>
+
+    <p class="reg-note" data-i18n="mental-arch" style="margin:0 auto 14px">Trois archétypes types — <b>indépendants du duel ci-dessus</b> : situe ta pratique, pas ton aile exacte.</p>
 
     <div class="ment-cmp" id="ment-cmp"></div>
 
@@ -1825,6 +1854,7 @@
     const vmin=8, vmax=26;
     let ymax = Math.min(500, Math.max(m1.Psweet, m2.Psweet)*1.85);
     ymax = Math.max(200, Math.ceil(ymax/50)*50);            // arrondi à 50 W (peu de marge → écart plus lisible)
+    ymax = Math.max(ymax, Math.ceil((riderCP()+35)/50)*50); // le seuil 🫀 reste toujours dans le cadre
     const X = vk => gx0 + (vk-vmin)/(vmax-vmin)*(gx1-gx0);
     const Y = p  => gy0 - Math.min(p,ymax)/ymax*(gy0-gy1);
 
@@ -1850,6 +1880,17 @@
     ctx.save(); ctx.translate(16, (gy0+gy1)/2); ctx.rotate(-Math.PI/2);
     ctx.textAlign='center'; ctx.textBaseline='middle';
     ctx.fillText(t('Puissance (W)','Power (W)'), 0, 0); ctx.restore();
+
+    // 🫀 seuil du rider (forme physique) : sous la ligne = tenable des heures — suit le select #rider-cp
+    const cpY = Y(riderCP());
+    ctx.save();
+    ctx.strokeStyle = '#f8fafc'; ctx.lineWidth = 1.5; ctx.setLineDash([6,5]); ctx.globalAlpha = .8;
+    ctx.beginPath(); ctx.moveTo(gx0, cpY); ctx.lineTo(gx1, cpY); ctx.stroke();
+    ctx.restore();
+    const cpLab = '🫀 ' + t('ton seuil','your threshold');
+    ctx.font = '700 12px system-ui,sans-serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+    ctx.lineWidth = 3.5; ctx.strokeStyle = '#0f172a'; ctx.strokeText(cpLab, gx0+6, cpY-3);   // halo
+    ctx.fillStyle = '#f8fafc'; ctx.fillText(cpLab, gx0+6, cpY-3);
 
     drawPowerCurve.geo = {X, Y, vmin, vmax, ymax, gx0, gx1, gy0, gy1};   // pour le survol
     const vEnd = vmin + (vmax-vmin)*prog;   // tracé progressif gauche → droite
@@ -2109,6 +2150,7 @@
     document.body.classList.toggle('noexp', !on);
     const b = document.getElementById('xp-btn');
     b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on));
+    b.querySelector('.xp-state').textContent = on ? ' ✓' : '';
     store('lcw-ld-xp', on ? '1' : '0');
   }
   document.getElementById('xp-btn').addEventListener('click', ()=> setXp(document.body.classList.contains('noexp')));
@@ -2283,7 +2325,7 @@
       miss:{ok:true, title:'✅ Aucun décrochage… mais tu cuis', titleEn:'✅ No stall… but you\'re cooking', txt:"Techniquement pardonnant, mais l'effort (>330 W) épuise ta concentration en < 1 min. Tu tombes de fatigue, pas de faute de pilotage.", txtEn:'Technically forgiving, but the effort (>330 W) drains your focus in < 1 min. You fall from fatigue, not from a piloting mistake.'}
     },
     fireball:{
-      name:'Aile longue distance race', nameEn:'Long distance race', tag:'AR ~20 · Ultra High Aspect', tagEn:'AR ~20 · Ultra High Aspect', chord:'~9 cm',
+      name:'Race / lame extrême', nameEn:'Race / extreme blade', tag:'AR ~20 · Ultra High Aspect', tagEn:'AR ~20 · Ultra High Aspect', chord:'~9 cm',
       sMin:15, sMax:18, stall:14, narrow:true,
       mental:85, mentalLab:'Formule 1 / zéro droit à l\'erreur', mentalLabEn:'Formula 1 / zero margin for error',
       stress:90, stressLab:'Concentration maximale en permanence — sanction immédiate', stressLabEn:'Maximum focus at all times — instant penalty',
@@ -2496,13 +2538,14 @@
     'cad-note':'⚠️ <b>Illustrative</b>, from the oscillating-foil propulsion literature (<a href="https://digital.library.unt.edu/ark:/67531/metadc66225/" target="_blank" rel="noopener">Garrick 1936</a>; <a href="https://www.cambridge.org/core/journals/journal-of-fluid-mechanics/article/abs/oscillating-foils-of-high-propulsive-efficiency/22E5CD028D92318AFC88ED104E55786B" target="_blank" rel="noopener">Anderson <i>et al.</i> 1998</a>, <i>JFM</i> 360:41-72; <a href="https://www.nature.com/articles/nature02000" target="_blank" rel="noopener">Taylor <i>et al.</i>, Nature 2003</a>): thrust grows steeply with St, and the only <b>useful</b> regime (high thrust + high efficiency) is near <b>St ≈ 0.3</b> — the efficiency peak at St≈0.15 is set aside as it produces almost <b>no thrust</b>. Field-anchored (Paul): ~20 cm peak-to-peak, ~100 pumps/min cadence; absolute St stays uncertain, but the <b>shape</b> — we operate below the useful regime, so raising cadence helps — is robust. The simulator itself stays tuned to a «typical» cadence.',
     'reg-h3':'🔧 Tuning: the free watts',
     'reg-lede':'Before changing wings, two screws and your feet. Real effects, zero cost — but <b>one change at a time</b>, or you\'ll never know which one acted.',
-    'reg1':'<div class="rh">📐 The shims</div><p><b>Under the stab</b> (rake, ±0.5 to 2°): changes the trim of the whole foil. <b>More angle</b> = more lift, easier pumping (a bit more drag); <b>less</b> = faster, more demanding. Long distance: slight positive rake; speed: neutral.<br><b>At the mast base</b> (if your gear allows): tilts the <b>whole foil as one block</b> relative to the board → acts directly on <b>takeoff speed</b>. Nose up = takes off early / easy pump; nose down = later takeoff but faster.</p>',
-    'reg2':'<div class="rh">↔️ Mast position on the board</div><p>In the tracks: <b>forward</b> = more lift, more playful (the nose wants to rise); <b>back</b> = more stable and fast, but you must load the front. Move in <b>~5 mm</b> steps — it\'s huge underfoot.</p>',
+    'reg1':'<div class="rh">📐 The shims</div><div class="note-fig" aria-hidden="true"><svg viewBox="0 0 360 100"><path d="M108 30 Q72 10 42 22" stroke="#34d399" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M42 22 l13 -7 M42 22 l6 12" stroke="#34d399" stroke-width="3" stroke-linecap="round"/><text x="118" y="18" font-size="12" fill="#34d399" font-weight="700">the nose lifts</text><rect x="64" y="48" width="228" height="6" rx="3" fill="#64748b"/><ellipse cx="60" cy="51" rx="50" ry="9" fill="#38bdf8"/><ellipse cx="306" cy="47" rx="26" ry="5" fill="#94a3b8" transform="rotate(-8 306 47)"/><path d="M282 55 L330 55 L330 70 Z" fill="#f59e0b"/><text x="306" y="86" font-size="12" fill="#f59e0b" font-weight="700" text-anchor="middle">shim</text></svg></div><p><b>Under the stab</b> (rake, ±0.5 to 2°): <b>more angle</b> = more lift, easier pumping; <b>less</b> = faster, more demanding. Long distance: slight positive rake; speed: neutral.<br><b>At the mast base</b> (if your gear allows): tilts the <b>whole foil as one block</b> relative to the board → acts directly on <b>takeoff speed</b>. Nose up = takes off early; nose down = later but faster.</p>',
+    'reg2':'<div class="rh">↔️ Mast position on the board</div><div class="note-fig" aria-hidden="true"><svg viewBox="0 0 360 94"><path d="M60 22 H300" stroke="#34d399" stroke-width="3" stroke-linecap="round"/><path d="M60 22 l11 -6 M60 22 l11 6" stroke="#34d399" stroke-width="3" stroke-linecap="round"/><path d="M300 22 l-11 -6 M300 22 l-11 6" stroke="#34d399" stroke-width="3" stroke-linecap="round"/><text x="60" y="12" font-size="12" fill="#34d399" font-weight="700">forward = playful</text><text x="300" y="12" font-size="12" fill="#34d399" font-weight="700" text-anchor="end">back = stable</text><path d="M30 46 q2 -12 30 -14 h240 q28 0 28 12 v6 H30 z" fill="#64748b"/><rect x="150" y="43" width="96" height="5" rx="2" fill="#0f172a"/><rect x="178" y="41" width="38" height="8" rx="2" fill="#38bdf8"/><rect x="193" y="49" width="7" height="36" rx="2" fill="#38bdf8"/><text x="46" y="64" font-size="11" fill="#94a3b8" text-anchor="middle">nose</text><text x="208" y="80" font-size="11" fill="#94a3b8">mast</text></svg></div><p>In the tracks: <b>forward</b> = more lift, more playful; <b>back</b> = more stable and fast. Move in <b>~5 mm</b> steps — it\'s huge underfoot.</p>',
     'reg3':'<div class="rh">🦶 Your feet</div><p>The permanent tuning. <b>Fighting the nose-up</b>? Move forward 1-2 cm (or move the mast back). Board <b>diving</b>? Step back — or add shim. When nothing forces anymore, it\'s tuned.</p>',
     'reg-why':'<b>Why does positive rake help for long distance?</b> The stab works like a plane\'s tailplane: it <b>pushes down</b> to stabilise. A positive shim increases that push → the nose rises → the front wing takes <b>more incidence</b> and lifts more, at equal speed. Result: you can <b>cruise slower without stalling</b> — right at the bottom of the power curve, where flying is cheapest — and each pump stroke pays back more lift. The price: a more loaded stab drags a bit more, and your top speed drops. Exactly the opposite trade-off of <a href="vitesse.html?lang=en">the speed page</a> — which wants neutral rake.',
     'reg-note':'Our simulators don\'t model these angles: they act on <b>trim</b>, not on the drag budget. But a right trim means pumping that pays back better — free watts, as long as you write down what you change.',
     'mental-h3':'🧠 Mental comfort & cognitive load',
     'mental-lede':'For a comparable physical effort, wings don\'t all demand the same <b>focus</b>. <b>Performance = physical energy + mental energy.</b><br><span style="color:#fcd34d">⚠️ The paradox:</span> the <b>most watt-efficient</b> wing can be the one that costs most <i>mentally</i> — little effort, but non-stop concentration. And near your max heart rate, the <b>brain runs short of resources</b>: the «silly» falls at the end of a session are often just that.',
+    'mental-arch':'Three broad archetypes — <b>independent of the duel above</b>: place your practice, not your exact wing.',
     'tol-head':'Usable speed range before stall <b id="tol-range">—</b>',
     'sim-btn':'🌊 Simulate a missed pump stroke',
     'conseil-h':'⚓ PoloFoil\'s tip','conseil-formula':'Overall performance = <b>Physical energy</b> + <b>Mental energy</b>',

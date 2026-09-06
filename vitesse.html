@@ -113,6 +113,11 @@
   .ar-ticks{display:flex; justify-content:space-between; font-size:.64rem; color:var(--dim); font-variant-numeric:tabular-nums; margin:0 -2px;}
   .ar-desc{font-size:.85rem; color:var(--muted); margin-top:7px;}
   .ar-desc b{color:var(--txt);}
+  .wp-row{display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;}
+  .wp-chip{background:var(--panel-2); border:1px solid var(--line); color:var(--muted); border-radius:999px;
+    padding:4px 11px; font-size:.74rem; font-weight:700; cursor:pointer; white-space:nowrap;}
+  .wp-chip:hover{border-color:#f59e0b; color:#fcd34d;}
+  .wp-chip.on{border-color:#f59e0b; color:#fcd34d; background:rgba(245,158,11,.13);}
   .xp-row{display:flex; justify-content:center; margin:12px 0 0;}
   .xp-btn{background:var(--panel-2); border:1px solid var(--line); color:var(--muted); border-radius:999px;
     padding:5px 13px; font-size:.75rem; font-weight:700; cursor:pointer;}
@@ -127,7 +132,13 @@
 
   .bk{max-width:640px; margin:20px auto 0;}
   .bk-cat{font-size:.74rem; color:var(--muted); margin:10px 0 3px; font-weight:700; text-transform:uppercase; letter-spacing:.04em;}
-  .bkr{display:grid; grid-template-columns:auto 1fr 64px; gap:8px; align-items:center; margin:3px 0;}
+  .bk-stack{display:flex; height:22px; border-radius:7px; overflow:hidden; margin:6px 0 12px; background:var(--panel-2);}
+  .bk-stack .seg{display:block; height:100%; font-size:.68rem; font-weight:800; color:#0f172a; text-align:center;
+    line-height:22px; overflow:hidden; white-space:nowrap; transition:width .6s cubic-bezier(.22,1,.36,1);}
+  .bk-air-row{text-align:center; margin-top:9px;}
+  .bk-air{display:inline-block; padding:3px 12px; border-radius:999px; font-size:.8rem; font-weight:800;
+    color:#fcd34d; background:rgba(245,158,11,.13); border:1px solid rgba(245,158,11,.45);}
+  .bkr{display:grid; grid-template-columns:auto 1fr 100px; gap:8px; align-items:center; margin:3px 0;}
   .bkr .lab{font-size:.8rem; color:#cbd5e1; min-width:150px;}
   .bkr .trk{height:15px; background:var(--panel-2); border-radius:5px; overflow:hidden; display:block;}
   .bkr .fil{display:block; height:100%; border-radius:5px; transition:width .6s cubic-bezier(.22,1,.36,1);}
@@ -156,6 +167,7 @@
   .cards{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
   @media(max-width:640px){ .cards{grid-template-columns:1fr;} }
   .card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px;}
+  .card.wide{grid-column:1/-1;}
   .card .k{font-weight:800; margin-bottom:6px; text-align:center;}
   .card .big{font-size:1.5rem; font-weight:800; text-align:center; margin:4px 0 8px; letter-spacing:-.02em;}
   .card p{font-size:.87rem; color:#cbd5e1; line-height:1.55;}
@@ -250,11 +262,16 @@
         <div class="field"><label for="i-w"><span data-i18n="l-w">Poids (toi + matos)</span> : <span class="fval" id="v-w">75</span> kg</label>
           <input type="range" id="i-w" min="45" max="110" step="1" value="75"></div>
         <div class="field"><label for="i-p"><span data-i18n="l-p">Tes watts (sprint ou pointe)</span> : <span class="fval" id="v-p">600</span> W</label>
-          <input type="range" id="i-p" min="250" max="1600" step="10" value="600"></div>
+          <input type="range" id="i-p" min="250" max="1600" step="10" value="600">
+          <div class="wp-row">
+            <button type="button" class="wp-chip" data-w="600"><span data-i18n="wp1">🚴 sportif · 600</span></button>
+            <button type="button" class="wp-chip" data-w="800"><span data-i18n="wp2">💪 sprinteur · 800</span></button>
+            <button type="button" class="wp-chip" data-w="1300"><span data-i18n="wp3">🏆 pointe élite · 1 300</span></button>
+          </div></div>
       </div>
 
       <div class="ar-read" id="o-ar"></div>
-      <div class="xp-row"><button type="button" id="xp-btn" class="xp-btn" aria-pressed="false">💡 <span data-i18n="xp-lbl">Explications</span></button></div>
+      <div class="xp-row"><button type="button" id="xp-btn" class="xp-btn" aria-pressed="false">💡 <span data-i18n="xp-lbl">Explications</span><span class="xp-state"></span></button></div>
 
       <div class="bk" id="o-bk"></div>
     </div>
@@ -396,7 +413,7 @@
           le bruit). Ce que tu sens vraiment : <b>moins de marge au décrochage</b> et une glisse basse vitesse en retrait
           — pas « tu perds 5 km/h ».</p>
       </div>
-      <div class="card you" data-i18n="vd7">
+      <div class="card you wide" data-i18n="vd7">
         <div class="k">⚖️ Le poids : à double tranchant</div>
         <div class="big">lourd = plus de watts</div>
         <p class="xpl">Pour l'endurance, le poids <b>pénalise</b> (traînée ∝ portance²) — d'où « léger = distance ». Mais en
@@ -445,6 +462,7 @@
     'sim-lede':'Set your watts (anaerobic): <b>held sprint</b> 30 s-1 min ≈ <b>400-900 W</b> depending on level · <b>race burst</b> 10-20 s ≈ <b>1,000-1,400 W</b> — where the 30-38 km/h of races happen.',
     'l-s':'Wing area','l-b':'Span','l-prof':'Wing profile','l-mast':'Mast','l-stab':'Stab',
     'l-w':'Weight (you + gear)','l-p':'Your watts (sprint or burst)',
+    'wp1':'🚴 sporty · 600','wp2':'💪 sprinter · 800','wp3':'🏆 elite burst · 1,300',
     'o-p1':'Thin (~8-10%) — speed blade','o-p4':'Sharp (~11%) — real race blade (Flow-like)','o-p2':'Medium (~13-15%)','o-p3':'Thick (~17%) — school wing',
     'o-m1':'13 mm — thin (perf)','o-m2':'16 mm — standard','o-m3':'19 mm — big (Fatty)',
     'tor-h3':'🔬 What gains (or loses) you km/h?',
@@ -524,6 +542,7 @@
   /* ---------- rendu ---------- */
   function render(){
     ['s','b','w','p'].forEach(k => $('v-'+k).textContent = $('i-'+k).value);
+    syncWp();
     // AR = envergure²/surface (avec cm et cm² : b²/S) — l'allongement de la config courante
     const ar = (+$('i-b').value)**2 / (+$('i-s').value);
     // Bandes calées sur la calibration de la page : les lames de course réelles tournent à AR ~10-11
@@ -571,13 +590,22 @@
       ['Stab',                                                     q*c.As*CDS, '#34d399']
     ].map(([lab,D,col]) => [lab, D*v/m.eta, col]);
     parts.push([t('Toi dans l\'air 💨','You in the air 💨'), 0.5*RHO_AIR*CDA*v*v*v/m.eta, '#94a3b8']);
-    const mx = Math.max(...parts.map(p=>p[1]));
+    const tot = parts.reduce((s,p)=>s+p[1], 0);
+    const airPct = 100*parts[parts.length-1][1]/tot;
     $('o-bk').innerHTML = '<div class="bk-cat">' + t('Où partent tes ','Where your ') + num(c.P,0) +
       t(' W à ',' W go at ') + num(v*3.6,0) + ' km/h</div>' +
+      '<div class="bk-stack">' + parts.map(([lab,w,col])=>{
+        const pct = 100*w/tot;
+        return '<span class="seg" style="width:'+pct.toFixed(2)+'%;background:'+col+'" title="'+lab+'">'+
+          (pct >= 11 ? num(pct,0)+'%' : '')+'</span>';
+      }).join('') + '</div>' +
       parts.map(([lab,w,col]) =>
         '<div class="bkr"><span class="lab">'+lab+'</span><span class="trk"><span class="fil" style="width:'+
-        (100*w/mx).toFixed(1)+'%;background:'+col+'"></span></span><span class="v">'+num(w,0)+' W</span></div>'
-      ).join('');
+        (100*w/tot).toFixed(1)+'%;background:'+col+'"></span></span><span class="v">'+num(w,0)+' W · '+
+        num(100*w/tot,0)+t(' %','%')+'</span></div>'
+      ).join('') +
+      (airPct > 15 ? '<div class="bk-air-row"><span class="bk-air">'+t('💨 l\'air : ','💨 the air: ')+num(airPct,0)+
+        t(' % de ton frein !','% of your brake!')+'</span></div>' : '');
 
     tornado(c, v);
   }
@@ -626,10 +654,16 @@
   }));
   document.querySelectorAll('input,select').forEach(el => el.addEventListener('input', render));
 
+  /* presets watts : chip active si le slider est pile sur la valeur */
+  const wpChips = document.querySelectorAll('.wp-chip');
+  function syncWp(){ wpChips.forEach(ch => ch.classList.toggle('on', ch.dataset.w === $('i-p').value)); }
+  wpChips.forEach(ch => ch.addEventListener('click', ()=>{ $('i-p').value = ch.dataset.w; render(); }));
+
   /* ---------- explications repliables (UX : visibles à la première visite, mémorisé) ---------- */
   function setXp(on){
     document.body.classList.toggle('noexp', !on);
     const b = $('xp-btn'); b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on));
+    b.querySelector('.xp-state').textContent = on ? ' ✓' : '';
     try{ localStorage.setItem('lcw-vit-xp', on ? '1' : '0'); }catch(e){}
   }
   $('xp-btn').addEventListener('click', ()=> setXp(document.body.classList.contains('noexp')));
