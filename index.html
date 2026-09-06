@@ -82,6 +82,7 @@
   @media(max-width:680px){
     .topbar{position:static; justify-content:center; margin:0 0 6px; padding:2px 0 6px; background:none;
       border-bottom:none; -webkit-backdrop-filter:none; backdrop-filter:none;}
+    .tb-nav{flex-wrap:wrap; justify-content:center;}
     .wrap{padding-top:0;}
   }
 
@@ -2298,7 +2299,7 @@
   const EN = {
     'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve','tb-more':'Links ▾','tb-model':'💻 Physics model',
     'deb-cta':'🎓 Never flown yet? Start here — the learning setup',
-    'h1':'The Pump Foil <span class="hi">Watts</span> Showdown 🌊',
+    'h1':'<span class="h1a">The <span class="hi">Watts</span> Showdown</span><span class="h1b">🌊 in pump foil</span>',
     'hsub':'Why a <b>High Aspect</b> wing lets you fly far longer for less effort, where a classic pump wing puts you in the red within minutes.',
     'disclaimer':'⚠️ <b>Estimated figures, not real measurements.</b> Wing profiles are often kept secret by brands: this comparator gives <b>educational orders of magnitude</b> (trends), not manufacturer values. Treat it as a tool to <b>understand</b> — not a test bench.',
     'story-sum':'📖 Understand in 2 min: why a long wing saves energy (and why it\'s recent)',
@@ -2482,6 +2483,7 @@
     });
     render();
     renderMental();
+    attachAnchors();   // les boutons 🔗 vivent dans des titres traduits → recréés après chaque bascule
     document.getElementById('lang-btn').textContent = l==='fr' ? '🇬🇧 EN' : '🇫🇷 FR';
     document.title = l==='fr'
       ? 'Le Choc des Watts — Comparateur d\'ailes de pump foil longue distance'
@@ -2514,28 +2516,33 @@
       setTimeout(()=> tEl.scrollIntoView({block:'start'}), 120);
     }
   }
-  document.querySelectorAll('.sslide[id]').forEach(s=>{
-    const mkBtn = ()=>{
-      const b = document.createElement('button');
-      b.className = 'anchor-btn'; b.type = 'button'; b.textContent = '🔗';
-      b.title = 'Copier le lien de cette section / Copy link';
-      b.setAttribute('aria-label', 'Copier le lien de la section ' + s.id + ' / Copy section link');
-      b.addEventListener('click', e=>{
-        e.preventDefault(); e.stopPropagation();
-        const mode = document.body.classList.contains('simple') ? 'simple' : 'expert';
-        const url = location.origin + location.pathname + '?mode=' + mode +
-          (LANG === 'en' ? '&lang=en' : '') + '#' + s.id;
-        navigator.clipboard.writeText(url).then(()=>{
-          b.textContent = '✅'; setTimeout(()=> b.textContent = '🔗', 1200);
+  // Idempotent : applyLang() remplace l'innerHTML des titres (et donc avale les boutons) → on les recrée après chaque bascule.
+  function attachAnchors(){
+    document.querySelectorAll('.anchor-btn').forEach(b=> b.remove());
+    document.querySelectorAll('.sslide[id]').forEach(s=>{
+      const mkBtn = ()=>{
+        const b = document.createElement('button');
+        b.className = 'anchor-btn'; b.type = 'button'; b.textContent = '🔗';
+        b.title = 'Copier le lien de cette section / Copy link';
+        b.setAttribute('aria-label', 'Copier le lien de la section ' + s.id + ' / Copy section link');
+        b.addEventListener('click', e=>{
+          e.preventDefault(); e.stopPropagation();
+          const mode = document.body.classList.contains('simple') ? 'simple' : 'expert';
+          const url = location.origin + location.pathname + '?mode=' + mode +
+            (LANG === 'en' ? '&lang=en' : '') + '#' + s.id;
+          navigator.clipboard.writeText(url).then(()=>{
+            b.textContent = '✅'; setTimeout(()=> b.textContent = '🔗', 1200);
+          });
         });
-      });
-      return b;
-    };
-    // à côté de chaque titre principal de la slide (celui du mode actif est visible)
-    const heads = s.querySelectorAll('h1, .improve > h3, .pvpanel > h3, .kid > h3, .shock > h3');
-    if(heads.length) heads.forEach(h=>{ const b = mkBtn(); b.classList.add('inline'); h.appendChild(b); });
-    else { s.appendChild(mkBtn()); }
-  });
+        return b;
+      };
+      // à côté de chaque titre principal de la slide (celui du mode actif est visible)
+      const heads = s.querySelectorAll('h1, .improve > h3, .pvpanel > h3, .kid > h3, .shock > h3');
+      if(heads.length) heads.forEach(h=>{ const b = mkBtn(); b.classList.add('inline'); h.appendChild(b); });
+      else { s.appendChild(mkBtn()); }
+    });
+  }
+  attachAnchors();
 
   /* ---------- Points de progression du deck ---------- */
   const dotsNav = document.createElement('nav');

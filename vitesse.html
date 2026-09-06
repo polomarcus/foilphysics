@@ -60,7 +60,7 @@
   .tb-menu a:hover{background:var(--panel-2); color:var(--sky); border:none;}
   @media(max-width:680px){ .tb-menu{right:auto; left:50%; transform:translateX(-50%);} }
 
-  @media(max-width:680px){ .topbar{position:static; justify-content:center; background:none; border:none;} }
+  @media(max-width:680px){ .topbar{position:static; justify-content:center; background:none; border:none;} .tb-nav{flex-wrap:wrap; justify-content:center;} }
 
   main{max-width:960px; margin:0 auto; padding:64px 16px 40px;}
   header{text-align:center; padding:24px 0 8px;}
@@ -504,7 +504,7 @@
     test(t('Mât → 19 mm (Fatty)','Mast → 19 mm (Fatty)'),                  x=>{ x.Am=0.085; });
     test(t('Envergure +15 cm','Span +15 cm'),                              x=>{ x.b+=0.15; });
     test(t('Envergure −15 cm','Span −15 cm'),                              x=>{ x.b=Math.max(0.45, x.b-0.15); });
-    test(t('Straps (si pieds libres)','Straps (if strapless)'),                x=>{ x.straps=1.20; });
+    if(!$('i-straps').checked) test(t('Straps (si pieds libres)','Straps (if strapless)'), x=>{ x.straps=1.20; });
     test(t('Sprint +100 W','Sprint +100 W'),                               x=>{ x.P+=100; });
     test(t('Poids −5 kg','Weight −5 kg'),                                  x=>{ x.W-=5*G; });
 
@@ -526,6 +526,7 @@
   document.querySelectorAll('.apply').forEach(b => b.addEventListener('click', ()=>{
     const [s, bb, p] = b.dataset.c.split('|');
     $('i-s').value = s; $('i-b').value = bb; $('i-p').value = p;
+    $('i-w').value = 75;   // les combos sont calculés pour 75 kg — on aligne le slider (sinon promesse non tenue)
     $('i-prof').value = '0.008|0.62'; $('i-mast').value = '0.050'; $('i-stab').value = '0.020'; $('i-straps').checked = false;
     render();
     document.getElementById('sim').scrollIntoView({behavior:'smooth'});

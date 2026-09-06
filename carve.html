@@ -59,7 +59,7 @@
     font-size:.82rem; font-weight:700; text-decoration:none; display:flex; align-items:center; gap:7px; white-space:nowrap;}
   .tb-menu a:hover{background:var(--panel-2); color:var(--sky); border:none;}
   @media(max-width:680px){ .tb-menu{right:auto; left:50%; transform:translateX(-50%);} }
-  @media(max-width:680px){ .topbar{position:static; justify-content:center; background:none; border:none;} }
+  @media(max-width:680px){ .topbar{position:static; justify-content:center; background:none; border:none;} .tb-nav{flex-wrap:wrap; justify-content:center;} }
 
   main{max-width:960px; margin:0 auto; padding:64px 16px 40px;}
   header{text-align:center; padding:24px 0 8px;}
@@ -93,7 +93,7 @@
   .pg-btns{display:flex; gap:6px; flex-wrap:wrap;}
   .pg-btns .preset-btn{padding:6px 11px; font-size:.82rem;}
   @media(max-width:560px){ .pg-label{min-width:100%;} }
-  .inputs{display:grid; grid-template-columns:repeat(2,minmax(180px,1fr)); gap:10px 16px; margin-top:4px;}
+  .inputs{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 14px; margin-top:4px;}
   @media(min-width:820px){ .inputs{grid-template-columns:repeat(4,1fr);} }
   .inputs .field{display:flex; flex-direction:column;}
   .inputs .field input[type=range]{margin-top:auto;}   /* curseur ancré en bas → sliders alignés même si un label passe sur 2 lignes */
@@ -225,38 +225,38 @@
   <!-- SIMULATEUR -->
   <section id="sim" class="a-in">
     <h3 data-i18n="sim-h3">🎛️ Compare les ailes</h3>
-    <p class="lede" data-i18n="sim-lede">Choisis un <b>preset réel</b> ou règle les 4 curseurs — le caractère de l'aile bouge en direct.
+    <p class="lede" data-i18n="sim-lede">Choisis un <b>preset réel</b> (il règle l'<b>aile</b> ; fuselage et stab restent à toi) ou joue des 4 curseurs — tout bouge en direct.
       Le bouton <b>💡 Explications</b> déplie la physique de chaque score.</p>
     <div class="panel">
       <div class="presets">
         <div class="preset-grp"><span class="pg-label">🏄 Axis Surge</span><div class="pg-btns">
-          <button class="preset-btn" type="button" data-p="89|835|65|90">890</button>
-          <button class="preset-btn" type="button" data-p="95|949|65|90">950</button>
-          <button class="preset-btn" type="button" data-p="101|1076|65|90">1010</button>
+          <button class="preset-btn" type="button" data-p="89|835">890</button>
+          <button class="preset-btn" type="button" data-p="95|949">950</button>
+          <button class="preset-btn" type="button" data-p="101|1076">1010</button>
         </div></div>
         <div class="preset-grp"><span class="pg-label">🌀 Alpine RSX Carve</span><div class="pg-btns">
-          <button class="preset-btn" type="button" data-p="96|820|65|90">820</button>
-          <button class="preset-btn" type="button" data-p="103|960|65|90">960</button>
-          <button class="preset-btn" type="button" data-p="112|1100|65|90">1100</button>
+          <button class="preset-btn" type="button" data-p="96|820">820</button>
+          <button class="preset-btn" type="button" data-p="103|960">960</button>
+          <button class="preset-btn" type="button" data-p="112|1100">1100</button>
         </div></div>
         <div class="preset-grp"><span class="pg-label">🌊 Alpine DW</span><div class="pg-btns">
-          <button class="preset-btn" type="button" data-p="81|840|65|90">840</button>
-          <button class="preset-btn" type="button" data-p="93|980|65|90">980</button>
-          <button class="preset-btn" type="button" data-p="94|1180|65|90">1180</button>
+          <button class="preset-btn" type="button" data-p="81|840">840</button>
+          <button class="preset-btn" type="button" data-p="93|980">980</button>
+          <button class="preset-btn" type="button" data-p="94|1180">1180</button>
         </div></div>
         <div class="preset-grp"><span class="pg-label">🌊 F-One Jam</span><div class="pg-btns">
-          <button class="preset-btn" type="button" data-p="120|1400|65|90">1400</button>
-          <button class="preset-btn" type="button" data-p="128|1600|65|90">1600</button>
+          <button class="preset-btn" type="button" data-p="120|1400">1400</button>
+          <button class="preset-btn" type="button" data-p="128|1600">1600</button>
         </div></div>
         <div class="preset-grp"><span class="pg-label" data-i18n="pg-ref">📏 Repère glisse</span><div class="pg-btns">
-          <button class="preset-btn" type="button" data-p="140|1900|65|90" data-i18n="p-ld">longue distance (140 cm)</button>
+          <button class="preset-btn" type="button" data-p="140|1900" data-i18n="p-ld">longue distance (140 cm)</button>
         </div></div>
       </div>
       <div class="inputs">
         <div class="field"><label for="i-b"><span data-i18n="l-b">Envergure</span> : <span class="fval" id="v-b">89</span> cm</label>
           <input type="range" id="i-b" min="70" max="150" step="1" value="89"></div>
         <div class="field"><label for="i-s"><span data-i18n="l-s">Surface</span> : <span class="fval" id="v-s">890</span> cm²</label>
-          <input type="range" id="i-s" min="600" max="2200" step="10" value="890"></div>
+          <input type="range" id="i-s" min="600" max="2200" step="5" value="890"></div>
         <div class="field"><label for="i-fus"><span data-i18n="l-fus">Fuselage</span> : <span class="fval" id="v-fus">65</span> cm <span id="v-fusq" style="color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0"></span></label>
           <input type="range" id="i-fus" min="58" max="72" step="1" value="65"></div>
         <div class="field"><label for="i-stab"><span data-i18n="l-stab">Stab</span> : <span class="fval" id="v-stab">90</span> cm² <span id="v-stabq" style="color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0"></span></label>
@@ -454,7 +454,7 @@
     'tldr-s':'Roll inertia ≈ <b>mass × span²</b> — a wing 20% shorter turns ~1.5× faster. The exact opposite of long distance.',
     'disc':'⚠️ <b>Estimated figures</b> — carving depends heavily on <b>technique</b> and the wave: we compare the wings\' <b>intrinsic agility</b>, not your style.',
     'sim-h3':'🎛️ Compare the wings',
-    'sim-lede':'Pick a <b>real preset</b> or set the 4 sliders — the wing\'s character updates live. The <b>💡 Explanations</b> button unfolds the physics behind each score.',
+    'sim-lede':'Pick a <b>real preset</b> (it sets the <b>wing</b>; fuselage and stab stay yours) or play the 4 sliders — everything updates live. The <b>💡 Explanations</b> button unfolds the physics behind each score.',
     'pg-ref':'📏 Glide reference','p-ld':'long-distance (140 cm)',
     'l-b':'Span','l-s':'Area','l-fus':'Fuselage','l-stab':'Stab',
     'anim-cap':'in the wave: its line at this score — bottom-turn → lip, and back',
@@ -595,12 +595,14 @@
     // Allongement AR = envergure²/surface. L'AR gouverne la GLISSE / la corde (pas l'agilité — ça, c'est l'envergure,
     // score « vivacité »). AR bas = corde large = porte à basse vitesse mais traîne ; AR haut = élancé = glisse & relance.
     const ar = b*b/S;
-    const arBand =
+    const surfy = b <= 118;   // au-delà : aile de distance — le discours « surf » n'a plus de sens
+    let arBand =
         ar<6.5   ? {c:'#fb923c', l:t('corde très large','very wide chord'), d:t('grosse portance à basse vitesse, mais ça traîne et ventile','lots of low-speed lift, but draggy and it ventilates')}
       : ar<8.5   ? {c:'#a3e635', l:t('peu élancé — corde large','stubby — wide chord'), d:t('porte et accroche à basse vitesse (facile à lancer), mais glisse et relance limitées','lift and grip at low speed (easy to launch), but limited glide and pump-back')}
       : ar<=10.5 ? {c:'#34d399', l:t('élancement équilibré ✓','balanced aspect ✓'), d:t('bon compromis glisse / accroche — le cœur du surf-carve','good glide / grip balance — the heart of surf-carve')}
       : ar<=12   ? {c:'#34d399', l:t('élancé — glisse & relance','slender — glide & pump'), d:t('glisse loin et repompe efficacement (connecter) ; un peu moins d\'accroche à basse vitesse','glides far and pumps back efficiently (connecting); a touch less low-speed grip')}
       :            {c:'#fb923c', l:t('très élancé (downwind/race)','very slender (downwind/race)'), d:t('vitesse et distance, plus vraiment un profil de surf','speed and distance, no longer really a surf shape')};
+    if(!surfy && ar>8.5 && ar<=10.5) arBand = {c:'#34d399', l:t('élancement équilibré ✓','balanced aspect ✓'), d:t('bon compromis portance / glisse','good lift / glide balance')};
     const arPos = Math.max(0, Math.min(100, (ar-5)/8*100));   // jauge 5 → 13
     const sLo = Math.round(b*b/10/10)*10, sHi = Math.round(b*b/8/10)*10;   // surface pour AR 10 → 8
     $('o-ar').innerHTML =
@@ -611,7 +613,8 @@
       + '<div class="ar-gauge"><span class="ar-mark" style="left:'+arPos+'%"></span></div>'
       + '<div class="ar-ticks"><span>5</span><span>7</span><span>9</span><span>11</span><span>13</span></div>'
       + '<div class="ar-ends"><span>◄ '+t('corde large · porte fort, traîne','wide chord · lift, drag')+'</span><span>'+t('élancé · glisse & relance','slender · glide &amp; pump')+' ►</span></div>'
-      + '<div class="ar-desc"><span class="xpl">'+arBand.d+' · </span>'+t('cible surf pour','surf target for')+' '+b+' cm : <b>~'+sLo+'-'+sHi+' cm²</b> (AR 8-10)</div>';
+      + '<div class="ar-desc"><span class="xpl">'+arBand.d+(surfy?' · ':'')+'</span>'
+      + (surfy ? t('cible surf pour','surf target for')+' '+b+' cm : <b>~'+sLo+'-'+sHi+' cm²</b> (AR 8-10)' : '')+'</div>';
 
     $('o-agil').innerHTML = '<span style="color:hsl('+Math.round(agility*1.2)+',68%,55%)">' + agility + '</span> <small>/ 100 ' + t('vivacité','liveliness') + '</small>';
     setAnim(agility, 'hsl('+Math.round(agility*1.2)+',68%,55%)');
@@ -624,9 +627,9 @@
 
     const qual = (v, w) => v < 40 ? w[0] : v < 70 ? w[1] : w[2];   // mot-clé selon le score
     const AX = [
-      ['🔩 '+t('Lâcher de l\'arrière','Tail release'), pivot, '#38bdf8',
+      ['🔄 '+t('Pivot arrière (fuselage + stab)','Rear pivot (fuselage + stab)'), pivot, '#38bdf8',
         [t('file droit','tracks straight'),t('neutre','neutral'),t('très lâche','very loose')],
-        t('elle tourne court et pivote (lâche) ou file tout droit (verrouillé)','it pivots tight (loose) or tracks straight (locked)')],
+        t('piloté par les 2 curseurs de droite : court + petit stab = pivote lâche ; long + gros stab = file droit','driven by the 2 right-hand sliders: short + small stab = loose pivot; long + big stab = tracks straight')],
       ['🎯 '+t('Appui / drive','Back-foot drive'), drive, '#34d399',
         [t('doux','soft'),t('équilibré','balanced'),t('gros drive','strong')],
         t('l\'accroche et la relance quand tu appuies sur le pied arrière (pour projeter dans la vague)','the grip and rebound when you press on the back foot (to project down the wave)')],
@@ -649,8 +652,9 @@
   }
 
   function applyPresetBtn(btn){
-    const [b,s,fus,stab] = btn.dataset.p.split('|');
-    $('i-b').value = b; $('i-s').value = s; $('i-fus').value = fus; $('i-stab').value = stab;
+    // Les presets règlent l'AILE seule — fuselage et stab restent tes réglages (sinon l'axe « pivot » semblait figé).
+    const [b,s] = btn.dataset.p.split('|');
+    $('i-b').value = b; $('i-s').value = s;
     document.querySelectorAll('.preset-btn').forEach(x => x.classList.toggle('on', x === btn));
     render();
   }
