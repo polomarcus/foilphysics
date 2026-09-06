@@ -96,6 +96,23 @@
   .vout .win{color:var(--muted); font-size:.9rem; margin-top:8px; max-width:560px; margin-left:auto; margin-right:auto;}
   .vout .win b{color:var(--txt);}
 
+  .ar-wrap{max-width:430px; margin:14px auto 0;}
+  .ar-gauge{position:relative; height:7px; border-radius:999px; margin:0 2px 5px;
+    background:linear-gradient(90deg,#fb923c 0%,#a3e635 18%,#34d399 29%,#34d399 71%,#a3e635 79%,#fdba74 100%);}
+  .ar-mark{position:absolute; top:50%; width:14px; height:14px; border-radius:50%; background:#fff;
+    border:2px solid var(--panel-2); transform:translate(-50%,-50%); box-shadow:0 1px 4px rgba(0,0,0,.55); transition:left .5s cubic-bezier(.22,1,.36,1);}
+  .ar-ticks{position:relative; height:1em; font-size:.64rem; color:var(--dim); font-variant-numeric:tabular-nums;}
+  .ar-ticks span{position:absolute; transform:translateX(-50%);}
+  .ar-ends{display:flex; justify-content:space-between; gap:12px; font-size:.7rem; color:var(--muted); font-weight:600; margin-top:6px;}
+  .ar-ends span{max-width:50%;}
+  .ar-ends span:last-child{text-align:right;}
+
+  .xp-row{display:flex; justify-content:center; margin:16px 0 0;}
+  .xp-btn{background:var(--panel-2); border:1px solid var(--line); color:var(--muted); border-radius:999px;
+    padding:5px 13px; font-size:.75rem; font-weight:700; cursor:pointer;}
+  .xp-btn.on{border-color:#34d399; color:#34d399;}
+  body.noexp .xpl{display:none;}
+
   .rec-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; max-width:640px; margin:18px auto 0;}
   .rec{background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:10px 8px; text-align:center;}
   .rec .rk{font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); font-weight:700;}
@@ -322,18 +339,25 @@
           </select></div>
       </div>
 
+      <div class="xp-row"><button type="button" id="xp-btn" class="xp-btn" aria-pressed="false">💡 <span data-i18n="xp-lbl">Explications</span></button></div>
+
       <div class="vout" aria-live="polite">
         <div class="n" id="o-surf">—</div>
+        <div class="ar-wrap">
+          <div class="ar-gauge"><span class="ar-mark" id="o-mark" style="left:50%"></span></div>
+          <div class="ar-ticks"><span style="left:7.1%">1200</span><span style="left:28.6%">1500</span><span style="left:50%">1800</span><span style="left:71.4%">2100</span><span style="left:92.9%">2400</span></div>
+          <div class="ar-ends"><span data-i18n="g-lo">◄ trop petite pour apprendre</span><span data-i18n="g-hi">rare &amp; encombrant ►</span></div>
+        </div>
         <div class="win" id="o-why"></div>
       </div>
       <div class="rec-grid" id="o-rec"></div>
       <p id="o-delta" style="font-size:.82rem;color:#6ee7b7;text-align:center;margin:12px auto 0;font-weight:600" aria-live="polite"></p>
-      <p style="font-size:.76rem;color:var(--muted);text-align:center;margin:12px auto 0;max-width:560px" data-i18n="reco-ref">
+      <p class="xpl" style="font-size:.76rem;color:var(--muted);text-align:center;margin:12px auto 0;max-width:560px" data-i18n="reco-ref">
         Cohérent avec les chartes des grandes marques (pour 75-85 kg : <b>~1800-2050 cm²</b>, AR ~9, stab
         <b>~190-220 cm²</b>) — et on <b>vise volontairement grand</b> pour l'aile : <b>tout le monde gagne à démarrer
         entre ~1500 et 2000+ cm²</b>, même léger. Plus grand = décroche plus bas = plus tolérant = tu apprends plus
         vite. (Un stab <b>~220 cm² suffit</b> ; au-delà, surtout plus de traînée.)</p>
-      <div class="bk" id="o-eff"></div>
+      <div class="bk xpl" id="o-eff"></div>
     </div>
   </section>
 
@@ -344,14 +368,14 @@
       <div class="card ok" data-i18n="vd1">
         <div class="k">📏 La surface = ta marge d'erreur</div>
         <div class="big">~20-25 cm²/kg · jamais moins de ~1500</div>
-        <p>Une grande aile décroche vers <b>10 km/h</b> : quand tu rates un pump et que tu ralentis, elle
+        <p class="xpl">Une grande aile décroche vers <b>10 km/h</b> : quand tu rates un pump et que tu ralentis, elle
           <b>te rattrape</b> au lieu de tomber. Une lame de course décroche à 20+ km/h — zéro droit à l'erreur.
           La surface, c'est du temps de vol par session, donc de l'apprentissage par session.</p>
       </div>
       <div class="card ok" data-i18n="vd2">
         <div class="k">🛞 Le gros stab = tes roues d'entraînement</div>
         <div class="big">la stabilité d'abord</div>
-        <p>Sur <a href="vitesse.html">la page vitesse</a>, un stab 200 coûte ~3,5 km/h — ici c'est ton meilleur
+        <p class="xpl">Sur <a href="vitesse.html">la page vitesse</a>, un stab 200 coûte ~3,5 km/h — ici c'est ton meilleur
           allié : il <b>calme le tangage</b> et rend le foil prévisible. Et rien ne presse : un gros stab
           <b>se garde longtemps</b> — tu le réduiras bien après l'aile, quand il commencera vraiment à te
           freiner. Ce sera alors <b>l'upgrade le moins cher</b> de tout le foil.</p>
@@ -359,14 +383,14 @@
       <div class="card meh" data-i18n="vd3">
         <div class="k">🍞 Le profil épais = décrochage gentil</div>
         <div class="big">il prévient avant de lâcher</div>
-        <p>Un profil épais (~13-15 %) s'enfonce <b>progressivement</b> quand tu vas trop lentement — tu le sens
+        <p class="xpl">Un profil épais (~13-15 %) s'enfonce <b>progressivement</b> quand tu vas trop lentement — tu le sens
           et tu corriges. Un profil fin <b>lâche d'un coup</b>, sans préavis. Le supplément de traînée, tu t'en
           fiches : tu n'es pas là pour la vitesse.</p>
       </div>
       <div class="card meh" data-i18n="vd4">
         <div class="k">📐 Allongement modéré (AR ~9)</div>
         <div class="big">docile avant efficace</div>
-        <p><a href="long-distance.html">Le comparateur</a> te dira qu'une grande envergure économise tes watts — c'est vrai,
+        <p class="xpl"><a href="long-distance.html">Le comparateur</a> te dira qu'une grande envergure économise tes watts — c'est vrai,
           <b>plus tard</b>. Une aile très allongée (AR 11+) est nerveuse en roulis et décroche du bout d'aile.
           Les ailes d'école modernes font toutes <b>AR ~9</b> : c'est le bon compromis docile/efficace,
           validé par le marché.</p>
@@ -374,21 +398,21 @@
       <div class="card you" data-i18n="vd5">
         <div class="k">🩳 Mât court (60-70 cm)</div>
         <div class="big">tomber de moins haut</div>
-        <p>Moins de levier sous les pieds = foil <b>moins nerveux</b>, chutes plus douces, et l'eau peu
+        <p class="xpl">Moins de levier sous les pieds = foil <b>moins nerveux</b>, chutes plus douces, et l'eau peu
           profonde reste praticable. L'inconvénient (moins de marge pour pomper haut) ne te concernera que
           dans quelques mois — tu passeras alors à 75-85 cm.</p>
       </div>
       <div class="card meh" data-i18n="vd7">
         <div class="k">🛹 La planche : petite et légère</div>
         <div class="big">c'est le ponton qui porte</div>
-        <p>Au dock start, <b>pas besoin de volume</b> : l'énergie vient du ponton, pas de la flottaison.
+        <p class="xpl">Au dock start, <b>pas besoin de volume</b> : l'énergie vient du ponton, pas de la flottaison.
           Une planche courte (80-110 cm, ~90 cm en général), légère, un pad antidérapant — et chaque kilo économisé
           se retrouve dans <a href="long-distance.html">tes watts</a>. D'occasion aussi, évidemment.</p>
       </div>
       <div class="card ok" data-i18n="vd8">
         <div class="k">🪜 Les accélérateurs d'apprentissage</div>
         <div class="big">échelle &amp; trottinette</div>
-        <p>Une <b>échelle de mise à l'eau</b> transforme n'importe quel quai en spot : hauteur constante,
+        <p class="xpl">Une <b>échelle de mise à l'eau</b> transforme n'importe quel quai en spot : hauteur constante,
           départs <b>répétables à volonté</b>. Et la <b>trottinette de pump</b> — un foil à <b>guidon</b> —
           offre un troisième appui : le geste s'apprend bien plus vite, puis se transfère tel quel sur la
           planche classique.</p>
@@ -396,7 +420,7 @@
       <div class="card you" data-i18n="vd6">
         <div class="k">💶 Alu et occasion</div>
         <div class="big">le carbone attendra</div>
-        <p>Au début, ton foil rencontrera des quais, des cailloux et du sable. L'<b>alu</b> encaisse et pardonne
+        <p class="xpl">Au début, ton foil rencontrera des quais, des cailloux et du sable. L'<b>alu</b> encaisse et pardonne
           au portefeuille ; d'occasion, un setup complet d'apprentissage se trouve — et se <b>revend</b> presque
           au même prix quand tu changes. Le carbone rigide, c'est quand ta technique saura le sentir.</p>
       </div>
@@ -468,6 +492,8 @@
     'reco-h3':'🎛️ Your learning setup',
     'reco-lede':'One physical rule behind it all: the wing must <b>stall around ~10 km/h</b> — low enough that a missed pump isn\'t a crash. The required area mostly depends on your weight.',
     'l-w':'Your weight','l-stage':'Where you are',
+    'xp-lbl':'Explanations',
+    'g-lo':'◄ too small to learn','g-hi':'rare &amp; bulky ►',
     'o-st1':'🐣 Never flown / first dock starts','o-st2':'🐥 I fly for a few seconds','o-st3':'🐦 I hold 30 s and start pumping away',
     'reco-ref':'Consistent with the major brands\' size charts (for 75-85 kg: <b>~1800-2050 cm²</b>, AR ~9, <b>~190-220 cm²</b> stab) — and we <b>deliberately aim big</b> for the wing: <b>everyone is better off starting between ~1500 and 2000+ cm²</b>, even light riders. Bigger = stalls lower = more forgiving = you learn faster. (A <b>~220 cm² stab is plenty</b>; beyond that, mostly extra drag.)',
     'secu-h3':'🦺 Safety first',
@@ -496,15 +522,15 @@
     'dk2':'<div class="num">⏱️</div><div><h4>Honest expectations</h4><p>Count on <b>~10 sessions</b> before holding 30 s. First flights last 5-20 s and end in the water — that\'s the game, and it\'s the same for everyone. There is a shortcut: one <b>coached session</b> (club, instructor) is easily worth five solo — and it\'s safer.</p></div>',
     'dk3':'<div class="num">🔁</div><div><h4>The method</h4><p><b>Dozens of short starts</b> rather than a few long flights: repeating the start IS the learning. A good setup (below) multiplies the seconds of flight per attempt.</p></div>',
     'dk4':'<div class="num">🛫</div><div><h4>Why a big wing: the takeoff speed</h4><p>A foil only carries you <b>above a minimum speed</b> — the <b>takeoff speed</b>. The <b>bigger and thicker</b> the wing, the <b>lower</b> it is: a beginner wing lifts off around <b>~10 km/h</b>, the momentum of two dock steps is enough. A small wing would need <b>15 km/h and up</b>, out of reach at first. That\'s <b>the whole reason to start big</b>: you lift off early, fly longer, learn faster.<br><b>You progress by succeeding, not by grinding</b>: better to string together <b>clean starts</b> on a big wing — every takeoff teaches you something — than to exhaust and discourage yourself on a <b>too-small</b> wing that won\'t fly. You\'ll size down soon enough.</p></div>',
-    'vd7':'<div class="k">🛹 The board: small and light</div><div class="big">the dock does the carrying</div><p>For dock starts, <b>no volume needed</b>: the energy comes from the dock, not from buoyancy. A short board (80-110 cm, usually ~90 cm), light, a grippy pad — and every kilo saved comes back as <a href="long-distance.html?lang=en">watts</a>. Second-hand too, obviously.</p>',
-    'vd8':'<div class="k">🪜 The learning accelerators</div><div class="big">ladder &amp; scooter</div><p>A <b>water-entry ladder</b> turns any quay into a spot: constant height, starts <b>repeatable at will</b>. And the <b>pump scooter</b> — a foil with a <b>handlebar</b> — gives a third point of contact: the motion is learned much faster, then transfers as-is to the regular board.</p>',
+    'vd7':'<div class="k">🛹 The board: small and light</div><div class="big">the dock does the carrying</div><p class="xpl">For dock starts, <b>no volume needed</b>: the energy comes from the dock, not from buoyancy. A short board (80-110 cm, usually ~90 cm), light, a grippy pad — and every kilo saved comes back as <a href="long-distance.html?lang=en">watts</a>. Second-hand too, obviously.</p>',
+    'vd8':'<div class="k">🪜 The learning accelerators</div><div class="big">ladder &amp; scooter</div><p class="xpl">A <b>water-entry ladder</b> turns any quay into a spot: constant height, starts <b>repeatable at will</b>. And the <b>pump scooter</b> — a foil with a <b>handlebar</b> — gives a third point of contact: the motion is learned much faster, then transfers as-is to the regular board.</p>',
     'vd-h3':'🧾 The complete gear, in 8 cards',
-    'vd1':'<div class="k">📏 Area = your margin for error</div><div class="big">~20-25 cm²/kg · never under ~1500</div><p>A big wing stalls around <b>10 km/h</b>: when you miss a pump and slow down, it <b>catches you</b> instead of dropping you. A race blade stalls at 20+ km/h — zero room for error. Area means seconds of flight per session, which means learning per session.</p>',
-    'vd2':'<div class="k">🛞 The big stab = your training wheels</div><div class="big">stability first</div><p>On <a href="vitesse.html?lang=en">the speed page</a> a stab 200 costs ~3.5 km/h — here it\'s your best ally: it <b>tames the pitch</b> and makes the foil predictable. And there\'s no rush: a big stab <b>stays with you a long time</b> — you\'ll size it down well after the wing, when it truly starts holding you back. It\'ll then be <b>the cheapest upgrade</b> on the whole foil.</p>',
-    'vd3':'<div class="k">🍞 Thick profile = gentle stall</div><div class="big">it warns before letting go</div><p>A thick profile (~13-15%) sinks <b>progressively</b> when you go too slow — you feel it and correct. A thin profile <b>lets go at once</b>, no warning. The extra drag? You don\'t care: you\'re not here for speed.</p>',
-    'vd4':'<div class="k">📐 Moderate aspect ratio (AR ~9)</div><div class="big">docile before efficient</div><p><a href="long-distance.html?lang=en">The comparator</a> will tell you a wide span saves your watts — true, <b>later</b>. A very elongated wing (AR 11+) is twitchy in roll and stalls from the tips. Modern school wings all sit at <b>AR ~9</b>: the docile/efficient sweet spot, validated by the market.</p>',
-    'vd5':'<div class="k">🩳 Short mast (60-70 cm)</div><div class="big">falling from lower</div><p>Less leverage underfoot = a <b>calmer</b> foil, softer falls, and shallow water stays usable. The downside (less room to pump high) won\'t concern you for months — then you\'ll move to 75-85 cm.</p>',
-    'vd6':'<div class="k">💶 Alu and second-hand</div><div class="big">carbon can wait</div><p>At first your foil will meet docks, rocks and sand. <b>Alu</b> takes the hits and forgives your wallet; second-hand, a full learning setup is easy to find — and <b>resells</b> at nearly the same price when you move on. Stiff carbon is for when your technique can feel it.</p>',
+    'vd1':'<div class="k">📏 Area = your margin for error</div><div class="big">~20-25 cm²/kg · never under ~1500</div><p class="xpl">A big wing stalls around <b>10 km/h</b>: when you miss a pump and slow down, it <b>catches you</b> instead of dropping you. A race blade stalls at 20+ km/h — zero room for error. Area means seconds of flight per session, which means learning per session.</p>',
+    'vd2':'<div class="k">🛞 The big stab = your training wheels</div><div class="big">stability first</div><p class="xpl">On <a href="vitesse.html?lang=en">the speed page</a> a stab 200 costs ~3.5 km/h — here it\'s your best ally: it <b>tames the pitch</b> and makes the foil predictable. And there\'s no rush: a big stab <b>stays with you a long time</b> — you\'ll size it down well after the wing, when it truly starts holding you back. It\'ll then be <b>the cheapest upgrade</b> on the whole foil.</p>',
+    'vd3':'<div class="k">🍞 Thick profile = gentle stall</div><div class="big">it warns before letting go</div><p class="xpl">A thick profile (~13-15%) sinks <b>progressively</b> when you go too slow — you feel it and correct. A thin profile <b>lets go at once</b>, no warning. The extra drag? You don\'t care: you\'re not here for speed.</p>',
+    'vd4':'<div class="k">📐 Moderate aspect ratio (AR ~9)</div><div class="big">docile before efficient</div><p class="xpl"><a href="long-distance.html?lang=en">The comparator</a> will tell you a wide span saves your watts — true, <b>later</b>. A very elongated wing (AR 11+) is twitchy in roll and stalls from the tips. Modern school wings all sit at <b>AR ~9</b>: the docile/efficient sweet spot, validated by the market.</p>',
+    'vd5':'<div class="k">🩳 Short mast (60-70 cm)</div><div class="big">falling from lower</div><p class="xpl">Less leverage underfoot = a <b>calmer</b> foil, softer falls, and shallow water stays usable. The downside (less room to pump high) won\'t concern you for months — then you\'ll move to 75-85 cm.</p>',
+    'vd6':'<div class="k">💶 Alu and second-hand</div><div class="big">carbon can wait</div><p class="xpl">At first your foil will meet docks, rocks and sand. <b>Alu</b> takes the hits and forgives your wallet; second-hand, a full learning setup is easy to find — and <b>resells</b> at nearly the same price when you move on. Stiff carbon is for when your technique can feel it.</p>',
     'prog-h3':'🪜 What next? Sizing down',
     'prog-lede':'Beginner gear isn\'t a bad buy: it\'s a <b>rocket stage</b>. Here\'s when to drop each stage.',
     'p1':'<div class="num">🐣</div><div><h4>Dock start & first flights</h4><p>Goal: <b>8 successful starts out of 10</b> and 10-20 s flights. Stay on the big wing — every second of flight is worth more than any upgrade. This is where your technique improves fastest.</p></div>',
@@ -569,6 +595,7 @@
     const r = reco(wkg, stage);
 
     $('o-surf').innerHTML = num(r.S) + ' <small>cm²</small>';
+    $('o-mark').style.left = Math.min(100, Math.max(0, (r.S-1100)/(2500-1100)*100)).toFixed(1) + '%';
     $('o-why').innerHTML =
       t('Elle décrochera vers <b>','It will stall around <b>') + num(r.m.vStall*3.6) +
       t(' km/h</b> et croisera tranquillement à <b>~',' km/h</b> and cruise gently at <b>~') + num(r.vCruise*3.6) +
@@ -617,6 +644,16 @@
   }
 
   document.querySelectorAll('input,select').forEach(el => el.addEventListener('input', render));
+
+  /* ---------- explications repliables (UX : visibles à la 1re visite, mémorisé) ---------- */
+  function setXp(on){
+    document.body.classList.toggle('noexp', !on);
+    const b = $('xp-btn'); b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on));
+    try{ localStorage.setItem('lcw-deb-xp', on ? '1' : '0'); }catch(e){}
+  }
+  $('xp-btn').addEventListener('click', ()=> setXp(document.body.classList.contains('noexp')));
+  let xp0 = true; try{ const s = localStorage.getItem('lcw-deb-xp'); if(s !== null) xp0 = s === '1'; }catch(e){}
+  setXp(xp0);
 
   /* animations d'entrée */
   if(!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window){

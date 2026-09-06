@@ -586,7 +586,7 @@
     // Scores 0-100 = position sur chaque axe (bornes = extrêmes des curseurs). La physique (∝ envergure²) est dans les cartes.
     const clamp = x => Math.max(0, Math.min(100, Math.round(x)));
     const Iroll    = S*b*b/1e6;                                 // inertie de roulis relative ∝ masse × envergure² (masse ∝ surface)
-    const agility  = clamp(100*(24 - Iroll)/18);                // courte ET légère → agile ; grosse surface = lourde = moins vive
+    const agility  = clamp(100*(30 - Iroll)/26);                // courte ET légère → agile ; bornes élargies (Jam 1600 ≈ 15, repère 140 = 0)
     const glisse   = clamp(100*(b-70)/80);                      // envergure longue → glisse (l'inverse)
     const drive    = clamp(100*(2200-S)/1600);                  // petite surface → drive
     const takeoff  = clamp(100*(S-600)/1600);                   // grande surface → démarre facile (l'inverse)
@@ -612,7 +612,7 @@
       + '<span class="ar-badge" style="color:'+arBand.c+';background:'+arBand.c+'22">'+arBand.l+'</span></div>'
       + '<div class="ar-gauge"><span class="ar-mark" style="left:'+arPos+'%"></span></div>'
       + '<div class="ar-ticks"><span>5</span><span>7</span><span>9</span><span>11</span><span>13</span></div>'
-      + '<div class="ar-ends"><span>◄ '+t('corde large · porte fort, traîne','wide chord · lift, drag')+'</span><span>'+t('élancé · glisse & relance','slender · glide &amp; pump')+' ►</span></div>'
+      + '<div class="ar-ends"><span>◄ '+t('corde large · porte fort, traîne','wide chord · lift, drag')+'</span><span>'+t('élancé · glisse &amp; relance','slender · glide &amp; pump')+'&nbsp;►</span></div>'
       + '<div class="ar-desc"><span class="xpl">'+arBand.d+(surfy?' · ':'')+'</span>'
       + (surfy ? t('cible surf pour','surf target for')+' '+b+' cm : <b>~'+sLo+'-'+sHi+' cm²</b> (AR 8-10)' : '')+'</div>';
 
@@ -643,11 +643,11 @@
         + ' · <b style="color:#818cf8">≈ '+endurance(b,S)+'</b> '+t('de vol continu*','of continuous flight*')]
     ];
     const hsl = v => 'hsl('+Math.round(v*1.2)+',68%,55%)';   // 0 rouge → 100 vert (intensité du trait, pas une note)
-    $('o-bk').innerHTML = '<div class="bk-cat">' + t('Le caractère de l\'aile — <span style="color:hsl(8,68%,55%)">🔴 peu</span> · <span style="color:hsl(120,68%,55%)">🟢 beaucoup</span> de ce trait','The wing\'s character — <span style="color:hsl(8,68%,55%)">🔴 little</span> · <span style="color:hsl(120,68%,55%)">🟢 lots</span> of this trait') + '</div>' +
+    $('o-bk').innerHTML = '<div class="bk-cat">' + t('Le caractère de l\'aile — 0 = peu · 100 = beaucoup de ce trait (ni bon ni mauvais : un style)','The wing\'s character — 0 = little · 100 = lots of this trait (neither good nor bad: a style)') + '</div>' +
       AX.map(([name,v,col,w,gloss]) =>
-        '<div class="axr"><div class="axr-top"><span class="axr-name">'+name+' <span class="qtag" style="color:'+hsl(v)+'">'+qual(v,w)+'</span></span><span class="axr-v" style="color:'+hsl(v)+'">'+v+'</span></div>'+
+        '<div class="axr"><div class="axr-top"><span class="axr-name">'+name+' <span class="qtag" style="color:'+col+'">'+qual(v,w)+'</span></span><span class="axr-v" style="color:'+col+'">'+v+'</span></div>'+
         '<div class="axr-gloss">'+gloss+'</div>'+
-        '<span class="trk"><span class="fil" style="width:'+v+'%;background:'+hsl(v)+'"></span></span></div>'
+        '<span class="trk"><span class="fil" style="width:'+v+'%;background:'+col+'"></span></span></div>'
       ).join('');
   }
 
@@ -673,7 +673,7 @@
     try{ localStorage.setItem('lcw-carve-xp', on ? '1' : '0'); }catch(e){}
   }
   $('xp-btn').addEventListener('click', ()=> setXp(simPanel.classList.contains('noexp')));
-  let xp0 = false; try{ xp0 = localStorage.getItem('lcw-carve-xp') === '1'; }catch(e){}
+  let xp0 = true; try{ const v = localStorage.getItem('lcw-carve-xp'); if(v !== null) xp0 = v === '1'; }catch(e){}  // ON à la 1re visite, mémorisé ensuite
   setXp(xp0);
 
   if(!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window){

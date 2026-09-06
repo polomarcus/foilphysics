@@ -111,6 +111,9 @@
   body.simple .shock{display:none;}
   body:not(.simple) .so{display:none;}
   body.simple .xo{display:none;}
+  /* 💡 Explications : bouton topbar #xp-btn ; body.noexp replie les blocs .xpl (les figures note-fig restent visibles) */
+  body.noexp .xpl{display:none;}
+  #xp-btn.on{border-color:var(--sky); color:var(--sky);}
   .story-in p{margin:0 0 9px;}
   /* Graphe puissance / vitesse (vue Simple) */
   .pvpanel{background:transparent; border:none; padding:8px 0; margin-bottom:64px;}
@@ -370,6 +373,9 @@
   .watts .unit{font-size:1.1rem; color:var(--muted); font-weight:700;}
 
   .inputs .badge{grid-column:1 / -1; margin-bottom:4px;}
+  /* même hauteur pour les 2 badges de verdict du duel (celui de la Fireball a une ligne de plus)
+     → sliders et KPIs des deux cartes restent en vis-à-vis. 168px = badge le plus haut mesuré (défauts, 1200px). */
+  .grid .card .badge{min-height:168px;}
   .badge{display:flex; align-items:center; gap:10px; border-radius:12px; padding:12px 14px; font-weight:700;}
   .badge .dot{font-size:1.3rem;}
   .badge .txt b{display:block; font-size:.95rem;}
@@ -641,6 +647,7 @@
   </div>
   <div class="tb-ctrl">
     <button id="tb-mode" type="button" title="Simple ⇄ Expert">⚙️ Expert</button>
+    <button id="xp-btn" type="button" aria-pressed="true">💡 <span data-i18n="xp-lbl">Explications</span></button>
     <button id="lang-btn" type="button">🇬🇧 EN</button>
     <details class="tb-more">
       <summary data-i18n="tb-more">Liens ▾</summary>
@@ -721,7 +728,7 @@
 
   <div class="story so">
     <div class="story-h" data-i18n="story-sum-s">📖 L'idée en 30 secondes</div>
-    <div class="story-in" data-i18n="story-body-s">
+    <div class="story-in xpl" data-i18n="story-body-s">
       <p><b>1. Pour aller loin, l'ennemi c'est le freinage.</b> Une bonne aile de distance ne cherche pas à porter
       plus fort — elle cherche à <b>perdre moins d'énergie</b> entre deux coups de pompe. Comme un rouleur à vélo :
       une impulsion, puis on <b>laisse rouler</b>.</p>
@@ -1029,7 +1036,7 @@
   </div>
 
   <!-- SIMPLE : c'est quoi le « profil » d'une aile (section) -->
-  <div class="scale-note so" style="margin-top:16px; line-height:1.55" data-i18n="note-profil">
+  <div class="scale-note so xpl" style="margin-top:16px; line-height:1.55" data-i18n="note-profil">
     <div class="note-title">🔧 Profil — la forme de l'aile vue en tranche</div>
     Le profil, c'est la <b>section de l'aile</b> (comme si on la coupait de l'avant vers l'arrière). Son paramètre
     clé est l'<b>épaisseur</b>, exprimée en % de la corde :<br>
@@ -1253,7 +1260,7 @@
       décroche haut → obligée de croiser vite → mât et frottement grimpent en <b>v²/v³</b> et reprennent tout ce
       que sa finesse avait économisé sur la portance. Concrètement, chez la Fireball à 18 km/h les <b>frottements (aile + mât + stab + fuselage) pèsent ~85 %</b> de la traînée, l'induite à peine 15 % — l'inverse d'une aile qui vole lentement, où l'induite domine. <b>Pour l'endurance, le vrai combo c'est : grand allongement
       + capable de voler LENTEMENT + haut sur le mât</b> — pas forcément la lame la plus fine.</div>
-    <div class="scale-note" style="margin-top:16px; line-height:1.55" data-i18n="note-profil">
+    <div class="scale-note xpl" style="margin-top:16px; line-height:1.55" data-i18n="note-profil">
       <div class="note-title">🔧 Profil — la forme de l'aile vue en tranche</div>
       Le profil, c'est la <b>section de l'aile</b> (comme si on la coupait de l'avant vers l'arrière). Son paramètre
       clé est l'<b>épaisseur</b>, exprimée en % de la corde :<br>
@@ -1271,7 +1278,7 @@
       </svg>
       <div class="nf-caps" data-i18n="fig-profil-cap"><span>🔵 <b>Fin</b> — fend l'eau, vole vite</span><span>🟠 <b>Épais</b> — porte fort, pardonne</span></div>
     </div>
-    <div class="scale-note" style="margin-top:12px; line-height:1.55" data-i18n="note-visco">
+    <div class="scale-note xpl" style="margin-top:12px; line-height:1.55" data-i18n="note-visco">
       <div class="note-title">🌡️ Eau froide vs chaude — la viscosité, pas la densité</div>
       Idée reçue : « l'eau froide est plus dense ». En réalité la <b>densité</b> ne bouge que <b>~0,3 %</b> sur 20 °C.
       Ce qui change vraiment, c'est la <b>viscosité</b> : entre l'<b>hiver (~5 °C)</b> et l'<b>été (~25 °C)</b> elle
@@ -1281,7 +1288,7 @@
       lentement</b> et glisse un poil moins. Sur la <b>puissance</b>, l'effet reste <b>modeste (~1 %)</b>, mais il
       <b>déplace la plage de fonctionnement</b> : une même aile ne se pilote pas pareil en janvier et en juillet.
     </div>
-    <div class="scale-note" style="margin-top:12px; line-height:1.55" data-i18n="note-fus">
+    <div class="scale-note xpl" style="margin-top:12px; line-height:1.55" data-i18n="note-fus">
       <div class="note-title">🔧 Fuselage — c'est un bras de levier</div>
       Le stab agit à une distance <b>L</b> derrière l'aile (= la longueur
       du fuselage). Le <b>moment qui redresse</b> le foil en tangage est proportionnel à ce bras (<b>∝ L</b>), et
@@ -1306,7 +1313,7 @@
       </svg>
       <div class="nf-caps" data-i18n="fig-fus-cap"><span>🔵 aile</span><span>⬜ fuselage = bras de levier <b>L</b></span><span>🟠 stab</span></div>
     </div>
-    <div class="scale-note" style="margin-top:12px; line-height:1.55" data-i18n="note-stab">
+    <div class="scale-note xpl" style="margin-top:12px; line-height:1.55" data-i18n="note-stab">
       <div class="note-title">🔧 Stab — le plan porteur arrière qui équilibre le foil</div>
       Sa portance (négative) contre le moment
       piqueur de l'aile. <b>Gros (100)</b> = grande force stabilisatrice + gros amortissement → pardonne les erreurs,
@@ -2067,6 +2074,16 @@
     setMode(m); store('lcw-mode', m);
     window.scrollTo({top:0});
   });
+
+  // 💡 Explications : replie/déplie les blocs .xpl (story Simple + notes texte scale-note) — mémorisé, ON par défaut
+  function setXp(on){
+    document.body.classList.toggle('noexp', !on);
+    const b = document.getElementById('xp-btn');
+    b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on));
+    store('lcw-ld-xp', on ? '1' : '0');
+  }
+  document.getElementById('xp-btn').addEventListener('click', ()=> setXp(document.body.classList.contains('noexp')));
+  setXp(stored('lcw-ld-xp') !== '0');   // première visite (null) → visible
   document.getElementById('winner-why').addEventListener('click', ()=>{
     setMode('expert'); store('lcw-mode','expert');
     // amène directement aux cartes de réglages (la promesse du bouton), pas au moteur humain
@@ -2298,6 +2315,7 @@
   /* ---------- Moteur i18n (statique FR conservé, dico EN) ---------- */
   const EN = {
     'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve','tb-more':'Links ▾','tb-model':'💻 Physics model',
+    'xp-lbl':'Explanations',
     'deb-cta':'🎓 Never flown yet? Start here — the learning setup',
     'h1':'<span class="h1a">The <span class="hi">Watts</span> Showdown</span><span class="h1b">🌊 in pump foil</span>',
     'hsub':'Why a <b>High Aspect</b> wing lets you fly far longer for less effort, where a classic pump wing puts you in the red within minutes.',
