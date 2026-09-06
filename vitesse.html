@@ -107,7 +107,7 @@
   .ar-num{font-size:1.5rem; font-weight:800; line-height:1; font-variant-numeric:tabular-nums;}
   .ar-badge{font-weight:700; font-size:.85rem; padding:2px 10px; border-radius:999px;}
   .ar-gauge{position:relative; height:7px; border-radius:999px; margin:11px 2px 5px;
-    background:linear-gradient(90deg,#fb923c 0%,#a3e635 24%,#34d399 38%,#34d399 75%,#a3e635 87%,#fb923c 100%);}
+    background:linear-gradient(90deg,#fb923c 0%,#a3e635 17%,#34d399 29%,#34d399 94%,#fb923c 100%);}
   .ar-mark{position:absolute; top:50%; width:14px; height:14px; border-radius:50%; background:#fff;
     border:2px solid var(--panel-2); transform:translate(-50%,-50%); box-shadow:0 1px 4px rgba(0,0,0,.55); transition:left .5s cubic-bezier(.22,1,.36,1);}
   .ar-ticks{display:flex; justify-content:space-between; font-size:.64rem; color:var(--dim); font-variant-numeric:tabular-nums; margin:0 -2px;}
@@ -235,7 +235,7 @@
         <div class="field"><label for="i-s"><span data-i18n="l-s">Surface aile</span> : <span class="fval" id="v-s">900</span> cm²</label>
           <input type="range" id="i-s" min="450" max="1800" step="10" value="900"></div>
         <div class="field"><label for="i-b"><span data-i18n="l-b">Envergure</span> : <span class="fval" id="v-b">100</span> cm</label>
-          <input type="range" id="i-b" min="55" max="110" step="1" value="100"></div>
+          <input type="range" id="i-b" min="55" max="130" step="1" value="100"></div>
         <div class="field"><label for="i-prof" data-i18n="l-prof">Profil de l'aile</label>
           <select id="i-prof">
             <option value="0.008|0.62" data-i18n="o-p1">Fin (~8-10 %) — lame de vitesse</option>
@@ -549,16 +549,17 @@
     const arBand =
         ar<8    ? {c:'#fb923c', l:t('trapu — corde large','stubby — wide chord'), d:t('porte fort mais traîne — pas un profil de vitesse','lots of lift but draggy — not a speed shape')}
       : ar<9.5  ? {c:'#a3e635', l:t('polyvalent rapide','fast all-rounder'), d:t('bon compromis vitesse / tolérance','good speed / tolerance compromise')}
-      : ar<=12  ? {c:'#34d399', l:t('lame de course ✓','race blade ✓'), d:t('le standard des lames réelles (AR ~10-11) — au-delà, la corde devient trop fine pour être rigide','the real-blade standard (AR ~10-11) — beyond that, the chord gets too thin to stay stiff')}
-      :           {c:'#fb923c', l:t('extrême (corde fragile)','extreme (fragile chord)'), d:t('gain théorique réel mais structure/ventilation limitent — hors catalogue course','real theoretical gain but structure/ventilation limit it — outside race catalogues')};
-    const arPos = Math.max(0, Math.min(100, (ar-6)/8*100));   // jauge 6 → 14
+      : ar<=12  ? {c:'#34d399', l:t('lame de course ✓','race blade ✓'), d:t('le standard historique des lames (AR ~10-11, type Takoon Flow / GONG Veloce H)','the historic blade standard (AR ~10-11, Takoon Flow / GONG Veloce H type)')}
+      : ar<=18  ? {c:'#34d399', l:t('lame race moderne ✓','modern race blade ✓'), d:t('la nouvelle génération en carbone haut module ose AR 15-17 (ex. Alpine RSX Ultra 930 : AR 17,2) — corde fine mais rigidité HM','the new high-modulus generation dares AR 15-17 (e.g. Alpine RSX Ultra 930: AR 17.2) — thin chord held stiff by HM carbon')}
+      :           {c:'#fb923c', l:t('hors norme','off the charts'), d:t('au-delà du catalogue actuel — structure et ventilation limitent','beyond today\'s catalogue — structure and ventilation limit it')};
+    const arPos = Math.max(0, Math.min(100, (ar-6)/12*100));  // jauge 6 → 18
     $('o-ar').innerHTML =
       '<div class="ar-head">'
       + '<span class="ar-lab">'+t('Allongement','Aspect ratio')+' AR</span>'
       + '<span class="ar-num" style="color:'+arBand.c+'">'+num(ar,1)+'</span>'
       + '<span class="ar-badge" style="color:'+arBand.c+';background:'+arBand.c+'22">'+arBand.l+'</span></div>'
       + '<div class="ar-gauge"><span class="ar-mark" style="left:'+arPos+'%"></span></div>'
-      + '<div class="ar-ticks"><span>6</span><span>8</span><span>10</span><span>12</span><span>14</span></div>'
+      + '<div class="ar-ticks"><span>6</span><span>9</span><span>12</span><span>15</span><span>18</span></div>'
       + '<div class="ar-desc xpl">'+arBand.d+'</div>';
     const c = cfg();
     const {v, m, vlow, need} = vmax(c);
