@@ -107,10 +107,7 @@
   .ar-ends span{max-width:50%;}
   .ar-ends span:last-child{text-align:right;}
 
-  .xp-row{display:flex; justify-content:center; margin:16px 0 0;}
-  .xp-btn{background:var(--panel-2); border:1px solid var(--line); color:var(--muted); border-radius:999px;
-    padding:5px 13px; font-size:.75rem; font-weight:700; cursor:pointer;}
-  .xp-btn.on{border-color:#34d399; color:#34d399;}
+  #xp-btn.on{border-color:#34d399; color:#34d399;}
   body.noexp .xpl{display:none;}
 
   .rec-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; max-width:640px; margin:18px auto 0;}
@@ -173,7 +170,7 @@
 </style>
 </head>
 <body>
-<a class="skip" href="#contenu">Aller au contenu / Skip to content</a>
+<a class="skip" href="#contenu" onclick="event.preventDefault();var m=document.getElementById('contenu');m.setAttribute('tabindex','-1');m.focus();m.scrollIntoView();">Aller au contenu / Skip to content</a>
 <nav class="topbar" aria-label="Navigation">
   <div class="tb-nav">
     <a class="tb-tab" href="long-distance.html" data-i18n="tb-ld">⚡ Longue distance</a>
@@ -182,6 +179,7 @@
     <a class="tb-tab" href="carve.html" data-i18n="tb-carve">🌊 Carve</a>
   </div>
   <div class="tb-ctrl">
+    <button type="button" id="xp-btn" aria-pressed="false">💡 <span data-i18n="xp-lbl">Explications</span><span class="xp-state"></span></button>
     <button id="lang-btn" type="button">🇬🇧 EN</button>
     <details class="tb-more">
       <summary data-i18n="tb-more">Liens ▾</summary>
@@ -370,8 +368,6 @@
             <option value="C" data-i18n="o-st3">🐦 Je tiens 30 s et je commence à pomper loin</option>
           </select></div>
       </div>
-
-      <div class="xp-row"><button type="button" id="xp-btn" class="xp-btn" aria-pressed="false">💡 <span data-i18n="xp-lbl">Explications</span><span class="xp-state"></span></button></div>
 
       <div class="vout" aria-live="polite">
         <div class="n" id="o-surf">—</div>
