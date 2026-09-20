@@ -169,6 +169,16 @@
   .rf-dcell .d-times{font-size:.7rem; color:var(--muted); margin-top:4px; font-variant-numeric:tabular-nums;}
   .rf-dist-note{color:var(--muted); font-size:.86rem; margin-top:12px; line-height:1.5;}
   .rf-dist-note b{color:var(--txt);}
+  .rf-combo{max-width:1000px; margin:22px auto 0; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px 18px; text-align:left;}
+  .rf-combo-t{font-weight:800; font-size:1.05rem; margin-bottom:12px; text-align:center;}
+  .rf-combo-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px 18px;}
+  @media(max-width:640px){ .rf-combo-grid{grid-template-columns:1fr;} }
+  .rf-combo-grid span{display:block; font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); font-weight:700;}
+  .rf-combo-grid>div>b{display:block; font-size:.94rem; margin:2px 0;}
+  .rf-combo-grid p{margin:0; font-size:.82rem; color:var(--muted); line-height:1.45;}
+  .rf-combo-grid p b{color:var(--txt);}
+  .rf-combo-note{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); font-size:.86rem; color:#cbd5e1; line-height:1.5;}
+  .rf-combo-note b{color:var(--txt);}
   .note-fig{background:var(--panel-2); border-radius:10px; margin-top:6px; padding:10px 12px;}
   .note-fig svg{display:block; width:100%; max-width:400px; margin:0 auto;}
   .nf-caps{display:flex; justify-content:center; gap:10px 22px; margin-top:8px; font-size:.78rem;
@@ -358,6 +368,16 @@
       <div class="rf-dist-title" data-i18n="rf-dt">🏁 Et le gagnant selon la distance ? (2 virages, même effort)</div>
       <div id="rf-dist" class="rf-dist"></div>
       <div class="rf-dist-note" id="rf-dist-note"></div>
+    </div>
+    <div class="rf-combo" data-i18n="rf-combo">
+      <div class="rf-combo-t">🏆 Le combo idéal (théorique) — course courte ≈ 300 m, 2 virages</div>
+      <div class="rf-combo-grid">
+        <div><span>🪽 Aile</span><b>~750-820 cm² · ~95-100 cm · allongement ~12-13 · profil fin</b><p><b>petite surface</b> = faible inertie = tourne quand même serré ; <b>profil fin</b> = rapide sur les droites ; <b>allongement élevé</b> = relance et tient la vitesse. (Pas besoin de plus grand : à ce niveau tu sprintes fort.)</p></div>
+        <div><span>🚀 Vitesse de pointe</span><b>surtout tes watts</b><p>33-37 km/h = <b>gros sprint</b> (1 300 W+) + profil fin. L'allongement ne monte <b>pas</b> la pointe : à profil égal, les Vmax se tiennent à 1-2 km/h près.</p></div>
+        <div><span>🪶 Stab</span><b>moyen (~90-110 cm²)</b><p>assez de <b>grip</b> pour tenir les 2 carves sans déraper, sans plomber la relance.</p></div>
+        <div><span>🔩 Fuselage + 🦶 straps</span><b>court/moyen · straps oui</b><p>fuselage court = <b>pivot vif</b> ; straps = <b>relance</b> au pompage et tu tiens le rail en virage.</p></div>
+      </div>
+      <div class="rf-combo-note">⚠️ <b>La règle qui prime sur tout</b> : prends l'aile que tu <b>décolles à coup sûr</b>. Ce combo décolle vers <b>16-17 km/h</b> — si tes départs ne sont pas <b>automatiques</b>, monte d'un cran en <b>envergure/surface</b> (décollage plus facile) : tu perds ~1 km/h de pointe mais tu <b>finis la course</b>. Un départ manqué coûte bien plus que ça. Et sur 300 m, tout se joue au <b>départ</b> et en <b>sortie de virage</b> — aux pieds.</div>
     </div>
   </section>
 
@@ -598,6 +618,7 @@
     'rf-h2':'🏁 The race: speed ≠ handling','rf-sub':'Two <b>twin courses</b> (they never cross — safety), 2 turns each. Same effort, different wing: the carve keeps its speed through the turns, the speed blade runs wide and loses it. Watch the counters.',
     'rf-c-name':'Carve wing','rf-c-tag':'<b>88 cm · 900 cm² · AR 8.6</b> — short + light = low inertia → <b>turns tight</b>','rf-l-name':'Speed blade','rf-l-tag':'<b>100 cm · 750 cm² · AR 13.3</b> — small area + thin profile = <b>fast in a straight line</b>; its high AR helps <b>hold speed over distance</b>, not top speed','rf-btn':'↻ Replay the race',
     'rf-dt':'🏁 And who wins by distance? (2 turns, same effort)',
+    'rf-combo':'<div class="rf-combo-t">🏆 The ideal (theoretical) combo — short course ≈300 m, 2 turns</div><div class="rf-combo-grid"><div><span>🪽 Wing</span><b>~750-820 cm² · ~95-100 cm · aspect ~12-13 · thin profile</b><p><b>small area</b> = low inertia = still turns tight; <b>thin profile</b> = fast on the straights; <b>high aspect</b> = re-accelerates and holds speed. (No need for bigger: at this level you sprint hard.)</p></div><div><span>🚀 Top speed</span><b>mostly your watts</b><p>33-37 km/h = a <b>big sprint</b> (1,300 W+) + thin profile. Aspect ratio does <b>not</b> raise top speed: at equal profile, Vmax stays within 1-2 km/h.</p></div><div><span>🪶 Stab</span><b>medium (~90-110 cm²)</b><p>enough <b>grip</b> to hold the 2 carves without sliding, without killing the rebound.</p></div><div><span>🔩 Fuselage + 🦶 straps</span><b>short/medium · straps yes</b><p>short fuselage = <b>lively pivot</b>; straps = <b>rebound</b> on the pump and rail hold in turns.</p></div></div><div class="rf-combo-note">⚠️ <b>The rule that beats everything</b>: ride the wing you can <b>take off every time</b>. This combo lifts off around <b>16-17 km/h</b> — if your starts aren\'t <b>automatic</b>, go one step up in <b>span/area</b> (easier takeoff): you lose ~1 km/h of top end but you <b>finish the race</b>. A blown start costs far more. And on 300 m, it\'s all won at the <b>start</b> and out of the <b>turns</b> — with your feet.</div>',
     'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve','tb-more':'Links ▾','tb-model':'💻 Physics model',
     'h1a':'The Race for <span class="hi">km/h</span> in pump foil',
     'h1b':'🚀 what makes a foil fast?',
@@ -864,14 +885,14 @@
   const tt = (fr,en) => EN() ? en : fr;
   const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
   // deux tracés séparés (stades verticaux, 2 virages serrés). vst = vitesse ligne droite, vtu = vitesse tenue en virage
-  const C = {path:document.getElementById('rf-tc'), vst:30, vtu:22, el:$('rf-c'), kmh:$('rf-c-kmh')};
-  const L = {path:document.getElementById('rf-tl'), vst:33, vtu:14, el:$('rf-l'), kmh:$('rf-l-kmh')};
+  const C = {path:document.getElementById('rf-tc'), vst:30, vtu:22, el:$('rf-c'), kmhEl:$('rf-c-kmh')};
+  const L = {path:document.getElementById('rf-tl'), vst:33, vtu:14, el:$('rf-l'), kmhEl:$('rf-l-kmh')};
   for(const r of [C,L]){ r.len = r.path.getTotalLength(); r.v = r.vst; }
   const KPX = 3.6;                                    // km/h → px/s (visuel)
   let raceT, last, resetAt;
   function reset(){ for(const r of [C,L]){ r.s=0; r.cov=0; r.fin=0; r.v=r.vst; r.kmh=0; } raceT=0; last=0; resetAt=0; $('rf-status').textContent=''; }
   function inTurn(r){ const p=r.path.getPointAtLength(r.s % r.len); return p.y < 104 || p.y > 276; }   // arcs haut/bas = virages
-  function place(r){ const p=r.path.getPointAtLength(r.s % r.len); r.el.setAttribute('cx',p.x.toFixed(1)); r.el.setAttribute('cy',p.y.toFixed(1)); r.kmh.textContent=Math.round(r.fin?0:r.kmh); }
+  function place(r){ const p=r.path.getPointAtLength(r.s % r.len); r.el.setAttribute('cx',p.x.toFixed(1)); r.el.setAttribute('cy',p.y.toFixed(1)); r.kmhEl.textContent=Math.round(r.fin?0:r.kmh); }
   function status(){
     if(C.fin && L.fin){ const w=$('rf-status'); w.style.color='#34d399';
       w.innerHTML = tt('🏁 Format court → la <b>carve</b> gagne. Mais plus c’est long, plus la <b>lame</b> repasse — vois le tableau par distance ↓',
