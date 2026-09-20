@@ -740,7 +740,9 @@
     // Drive : petite surface (charge alaire) MAIS aussi corde large / AR bas (l'aile « mord » et pousse) → n'est plus
     // le miroir exact du démarrage. Un profil très élancé (AR haut) glisse mais accroche moins pour projeter.
     const drive    = clamp(100*(2200-S)/1600 - 4*(ar-9));
-    const takeoff  = clamp(100*(22 - liftoffKmh(S, kg))/13);    // facilité = vitesse de décollage (9 km/h → 100, 22 → 0) — dépend surface ET poids
+    // Facilité de démarrage : petite vitesse de décollage (surface + poids) ET envergure — une aile courte traîne
+    // énormément à basse vitesse (traînée induite ∝ 1/envergure²) → dure à pomper jusqu'à l'envol. Longue = part plus facile.
+    const takeoff  = clamp(100*(22 - liftoffKmh(S, kg))/13 + 0.8*(b - 90));
     const pivot    = clamp(100*(fusFactor*stab-0.68)/(1.44-0.68));
 
     // Allongement AR (déjà calculé plus haut) : gouverne la GLISSE / la corde. AR bas = corde large = porte à basse
@@ -785,7 +787,7 @@
         t('pouvoir <b>charger le pied arrière</b> pour tourner : trop grande, l\'aile te <b>soulève</b> (tu pousses l\'avant, tu ne tournes plus) ; petite, elle reste <b>plaquée</b> et <b>mord</b> — c\'est le « drive »','being able to <b>load the back foot</b> to turn: too big, the wing <b>lifts you</b> (you push the front, no turn); small, it stays <b>planted</b> and <b>bites</b> — that\'s «drive»')],
       ['🚀 '+t('Facilité de démarrage','Ease of takeoff'), takeoff, '#fbbf24',
         [t('technique','tricky'),t('moyen','medium'),t('facile','easy')],
-        t('à quel point elle décolle et se met à voler facilement','how easily it gets up and flying')
+        t('petite <b>vitesse de décollage</b> (surface) + <b>envergure</b> qui aide à pomper jusque-là (une aile courte traîne à basse vitesse)','low <b>takeoff speed</b> (area) + <b>span</b> that helps you pump up to it (a short wing drags at low speed)')
         + ' · <b style="color:#fbbf24">≈ '+liftoffKmh(S, kg)+' km/h</b> '+t('de décollage*','takeoff*')],
       ['🌊 '+t('Glisse / relance','Glide / pump-back'), glisse, '#818cf8',
         [t('faible','poor'),t('correcte','fair'),t('excellente','great')],
