@@ -66,15 +66,12 @@
   .h1a{display:block; font-size:clamp(2rem,6vw,2.8rem); font-weight:900; letter-spacing:-.03em; line-height:1.05;}
   .h1a .hi{background:linear-gradient(100deg,#e9d5ff,#c084fc 55%,#9333ea); -webkit-background-clip:text; background-clip:text; color:transparent;}
   .h1b{display:block; font-size:1.2rem; font-weight:800; color:#cbd5e1; letter-spacing:.12em; text-transform:uppercase; margin-top:6px;}
-  .hsub{font-size:1.05rem; color:#cbd5e1; max-width:640px; margin:14px auto 0;}
-  .hsub b{color:var(--carve);}
 
   .tldr{text-align:center; margin:34px 0 44px;}
   .tldr .t{font-size:1.45rem; font-weight:800; letter-spacing:-.015em; line-height:1.3;}
   .tldr .t b{color:var(--carve);}
   .tldr .s{color:var(--muted); font-size:.9rem; margin-top:8px;}
 
-  .disclaimer{color:#fcd34d; text-align:center; font-size:.78rem; margin:0 auto 34px; max-width:680px;}
 
   section{margin-bottom:56px;}
   h3{font-size:1.4rem; font-weight:800; text-align:center; letter-spacing:-.015em; margin-bottom:8px;}
@@ -137,38 +134,19 @@
   body.noexp .axr-gloss, body.noexp .ar-ends, body.noexp .xpl, body.noexp .anim-cap{display:none;}
   body.noexp .axr{margin:7px 0;}
 
-  /* animations pédagogiques : inertie de roulis (vd1) et dièdre (vd8) */
-  @media (prefers-reduced-motion: no-preference){
-    .rock, .die-rock{transform-box:fill-box; transform-origin:center;}
-    .rock-s{animation:rockS 1.5s ease-in-out infinite alternate;}
-    .rock-l{animation:rockL 2.8s ease-in-out infinite alternate;}
-    .die-u{animation:dieU 5s ease-in-out infinite;}
-    .die-a{animation:dieA 5s ease-in-out infinite;}
-    .nudge{animation:nudge 5s ease-in-out infinite;}
-    /* drive (vd2) : charge alaire = même poids ÷ surface. Petite surface = forte pression → mord ; grande = flotte. */
-    .drvPress{animation:drvPress 3s ease-in-out infinite;}
-    .drvBite{animation:drvBite 3s ease-in-out infinite;}
-    .drvSink{animation:drvSink 3s ease-in-out infinite; transform-box:fill-box;}
-    .drvFloat{animation:drvFloat 3s ease-in-out infinite; transform-box:fill-box;}
-  }
-  .nudge{opacity:0;}
-  @keyframes drvPress{0%,15%{opacity:.15;transform:translateY(-5px)}38%,70%{opacity:1;transform:translateY(0)}90%,100%{opacity:.15;transform:translateY(-5px)}}
-  @keyframes drvBite{0%,30%{opacity:.12}52%,72%{opacity:1}92%,100%{opacity:.12}}
-  @keyframes drvSink{0%,30%{transform:translateY(0)}55%,72%{transform:translateY(4px)}92%,100%{transform:translateY(0)}}
-  @keyframes drvFloat{0%,30%{transform:translateY(0)}55%,72%{transform:translateY(-9px)}92%,100%{transform:translateY(0)}}
-  @keyframes rockS{from{transform:rotate(-32deg)}to{transform:rotate(32deg)}}
-  @keyframes rockL{from{transform:rotate(-13deg)}to{transform:rotate(13deg)}}
-  /* meme scenario 5 s : poussee identique a 8 %, puis chaque aile repond */
-  @keyframes dieU{0%{transform:rotate(0deg)}8%{transform:rotate(14deg)}28%{transform:rotate(-3deg)}38%,100%{transform:rotate(0deg)}}
-  @keyframes dieA{0%{transform:rotate(0deg);opacity:1}8%{transform:rotate(14deg)}58%{transform:rotate(38deg)}86%{transform:rotate(46deg);opacity:1}90%{transform:rotate(46deg);opacity:0}91%{transform:rotate(0deg);opacity:0}96%{transform:rotate(0deg);opacity:0}100%{transform:rotate(0deg);opacity:1}}
-  @keyframes nudge{0%,26%,100%{opacity:0}6%,18%{opacity:1}}
+  /* les cartes vd1, vd2, vd6 et vd8 sont animées en JS (canvas[data-fig]) */
 
-  .carve-anim{max-width:340px; margin:12px auto 0; background:var(--panel-2); border-radius:12px; padding:4px 6px 2px;}
+  .showcase{display:grid; grid-template-columns:1fr; gap:10px 18px; align-items:center; margin:4px 0 14px; padding:12px;
+    background:linear-gradient(135deg, rgba(192,132,252,.10), rgba(45,212,191,.07)); border:1px solid rgba(192,132,252,.28); border-radius:16px;}
+  @media(min-width:820px){ .showcase{grid-template-columns:0.75fr 1.25fr; padding:16px 18px;} }
+  .showcase .vout{margin:0;}
+  .showcase .vout .n{font-size:3.2rem;}
+  .carve-anim{width:100%; max-width:640px; margin:0 auto; background:var(--panel-2); border-radius:12px; padding:5px 6px 2px;}
   .carve-anim svg{display:block; width:100%;}
-  .anim-cap{font-size:.68rem; color:var(--dim); text-align:center; margin:0 0 5px;}
+  .carve-anim canvas{display:block; width:100%; aspect-ratio:320/150; border-radius:9px;}
+  .anim-cap{font-size:.68rem; color:var(--dim); text-align:center; margin:0 0 5px; line-height:1.45;}
+  .anim-cap b{color:var(--muted);}
   .hero{display:grid; grid-template-columns:1fr; gap:12px; margin:12px 0 4px; align-items:center;}
-  @media(min-width:820px){ .hero{grid-template-columns:0.85fr 1.15fr;} }
-  .hero .vout{margin:0;}
   .hero .ar-read{margin:0; max-width:none;}
   .bk{max-width:640px; margin:12px auto 0;}
   .bk-cat{font-size:.72rem; color:var(--muted); margin:4px 0 6px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; text-align:center;}
@@ -197,6 +175,9 @@
   .card.warn{border-color:rgba(245,158,11,.5);} .card.warn .big{color:#fcd34d;}
   .note-fig{background:var(--panel-2); border-radius:10px; margin-top:6px; padding:10px 12px;}
   .note-fig svg{display:block; width:100%; max-width:400px; margin:0 auto;}
+  .note-fig canvas.fig-cv{display:block; width:100%; max-width:420px; margin:0 auto;}
+  .note-fig canvas[data-fig="span"]{aspect-ratio:360/186;} .note-fig canvas[data-fig="mix"]{aspect-ratio:360/292;}
+  .note-fig canvas[data-fig="drive"]{aspect-ratio:360/250;} .note-fig canvas[data-fig="takeoff"]{aspect-ratio:360/220;} .note-fig canvas[data-fig="dihedral"]{aspect-ratio:360/208;}
   .nf-caps{display:flex; justify-content:center; gap:10px 22px; margin-top:8px; font-size:.78rem;
     color:#cbd5e1; text-align:center; flex-wrap:wrap;}
   .nf-caps b{color:var(--txt);}
@@ -248,7 +229,6 @@
 
   <header>
     <h1><span class="h1a" data-i18n="h1a">Le <span class="hi">Carve</span></span><span class="h1b" data-i18n="h1b">🌊 tourner serré dans les vagues</span></h1>
-    <p class="hsub" data-i18n="hsub">Qu'est-ce qui rend un foil <b>vif</b> et joueur sur la vague ?</p>
   </header>
 
   <div class="tldr">
@@ -257,14 +237,22 @@
       Exactement l'inverse de la longue distance.</div>
   </div>
 
-  <div class="disclaimer" data-i18n="disc">⚠️ <b>Chiffres estimés</b> — le carve dépend beaucoup de la <b>technique</b> et de la vague :
-    on compare ici la <b>maniabilité intrinsèque</b> des ailes, pas ton style.</div>
 
   <!-- SIMULATEUR -->
   <section id="sim" class="a-in">
     <h3 data-i18n="sim-h3">🎛️ Compare les ailes</h3>
     <p class="lede" data-i18n="sim-lede">Choisis un <b>preset réel</b> (il règle l'<b>aile</b> ; fuselage et stab restent à toi) ou joue des 4 curseurs — tout bouge en direct.
       Le bouton <b>💡 Explications</b> déplie la physique de chaque score.</p>
+    <div class="showcase">
+      <div class="vout" aria-live="polite">
+        <div class="n" id="o-agil">—</div>
+        <div class="win" id="o-why"></div>
+      </div>
+      <div class="carve-anim" aria-hidden="true">
+        <canvas id="anim-cv"></canvas>
+        <div class="anim-cap" data-i18n="anim-cap">sa ligne dans la vague : plus l'aile est vive, plus ça tourne <b>serré</b> et plus ça <b>gîte</b></div>
+      </div>
+    </div>
     <div class="panel">
       <div class="presets">
         <div class="preset-grp"><span class="pg-label">🏄 Axis Surge</span><div class="pg-btns">
@@ -303,28 +291,6 @@
           <input type="range" id="i-kg" min="55" max="110" step="1" value="85"></div>
       </div>
       <div class="hero">
-        <div class="vout" aria-live="polite">
-          <div class="n" id="o-agil">—</div>
-          <div class="win" id="o-why"></div>
-          <div class="carve-anim" aria-hidden="true">
-            <svg viewBox="0 0 320 112">
-              <defs><linearGradient id="wgrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="rgba(45,212,191,.32)"/>
-                <stop offset="0.75" stop-color="rgba(14,116,144,.16)"/>
-                <stop offset="1" stop-color="rgba(3,105,161,.08)"/>
-              </linearGradient></defs>
-              <!-- la vague : face + lèvre + écume -->
-              <path d="M0 26 Q60 17 150 22 Q240 27 320 21 L320 112 L0 112 Z" fill="url(#wgrad)"/>
-              <path d="M0 26 Q60 17 150 22 Q240 27 320 21" stroke="rgba(224,242,254,.5)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-              <circle cx="34" cy="21" r="3.2" fill="rgba(224,242,254,.45)"/><circle cx="98" cy="18" r="2.4" fill="rgba(224,242,254,.4)"/>
-              <circle cx="196" cy="23" r="2.8" fill="rgba(224,242,254,.42)"/><circle cx="278" cy="21" r="2.2" fill="rgba(224,242,254,.38)"/>
-              <path d="M0 100 H320" stroke="rgba(148,163,184,.12)" stroke-width="1.5" stroke-dasharray="3 8" fill="none"/>
-              <path id="anim-trail" fill="none" stroke="rgba(56,189,248,.5)" stroke-width="2" stroke-dasharray="5 6" stroke-linecap="round"/>
-              <text id="anim-rider" x="0" y="0" font-size="21" text-anchor="middle" dominant-baseline="central">🏄</text>
-            </svg>
-            <div class="anim-cap" data-i18n="anim-cap">dans la vague : sa ligne à ce score — bottom-turn → lèvre, et retour</div>
-          </div>
-        </div>
         <div class="ar-read" id="o-ar"></div>
       </div>
       <div class="bk" id="o-bk"></div>
@@ -338,58 +304,34 @@
     <div class="cards">
       <div class="card" data-i18n="vd1">
         <div class="k">📐 L'envergure — le levier n°1</div>
-        <div class="big">inertie ≈ masse × envergure²</div>
-        <p>Basculer d'un rail à l'autre, c'est faire <b>rouler</b> l'aile. Son inertie de roulis grimpe au
-          <b>carré de l'envergure</b> : passer de 111 à 89 cm, c'est <b>−36 % d'inertie</b> → l'aile s'enroule
-          bien plus vite. C'est <i>la</i> raison pour laquelle les wings de surf sont courtes.</p>
+        <div class="big">résistance au roulis ≈ surface × envergure²</div>
+        <p>Changer de rail, c'est faire <b>rouler</b> l'aile : un bout <b>monte</b>, l'autre <b>plonge</b> — à travers l'eau.
+          Chaque bout doit <b>pousser de l'eau</b> pour passer : c'est cette résistance que tes pieds doivent vaincre.</p>
         <div class="note-fig" aria-hidden="true" style="margin:10px 0 0">
-          <svg viewBox="0 0 360 126">
-            <g class="rock rock-s" transform="rotate(-24 92 56)">
-              <path d="M50 56 Q92 46 134 56 Q92 64 50 56 Z" fill="#c084fc"/>
-            </g>
-            <text x="92" y="102" text-anchor="middle" font-size="11.5" font-weight="800" fill="#c084fc">courte — s'enroule</text>
-            <text x="92" y="116" text-anchor="middle" font-size="10" fill="#94a3b8">inertie 1×</text>
-            <g class="rock rock-l" transform="rotate(-10 258 56)">
-              <path d="M174 56 Q258 42 342 56 Q258 70 174 56 Z" fill="#38bdf8"/>
-            </g>
-            <text x="258" y="102" text-anchor="middle" font-size="11.5" font-weight="800" fill="#38bdf8">longue — traîne à basculer</text>
-            <text x="258" y="116" text-anchor="middle" font-size="10" fill="#94a3b8">inertie ~2,5×</text>
-          </svg>
-          <div class="nf-caps"><span>⚖️ même impulsion des pieds</span><span>l'<b>inertie de roulis</b> (masse × envergure²) fait toute la différence</span></div>
+          <canvas class="fig-cv" data-fig="span"></canvas>
+          <div class="nf-caps"><span>① bout plus loin → il balaie <b>plus d'eau, plus vite</b> (× envergure)</span><span>② plus loin de l'axe → cette résistance a <b>plus de levier</b> contre tes pieds (× envergure)</span></div>
         </div>
-
-        <p style="margin-top:8px">La <b>surface</b> compte aussi : elle fait la <b>masse</b>. À envergure égale, une aile
-          à <b>grosse corde</b> (basse AR) est plus <b>lourde</b> → plus d'inertie → moins vive. Une grande aile très
-          large n'est donc <b>pas</b> maniable, même si l'envergure reste courte.</p>
+        <p style="margin-top:8px">① × ② = <b>envergure × envergure</b>, d'où le « au carré ». Une aile 20 % plus courte :
+          0,8 × 0,8 = <b>0,64</b> de résistance → à même effort des pieds, elle bascule <b>1 / 0,64 ≈ 1,5× plus vite</b>.</p>
+        <p style="margin-top:8px"><b>Et la surface ?</b> Elle fixe <b>combien d'eau</b> chaque bout pousse (et le poids de l'aile).
+          Elle ne s'ajoute pas à l'envergure, elle se <b>multiplie</b> avec : les gains se cumulent… et les handicaps aussi.</p>
+        <div class="note-fig" aria-hidden="true" style="margin:10px 0 0">
+          <canvas class="fig-cv" data-fig="mix"></canvas>
+          <div class="nf-caps"><span>🦶 même rythme de pieds pour les 4</span><span>longue <b>et</b> grande : 1,56 × 1,44 ≈ <b>×2,2</b> de résistance</span></div>
+        </div>
+        <p style="margin-top:8px">Le piège : une aile <b>courte mais très large</b> (grosse corde) garde une grosse surface → elle reste
+          lente (en bas à gauche). La plus vive, c'est <b>courte ET petite</b>.
+          <span class="xpl">On parle souvent d'« inertie de roulis » : dans l'eau, c'est surtout cette résistance qui domine, et elle suit la même loi.</span></p>
       </div>
       <div class="card" data-i18n="vd2">
         <div class="k">🎯 La petite surface — le « drive »</div>
         <div class="big">pouvoir charger l'arrière et tourner</div>
-        <p><b>Le drive</b>, c'est pouvoir <b>appuyer sur le pied arrière</b> pour enfoncer le rail et <b>tourner</b>.
-          Une aile <b>trop grande</b> fait <b>trop de portance</b> dès que la vague t'accélère : elle te <b>soulève</b>
-          (elle veut sortir de l'eau), tu dois pousser le <b>pied avant</b> pour la garder dedans → impossible d'engager
-          le rail, elle <b>refuse de tourner</b>. Une <b>petite</b> aile fait juste ce qu'il faut de portance : elle reste
-          <b>plaquée</b>, tu charges l'arrière et elle <b>mord</b> pour t'emmener dans le virage.
-          <span class="xpl">(Les shapers appellent ça la <b>charge alaire</b> : le poids que porte chaque cm² d'aile — plus l'aile est petite, plus c'est chargé.)</span></p>
-        <div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><svg viewBox="0 0 380 162">
-          <text x="95" y="14" text-anchor="middle" font-size="11" font-weight="700" fill="#c084fc">🎯 petite surface</text>
-          <text x="285" y="14" text-anchor="middle" font-size="11" font-weight="700" fill="#94a3b8">grande surface</text>
-          <!-- même poids sur les deux -->
-          <g class="drvPress"><line x1="95" y1="22" x2="95" y2="40" stroke="#fbbf24" stroke-width="5"/><path d="M95 46 l-6 -8 h12 Z" fill="#fbbf24"/><text x="112" y="34" font-size="9.5" font-weight="700" fill="#fbbf24">75 kg</text></g>
-          <g class="drvPress"><line x1="285" y1="22" x2="285" y2="40" stroke="#fbbf24" stroke-width="5"/><path d="M285 46 l-6 -8 h12 Z" fill="#fbbf24"/><text x="302" y="34" font-size="9.5" font-weight="700" fill="#fbbf24">75 kg</text></g>
-          <line x1="18" y1="66" x2="176" y2="66" stroke="rgba(56,189,248,.4)" stroke-width="1.5" stroke-dasharray="6 5"/>
-          <line x1="206" y1="66" x2="362" y2="66" stroke="rgba(56,189,248,.4)" stroke-width="1.5" stroke-dasharray="6 5"/>
-          <!-- petite aile : sur peu de surface, la pression est forte → mord -->
-          <g class="drvSink"><line x1="95" y1="54" x2="95" y2="82" stroke="#38bdf8" stroke-width="4"/><ellipse cx="95" cy="84" rx="18" ry="5" fill="#c084fc"/>
-            <g class="drvBite" stroke="#f43f5e" stroke-width="3"><line x1="88" y1="90" x2="88" y2="102"/><line x1="95" y1="90" x2="95" y2="104"/><line x1="102" y1="90" x2="102" y2="102"/></g></g>
-          <text x="95" y="124" text-anchor="middle" font-size="10" font-weight="800" fill="#f43f5e">forte pression</text>
-          <text x="95" y="140" text-anchor="middle" font-size="10.5" font-weight="800" fill="#34d399">plaquée → ça mord</text>
-          <!-- grande aile : le poids s'étale, pression faible → flotte -->
-          <g class="drvFloat"><line x1="285" y1="54" x2="285" y2="82" stroke="#38bdf8" stroke-width="4"/><ellipse cx="285" cy="84" rx="34" ry="6" fill="#94a3b8"/>
-            <g stroke="#64748b" stroke-width="1.5" opacity=".8"><line x1="258" y1="91" x2="258" y2="98"/><line x1="270" y1="91" x2="270" y2="98"/><line x1="285" y1="91" x2="285" y2="98"/><line x1="300" y1="91" x2="300" y2="98"/><line x1="312" y1="91" x2="312" y2="98"/></g></g>
-          <text x="285" y="124" text-anchor="middle" font-size="10" font-weight="800" fill="#64748b">pression diluée</text>
-          <text x="285" y="140" text-anchor="middle" font-size="10.5" font-weight="800" fill="#818cf8">te soulève → flotte</text>
-        </svg><div class="nf-caps"><span>🥿 même poids : petite surface = chaque cm² porte plus → ça <b>mord</b> (comme un talon aiguille dans le sable)</span><span>grande surface = <b>trop de portance</b> → ça te <b>soulève</b>, tu ne peux plus tourner</span></div></div>
+        <p>Le <b>drive</b>, c'est <b>appuyer sur le pied arrière</b> pour enfoncer le rail et tourner. Mais quand la vague
+          t'accélère, la portance grimpe en <b>vitesse²</b>. Une <b>grande</b> aile porte alors <b>trop</b> : elle veut sortir
+          de l'eau, tu dois <b>pousser devant</b> pour la retenir… impossible de charger l'arrière. Une <b>petite</b> reste
+          <b>plaquée</b> : tu charges, elle mord.</p>
+        <div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><canvas class="fig-cv" data-fig="drive"></canvas></div>
+        <p class="xpl" style="margin-top:8px">Les shapers parlent de <b>charge alaire</b> : le poids que porte chaque cm² d'aile — plus l'aile est petite, plus c'est chargé.</p>
       </div>
       <div class="card" data-i18n="vd3">
         <div class="k">🔩 Le fuselage — le tube qui relie aile et stab</div>
@@ -420,49 +362,16 @@
           distance sont aux <b>deux bouts opposés</b> : choisis ton terrain de jeu.</p>
       </div>
       <div class="card" data-i18n="vd6">
-        <div class="k">🛫 La vitesse de décollage</div>
-        <div class="big">pourquoi le carve démarre dur</div>
-        <p>Le foil vole quand la portance = ton poids ; la portance chute en <b>vitesse²</b>. En dessous d'un seuil,
-          l'aile ne te porte plus : c'est la <b>vitesse de décollage</b>, <b>V = √(poids / (½·ρ·surface·CL<sub>max</sub>))</b>.
-          Elle dépend de ton <b>poids</b>, de la <b>surface</b> et du <b>CL max</b> (épaisseur/cambrure) — <b>pas de l'envergure</b>.</p>
-        <p><b>Double peine au carve :</b> petite <b>surface</b> → décollage <b>haut</b> (tu dois d'abord prendre de la
-          vitesse) ; envergure <b>courte</b> → grosse traînée dès que tu ralentis → dur d'<b>accélérer jusque-là</b> en
-          pompant. Une aile de carve ~1100 cm² décolle vers <b>14-15 km/h</b> ; une grosse aile de distance vers
-          <b>9-10 km/h</b> — elle « part toute seule ». La vitesse estimée s'affiche sur l'axe 🚀 démarrage.</p>
-        
-        <div class="note-fig" aria-hidden="true">
-          <svg viewBox="0 0 360 112">
-            <rect x="20" y="64" width="176" height="9" rx="2" fill="#34d399" opacity=".18"/>
-            <text x="106" y="57" text-anchor="middle" font-size="10" font-weight="700" fill="#6ee7b7">élan de 2 pas de ponton</text>
-            <line x1="20" y1="73" x2="344" y2="73" stroke="#64748b" stroke-width="2"/>
-            <path d="M352 73 l-9 -4.5 v9 Z" fill="#64748b"/>
-            <g stroke="#475569" stroke-width="1.5">
-              <line x1="20" y1="69" x2="20" y2="77"/><line x1="100" y1="69" x2="100" y2="77"/>
-              <line x1="180" y1="69" x2="180" y2="77"/><line x1="260" y1="69" x2="260" y2="77"/>
-              <line x1="340" y1="69" x2="340" y2="77"/>
-            </g>
-            <g font-size="11" font-weight="700" fill="#94a3b8" text-anchor="middle">
-              <text x="20" y="92">0</text><text x="100" y="92">5</text><text x="180" y="92">10</text>
-              <text x="260" y="92">15</text><text x="340" y="92">20</text>
-            </g>
-            <text x="352" y="106" text-anchor="end" font-size="10" fill="#64748b">km/h</text>
-            <line x1="180" y1="22" x2="180" y2="70" stroke="#34d399" stroke-width="2.5"/>
-            <circle cx="180" cy="73" r="4.5" fill="#34d399"/>
-            <text x="150" y="16" text-anchor="middle" font-size="11.5" font-weight="800" fill="#6ee7b7">grande aile (distance) ✓</text>
-            <line x1="252" y1="40" x2="252" y2="70" stroke="#c084fc" stroke-width="2.5"/>
-            <circle cx="252" cy="73" r="4.5" fill="#c084fc"/>
-            <text x="266" y="34" text-anchor="middle" font-size="11.5" font-weight="800" fill="#c084fc">aile de carve ~1100 : ici</text>
-          </svg>
-          <div class="nf-caps"><span>🟢 elle part en 2 pas</span><span>🟣 toi : il faut <b>construire</b> ces km/h</span></div>
-        </div>
-        <p><b>Deux façons de décoller :</b><br>
-          • <b>En courant / en glissant</b> (départ plage ou ponton) → tu construis d'abord la <b>vitesse horizontale</b>
-          jusqu'à cette vitesse de décollage, puis l'aile te porte. Naturel sur une grande aile ; <b>dur sur une petite</b>
-          (il faut vraiment aller vite).<br>
-          • <b>Sauté / poppé</b> → tu sautes sur la planche et tu donnes un <b>gros pump vertical</b> : la <b>portance
-          instationnaire</b> (masse ajoutée + dépassement dynamique — la physique de la <a href="long-distance.html#cadence">cadence
-          &amp; Strouhal</a>) te fait décoller <b>sous</b> la vitesse d'équilibre. Explosif et technique, mais souvent le
-          <b>seul moyen de lancer une petite aile de carve</b>.</p>
+        <div class="k">🛫 La vitesse de démarrage</div>
+        <div class="big">pourquoi c'est dur de démarrer une aile de carve</div>
+        <p>L'aile te porte dès que sa portance atteint ton poids. Elle grimpe en <b>surface × vitesse²</b> : moins de
+          surface → il faut <b>plus de vitesse</b>. L'envergure, elle, ne change pas ce seuil.</p>
+        <div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><canvas class="fig-cv" data-fig="takeoff"></canvas></div>
+        <p style="margin-top:8px"><b>Double peine au carve</b> : seuil plus haut, et envergure courte → plus de traînée pour
+          l'atteindre en pompant. Le chiffre estimé pour ton aile s'affiche sur l'axe 🚀 démarrage.</p>
+        <p class="xpl" style="margin-top:8px">💡 L'astuce : le départ <b>sauté / poppé</b>. Un gros pump vertical fait décoller
+          <b>sous</b> ce seuil (portance instationnaire, voir <a href="long-distance.html#cadence">cadence &amp; Strouhal</a>) —
+          souvent le seul moyen de lancer une petite aile.</p>
       </div>
       <div class="card" data-i18n="vd7">
         <div class="k">🌊 Deux sous-types de surf</div>
@@ -509,7 +418,7 @@
           plus nerveux. <b>C'est le ∩ qui tourne le mieux</b> — d'où beaucoup d'ailes de surf <b>plates à légèrement
           anhédrales</b>.</p>
         <div class="note-fig" aria-hidden="true" style="margin:10px 0 0">
-          <svg viewBox="0 0 360 152"><line x1="28" y1="38" x2="192" y2="38" stroke="#475569" stroke-width="1.5" stroke-dasharray="4 5"/><g class="die-rock die-u"><path d="M110 46 L48 30 M110 46 L172 30" stroke="#38bdf8" stroke-width="7" stroke-linecap="round" fill="none"/></g><g class="nudge"><path d="M40 64 v-15" stroke="#e2e8f0" stroke-width="2.5"/><path d="M40 45 l-4.5 7 h9 Z" fill="#e2e8f0"/></g><text x="204" y="34" font-size="11.5" font-weight="700" fill="#38bdf8" data-i18n="fig-di-u1">U (dièdre)</text><text x="204" y="48" font-size="10.5" fill="#94a3b8" data-i18n="fig-di-u2">se remet à plat</text><line x1="28" y1="109" x2="192" y2="109" stroke="#475569" stroke-width="1.5" stroke-dasharray="4 5"/><g class="die-rock die-a"><path d="M110 100 L48 118 M110 100 L172 118" stroke="#f59e0b" stroke-width="7" stroke-linecap="round" fill="none"/></g><g class="nudge"><path d="M40 140 v-15" stroke="#e2e8f0" stroke-width="2.5"/><path d="M40 121 l-4.5 7 h9 Z" fill="#e2e8f0"/></g><text x="204" y="104" font-size="11.5" font-weight="700" fill="#f59e0b" data-i18n="fig-di-a1">∩ (anhédral)</text><text x="204" y="118" font-size="10.5" fill="#94a3b8" data-i18n="fig-di-a2">tombe dans le virage</text></svg><div class="nf-caps" data-i18n="fig-di-cap"><span>1️⃣ 💨 même poussée sur les deux</span><span>2️⃣ le U revient à l’horizon · le ∩ <b>continue de tomber</b></span></div>
+          <canvas class="fig-cv" data-fig="dihedral"></canvas>
         </div>
         <p style="margin-top:8px">💡 <b>Combo malin</b> : une <b>aile avant anhédrale</b> (∩, engage le virage) + un <b>stab en dièdre</b>
           (U, stabilise le roulis) = tu gardes l'engagement de l'aile <b>sans</b> perdre le contrôle. Beaucoup de sets de
@@ -573,34 +482,30 @@
     'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve',
     'tb-more':'Links ▾','tb-model':'💻 Physics model',
     'h1a':'The <span class="hi">Carve</span>','h1b':'🌊 turning tight in the waves',
-    'hsub':'What makes a foil <b>lively</b> and playful on a wave?',
     'tldr-t':'For tight turns: <b>short span</b> + <b>small area</b> + <b>short fuselage</b>.',
     'tldr-s':'Roll inertia ≈ <b>mass × span²</b> — a wing 20% shorter turns ~1.5× faster. The exact opposite of long distance.',
-    'disc':'⚠️ <b>Estimated figures</b> — carving depends heavily on <b>technique</b> and the wave: we compare the wings\' <b>intrinsic agility</b>, not your style.',
     'sim-h3':'🎛️ Compare the wings',
     'sim-lede':'Pick a <b>real preset</b> (it sets the <b>wing</b>; fuselage and stab stay yours) or play the 4 sliders — everything updates live. The <b>💡 Explanations</b> button unfolds the physics behind each score.',
     'pg-ref':'📏 Glide reference','p-ld':'long-distance (140 cm)',
     'l-b':'Span','l-s':'Area','l-fus':'Fuselage','l-stab':'Stab','l-kg':'🧍 Your weight','l-kg-note':'· drives glide, endurance &amp; takeoff',
-    'anim-cap':'in the wave: its line at this score — bottom-turn → lip, and back',
+    'anim-cap':'its line in the wave: the livelier the wing, the <b>tighter</b> it turns and the harder it <b>banks</b>',
     'xp-lbl':'Explanations',
     'o-f1':'Short (60 cm) — pivots freely (surfy)','o-f2':'Medium (65 cm) — balanced','o-f3':'Long (70 cm) — locked in (tracks)',
     'o-s1':'60 cm² — very loose / skate','o-s2':'70 cm² — endurance (thin, low drag)','o-s3':'90 cm² — all-round','o-s4':'110 cm²','o-s5':'130 cm² — waves (grip, control)',
     'vd-h3':'🧾 What makes it turn, in 8 cards',
-    'vd1':'<div class="k">📐 Span — the #1 lever</div><div class="big">inertia ≈ mass × span²</div><p>Flipping rail to rail means <b>rolling</b> the wing. Its roll inertia grows with the <b>square of the span</b>: going from 111 to 89 cm is <b>−36% inertia</b> → the wing rolls in far faster. That\'s <i>the</i> reason surf wings are short.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><svg viewBox="0 0 360 126"><g class="rock rock-s" transform="rotate(-24 92 56)"><path d="M50 56 Q92 46 134 56 Q92 64 50 56 Z" fill="#c084fc"/></g><text x="92" y="102" text-anchor="middle" font-size="11.5" font-weight="800" fill="#c084fc">short — flips in</text><text x="92" y="116" text-anchor="middle" font-size="10" fill="#94a3b8">inertia 1×</text><g class="rock rock-l" transform="rotate(-10 258 56)"><path d="M174 56 Q258 42 342 56 Q258 70 174 56 Z" fill="#38bdf8"/></g><text x="258" y="102" text-anchor="middle" font-size="11.5" font-weight="800" fill="#38bdf8">long — slow to bank</text><text x="258" y="116" text-anchor="middle" font-size="10" fill="#94a3b8">inertia ~2.5×</text></svg><div class="nf-caps"><span>⚖️ same feet impulse</span><span><b>roll inertia</b> (mass × span²) makes all the difference</span></div></div><p style="margin-top:8px"><b>Area</b> matters too: it makes the <b>mass</b>. At equal span, a <b>wide-chord</b> (low-AR) wing is <b>heavier</b> → more inertia → less lively. So a big, very wide wing is <b>not</b> agile, even with a short span.</p>',
-    'vd2':'<div class="k">🎯 Small area — «drive»</div><div class="big">load the back foot and turn</div><p><b>Drive</b> is being able to <b>press the back foot</b> to bury the rail and <b>turn</b>. A wing that\'s <b>too big</b> makes <b>too much lift</b> the moment the wave speeds you up: it <b>lifts you</b> (wants to breach), you have to push the <b>front foot</b> to keep it down → you can\'t engage the rail, it <b>won\'t turn</b>. A <b>small</b> wing makes just enough lift: it stays <b>planted</b>, you load the back foot and it <b>bites</b> to carry you through the turn. <span class="xpl">(Shapers call this <b>wing loading</b>: the weight each cm² of wing carries — the smaller the wing, the higher it is.)</span></p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><svg viewBox="0 0 380 162"><text x="95" y="14" text-anchor="middle" font-size="11" font-weight="700" fill="#c084fc">🎯 small area</text><text x="285" y="14" text-anchor="middle" font-size="11" font-weight="700" fill="#94a3b8">big area</text><g class="drvPress"><line x1="95" y1="22" x2="95" y2="40" stroke="#fbbf24" stroke-width="5"/><path d="M95 46 l-6 -8 h12 Z" fill="#fbbf24"/><text x="112" y="34" font-size="9.5" font-weight="700" fill="#fbbf24">75 kg</text></g><g class="drvPress"><line x1="285" y1="22" x2="285" y2="40" stroke="#fbbf24" stroke-width="5"/><path d="M285 46 l-6 -8 h12 Z" fill="#fbbf24"/><text x="302" y="34" font-size="9.5" font-weight="700" fill="#fbbf24">75 kg</text></g><line x1="18" y1="66" x2="176" y2="66" stroke="rgba(56,189,248,.4)" stroke-width="1.5" stroke-dasharray="6 5"/><line x1="206" y1="66" x2="362" y2="66" stroke="rgba(56,189,248,.4)" stroke-width="1.5" stroke-dasharray="6 5"/><g class="drvSink"><line x1="95" y1="54" x2="95" y2="82" stroke="#38bdf8" stroke-width="4"/><ellipse cx="95" cy="84" rx="18" ry="5" fill="#c084fc"/><g class="drvBite" stroke="#f43f5e" stroke-width="3"><line x1="88" y1="90" x2="88" y2="102"/><line x1="95" y1="90" x2="95" y2="104"/><line x1="102" y1="90" x2="102" y2="102"/></g></g><text x="95" y="124" text-anchor="middle" font-size="10" font-weight="800" fill="#f43f5e">high pressure</text><text x="95" y="140" text-anchor="middle" font-size="10.5" font-weight="800" fill="#34d399">planted → it bites</text><g class="drvFloat"><line x1="285" y1="54" x2="285" y2="82" stroke="#38bdf8" stroke-width="4"/><ellipse cx="285" cy="84" rx="34" ry="6" fill="#94a3b8"/><g stroke="#64748b" stroke-width="1.5" opacity=".8"><line x1="258" y1="91" x2="258" y2="98"/><line x1="270" y1="91" x2="270" y2="98"/><line x1="285" y1="91" x2="285" y2="98"/><line x1="300" y1="91" x2="300" y2="98"/><line x1="312" y1="91" x2="312" y2="98"/></g></g><text x="285" y="124" text-anchor="middle" font-size="10" font-weight="800" fill="#64748b">pressure spread thin</text><text x="285" y="140" text-anchor="middle" font-size="10.5" font-weight="800" fill="#818cf8">lifts you → floats</text></svg><div class="nf-caps"><span>🥿 same weight: small area = each cm² carries more → it <b>bites</b> (like a stiletto heel in sand)</span><span>big area = <b>too much lift</b> → it <b>lifts you</b>, you can no longer turn</span></div></div>',
+    'vd1':'<div class="k">📐 Span — the #1 lever</div><div class="big">roll resistance ≈ area × span²</div><p>Switching rails means <b>rolling</b> the wing: one tip <b>rises</b>, the other <b>dives</b> — through the water. Each tip has to <b>push water</b> out of the way: that resistance is what your feet must overcome.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><canvas class="fig-cv" data-fig="span"></canvas><div class="nf-caps"><span>① tip further out → it sweeps <b>more water, faster</b> (× span)</span><span>② further from the axis → that resistance has <b>more leverage</b> against your feet (× span)</span></div></div><p style="margin-top:8px">① × ② = <b>span × span</b>, hence the « squared ». A wing 20% shorter: 0.8 × 0.8 = <b>0.64</b> of the resistance → for the same foot effort, it rolls <b>1 / 0.64 ≈ 1.5× faster</b>.</p><p style="margin-top:8px"><b>And area?</b> It sets <b>how much water</b> each tip pushes (and the wing\'s weight). It doesn\'t add to the span, it <b>multiplies</b> with it: gains stack up… and so do handicaps.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><canvas class="fig-cv" data-fig="mix"></canvas><div class="nf-caps"><span>🦶 same foot rhythm for all 4</span><span>long <b>and</b> big: 1.56 × 1.44 ≈ <b>×2.2</b> the resistance</span></div></div><p style="margin-top:8px">The trap: a <b>short but very wide</b> wing (big chord) keeps a big area → it stays slow (bottom left). The liveliest is <b>short AND small</b>. <span class="xpl">People often say « roll inertia »: in the water it\'s mostly this resistance that dominates, and it follows the same law.</span></p>',
+    'vd2':'<div class="k">🎯 Small area — «drive»</div><div class="big">load the back foot and turn</div><p><b>Drive</b> is <b>pressing the back foot</b> to bury the rail and turn. But when the wave speeds you up, lift climbs with <b>speed²</b>. A <b>big</b> wing then lifts <b>too much</b>: it wants to breach, you have to <b>push the front foot</b> to hold it down… no way to load the back foot. A <b>small</b> one stays <b>planted</b>: you load it, it bites.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><canvas class="fig-cv" data-fig="drive"></canvas></div><p class="xpl" style="margin-top:8px">Shapers call it <b>wing loading</b>: the weight each cm² of wing carries — the smaller the wing, the higher it is.</p>',
     'vd3':'<div class="k">🔩 The fuselage — the tube linking wing to stab</div><div class="big">short = pivot, long = tracks</div><p>It\'s the <b>horizontal bar</b> between front wing and stab; its length is the lever arm that steadies pitch. <b>Short (60 cm)</b> → little damping (∝ length²): the wing <b>pivots freely</b>, you carve tight, but it no longer self-corrects (twitchy). <b>Long (70 cm)</b> → it <b>tracks straight</b>, reassuring but lazy in turns.</p><p style="margin-top:8px"><b>Pump side:</b> a <b>short</b> fuselage makes each pump <b>more reactive</b> — the wing <b>responds fast in pitch</b>, snappy rebound (but you must meter it, it bounces). A <b>long</b> fuselage <b>smooths the pumping</b>: steadier, but a <b>softer</b> rebound. To <b>connect in surf</b>, a <b>medium (~65 cm)</b> keeps response without becoming unruly.</p>',
     'vd4':'<div class="k">🪶 The stab: loose or held</div><div class="big">a matter of style</div><p>A <b>small stab (~70 cm²)</b> = free tail, skatey, low drag → great for <b>endurance</b>. A <b>big stab (~130 cm²)</b> = more <b>grip and control</b> to hold committed carves in the wave — many riders\' pick (PoloFoil\'s too). Not «smaller is better»: pivot tight <i>or</i> hold the line, your call.</p>',
     'vd5':'<div class="k">⚖️ The price: you lose glide</div><div class="big">you can\'t have it all</div><p>A short span means a foil that <b>drags hugely as soon as you slow down</b>: staying airborne costs it a lot (the «price of lift», detailed on <a href="long-distance.html?lang=en">the long-distance page</a>). You turn hard but you <b>pump short</b> and glide poorly. Carve and long distance sit at <b>opposite ends</b> — pick your playground.</p>',
-    'vd6':'<div class="k">🛫 Takeoff speed</div><div class="big">why carve wings start hard</div><p>A foil flies when lift = your weight; lift falls with <b>speed²</b>. Below a threshold the wing can\'t hold you up: that\'s the <b>takeoff speed</b>, <b>V = √(weight / (½·ρ·area·CL<sub>max</sub>))</b>. It depends on your <b>weight</b>, the <b>area</b> and the <b>CL max</b> (thickness/camber) — <b>not on span</b>.</p><p><b>Double penalty for carve:</b> small <b>area</b> → <b>high</b> takeoff (you must build speed first); short <b>span</b> → huge drag as you slow → hard to <b>accelerate up to it</b> by pumping. A ~1100 cm² carve wing lifts off around <b>14-15 km/h</b>; a big distance wing around <b>9-10 km/h</b> — it «leaves on its own». The estimated speed shows on the 🚀 takeoff axis.</p><div class="note-fig" aria-hidden="true"><svg viewBox="0 0 360 112"><rect x="20" y="64" width="176" height="9" rx="2" fill="#34d399" opacity=".18"/><text x="106" y="57" text-anchor="middle" font-size="10" font-weight="700" fill="#6ee7b7">2 dock steps of momentum</text><line x1="20" y1="73" x2="344" y2="73" stroke="#64748b" stroke-width="2"/><path d="M352 73 l-9 -4.5 v9 Z" fill="#64748b"/><g stroke="#475569" stroke-width="1.5"><line x1="20" y1="69" x2="20" y2="77"/><line x1="100" y1="69" x2="100" y2="77"/><line x1="180" y1="69" x2="180" y2="77"/><line x1="260" y1="69" x2="260" y2="77"/><line x1="340" y1="69" x2="340" y2="77"/></g><g font-size="11" font-weight="700" fill="#94a3b8" text-anchor="middle"><text x="20" y="92">0</text><text x="100" y="92">5</text><text x="180" y="92">10</text><text x="260" y="92">15</text><text x="340" y="92">20</text></g><text x="352" y="106" text-anchor="end" font-size="10" fill="#64748b">km/h</text><line x1="180" y1="22" x2="180" y2="70" stroke="#34d399" stroke-width="2.5"/><circle cx="180" cy="73" r="4.5" fill="#34d399"/><text x="150" y="16" text-anchor="middle" font-size="11.5" font-weight="800" fill="#6ee7b7">big wing (distance) ✓</text><line x1="252" y1="40" x2="252" y2="70" stroke="#c084fc" stroke-width="2.5"/><circle cx="252" cy="73" r="4.5" fill="#c084fc"/><text x="266" y="34" text-anchor="middle" font-size="11.5" font-weight="800" fill="#c084fc">~1100 carve wing: here</text></svg><div class="nf-caps"><span>🟢 it goes in 2 steps</span><span>🟣 you: those km/h must be <b>built</b></span></div></div><p><b>Two ways to take off:</b><br>• <b>Running / gliding start</b> (beach or dock) → you first build <b>horizontal speed</b> up to this takeoff speed, then the wing carries you. Natural on a big wing; <b>hard on a small one</b> (you really have to get moving).<br>• <b>Jumped / popped start</b> → you jump on the board and give one <b>big vertical pump</b>: the <b>unsteady lift</b> (added mass + dynamic overshoot — the physics of <a href="long-distance.html?lang=en#cadence">cadence &amp; Strouhal</a>) gets you flying <b>below</b> the steady speed. Explosive and technical, but often the <b>only way to launch a small carve wing</b>.</p>',
+    'vd6':'<div class="k">🛫 Takeoff speed</div><div class="big">why a carve wing is hard to get going</div><p>The wing carries you as soon as its lift reaches your weight. Lift climbs as <b>area × speed²</b>: less area → you need <b>more speed</b>. Span doesn\'t move that threshold.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><canvas class="fig-cv" data-fig="takeoff"></canvas></div><p style="margin-top:8px"><b>Double penalty for carving</b>: a higher threshold, and a short span → more drag to reach it while pumping. The estimate for your wing shows on the 🚀 takeoff axis.</p><p class="xpl" style="margin-top:8px">💡 The trick: the <b>jump / pop</b> start. A big vertical pump lifts off <b>below</b> that threshold (unsteady lift, see <a href="long-distance.html?lang=en#cadence">cadence &amp; Strouhal</a>) — often the only way to launch a small wing.</p>',
     'vd7':'<div class="k">🌊 Two sub-types of surf</div><div class="big">pivot ↔ connect</div><p><b>Both carve well.</b> What places you is <b>span</b> (agility) crossed with <b>aspect / AR</b> (glide):</p><p>🔥 <b>Pure surf — 1-2 waves</b> (<b>short span</b> ~84-95 cm, F-One Sushi type): very <b>lively</b>, ultra-radical pivot in a clean wave. The price: short span = <b>huge induced drag</b> → <b>little glide</b>, you run out fast.</p><p>🌀 <b>«Pseudo-endurance» surf — connect</b> (<b>long AND slender span / AR ~10-12</b>, Alpine RSX Carve 1100 type): it <b>carves very well too</b>, and <b>on top</b> the long slender span <b>glides and pumps back</b> → you <b>link waves for 10 min</b>. The price: <b>less lively</b>, <b>higher takeoff</b>.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><svg viewBox="0 0 360 190"><rect x="205" y="20" width="135" height="66" rx="8" fill="#c084fc" opacity="0.12"/><text x="272" y="34" font-size="10.5" font-weight="700" fill="#c084fc" text-anchor="middle">connect ⏱️</text><text x="98" y="40" font-size="10.5" font-weight="700" fill="#38bdf8" text-anchor="middle">pure surf 🛹</text><rect x="228" y="118" width="112" height="42" rx="8" fill="#94a3b8" opacity="0.12"/><text x="284" y="136" font-size="9" fill="#94a3b8" text-anchor="middle">big lifty wing<tspan x="284" dy="11">(not lively, no glide)</tspan></text><line x1="40" y1="160" x2="336" y2="160" stroke="#94a3b8" stroke-width="1.5"/><polygon points="344,160 335,156 335,164" fill="#94a3b8"/><line x1="40" y1="160" x2="40" y2="26" stroke="#94a3b8" stroke-width="1.5"/><polygon points="40,18 36,27 44,27" fill="#94a3b8"/><text x="190" y="180" font-size="10" fill="#94a3b8" text-anchor="middle">span (short → long)</text><text x="16" y="95" font-size="10" fill="#94a3b8" text-anchor="middle" transform="rotate(-90 16 95)">aspect / AR (low → high)</text><circle cx="115" cy="111" r="5" fill="#f59e0b"/><text x="115" y="127" font-size="10" fill="#cbd5e1" text-anchor="middle">Sushi</text><circle cx="175" cy="90" r="5" fill="#38bdf8"/><text x="175" y="106" font-size="10" fill="#cbd5e1" text-anchor="middle">DW 980</text><circle cx="190" cy="73" r="5" fill="#34d399"/><text x="190" y="62" font-size="10" fill="#cbd5e1" text-anchor="middle">Surge</text><circle cx="274" cy="51" r="5" fill="#c084fc"/><text x="274" y="68" font-size="10" fill="#cbd5e1" text-anchor="middle">RSX Carve 1100</text></svg><div class="nf-caps"><span>🛹 short — radical pivot</span><span>⏱️ long + high AR — connects</span></div></div>',
     'cards-note':'* «Continuous flight» time, glide and takeoff speed: <b>estimates</b> for a <b>trained</b> rider at <b>your weight</b> (set the 🧍 slider — long-distance page model). It all hinges on the <b>threshold</b>: below your sustainable power you fly «long», above it you drop within minutes. Takeoff rises with weight (√weight), and the <b>lighter</b> you are, the slower you fly → the better you exploit a slender wing. Liveliness and drive depend on the wing only.',
-    'vd8':'<div class="k">📐 Dihedral — the wing\'s « U » angle</div><div class="big">tracks ↔ falls into the turn</div><p>Seen head-on: <b>U</b> = <b>dihedral</b> (tips up), <b>∩</b> = <b>anhedral</b> (tips down).</p><p>• <b>U (dihedral)</b> → <b>roll-stable</b>: the low wing regains lift and <b>self-levels</b> → it <b>tracks</b> and <b>resists the rail</b>. The pick for <b>distance / beginner</b> wings.<br>• <b>∩ (anhedral)</b> → <b>roll-unstable</b>: once banked it <b>falls into the turn</b> → a playful but twitchier carve. <b>The ∩ is what turns best</b> — hence many surf wings are <b>flat to slightly anhedral</b>.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><svg viewBox="0 0 360 152"><line x1="28" y1="38" x2="192" y2="38" stroke="#475569" stroke-width="1.5" stroke-dasharray="4 5"/><g class="die-rock die-u"><path d="M110 46 L48 30 M110 46 L172 30" stroke="#38bdf8" stroke-width="7" stroke-linecap="round" fill="none"/></g><g class="nudge"><path d="M40 64 v-15" stroke="#e2e8f0" stroke-width="2.5"/><path d="M40 45 l-4.5 7 h9 Z" fill="#e2e8f0"/></g><text x="204" y="34" font-size="11.5" font-weight="700" fill="#38bdf8">U (dihedral)</text><text x="204" y="48" font-size="10.5" fill="#94a3b8">self-rights to flat</text><line x1="28" y1="109" x2="192" y2="109" stroke="#475569" stroke-width="1.5" stroke-dasharray="4 5"/><g class="die-rock die-a"><path d="M110 100 L48 118 M110 100 L172 118" stroke="#f59e0b" stroke-width="7" stroke-linecap="round" fill="none"/></g><g class="nudge"><path d="M40 140 v-15" stroke="#e2e8f0" stroke-width="2.5"/><path d="M40 121 l-4.5 7 h9 Z" fill="#e2e8f0"/></g><text x="204" y="104" font-size="11.5" font-weight="700" fill="#f59e0b">∩ (anhedral)</text><text x="204" y="118" font-size="10.5" fill="#94a3b8">keeps falling into the turn</text></svg><div class="nf-caps"><span>1️⃣ 💨 same push on both</span><span>2️⃣ the U returns to the horizon · the ∩ <b>keeps falling</b></span></div></div><p style="margin-top:8px">💡 <b>Smart combo</b>: an <b>anhedral front wing</b> (∩, engages the turn) + a <b>dihedral stab</b> (U, stabilises roll) = you keep the wing\'s engagement <b>without</b> losing control. Many surf setups run the two opposite on purpose.</p><p style="margin-top:8px; font-size:.92em; color:var(--dim)">⚠️ No slider here: dihedral is <b>almost never specified</b> by brands and often <b>progressive</b> (curved «gull» wing) — not a single settable angle. Remember it as a <b>character</b>, not a numeric setting.</p>',
+    'vd8':'<div class="k">📐 Dihedral — the wing\'s « U » angle</div><div class="big">tracks ↔ falls into the turn</div><p>Seen head-on: <b>U</b> = <b>dihedral</b> (tips up), <b>∩</b> = <b>anhedral</b> (tips down).</p><p>• <b>U (dihedral)</b> → <b>roll-stable</b>: the low wing regains lift and <b>self-levels</b> → it <b>tracks</b> and <b>resists the rail</b>. The pick for <b>distance / beginner</b> wings.<br>• <b>∩ (anhedral)</b> → <b>roll-unstable</b>: once banked it <b>falls into the turn</b> → a playful but twitchier carve. <b>The ∩ is what turns best</b> — hence many surf wings are <b>flat to slightly anhedral</b>.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><canvas class="fig-cv" data-fig="dihedral"></canvas></div><p style="margin-top:8px">💡 <b>Smart combo</b>: an <b>anhedral front wing</b> (∩, engages the turn) + a <b>dihedral stab</b> (U, stabilises roll) = you keep the wing\'s engagement <b>without</b> losing control. Many surf setups run the two opposite on purpose.</p><p style="margin-top:8px; font-size:.92em; color:var(--dim)">⚠️ No slider here: dihedral is <b>almost never specified</b> by brands and often <b>progressive</b> (curved «gull» wing) — not a single settable angle. Remember it as a <b>character</b>, not a numeric setting.</p>',
     'fig-q-z1':'connect ⏱️','fig-q-z2':'pure surf 🛹','fig-q-z3':'big lifty wing<tspan x="284" dy="11">(not lively, no glide)</tspan>',
     'fig-q-x':'span (short → long)','fig-q-y':'aspect / AR (low → high)',
     'fig-q-p1':'Sushi','fig-q-p2':'DW 980','fig-q-p3':'Surge','fig-q-p4':'RSX Carve 1100',
     'fig-q-cap':'<span>🛹 short — radical pivot</span><span>⏱️ long + high AR — connects</span>',
-    'fig-di-u1':'U (dihedral)','fig-di-u2':'self-levels','fig-di-a1':'∩ (anhedral)','fig-di-a2':'falls into the turn',
-    'fig-di-cap':'<span>🟦 U — stable, tracks</span><span>🟧 ∩ — engages, turns</span>',
     'next-ld':'⚡ Fly far — the other extreme','next-vit':'🚀 Fly fast',
     'tech-h3':'🎯 Gear helps, technique makes the carve',
     'tech-lede':'A short wing <b>gives you the right</b> to turn tight — but 80% of the turn is you. Seven fundamentals, all tied to the physics above.',
@@ -671,36 +576,758 @@
     return Math.round(v*3.6*1.15);
   }
 
-  /* ---------- animation : la trace de carve, pilotée par le score de vivacité ---------- */
-  // Vue du ciel : le rider avance à vitesse constante, sa trace est une sinusoïde dont
-  // l'amplitude et la fréquence suivent le score → 100 = S très serrés, 0 = quasi tout droit.
-  const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const ANIM = {x:14, last:0, A:2, L:320, y0:92};
+  // Puissance à fournir pour VOLER à la vitesse de décollage (W) — le vrai coût du démarrage en pompant.
+  // À cette vitesse (CL = CLmax/1,15²), la traînée induite vaut poids·CL/(π·e·AR) : elle ne dépend que de
+  // l'allongement → une aile trapue traîne énormément juste quand tu pompes pour partir. La surface, elle,
+  // fixe la vitesse de décollage (et la traînée de frottement : q·S·Cd0 + appendices). η = 0,7 (pompage).
+  // Sans ce terme, l'ancien score (vitesse de décollage seule) recommandait une « brique » AR 4.
+  function takeoffPower(b_cm, S_cm2, WKG){
+    WKG = WKG || 85;
+    const RHO=1025, G=9.81, CLMAX=1.2, W = WKG*G, S = S_cm2/1e4, AR = b_cm*b_cm/S_cm2;
+    const v = Math.sqrt(W/(0.5*RHO*S*CLMAX))*1.15, CL = CLMAX/(1.15*1.15), q = W/(S*CL);
+    const Di = W*CL/(Math.PI*0.9*AR), Dp = q*(S*0.012 + 0.0008);
+    return (Di + Dp)*v/0.7;
+  }
+
+  /* ---------- animation : un carve sur la face d'une vague, piloté par le score de vivacité ---------- */
+  // Vague vue de face qui déroule vers la droite (tube à gauche, épaule à droite), caméra en
+  // travelling qui suit le rider. Trajectoire : le CAP oscille, θ(s) = θmax·sin(2π·s/P) — pas une
+  // sinusoïde en y : ça donne des arcs (bottom turn / top turn) reliés par des portions tendues.
+  // Le score pilote θmax et P ; la hauteur de face utilisée reste constante → ce qui change à
+  // l'œil, c'est le SERRÉ des virages et leur nombre, pas leur taille. Le sillage reste posé sur
+  // l'eau et défile derrière le rider : on y compte les virages.
+  // Le rider est un gréement 3D RIGIDE (planche, mât, fuselage, aile, stab soudés) projeté par une
+  // caméra orthographique de trois-quarts : la gîte ∝ courbure fait basculer l'ensemble d'un bloc,
+  // et l'aile « s'ouvre » ou se ferme en roulant — l'inertie de roulis (∝ masse × envergure²)
+  // devient visible. Seul le corps s'articule : il reste d'aplomb, penché dans le virage.
+  const RM  = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const CVW = 320, CVH = 150;                  // repère logique (le canvas est mis à l'échelle)
+  const YC = 80, AMP = 33, XR = 192;           // bande de face exploitée · abscisse moyenne du rider
+  const TROUGH = 140;                          // pied de vague
+  const SPEED = 74, TRAIL = 3;                 // px/s le long de la trace · secondes de sillage
+  // seuils de courbure calés pour une amplitude de 26 px → mis à l'échelle (k ∝ amplitude au sommet)
+  const KREF = 0.048*AMP/26, KBITE = 0.017*AMP/26, KSPAN = 0.022*AMP/26;
+
+  const cv = $('anim-cv'), cx = cv ? cv.getContext('2d') : null;
+  const ANIM = {path:null, col:'#c084fc', d:0, t:0, last:0, spray:[], mist:[], run:false};
+  const FOAM = [], LACE = [];
+  for(let i=0;i<70;i++){ const u = Math.random(), v = Math.random();
+    FOAM.push({x:u*u*70, y:150 - v*v*44*(1-u*.5), r:2.4+Math.random()*4*(1-u*.5), ph:Math.random()*6.283, w:1.2+Math.random()*2.4}); }
+  for(let i=0;i<34;i++) LACE.push({x:Math.random()*300, dy:Math.random()*3-1, r:.4+Math.random()*.8});
+
+  // Une période de trace : intégration du cap, puis recalage vertical sur AMP. La trace est
+  // périodique (y revient à sa valeur, x avance de Dx) → on la répète à l'infini.
+  function buildPath(a){
+    const thMax = (32 + 0.43*a) * Math.PI/180;      // 32° (mou) → 75° (snap quasi vertical)
+    const n     = Math.round(325 - 1.63*a);         // période en longueur d'arc : 325 → 162 px
+    const pts = [];
+    let x = 0, y = 0;
+    for(let i=0;i<n;i++){
+      pts.push({x:x, y:y});
+      const th = thMax*Math.sin(2*Math.PI*(i+.5)/n);
+      x += Math.cos(th); y += Math.sin(th);
+    }
+    const Dx = x;
+    let lo = Infinity, hi = -Infinity;
+    for(const p of pts){ if(p.y<lo) lo = p.y; if(p.y>hi) hi = p.y; }
+    const sy = (2*AMP)/(hi-lo), mid = (hi+lo)/2;
+    for(const p of pts) p.y = YC + (p.y-mid)*sy;
+    const at_ = i => { const m = Math.floor(i/n), r = i-m*n; return {x:pts[r].x + m*Dx, y:pts[r].y, r:r, m:m}; };
+    // abscisse curviligne, cap et courbure recalculés SUR la trace finale (donc après recalage)
+    let acc = 0;
+    for(let i=0;i<n;i++){ pts[i].s = acc; const q = at_(i+1); acc += Math.hypot(q.x-pts[i].x, q.y-pts[i].y); }
+    for(let i=0;i<n;i++){ const p0 = at_(i-2), p1 = at_(i+2); pts[i].th = Math.atan2(p1.y-p0.y, p1.x-p0.x); }
+    const sOf = i => { const q = at_(i); return pts[q.r].s + q.m*acc; };
+    for(let i=0;i<n;i++){
+      let d = pts[at_(i+3).r].th - pts[at_(i-3).r].th;
+      while(d >  Math.PI) d -= 2*Math.PI;
+      while(d < -Math.PI) d += 2*Math.PI;
+      pts[i].k = d / (sOf(i+3) - sOf(i-3));
+      // gîte : 0 en ligne droite, ~54° dans le virage le plus serré du réglage le plus vif.
+      // Référence de courbure FIXE, sinon toute aile paraîtrait aussi engagée.
+      pts[i].roll = Math.max(-1, Math.min(1, pts[i].k/KREF)) * 0.94;
+    }
+    // la caméra avance à la vitesse moyenne du rider le long de la vague ; sa dérive est centrée sur XR
+    let mx = 0; for(const p of pts) mx += p.x - p.s*Dx/acc;
+    return {pts:pts, n:n, Dx:Dx, len:acc, off:mx/n - XR};
+  }
+
+  function at(P, d){                                // point (interpolé) de la trace à l'abscisse d
+    const pts = P.pts, n = P.n, m = Math.floor(d/P.len), r = d - m*P.len;
+    let lo = 0, hi = n-1;
+    while(lo < hi){ const md = (lo+hi+1) >> 1; if(pts[md].s <= r) lo = md; else hi = md-1; }
+    const p = pts[lo], last = lo === n-1, q = last ? pts[0] : pts[lo+1];
+    const qs = last ? P.len : q.s, qx = last ? q.x + P.Dx : q.x;
+    const f = Math.max(0, Math.min(1, (r-p.s)/Math.max(1e-6, qs-p.s)));
+    let dth = q.th - p.th;
+    while(dth >  Math.PI) dth -= 2*Math.PI;
+    while(dth < -Math.PI) dth += 2*Math.PI;
+    return {x:p.x + (qx-p.x)*f + m*P.Dx, y:p.y + (q.y-p.y)*f, th:p.th + dth*f,
+            k:p.k + (q.k-p.k)*f, roll:p.roll + (q.roll-p.roll)*f};
+  }
+  const camX = (P, d) => d*P.Dx/P.len + P.off;     // abscisse « monde » du bord gauche de l'écran
+  const hsla = (c, a) => c.indexOf('hsl(') === 0 ? 'hsla(' + c.slice(4, -1) + ',' + a + ')' : c;
+  const ss = u => u <= 0 ? 0 : u >= 1 ? 1 : u*u*(3-2*u);
+  const fadeX = x => ss((x-72)/70) * ss((CVW-x)/26);   // les lignes s'effacent avant le tube
+
+  /* --- la vague --- */
+  const crestY = (x,t) => 21 + 21*ss((x-110)/230) + 1.1*Math.sin(x/21 + t*1.7) + 0.6*Math.sin(x/8.5 - t*2.6);
+  function crestPath(t, x0, x1){
+    cx.moveTo(x0, crestY(x0,t));
+    for(let x=x0+4; x<x1; x+=4) cx.lineTo(x, crestY(x,t));
+    cx.lineTo(x1, crestY(x1,t));
+  }
+  function drawSky(t){
+    const g = cx.createLinearGradient(0,0,0,48);
+    g.addColorStop(0,'#081022'); g.addColorStop(1,'#132441');
+    cx.fillStyle = g; cx.fillRect(0,0,CVW,CVH);
+    const m = cx.createRadialGradient(262,0,0,262,0,70);      // un halo de lune, qui allume la lèvre
+    m.addColorStop(0,'rgba(254,240,200,.13)'); m.addColorStop(1,'rgba(254,240,200,0)');
+    cx.fillStyle = m; cx.fillRect(0,0,CVW,60);
+  }
+  function drawFace(t, cam){
+    cx.beginPath(); crestPath(t, 0, CVW); cx.lineTo(CVW,CVH); cx.lineTo(0,CVH); cx.closePath();
+    const g = cx.createLinearGradient(0,20,0,TROUGH);
+    g.addColorStop(0,'#35c2ae'); g.addColorStop(.16,'#15908f'); g.addColorStop(.5,'#0e5c78'); g.addColorStop(1,'#0a2c4b');
+    cx.fillStyle = g; cx.fill();
+    cx.save(); cx.clip();
+    const h = cx.createLinearGradient(30,0,250,0);             // plus creuse, donc plus sombre, vers le tube
+    h.addColorStop(0,'rgba(2,8,23,.5)'); h.addColorStop(1,'rgba(2,8,23,0)');
+    cx.fillStyle = h; cx.fillRect(0,0,CVW,CVH);
+    cx.beginPath(); crestPath(t, 0, CVW);                      // la lumière qui traverse la lèvre
+    cx.lineWidth = 12; cx.strokeStyle = 'rgba(167,243,208,.16)'; cx.stroke();
+    // stries de la face : l'eau grimpe la face, et elle défile sous le rider
+    cx.lineWidth = 1;
+    for(let j=0;j<8;j++){
+      const u = 1 - ((j/8 + t*0.035) % 1), e = Math.pow(u, 1.25);
+      cx.beginPath();
+      for(let x=60; x<=CVW; x+=8){ const yc = crestY(x,t); const y = yc + (TROUGH-yc)*e; x === 60 ? cx.moveTo(x,y) : cx.lineTo(x,y); }
+      cx.setLineDash([5 + (j%3)*6, 10 + j*3]); cx.lineDashOffset = cam + j*23;
+      cx.strokeStyle = 'rgba(204,251,241,' + (0.11*Math.sin(Math.PI*u)).toFixed(3) + ')'; cx.stroke();
+    }
+    cx.setLineDash([]);
+    cx.restore();
+    const f = cx.createLinearGradient(0,TROUGH-6,0,CVH);       // le plan d'eau devant la vague
+    f.addColorStop(0,'rgba(8,30,52,0)'); f.addColorStop(1,'rgba(6,20,38,.8)');
+    cx.fillStyle = f; cx.fillRect(0,TROUGH-6,CVW,CVH-TROUGH+6);
+    for(const l of LACE){                                      // la dentelle d'écume du bas de vague
+      const x = ((l.x - cam) % 300 + 300) % 300, a = 0.3*(1 - ss((x-20)/170));
+      if(a < .02) continue;
+      cx.fillStyle = 'rgba(224,247,250,' + a.toFixed(3) + ')';
+      cx.beginPath(); cx.arc(x, TROUGH - 1 + l.dy, l.r, 0, 6.2832); cx.fill();
+    }
+  }
+  function tubeEdge(t, ya){                          // le bord de la lèvre qui retombe, de A vers B
+    const w = Math.sin(t*1.2)*1.6;
+    cx.bezierCurveTo(74, ya-8+w, 36, 18-w, 22, 54);
+    cx.bezierCurveTo(13, 76, 12, 100, 16+w*.5, 122);
+  }
+  function drawTube(t){
+    const ya = crestY(98,t);
+    cx.beginPath(); cx.moveTo(98, ya); tubeEdge(t, ya);       // l'intérieur du tube
+    cx.bezierCurveTo(36, 119, 52, 98, 63, 76);
+    cx.bezierCurveTo(74, 54, 86, ya+14, 98, ya+2.5); cx.closePath();
+    const g = cx.createRadialGradient(46,88,2,46,88,56);
+    g.addColorStop(0,'#030b18'); g.addColorStop(.7,'rgba(5,28,48,.95)'); g.addColorStop(1,'rgba(10,60,80,.6)');
+    cx.fillStyle = g; cx.fill();
+    cx.beginPath(); crestPath(t, 0, 98); tubeEdge(t, ya);    // le rideau : eau fine, donc lumineuse
+    cx.lineTo(0,122); cx.closePath();
+    const r = cx.createLinearGradient(0,20,40,110);
+    r.addColorStop(0,'rgba(64,208,190,.9)'); r.addColorStop(1,'rgba(150,236,228,.55)');
+    cx.fillStyle = r; cx.fill();
+    cx.beginPath(); cx.moveTo(98, ya); tubeEdge(t, ya);
+    cx.lineCap = 'round';
+    cx.lineWidth = 7;   cx.strokeStyle = 'rgba(204,251,241,.16)'; cx.stroke();
+    cx.lineWidth = 1.6; cx.strokeStyle = 'rgba(240,253,250,.7)'; cx.stroke();
+  }
+  function drawFoam(t){                              // là où la lèvre explose
+    const g = cx.createRadialGradient(14,142,0,14,142,62);
+    g.addColorStop(0,'rgba(226,247,250,.55)'); g.addColorStop(1,'rgba(226,247,250,0)');
+    cx.fillStyle = g; cx.fillRect(0,80,90,70);
+    for(const f of FOAM){
+      const r = f.r*(0.72 + 0.28*Math.sin(t*f.w + f.ph));
+      const y = f.y + 1.4*Math.sin(t*f.w*.7 + f.ph);
+      cx.fillStyle = 'rgba(236,254,255,' + (0.3 + 0.2*Math.sin(t*f.w*.5 + f.ph*2)).toFixed(3) + ')';
+      cx.beginPath(); cx.arc(f.x, y, r, 0, 6.2832); cx.fill();
+    }
+  }
+
+  /* --- la ligne complète du réglage courant, en filigrane : c'est là qu'on compte les virages --- */
+  function drawLine(P, cam, col, w){
+    const g = cx.createLinearGradient(72,0,CVW,0);
+    g.addColorStop(0, hsla(col,0)); g.addColorStop(.3, col); g.addColorStop(.92, col); g.addColorStop(1, hsla(col,0));
+    cx.beginPath();
+    let first = true;
+    for(let m = Math.floor((cam+60)/P.Dx); ; m++){
+      const base = m*P.Dx - cam; if(base > CVW) break;
+      for(let i=0;i<P.n;i+=3){
+        const x = P.pts[i].x + base; if(x < 60 || x > CVW) continue;
+        first ? cx.moveTo(x, P.pts[i].y) : cx.lineTo(x, P.pts[i].y); first = false;
+      }
+    }
+    cx.lineWidth = w; cx.strokeStyle = g; cx.stroke();
+  }
+
+  /* --- le sillage : il naît au pied du mât, reste sur l'eau et s'efface derrière --- */
+  function drawWake(P, d, cam){
+    const w = [], step = 1.5, n = Math.floor(TRAIL*SPEED/step);
+    for(let j=n;j>=0;j--){ const q = at(P, d - j*step), x = q.x - cam; w.push({x:x, y:q.y, f:(1 - j/n)*fadeX(x)}); }
+    cx.lineCap = 'round'; cx.lineJoin = 'round';
+    for(let pass=0; pass<3; pass++){
+      for(let i=1;i<w.length;i++){
+        const f = w[i].f; if(f <= 0.01) continue;
+        const al = pass===0 ? f*0.16 : pass===1 ? f*f*0.9 : Math.pow(f,5)*0.8;
+        if(al < 0.012) continue;
+        cx.globalAlpha = al;
+        cx.lineWidth   = pass===0 ? 3 + 4*f : pass===1 ? 0.5 + 2*f : 0.9;
+        cx.strokeStyle = pass===2 ? '#f1f9ff' : ANIM.col;
+        cx.beginPath(); cx.moveTo(w[i-1].x, w[i-1].y); cx.lineTo(w[i].x, w[i].y); cx.stroke();
+      }
+    }
+    cx.globalAlpha = 1;
+  }
+
+  /* --- le gréement rigide, en 3D --- */
+  // Repère monde : X le long de la vague, Y vertical, Z vers la plage. La face est un plan incliné
+  // (x̂, f̂ = « vers le haut de la face »), n̂ sa normale. Caméra orthographique : un peu depuis
+  // l'épaule (azimut) et un peu d'en haut (élévation), sinon l'envergure serait vue par la tranche.
+  const V3 = (a,b,c) => [a,b,c];
+  const dot = (u,v) => u[0]*v[0] + u[1]*v[1] + u[2]*v[2];
+  const crs = (u,v) => [u[1]*v[2]-u[2]*v[1], u[2]*v[0]-u[0]*v[2], u[0]*v[1]-u[1]*v[0]];
+  const lin = (a,u,b,v,c,w) => [a*u[0]+b*v[0]+(c?c*w[0]:0), a*u[1]+b*v[1]+(c?c*w[1]:0), a*u[2]+b*v[2]+(c?c*w[2]:0)];
+  const nrm = u => { const l = Math.hypot(u[0],u[1],u[2]) || 1; return [u[0]/l, u[1]/l, u[2]/l]; };
+  const CAM = (() => {
+    const al = 40*Math.PI/180, az = 18*Math.PI/180, el = 12*Math.PI/180;  // pente de face · azimut · élévation
+    return { R:V3(Math.cos(az), 0, -Math.sin(az)),
+             U:V3(-Math.sin(el)*Math.sin(az), Math.cos(el), -Math.sin(el)*Math.cos(az)),
+             D:V3(Math.sin(az)*Math.cos(el), Math.sin(el), Math.cos(az)*Math.cos(el)),
+             X:V3(1,0,0), F:V3(0,Math.sin(al),-Math.cos(al)), N:V3(0,Math.cos(al),Math.sin(al)), V:V3(0,1,0) };
+  })();
+  const proj = v => [dot(v,CAM.R), -dot(v,CAM.U)];
+  const SC = 1.3, FLY = 5.5, MAST = 16;            // échelle · hauteur de vol (mât hors de l'eau) · mât
+
+  // Repère du gréement au point p : cap H (dans le plan de la face, projeté pile sur la tangente
+  // écran de la trace), travers S, normale U. Puis UNE rotation de gîte φ autour de H pour tout le monde.
+  function rigFrame(p){
+    const t = [Math.cos(p.th), Math.sin(p.th)], px = proj(CAM.X), pf = proj(CAM.F);
+    const c2 = (u,w) => u[0]*w[1] - u[1]*w[0];
+    let hx = c2(pf,t), hf = -c2(px,t);
+    if((hx*px[0]+hf*pf[0])*t[0] + (hx*px[1]+hf*pf[1])*t[1] < 0){ hx = -hx; hf = -hf; }
+    const H = nrm(lin(hx, CAM.X, hf, CAM.F)), S0 = crs(H, CAM.N);
+    // on penche du côté où se trouve, à l'écran, le centre du virage
+    const sk = p.k >= 0 ? 1 : -1, ps = proj(S0);
+    const phi = Math.abs(p.roll) * ((-t[1]*sk)*ps[0] + (t[0]*sk)*ps[1] > 0 ? 1 : -1);
+    const c = Math.cos(phi), s = Math.sin(phi);
+    const rot = v => { const k = dot(H,v)*(1-c), x = crs(H,v); return [v[0]*c + x[0]*s + H[0]*k, v[1]*c + x[1]*s + H[1]*k, v[2]*c + x[2]*s + H[2]*k]; };
+    const U = rot(CAM.N), S = rot(S0);
+    // le corps : d'aplomb (verticale monde), à moitié redressé sur le cap, penché de φ dans le virage
+    const B = nrm(rot(lin(1, CAM.V, -0.5*dot(CAM.V,H), H)));
+    let Z = nrm(crs(H, B)); if(dot(Z, CAM.D) < 0) Z = [-Z[0],-Z[1],-Z[2]];
+    return {H:H, S:S, U:U, B:B, Z:Z};
+  }
+  // point du gréement : a le long du cap, b en travers, c le long de la normale (0 = pont de la planche)
+  function rigPt(F, ox, oy, a, b, c){
+    const q = proj(lin(a, F.H, b, F.S, c + FLY, F.U));
+    return [ox + q[0]*SC, oy + q[1]*SC];
+  }
+  const vAdd = (o, F, pairs) => { const v = lin(1, o, 0, o); for(const [k, key] of pairs){ const e = F[key]; v[0]+=k*e[0]; v[1]+=k*e[1]; v[2]+=k*e[2]; } return v; };
+  function poly(pts){ cx.beginPath(); cx.moveTo(pts[0][0], pts[0][1]); for(let i=1;i<pts.length;i++) cx.lineTo(pts[i][0], pts[i][1]); cx.closePath(); }
+  function seg(a, b){ cx.beginPath(); cx.moveTo(a[0],a[1]); cx.lineTo(b[0],b[1]); cx.stroke(); }
+
+  // aile avant (flèche + effilement) et stab, décrites une fois pour toutes en coordonnées corps
+  const WING = [[3.3,0],[3.05,4.5],[2.4,7.6],[1.3,9],[0.5,8.7],[0.1,5],[-0.3,0]];
+  const STAB = [[-6.3,0],[-6.5,2.6],[-7.2,4.4],[-7.7,4.2],[-7.6,0]];
+  const BOARD = [[-8,0],[-8,2.25],[3,2.55],[7.4,1.85],[9.8,.6],[10.3,0]];
+  const outline = (half, F, ox, oy, c, bs) => {
+    const pts = half.map(q => rigPt(F, ox, oy, q[0], q[1]*bs, c));
+    for(let i=half.length-1;i>=0;i--) if(half[i][1]) pts.push(rigPt(F, ox, oy, half[i][0], -half[i][1]*bs, c));
+    return pts;
+  };
+
+  function drawFoil(F, ox, oy){                      // tout ce qui est sous l'eau : vu à travers elle
+    cx.lineCap = 'round'; cx.lineJoin = 'round';
+    cx.globalAlpha = 0.62;
+    cx.strokeStyle = '#cbd5e1';
+    cx.lineWidth = 1.5; seg(rigPt(F,ox,oy,-0.5,0,-FLY), rigPt(F,ox,oy,-0.5,0,-MAST));
+    cx.lineWidth = 1.3; seg(rigPt(F,ox,oy,-7.4,0,-MAST), rigPt(F,ox,oy,4,0,-MAST-.2));
+    cx.fillStyle = ANIM.col;
+    poly(outline(STAB.map(q => [q[0], q[1]]), F, ox, oy, -MAST, 1)); cx.fill();
+    poly(outline(WING, F, ox, oy, -MAST-.2, 1)); cx.fill();
+    cx.globalAlpha = 0.85; cx.strokeStyle = '#f5f3ff'; cx.lineWidth = .7;    // bord d'attaque
+    cx.beginPath();
+    WING.forEach((q,i) => { if(q[0] < 1) return; const p = rigPt(F,ox,oy,q[0],q[1],-MAST-.2); i ? cx.lineTo(p[0],p[1]) : cx.moveTo(p[0],p[1]); });
+    cx.stroke();
+    cx.beginPath();
+    WING.forEach((q,i) => { if(q[0] < 1) return; const p = rigPt(F,ox,oy,q[0],-q[1],-MAST-.2); i ? cx.lineTo(p[0],p[1]) : cx.moveTo(p[0],p[1]); });
+    cx.stroke();
+    cx.globalAlpha = 1;
+  }
+
+  function drawRig(F, ox, oy){                       // mât hors de l'eau, planche, rider
+    cx.lineCap = 'round'; cx.lineJoin = 'round';
+    cx.strokeStyle = '#e2e8f0'; cx.lineWidth = 1.8;
+    seg(rigPt(F,ox,oy,-0.5,0,0), rigPt(F,ox,oy,-0.5,0,-FLY));
+    const back = rigPt(F,ox,oy,-5,0,-FLY), bs = proj(F.S);   // le mât fend l'eau : un petit V d'écume
+    cx.strokeStyle = 'rgba(241,249,255,.75)'; cx.lineWidth = .8;
+    for(const k of [-1.6,1.6]){ cx.beginPath(); cx.moveTo(ox,oy); cx.lineTo(back[0]+bs[0]*k*SC, back[1]+bs[1]*k*SC); cx.stroke(); }
+    // planche : on voit le pont ou la carène selon la gîte → le rail qui mord se lit tout seul
+    const deck = outline(BOARD, F, ox, oy, 0, 1), hull = outline(BOARD, F, ox, oy, -1.1, 1);
+    const up = dot(F.U, CAM.D) > 0;
+    cx.fillStyle = '#64748b'; poly(up ? hull : deck); cx.fill();
+    cx.fillStyle = up ? '#e2e8f0' : '#94a3b8'; poly(up ? deck : hull); cx.fill();
+    cx.strokeStyle = ANIM.col; cx.lineWidth = 1;
+    seg(rigPt(F,ox,oy,-7.5,0,up?0:-1.1), rigPt(F,ox,oy,9,0,up?0:-1.1));
+
+    // le rider : pieds soudés au pont, le reste en un seul bloc d'aplomb (repère B)
+    const at3 = v => { const q = proj(v); return [ox + q[0]*SC, oy + q[1]*SC]; };
+    const lift = pairs => at3(vAdd(lin(FLY, F.U, 0, F.U), F, pairs));
+    const fb = lift([[-4,'H']]), ff = lift([[3.6,'H']]);
+    const hip = lift([[-0.2,'H'],[8.2,'B']]);
+    const kb = lift([[-3.3,'H'],[4.4,'B'],[.9,'Z']]), kf = lift([[3.9,'H'],[4.4,'B'],[.9,'Z']]);   // jambes fléchies, en A
+    const sh = lift([[0.9,'H'],[15.2,'B'],[0.4,'Z']]);
+    const hd = lift([[1.3,'H'],[18.3,'B'],[0.5,'Z']]);
+    const eF = lift([[3.6,'H'],[13.8,'B'],[1,'Z']]), hF = lift([[6.4,'H'],[12.2,'B'],[1.6,'Z']]);
+    const eB = lift([[-2.4,'H'],[14.3,'B'],[.6,'Z']]), hB = lift([[-5.4,'H'],[12.8,'B'],[.8,'Z']]);
+    cx.strokeStyle = '#0f172a'; cx.lineWidth = 3.9;              // liseré sombre : la silhouette se détache de l'eau
+    const body = () => {
+      cx.beginPath();
+      cx.moveTo(fb[0],fb[1]); cx.lineTo(kb[0],kb[1]); cx.lineTo(hip[0],hip[1]);
+      cx.lineTo(kf[0],kf[1]); cx.lineTo(ff[0],ff[1]);
+      cx.moveTo(hip[0],hip[1]); cx.lineTo(sh[0],sh[1]);
+      cx.moveTo(hF[0],hF[1]); cx.lineTo(eF[0],eF[1]); cx.lineTo(sh[0],sh[1]); cx.lineTo(eB[0],eB[1]); cx.lineTo(hB[0],hB[1]);
+      cx.stroke();
+    };
+    cx.globalAlpha = .55; body(); cx.globalAlpha = 1;
+    cx.strokeStyle = '#f8fafc'; cx.lineWidth = 2.1; body();
+    cx.lineWidth = 3; seg(hip, sh);                              // le buste, un peu plus épais
+    cx.fillStyle = '#f8fafc';
+    cx.beginPath(); cx.arc(hd[0], hd[1], 2.4*SC, 0, 6.2832); cx.fill();
+  }
+
+  /* --- gerbes : le rail qui arrache, et les embruns chassés de la crête --- */
+  function stepFx(dt, t, p, sx, P){
+    // Gerbe d'eau là où le rail mord. Seuil ABSOLU (pas relatif au réglage courant) : une aile molle
+    // ne projette presque rien, une aile vive en met partout — c'est un marqueur du score.
+    const bite = (Math.abs(p.k) - KBITE) / KSPAN;              // 0 = ça glisse · 1 = le rail arrache
+    const n = ANIM.spray.length < 130 ? Math.min(3, Math.floor(bite*2 + Math.random())) : 0;
+    const cs = Math.cos(p.th), sn = Math.sin(p.th), sk = p.k >= 0 ? 1 : -1;
+    const vc = SPEED*P.Dx/P.len;                               // vitesse de la caméra
+    for(let i=0;i<n;i++){
+      const out = 22 + Math.random()*40, back = 8 + Math.random()*22;
+      ANIM.spray.push({ x:sx - cs*3, y:p.y - sn*3,
+        vx: (SPEED*cs - vc)*.45 + sk*sn*out - cs*back + (Math.random()-.5)*14,
+        vy: SPEED*sn*.45 - sk*cs*out - sn*back - (14 + Math.random()*26),
+        r:.6 + Math.random()*1.5, life:0, ttl:.35 + Math.random()*.45 });
+    }
+    if(ANIM.mist.length < 34 && Math.random() < dt*20){
+      const x = 60 + Math.random()*260, lip = x < 108;
+      ANIM.mist.push({x:x, y:lip ? 20 + Math.random()*6 : crestY(x,t) - .5, vx:-5 - Math.random()*14, vy:-2 - Math.random()*6,
+                      r:.5 + Math.random()*1.3, life:0, ttl:.9 + Math.random()*1.3});
+    }
+    for(const L of [ANIM.spray, ANIM.mist])
+      for(let i=L.length-1;i>=0;i--){
+        const q = L[i], g = L === ANIM.spray ? 75 : 2;
+        q.vy += g*dt; q.vx *= 1 - dt*.8; q.x += q.vx*dt; q.y += q.vy*dt; q.life += dt;
+        if(q.life > q.ttl) L.splice(i,1);
+      }
+  }
+  function drawFx(){
+    cx.fillStyle = '#f1f9ff';
+    for(const q of ANIM.spray){
+      cx.globalAlpha = Math.max(0, 1 - q.life/q.ttl) * .8;
+      cx.beginPath(); cx.arc(q.x, q.y, q.r, 0, 6.2832); cx.fill();
+    }
+    for(const q of ANIM.mist){
+      cx.globalAlpha = Math.sin(Math.PI*q.life/q.ttl) * .3;
+      cx.beginPath(); cx.arc(q.x, q.y, q.r, 0, 6.2832); cx.fill();
+    }
+    cx.globalAlpha = 1;
+  }
+
+  function drawFrame(t){
+    if(!cx || !ANIM.path) return;
+    const P = ANIM.path, d = ANIM.d, cam = camX(P, d);
+    const p = at(P, d), sx = p.x - cam, F = rigFrame(p);
+    drawSky(t); drawFace(t, cam); drawTube(t);
+    cx.globalAlpha = .55; drawLine(P, cam, ANIM.col, 1.3); cx.globalAlpha = 1;
+    drawFoil(F, sx, p.y);
+    drawWake(P, d, cam);
+    drawRig(F, sx, p.y);
+    drawFx(); drawFoam(t);
+  }
+
+  function frame(now){
+    if(!ANIM.run) return;
+    const t = now/1000, dt = ANIM.last ? Math.min(t-ANIM.last, .05) : 0;
+    ANIM.last = t; ANIM.t = t;
+    const P = ANIM.path;
+    ANIM.d += SPEED*dt;
+    if(ANIM.d > P.len*40) ANIM.d -= P.len*40;
+    const p = at(P, ANIM.d);
+    stepFx(dt, t, p, p.x - camX(P, ANIM.d), P);
+    drawFrame(t);
+    requestAnimationFrame(frame);
+  }
+
+  function fitCanvas(){
+    if(!cv) return;
+    const w = cv.clientWidth || 320, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = Math.round(w*dpr); cv.height = Math.round(w*dpr*CVH/CVW);
+    const k = cv.width/CVW; cx.setTransform(k,0,0,k,0,0);
+    if(ANIM.path) drawFrame(ANIM.t);
+  }
+
+  // Appelé par render() à chaque changement de réglage : nouvelle trace, nouvelle couleur.
   function setAnim(a, col){
-    ANIM.A  = 2 + 0.34*a;                         // demi-amplitude verticale sur la face
-    ANIM.L  = 330 - 2.3*a;                        // longueur d'onde (px)
-    ANIM.y0 = 94 - ANIM.A;                        // bottom-turn ancré au creux (y=94) ; à 100 le sommet frôle la lèvre
-    let d = '';
-    for(let x=14; x<=306; x+=4) d += (x===14?'M':'L') + x + ' ' + (ANIM.y0 + ANIM.A*Math.sin(2*Math.PI*(x-14)/ANIM.L)).toFixed(1);
-    const tr = $('anim-trail'); tr.setAttribute('d', d); tr.setAttribute('stroke', col);
-    if(RM) placeRider(160);                        // motion réduite : rider statique sur la trace
+    if(!cx) return;
+    const frac = ANIM.path ? ANIM.d/ANIM.path.len : 0.02;   // on garde l'avancement → pas de saut
+    ANIM.path = buildPath(Math.max(0, Math.min(100, a)));
+    ANIM.col = col; ANIM.d = frac*ANIM.path.len;
+    ANIM.spray.length = 0;
+    // motion réduite : pas de boucle, mais une image fixe vivante — le sillage se déduit de la
+    // trace, et on pré-simule 1,2 s de gerbes et d'embruns
+    if(RM){
+      const P = ANIM.path, d0 = ANIM.d;
+      ANIM.mist.length = 0;
+      for(let i=36;i>0;i--){ ANIM.d = d0 - i*SPEED/30; const p = at(P, ANIM.d); stepFx(1/30, -i/30, p, p.x - camX(P, ANIM.d), P); }
+      ANIM.d = d0;
+    }
+    if(!ANIM.run) drawFrame(ANIM.t);                // hors-écran / motion réduite : image fixe
   }
-  function placeRider(x){
-    const ph = 2*Math.PI*(x-14)/ANIM.L;
-    const y  = ANIM.y0 + ANIM.A*Math.sin(ph);
-    let ang = Math.atan2(ANIM.A*(2*Math.PI/ANIM.L)*Math.cos(ph), 1)*180/Math.PI;
-    ang = Math.max(-70, Math.min(70, ang));                 // ±70° : les S serrés lisent comme des snaps sous la lèvre
-    // scale(-1,1) : l'emoji 🏄 regarde à gauche nativement → miroir pour qu'il avance dans le bon sens
-    $('anim-rider').setAttribute('transform', 'translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+ang.toFixed(1)+') scale(-1,1)');
+
+  if(cv){
+    addEventListener('resize', fitCanvas);
+    fitCanvas();
+    if(!RM){
+      // on n'anime que quand c'est visible : inutile de brûler la batterie hors écran
+      const io = new IntersectionObserver(es => { for(const e of es){
+        if(e.isIntersecting && !ANIM.run){ ANIM.run = true; ANIM.last = 0; requestAnimationFrame(frame); }
+        else if(!e.isIntersecting) ANIM.run = false;
+      }}, {threshold:0.05});
+      io.observe(cv);
+    }
   }
-  function animTick(t){
-    if(!ANIM.last) ANIM.last = t;
-    ANIM.x += 58*Math.min((t-ANIM.last)/1000, .05); ANIM.last = t;
-    if(ANIM.x > 306) ANIM.x = 14;
-    placeRider(ANIM.x);
-    requestAnimationFrame(animTick);
-  }
-  if(!RM) requestAnimationFrame(animTick);
+
+  /* ---------- carte 📐 (vd1) : pourquoi « envergure² », et pourquoi surface et envergure se multiplient ---------- */
+  // Modèle volontairement simple, le même que le score : ce qui freine la bascule, c'est surtout
+  // l'eau que chaque bout d'aile doit pousser en montant / plongeant. Force ∝ surface × vitesse
+  // du bout (∝ envergure), appliquée à un bras de levier ∝ envergure → couple ∝ surface × envergure².
+  // À effort des pieds égal, la vitesse de bascule est donc ∝ 1 / (surface × envergure²).
+  // Les canvas sont retrouvés à chaque image (data-fig) : la bascule FR/EN remplace le HTML de la carte.
+  (() => {
+    const RMF = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const FW = 360, FH = {span:186, mix:292, drive:250, takeoff:220, dihedral:208};
+    const AMPL = 28*Math.PI/180;                   // gîte de rail à rail : −28° → +28°
+    const PX = 0.62;                               // px par cm d'envergure
+    const trails = {};
+    const ssf = u => u <= 0 ? 0 : u >= 1 ? 1 : u*u*(3-2*u);
+
+    function ctxFor(c){
+      const w = c.clientWidth; if(!w) return null;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2), pw = Math.round(w*dpr);
+      if(c.width !== pw){ c.width = pw; c.height = Math.round(pw*FH[c.dataset.fig]/FW); }
+      const g = c.getContext('2d'), k = c.width/FW;
+      g.setTransform(k,0,0,k,0,0);
+      return g;
+    }
+    // bascule rail à rail au rythme des pieds (inversion toutes les T s) ; l'aile met `tr` s à passer
+    // d'un rail à l'autre : effort des pieds constant ÷ résistance → vitesse de bascule constante
+    function railPhi(t, T, tr){
+      const n = Math.floor(t/T), u = t - n*T, s = n % 2 ? -1 : 1;
+      return s*AMPL*(-1 + 2*ssf(u/tr));
+    }
+    function arrow(g, x, y, dx, dy, col, w){
+      const L = Math.hypot(dx,dy); if(L < 2) return;
+      const ux = dx/L, uy = dy/L;
+      g.strokeStyle = col; g.fillStyle = col; g.lineWidth = w; g.lineCap = 'round';
+      g.beginPath(); g.moveTo(x,y); g.lineTo(x+dx-ux*3.5, y+dy-uy*3.5); g.stroke();
+      g.beginPath(); g.moveTo(x+dx, y+dy); g.lineTo(x+dx-ux*5.5-uy*3.2, y+dy-uy*5.5+ux*3.2);
+      g.lineTo(x+dx-ux*5.5+uy*3.2, y+dy-uy*5.5-ux*3.2); g.closePath(); g.fill();
+    }
+    // l'aile vue de derrière, qui roule autour du fuselage (mât solidaire)
+    function wingBack(g, x, y, half, thick, phi, col, mastTop){
+      g.save(); g.translate(x,y); g.rotate(phi);
+      g.fillStyle = 'rgba(203,213,225,.75)';
+      g.fillRect(-1.3, -(y-mastTop)/Math.cos(phi) - 4, 2.6, (y-mastTop)/Math.cos(phi) + 4);
+      g.fillStyle = col;
+      g.beginPath(); g.moveTo(-half, 0);
+      g.quadraticCurveTo(-half*.5, -thick*.55, 0, -thick*.6); g.quadraticCurveTo(half*.5, -thick*.55, half, 0);
+      g.quadraticCurveTo(half*.5, thick*.5, 0, thick*.55); g.quadraticCurveTo(-half*.5, thick*.5, -half, 0);
+      g.fill();
+      g.fillStyle = '#e2e8f0'; g.beginPath(); g.arc(0, 0, 3.2, 0, 6.2832); g.fill();
+      g.restore();
+    }
+    // traînée des bouts d'aile : l'eau qu'ils ont balayée
+    function tipTrail(key, g, now, pts){
+      const tr = trails[key] || (trails[key] = []);
+      tr.push({t:now, p:pts});
+      while(tr.length && now - tr[0].t > .55) tr.shift();
+      for(let side=0; side<2; side++){
+        for(let i=1;i<tr.length;i++){
+          const f = 1 - (now - tr[i].t)/.55;
+          g.strokeStyle = 'rgba(165,243,252,' + (f*.55).toFixed(3) + ')'; g.lineWidth = .6 + 2.4*f;
+          g.beginPath(); g.moveTo(tr[i-1].p[side][0], tr[i-1].p[side][1]); g.lineTo(tr[i].p[side][0], tr[i].p[side][1]); g.stroke();
+        }
+      }
+    }
+    function waterBg(g, x, y, w, h, wl){
+      const gr = g.createLinearGradient(0, y, 0, y+h);
+      gr.addColorStop(0,'rgba(14,116,144,.30)'); gr.addColorStop(1,'rgba(3,40,70,.10)');
+      g.fillStyle = gr; g.fillRect(x, wl, w, y+h-wl);
+      if(wl > y){ g.strokeStyle = 'rgba(165,243,252,.35)'; g.lineWidth = 1; g.beginPath(); g.moveTo(x, wl); g.lineTo(x+w, wl); g.stroke(); }
+    }
+    function label(g, s, x, y, col, size, weight, align){
+      g.fillStyle = col; g.font = (weight||700) + ' ' + (size||10) + 'px system-ui,-apple-system,sans-serif';
+      g.textAlign = align || 'center'; g.textBaseline = 'alphabetic'; g.fillText(s, x, y);
+    }
+
+    /* ① pourquoi au carré : deux ailes de même surface, 89 cm et 111 cm */
+    function drawSpan(g, now){
+      const CYC = 12, u = now % CYC, phaseA = u < 6, R = Math.pow(111/89, 2);
+      const WINGS = [{b:89, x:92, col:'#c084fc'}, {b:111, x:262, col:'#38bdf8'}];
+      g.clearRect(0,0,FW,FH.span);
+      const wl = 44, cy = 104;
+      waterBg(g, 0, 0, FW, FH.span, wl);
+      label(g, phaseA ? t('① même vitesse de bascule…','① same roll speed…') : t('② même effort des pieds…','② same foot effort…'), FW/2, 15, '#f8fafc', 11.5, 800);
+      label(g, phaseA ? t('… la longue demande '+num(R,2)+'× plus d\'effort','… the long one takes '+num(R,2)+'× the effort')
+                      : t('… la longue bascule '+num(R,2)+'× moins vite','… the long one rolls '+num(R,2)+'× slower'), FW/2, 30, '#cbd5e1', 10.5, 600);
+      for(const [i, W] of WINGS.entries()){
+        const half = W.b*PX, rel = Math.pow(W.b/89, 2);
+        const tr = phaseA ? 0 : 0.55*rel;
+        const phiOf = s => phaseA ? AMPL*Math.sin(2*Math.PI*s/2.4) : railPhi(s, 1.3, tr);
+        const phi = phiOf(u), om = (phi - phiOf(u - .02))/.02;
+        const c = Math.cos(phi), s = Math.sin(phi);
+        const tips = [[W.x - half*c, cy - half*s], [W.x + half*c, cy + half*s]];
+        tipTrail('s'+i, g, now, tips);
+        wingBack(g, W.x, cy, half, 7, phi, W.col, wl - 6);
+        // l'eau résiste au bout d'aile : flèche opposée à sa vitesse, ∝ vitesse du bout (∝ envergure)
+        for(const [k, sg] of [[0,-1],[1,1]]){
+          const vx = -s*om*half*sg, vy = c*om*half*sg;
+          const L = Math.min(1, 30/Math.max(1e-6, Math.hypot(vx,vy)*.22));
+          arrow(g, tips[k][0], tips[k][1], -vx*.22*L, -vy*.22*L, '#fb7185', 1.8);
+        }
+        // l'effort des pieds : une flèche courbe au-dessus du pivot, épaisse comme l'effort
+        const eff = phaseA ? rel : 1, dir = om >= 0 ? 1 : -1;
+        g.strokeStyle = '#fbbf24'; g.lineWidth = 1.2 + 2.6*eff; g.lineCap = 'round';
+        const a0 = -Math.PI/2 - .55*dir, a1 = -Math.PI/2 + .55*dir;
+        g.beginPath(); g.arc(W.x, cy, 22, Math.min(a0,a1), Math.max(a0,a1)); g.stroke();
+        const ex = W.x + 22*Math.cos(a1), ey = cy + 22*Math.sin(a1);
+        arrow(g, ex - dir*.1, ey - 1, dir*5, 3, '#fbbf24', 1);
+        label(g, W.b + ' cm', W.x, 150, W.col, 12, 800);
+        label(g, phaseA ? t('effort des pieds ','foot effort ') + num(eff, eff === 1 ? 0 : 2) + '×'
+                        : t('rail à rail en ','rail to rail in ') + num(tr,2) + ' s', W.x, 166, phaseA ? '#fbbf24' : '#f8fafc', 10.5, 700);
+      }
+      label(g, t('même surface · seule l\'envergure change','same area · only the span changes'), FW/2, 182, '#94a3b8', 9.5, 600);
+    }
+
+    /* ② surface × envergure² : 4 ailes, même rythme de pieds */
+    const CELLS = [{b:89,S:900},{b:111,S:900},{b:89,S:1300},{b:111,S:1300}];
+    function drawMix(g, now){
+      g.clearRect(0,0,FW,FH.mix);
+      label(g, t('courte · 89 cm','short · 89 cm'), 92, 13, '#cbd5e1', 10.5, 800);
+      label(g, t('longue · 111 cm','long · 111 cm'), 270, 13, '#cbd5e1', 10.5, 800);
+      for(const [i, C] of CELLS.entries()){
+        const col = i % 2, row = i >> 1, x0 = 4 + col*178, y0 = 20 + row*136, w = 174, h = 130;
+        const R = (C.S/900)*Math.pow(C.b/89, 2), tr = 0.46*R;
+        const hue = Math.round(125 - 105*(R-1)/1.25);          // vert = vive → orange = lente
+        const cc = 'hsl(' + hue + ',68%,58%)';
+        g.fillStyle = 'rgba(15,23,42,.55)'; g.beginPath(); g.roundRect(x0, y0, w, h, 8); g.fill();
+        g.strokeStyle = 'hsla(' + hue + ',68%,58%,.45)'; g.lineWidth = 1; g.stroke();
+        waterBg(g, x0+1, y0+1, w-2, h-2, y0+30);
+        label(g, (col ? t('longue','long') : t('courte','short')) + ' · ' + (row ? t('grande','big') : t('petite','small')) + ' ' + C.S + ' cm²',
+              x0 + 8, y0 + 14, '#e2e8f0', 9.5, 700, 'left');
+        // vue de dessus : la forme de l'aile (corde = surface ÷ envergure)
+        const pw = C.b*.34, ph = (C.S/C.b)*1.25, px = x0 + w - 10 - pw/2, py = y0 + 20;
+        g.fillStyle = cc; g.globalAlpha = .9;
+        g.beginPath(); g.moveTo(px - pw/2, py);
+        g.quadraticCurveTo(px, py - ph*.9, px + pw/2, py); g.quadraticCurveTo(px, py + ph*.35, px - pw/2, py); g.fill();
+        g.globalAlpha = 1;
+        const cx0 = x0 + w/2, cy0 = y0 + 64, half = C.b*PX*.92;
+        const phi = railPhi(now, 1.3, tr), c = Math.cos(phi), s = Math.sin(phi);
+        tipTrail('m'+i, g, now, [[cx0 - half*c, cy0 - half*s], [cx0 + half*c, cy0 + half*s]]);
+        wingBack(g, cx0, cy0, half, 3 + (C.S/C.b)*.42, phi, cc, y0 + 24);
+        label(g, t('résistance ×','resistance ×') + num(R,2), cx0, y0 + h - 19, cc, 10.5, 800);
+        label(g, t('rail à rail en ','rail to rail in ') + num(tr,2) + ' s', cx0, y0 + h - 6, '#cbd5e1', 9.5, 700);
+      }
+    }
+
+
+    /* ---- vue de profil commune : planche + mât + aile + rider (bâton), le tout incliné de `pitch` ---- */
+    function sideRig(g, x, yb, pitch, chord, col, o){
+      o = o || {};
+      g.save(); g.translate(x, yb); g.rotate(pitch);
+      g.lineCap = 'round'; g.lineJoin = 'round';
+      g.fillStyle = 'rgba(203,213,225,.8)'; g.fillRect(-1.3, 2, 2.6, 30);                      // mât
+      g.fillStyle = 'rgba(203,213,225,.6)'; g.fillRect(-16, 31, 26, 2);                       // fuselage
+      g.fillStyle = col;                                                                         // aile avant (profil)
+      g.beginPath(); g.moveTo(8 + chord*.55, 32); g.quadraticCurveTo(8, 26.5, 8 - chord*.45, 32); g.quadraticCurveTo(8, 34.5, 8 + chord*.55, 32); g.fill();
+      g.fillStyle = 'rgba(203,213,225,.7)'; g.fillRect(-19, 31, 6, 1.6);                        // stab
+      g.fillStyle = '#e2e8f0';                                                                   // planche
+      g.beginPath(); g.moveTo(-22, 0); g.lineTo(18, 0); g.quadraticCurveTo(24, -.5, 25, -3); g.lineTo(-22, -3); g.closePath(); g.fill();
+      // rider : pieds sur la planche, pied avant à +8, pied arrière à −9
+      const lean = o.lean || 0, hipX = -1 + lean*3, hipY = -15;
+      g.strokeStyle = '#f8fafc'; g.lineWidth = 2.2;
+      g.beginPath(); g.moveTo(-9, -3); g.lineTo(-6 + lean, -9); g.lineTo(hipX, hipY); g.lineTo(4 + lean, -9); g.lineTo(8, -3);
+      g.moveTo(hipX, hipY); g.lineTo(hipX + 2 + lean*2, hipY - 10); g.stroke();
+      g.lineWidth = 1.7; g.beginPath(); g.moveTo(hipX - 6, hipY - 5); g.lineTo(hipX + 2 + lean*2, hipY - 9); g.lineTo(hipX + 10, hipY - 6); g.stroke();
+      g.fillStyle = '#f8fafc'; g.beginPath(); g.arc(hipX + 3 + lean*2.4, hipY - 13.5, 2.6, 0, 6.2832); g.fill();
+      if(o.press){ const fx = o.press > 0 ? 8 : -9;                                            // le pied qui appuie
+        arrowC(g, fx, -30, 0, 22, o.press > 0 ? '#f87171' : '#fbbf24', 2.6); }
+      g.restore();
+    }
+    function arrowC(g, x, y, dx, dy, col, w){
+      const L = Math.hypot(dx,dy); if(L < 2) return;
+      const ux = dx/L, uy = dy/L;
+      g.strokeStyle = col; g.fillStyle = col; g.lineWidth = w; g.lineCap = 'round';
+      g.beginPath(); g.moveTo(x,y); g.lineTo(x+dx-ux*4, y+dy-uy*4); g.stroke();
+      g.beginPath(); g.moveTo(x+dx, y+dy); g.lineTo(x+dx-ux*6.5-uy*3.8, y+dy-uy*6.5+ux*3.8); g.lineTo(x+dx-ux*6.5+uy*3.8, y+dy-uy*6.5-ux*3.8); g.closePath(); g.fill();
+    }
+    function waterLine(g, y, now, x0, x1, speed, depth){
+      g.fillStyle = 'rgba(14,116,144,.22)'; g.fillRect(x0, y, x1-x0, depth || 52);
+      g.strokeStyle = 'rgba(165,243,252,.55)'; g.lineWidth = 1.4;
+      g.beginPath(); for(let x=x0; x<=x1; x+=4){ const yy = y + 1.2*Math.sin((x + now*speed)/9); x === x0 ? g.moveTo(x,yy) : g.lineTo(x,yy); } g.stroke();
+    }
+
+    /* ③ le drive : la vague t'accélère. La grande aile porte trop → elle monte, tu dois pousser devant ;
+       la petite reste plaquée → tu charges l'arrière et elle mord. */
+    function drawDrive(g, now){
+      g.clearRect(0,0,FW,FH.drive);
+      const CYC = 10, u = now % CYC;
+      const acc = ssf((u-1.5)/2.2), turn = ssf((u-5)/1.2)*(1 - ssf((u-9)/.8));
+      const kmh = 16 + 8*acc*(1 - ssf((u-9)/.8));
+      const step = u < 1.5 ? t('croisière : les deux portent juste ton poids','cruising: both carry just your weight')
+                 : u < 5 ? t('① la vague t\'accélère (portance ∝ vitesse²)','① the wave speeds you up (lift ∝ speed²)')
+                 : t('② pour tourner, tu charges le pied arrière…','② to turn, you load the back foot…');
+      label(g, step, FW/2, 14, '#f8fafc', 10.5, 800);
+      label(g, Math.round(kmh) + ' km/h', 8, 30, '#cbd5e1', 10.5, 800, 'left');
+      const ROWS = [{S:900, col:'#c084fc', y0:34}, {S:1600, col:'#94a3b8', y0:134}];
+      for(const R of ROWS){
+        const small = R.S === 900, wl = R.y0 + 40;
+        waterLine(g, wl, now, 6, FW-6, 30 + kmh*2);
+        // ① en accélérant, la grande aile veut monter : le rider pousse devant pour la retenir.
+        // ② même coup de pied arrière (même +angle) : le surplus de portance ∝ surface × v² —
+        //    la petite le transforme en virage, la grande part vers le haut et ventile.
+        const surge = turn*(small ? .45 : 1.25);
+        const rise = small ? 0 : Math.min(1, acc*.25 + Math.max(0, surge - .2));
+        const yb = wl - 12 - rise*22, pitch = small ? -turn*.12 : -rise*.06;
+        const x = 78;
+        const press = small ? (turn > .1 ? -1 : 0) : (turn > .1 ? -1 : acc > .2 ? 1 : 0);
+        sideRig(g, x, yb, pitch, small ? 14 : 24, R.col, {press:press, lean: small ? -turn : 0});
+        if(!small && rise > .6){ for(let i=0;i<8;i++){ const a = now*6 + i; g.fillStyle = 'rgba(241,249,255,' + (.3 + .3*Math.sin(a)).toFixed(2) + ')'; g.beginPath(); g.arc(x + 8 + Math.sin(a*1.7)*12, wl + 1 + Math.cos(a)*2, 1.2 + (i % 3)*.6, 0, 6.2832); g.fill(); } }
+        if(small && turn > .3){
+          g.strokeStyle = 'rgba(52,211,153,' + turn.toFixed(2) + ')'; g.lineWidth = 2.4;
+          g.beginPath(); g.arc(x + 40, yb - 8, 15, Math.PI*.9, Math.PI*1.6); g.stroke();
+        }
+        const gx = 176, gw = 100, gy = R.y0 + 18;
+        label(g, small ? t('🎯 petite · 900 cm²','🎯 small · 900 cm²') : t('grande · 1600 cm²','big · 1600 cm²'), gx, R.y0 + 6, R.col, 11, 800, 'left');
+        label(g, t('portance / poids','lift / weight'), gx + gw + 4, gy + 9, '#94a3b8', 8.5, 700, 'left');
+        const shown = 1 + surge;
+        g.fillStyle = 'rgba(148,163,184,.18)'; g.beginPath(); g.roundRect(gx, gy, gw, 11, 5.5); g.fill();
+        g.fillStyle = shown > 1.8 ? '#f87171' : '#34d399'; g.beginPath(); g.roundRect(gx, gy, gw*Math.min(2.4, shown)/2.4, 11, 5.5); g.fill();
+        g.strokeStyle = '#f8fafc'; g.lineWidth = 1.5; g.beginPath(); g.moveTo(gx + gw/2.4, gy - 3); g.lineTo(gx + gw/2.4, gy + 14); g.stroke();
+        let msg, mc = '#cbd5e1';
+        if(small) { msg = turn > .5 ? t('le surplus sert à tourner ✓','the extra lift turns you ✓') : acc > .2 ? t('reste plaquée','stays planted') : t('portance = poids','lift = weight'); if(turn > .5) mc = '#34d399'; }
+        else { msg = turn > .5 ? t('elle monte au lieu de tourner ✗','it climbs instead of turning ✗') : acc > .2 ? t('veut monter : pousse devant','wants to climb: push the front foot') : t('portance = poids','lift = weight'); if(acc > .2) mc = '#f87171'; }
+        label(g, msg, gx, gy + 28, mc, 10.5, 800, 'left');
+      }
+      label(g, t('🔴 pied avant = tu retiens l\'aile · 🟡 pied arrière = tu tournes','🔴 front foot = holding it down · 🟡 back foot = turning'), FW/2, FH.drive - 5, '#94a3b8', 9, 600);
+    }
+
+    /* ④ le décollage : portance ∝ surface × vitesse². Chacun décolle quand la barre atteint son poids.
+       Et l'aile de carve (envergure courte) accélère en plus moins vite : plus de traînée à basse vitesse. */
+    const TKO = [{S:2200, col:'#34d399', tau:2.2}, {S:1100, col:'#c084fc', tau:3.4}].map(w => Object.assign(w, {vto:liftoffKmh(w.S, 85)}));
+    function drawTakeoff(g, now){
+      g.clearRect(0,0,FW,FH.takeoff);
+      const CYC = 11, u = now % CYC, run = Math.max(0, u - .6);
+      label(g, t('même rider (85 kg), même pompage','same rider (85 kg), same pumping'), FW/2, 13, '#cbd5e1', 10, 700);
+      TKO.forEach((W, i) => {
+        const y0 = 26 + i*94, wl = y0 + 50;
+        const v = Math.min(22, 17*(1 - Math.exp(-run/W.tau))*(u > 10.4 ? 0 : 1));   // km/h
+        const lift = Math.pow(v/W.vto, 2), up = ssf((lift - 1)/.08);
+        waterLine(g, wl, now, 6, FW-6, 20 + v*3);
+        const bob = up < 1 ? Math.sin(now*9)*1.4*(v > 1 ? 1 : 0) : 0;
+        const yb = wl - 1 - 15*up + bob;                                       // planche posée → en vol (l'aile reste sous l'eau)
+        if(up < .5){ g.fillStyle = 'rgba(241,249,255,.35)'; for(let k=0;k<3;k++){ g.beginPath(); g.arc(70 - 26 - k*8, wl + 1, 1.4 + (k === 0 ? .6 : 0), 0, 6.2832); g.fill(); } }
+        sideRig(g, 70, yb, 0, W.S === 2200 ? 26 : 15, W.col, {});
+        label(g, (W.S === 2200 ? t('grosse aile distance','big distance wing') : t('aile de carve','carve wing')) + ' · ' + W.S + ' cm²', 132, y0 + 12, W.col, 11, 800, 'left');
+        // jauge portance / poids
+        const gx = 132, gw = 160, gy = y0 + 22;
+        g.fillStyle = 'rgba(148,163,184,.18)'; g.beginPath(); g.roundRect(gx, gy, gw, 12, 6); g.fill();
+        g.fillStyle = up > .5 ? '#34d399' : W.col; g.beginPath(); g.roundRect(gx, gy, gw*Math.min(1.08, lift)/1.08, 12, 6); g.fill();
+        const px = gx + gw/1.08;
+        g.strokeStyle = '#f8fafc'; g.lineWidth = 1.6; g.beginPath(); g.moveTo(px, gy - 3); g.lineTo(px, gy + 15); g.stroke();
+        label(g, t('ton poids','your weight'), px, gy + 25, '#e2e8f0', 8.5, 700);
+        label(g, num(v,0) + ' km/h', 356, gy + 10, '#f8fafc', 12, 800, 'right');
+        label(g, up > .5 ? t('🚀 l\'aile te porte dès ','🚀 the wing carries you from ') + W.vto + ' km/h' : t('portance / poids : ','lift / weight: ') + Math.round(100*Math.min(1, lift)) + ' %',
+              gx, gy + 40, up > .5 ? '#6ee7b7' : '#cbd5e1', 10.5, 800, 'left');
+      });
+      label(g, t('portance ∝ surface × vitesse² · 🟣 et la carve accélère moins vite','lift ∝ area × speed² · 🟣 and the carve accelerates slower'), FW/2, FH.takeoff - 5, '#94a3b8', 9, 600);
+    }
+
+    /* ⑤ le dièdre : même poussée sur un U et un ∩. Chaque demi-aile porte perpendiculairement à elle-même :
+       sur le U, la demi-aile basse redevient horizontale → sa portance remonte ce côté → retour à plat ;
+       sur le ∩, c'est l'inverse → la bascule s'entretient : l'aile « tombe » dans le virage. */
+    function drawDihedral(g, now){
+      g.clearRect(0,0,FW,FH.dihedral);
+      const CYC = 7, u = now % CYC, push = ssf((u-.9)/.35);
+      const phU = push*13*Math.exp(-Math.max(0, u-1.25)/.7)*(u < 6.4 ? 1 : 0);
+      const phA = (u < 1.25 ? push*13 : Math.min(30, 13*Math.exp((u-1.25)/1.5)))*(u < 6.2 ? 1 : 1 - ssf((u-6.2)/.6));
+      const step = u < .9 ? t('à plat : les deux portent pareil','flat: both carry the same')
+                 : u < 1.6 ? t('💨 même petite poussée sur les deux','💨 same small push on both')
+                 : t('le U se remet à plat · le ∩ continue de tomber','the U levels itself · the ∩ keeps falling');
+      label(g, step, FW/2, 14, '#f8fafc', 10.5, 800);
+      const P = [{x:92, di:10, col:'#38bdf8', phi:phU, n:t('U — dièdre','U — dihedral'), s:t('tracke, se remet à plat','tracks, self-levels')},
+                 {x:268, di:-10, col:'#f59e0b', phi:phA, n:t('∩ — anhédral','∩ — anhedral'), s:t('tombe dans le virage','falls into the turn')}];
+      for(const W of P){
+        const cy = 92, half = 62, phi = W.phi*Math.PI/180, di = W.di*Math.PI/180;
+        g.strokeStyle = 'rgba(148,163,184,.35)'; g.setLineDash([4,5]); g.lineWidth = 1;
+        g.beginPath(); g.moveTo(W.x - 78, cy); g.lineTo(W.x + 78, cy); g.stroke(); g.setLineDash([]);
+        g.save(); g.translate(W.x, cy); g.rotate(phi);
+        g.fillStyle = 'rgba(203,213,225,.75)'; g.fillRect(-1.3, -34, 2.6, 34);
+        g.fillStyle = '#e2e8f0'; g.fillRect(-26, -37, 52, 3.4);
+        // les deux demi-ailes
+        const tip = sg => [sg*half*Math.cos(di), -half*Math.sin(di)];
+        g.strokeStyle = W.col; g.lineWidth = 6; g.lineCap = 'round';
+        g.beginPath(); g.moveTo(tip(-1)[0], tip(-1)[1]); g.lineTo(0, 0); g.lineTo(tip(1)[0], tip(1)[1]); g.stroke();
+        g.restore();
+        // portance de chaque demi-aile : perpendiculaire à elle-même ; on en garde la part verticale
+        for(const sg of [-1,1]){
+          const ang = sg > 0 ? phi - di : phi + di;              // pente de la demi-aile à l'écran (y vers le bas)
+          const cxp = W.x + sg*half*.55*Math.cos(ang), cyp = cy + sg*half*.55*Math.sin(ang);
+          // en glissade, la demi-aile basse du U prend plus d'incidence (elle porte plus), celle du ∩ moins
+          const low = sg*Math.sign(phi || 1)*(W.di > 0 ? 1 : -1);
+          const L = 24*Math.max(.35, Math.min(1.8, 1 + 1.5*Math.abs(phi)*low));
+          arrowC(g, cxp, cyp - 3, Math.sin(ang)*L, -Math.cos(ang)*L, '#34d399', 2.2);
+        }
+        label(g, W.n, W.x, 158, W.col, 12, 800);
+        label(g, W.s, W.x, 173, '#cbd5e1', 10, 700);
+        label(g, t('gîte ','bank ') + Math.round(W.phi) + '°', W.x, 187, W.phi > 20 ? '#f87171' : '#94a3b8', 10, 800);
+      }
+      if(u > .8 && u < 1.4){                                     // la poussée
+        for(const x of [92-58, 268-58]){ arrowC(g, x, 126, 0, -22, '#e2e8f0', 2.6); }
+      }
+      label(g, t('🟢 chaque demi-aile porte perpendiculairement à elle-même','🟢 each half-wing lifts perpendicular to itself'), FW/2, FH.dihedral - 4, '#94a3b8', 8.8, 600);
+    }
+
+    const DRAW = {span:drawSpan, mix:drawMix, drive:drawDrive, takeoff:drawTakeoff, dihedral:drawDihedral};
+    const STILL = {span:8.3, mix:8.3, drive:6.5, takeoff:9, dihedral:3};
+    let start = 0;
+    function tick(ts){
+      if(!start) start = ts;
+      const now = (ts - start)/1000;
+      for(const c of document.querySelectorAll('canvas[data-fig]')){
+        const r = c.getBoundingClientRect();
+        if(r.bottom < 0 || r.top > innerHeight) continue;   // hors écran : on ne dessine pas
+        const g = ctxFor(c); if(g) DRAW[c.dataset.fig](g, now);
+      }
+      if(!RMF) requestAnimationFrame(tick);
+    }
+    if(RMF){
+      // motion réduite : image fixe au milieu d'une bascule (là où les écarts se voient le mieux)
+      const still = () => { for(const c of document.querySelectorAll('canvas[data-fig]')){ const g = ctxFor(c); if(g) DRAW[c.dataset.fig](g, STILL[c.dataset.fig]); } };
+      addEventListener('resize', still); setInterval(still, 800); still();
+    } else requestAnimationFrame(tick);
+  })();
 
   function render(){
     $('v-b').textContent = $('i-b').value;
@@ -740,9 +1367,11 @@
     // Drive : petite surface (charge alaire) MAIS aussi corde large / AR bas (l'aile « mord » et pousse) → n'est plus
     // le miroir exact du démarrage. Un profil très élancé (AR haut) glisse mais accroche moins pour projeter.
     const drive    = clamp(100*(2200-S)/1600 - 4*(ar-9));
-    // Facilité de démarrage : petite vitesse de décollage (surface + poids) ET envergure — une aile courte traîne
-    // énormément à basse vitesse (traînée induite ∝ 1/envergure²) → dure à pomper jusqu'à l'envol. Longue = part plus facile.
-    const takeoff  = clamp(100*(22 - liftoffKmh(S, kg))/13 + 0.8*(b - 90));
+    // Facilité de démarrage = moitié VITESSE de démarrage (22 → 9 km/h) + moitié WATTS pour voler à cette vitesse
+    // (400 → 170 W). La vitesse seule recommandait une « brique » AR 4 ; les watts seuls, une lame AR 17 qui ne
+    // démarre qu'à 17 km/h. Calage à 85 kg : LD 140 ≈ 90, Jam 1600 ≈ 82, RSX 1100 ≈ 62, Axis 890 ≈ 37, brique ≈ 40.
+    const toW      = takeoffPower(b, S, kg);
+    const takeoff  = clamp(50*(22 - liftoffKmh(S, kg))/13 + 50*(400 - toW)/230);
     const pivot    = clamp(100*(fusFactor*stab-0.68)/(1.44-0.68));
 
     // Allongement AR (déjà calculé plus haut) : gouverne la GLISSE / la corde. AR bas = corde large = porte à basse
@@ -787,8 +1416,8 @@
         t('pouvoir <b>charger le pied arrière</b> pour tourner : trop grande, l\'aile te <b>soulève</b> (tu pousses l\'avant, tu ne tournes plus) ; petite, elle reste <b>plaquée</b> et <b>mord</b> — c\'est le « drive »','being able to <b>load the back foot</b> to turn: too big, the wing <b>lifts you</b> (you push the front, no turn); small, it stays <b>planted</b> and <b>bites</b> — that\'s «drive»')],
       ['🚀 '+t('Facilité de démarrage','Ease of takeoff'), takeoff, '#fbbf24',
         [t('technique','tricky'),t('moyen','medium'),t('facile','easy')],
-        t('petite <b>vitesse de décollage</b> (surface) + <b>envergure</b> qui aide à pomper jusque-là (une aile courte traîne à basse vitesse)','low <b>takeoff speed</b> (area) + <b>span</b> that helps you pump up to it (a short wing drags at low speed)')
-        + ' · <b style="color:#fbbf24">≈ '+liftoffKmh(S, kg)+' km/h</b> '+t('de décollage*','takeoff*')],
+        t('une <b>vitesse de démarrage</b> basse (la <b>surface</b>) et peu de <b>watts</b> pour y voler (l\'<b>allongement</b> : une aile trapue traîne juste quand tu pompes pour partir)','a low <b>takeoff speed</b> (<b>area</b>) and few <b>watts</b> to fly there (<b>aspect ratio</b>: a stubby wing drags right when you pump to get going)')
+        + ' · <b style="color:#fbbf24">≈ '+liftoffKmh(S, kg)+' km/h · ~'+Math.round(toW/10)*10+' W</b> '+t('au démarrage*','at takeoff*')],
       ['🌊 '+t('Glisse / relance','Glide / pump-back'), glisse, '#818cf8',
         [t('faible','poor'),t('correcte','fair'),t('excellente','great')],
         t('<b>envergure + allongement</b> : glisser loin et <b>repomper</b> entre deux vagues (connecter)','<b>span + aspect</b>: glide far and <b>pump back</b> between waves (connecting)')
@@ -835,7 +1464,7 @@
   setXp(xp0);
 
   if(!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window){
-    const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('seen'); io.unobserve(e.target); } }), {threshold:.12});
+    const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('seen'); io.unobserve(e.target); } }), {threshold:0, rootMargin:'0px 0px -40px 0px'});
     document.querySelectorAll('.a-in').forEach(el=> io.observe(el));
   } else { document.querySelectorAll('.a-in').forEach(el=> el.classList.add('seen')); }
 

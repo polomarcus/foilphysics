@@ -465,6 +465,8 @@
     border-radius:10px; padding:10px 12px;}
   .note-fig{background:var(--panel-2); border-radius:10px; margin-top:6px; padding:10px 12px;}
   .note-fig svg{display:block; width:100%; max-width:400px; margin:0 auto;}
+  .note-fig canvas.fig-cv{display:block; width:100%; max-width:440px; margin:0 auto;}
+  canvas[data-fig="kid"]{aspect-ratio:360/224;} canvas[data-fig="ucurve"]{aspect-ratio:360/214;} canvas[data-fig="rake"]{aspect-ratio:360/206;}
   .nf-caps{display:flex; justify-content:center; gap:10px 22px; margin-top:8px; font-size:.78rem;
     color:#cbd5e1; text-align:center; flex-wrap:wrap;}
   .nf-caps b{color:var(--txt);}
@@ -490,9 +492,7 @@
 
   /* animation cale de rake : comme la main par la fenêtre — le flux d'eau rend la portance visible */
   @media (prefers-reduced-motion: no-preference){
-    .rkFlow{animation:rkFlow 1.1s linear infinite;}
   }
-  @keyframes rkFlow{to{stroke-dashoffset:-34;}}
   .reg-note{font-size:.8rem; color:var(--muted); text-align:center; max-width:640px; margin:8px auto 0;}
   .reg-note a, .pvm-in a{color:#7dd3fc; text-decoration:underline;}
   .insight{max-width:680px; margin:16px auto 0; padding:14px 16px; background:var(--panel-2);
@@ -808,6 +808,58 @@
   </details>
   </div><!-- /SLIDE 2 -->
 
+  <div class="sslide so" id="pourquoi"><!-- SLIDE 5 · pourquoi -->
+  <!-- POURQUOI (version enfant) — vue Simple -->
+  <div class="kid so">
+    <h3 data-i18n="kid-h">🧒 Pourquoi une grande aile fatigue moins ?</h3>
+    <div class="kid-def" data-i18n="kid-def">👉 Ici, « <b>grande aile</b> » veut dire <b>grande envergure</b> (longue d'un bout à l'autre) — <b>pas</b> forcément grande surface. Et c'est l'<b>envergure</b> le vrai levier, pas la surface — <b>oui, c'est très contre-intuitif</b>, on y vient.</div>
+    <div class="note-fig" aria-hidden="true" style="margin-bottom:14px">
+      <canvas class="fig-cv" data-fig="kid"></canvas>
+      <div class="nf-caps" data-i18n="kid-anim-cap"><span>🌀 sous l'aile ça pousse, dessus ça aspire → l'eau <b>s'enroule autour des bouts</b> : ces tourbillons emportent ton énergie, c'est <b>le frein</b></span><span>🟧 même poids sur <b>moins d'envergure</b> → tourbillons plus forts → <b>2,5× plus de frein</b> à pomper</span></div>
+    </div>
+    <div class="kid-txt" data-i18n="kid-txt">
+      Pour te porter, l'aile <b>pousse de l'eau vers le bas</b> — et
+      <b>force = quantité d'eau × vitesse de poussée</b>. Deux façons d'obtenir la même poussée :
+      🟦 <b>pousser beaucoup d'eau, doucement</b> · 🟧 <b>fouetter un peu d'eau, très fort</b>.<br><br>
+      Or le gaspillage explose <b>au carré de la vitesse</b> → la douceur gagne, toujours.
+      Comme à la nage : <b>palmes</b> vs <b>mains nues</b>.<br><br>
+      Les 🔴 du schéma ? Ce sont les <b>bouts d'aile</b> : l'eau les contourne en tourbillon → ils <b>freinent sans
+      porter</b>. Ces <b>zones mortes</b> ont la même taille sur toutes les ailes — une aile <b>courte</b> est donc
+      presque <b>toute en bouts morts</b>, une <b>longue</b> les dilue dans de l'envergure qui porte.<br><br>
+      Et la quantité d'eau ne dépend que d'une chose : la <b>largeur balayée = l'envergure</b>. Ajouter de la corde
+      (donc de la surface) <b>n'élargit rien</b> — <b>⚠️ la surface fait la portance, l'envergure fait l'économie</b>.
+      Contre-intuitif, mais c'est la loi :<br><br>
+      <div class="kid-law">
+        <div class="kid-law-t">📐 La loi du foil</div>
+        <div class="kid-law-f">effort gaspillé = 1 / envergure²</div>
+        <div class="law-sq"><span class="sqcap">aile courte</span><span class="lq4"><i></i><i></i><i></i><i></i></span><span class="qar">→</span><span class="lq1"></span><span class="sqcap">envergure doublée</span></div>
+        <div class="kid-law-s">Double l'envergure → <b>4× moins</b> d'effort perdu.</div>
+        <div class="law-proof">
+          La preuve, à <b>surface égale (1900 cm²)</b> — effort gaspillé de chacune :
+          <div class="lawbars">
+            <div class="lbar"><span class="llab">🟦 Longue · 190 cm</span><span class="trk"><span class="fil" style="width:40%;background:#38bdf8">1×</span></span></div>
+            <div class="lbar"><span class="llab">🟧 Courte · 120 cm</span><span class="trk"><span class="fil" style="width:100%;background:#f59e0b">2,5× d'effort</span></span></div>
+          </div>
+          <span class="proof-cap">même surface, même portance — mais 1,6× moins d'envergure = <b>1,6² ≈ 2,5×</b> plus d'effort</span>
+        </div>
+      </div>
+      <b>👉 Plus l'aile est longue et fine, moins tu forces pour aller aussi loin.</b>
+      <div class="kid-warn">⚠️ <b>Mais elle ne pompe pas à ta place !</b> Une grande envergure rend chaque
+      coup de pompe <b>plus rentable</b> — elle ne fait pas voler toute seule. Pour tenir 1 h, il faut <b>aussi</b> la
+      technique (bien enrouler, garder la vitesse) et la <b>forme physique</b>. Change ta « forme » en haut : tu verras le
+      temps de vol bouger énormément, à aile identique.</div>
+    </div>
+    <div class="kid-src" data-i18n="kid-src">
+      📚 <b>Et comment l'aile crée-t-elle sa portance, au juste ?</b> Elle s'incline d'un <b>tout petit angle</b> dans
+      l'eau et dévie le flux : plus l'angle est grand, plus elle porte (mais plus elle freine aussi). C'est le b.a.-ba
+      de la <b>théorie des profils minces</b> — la physique, vieille de plus d'un siècle, qui fait voler <i>tous</i> les
+      foils (et les avions).
+      <a href="https://fr.wikipedia.org/wiki/Th%C3%A9orie_des_profils_minces" target="_blank" rel="noopener">Lire sur Wikipédia →</a>
+    </div>
+  </div>
+
+  </div><!-- /SLIDE 5 -->
+
   <div class="sslide" id="duel"><!-- SLIDE 3 · ton profil + le duel -->
   <div class="rider">
     <div class="rider-item weight">
@@ -1069,80 +1121,6 @@
 
   </div><!-- /SLIDE 4 -->
 
-  <div class="sslide so" id="pourquoi"><!-- SLIDE 5 · pourquoi -->
-  <!-- POURQUOI (version enfant) — vue Simple -->
-  <div class="kid so">
-    <h3 data-i18n="kid-h">🧒 Pourquoi une grande aile fatigue moins ?</h3>
-    <div class="kid-def" data-i18n="kid-def">👉 Ici, « <b>grande aile</b> » veut dire <b>grande envergure</b> (longue d'un bout à l'autre) — <b>pas</b> forcément grande surface. Et c'est l'<b>envergure</b> le vrai levier, pas la surface — <b>oui, c'est très contre-intuitif</b>, on y vient.</div>
-    <div class="kid-cols">
-      <figure class="f-long">
-        <svg viewBox="0 0 360 76" aria-hidden="true" style="display:block;width:100%;margin:0 auto 4px">
-          <path d="M28 56 Q180 40 332 56 Q180 64 28 56 Z" fill="#38bdf8"/>
-          <g stroke="#38bdf8" stroke-width="2.6" fill="none" stroke-linecap="round">
-            <path d="M68 46 v-10"/><path d="M96 44 v-15"/><path d="M124 43 v-18"/><path d="M152 42 v-20"/><path d="M180 42 v-21"/><path d="M208 42 v-20"/><path d="M236 43 v-18"/><path d="M264 44 v-15"/><path d="M292 46 v-10"/>
-          </g>
-          <path d="M22 56 a8 8 0 1 1 8 8" fill="none" stroke="#f87171" stroke-width="2.2"/>
-          <path d="M338 56 a8 8 0 1 0 -8 8" fill="none" stroke="#f87171" stroke-width="2.2"/>
-        </svg>
-        <div class="f-eff"><span class="fe-lab">effort</span><span class="fe-trk"><span class="fe-fil" style="width:25%;background:#38bdf8">1×</span></span></div>
-        <figcaption data-i18n="kid-cap1"><b>Grande envergure</b><br>les bouts morts 🔴 = une <b>petite part</b> → presque tout porte</figcaption>
-      </figure>
-      <figure class="f-short">
-        <svg viewBox="0 0 360 76" aria-hidden="true" style="display:block;width:100%;margin:0 auto 4px">
-          <path d="M110 56 Q180 36 250 56 Q180 70 110 56 Z" fill="#f59e0b"/>
-          <g stroke="#f59e0b" stroke-width="2.6" fill="none" stroke-linecap="round">
-            <path d="M152 42 v-11"/><path d="M180 40 v-15"/><path d="M208 42 v-11"/>
-          </g>
-          <path d="M103 56 a10 10 0 1 1 10 10" fill="none" stroke="#f87171" stroke-width="2.6"/>
-          <path d="M257 56 a10 10 0 1 0 -10 10" fill="none" stroke="#f87171" stroke-width="2.6"/>
-        </svg>
-        <div class="f-eff"><span class="fe-lab">effort</span><span class="fe-trk"><span class="fe-fil" style="width:100%;background:#f59e0b">4×</span></span></div>
-        <figcaption data-i18n="kid-cap2"><b>Petite envergure</b> (même surface)<br>les bouts morts 🔴 <b>mangent l'aile</b> → freine autant qu'elle porte</figcaption>
-      </figure>
-    </div>
-    <div class="kid-txt" data-i18n="kid-txt">
-      Pour te porter, l'aile <b>pousse de l'eau vers le bas</b> — et
-      <b>force = quantité d'eau × vitesse de poussée</b>. Deux façons d'obtenir la même poussée :
-      🟦 <b>pousser beaucoup d'eau, doucement</b> · 🟧 <b>fouetter un peu d'eau, très fort</b>.<br><br>
-      Or le gaspillage explose <b>au carré de la vitesse</b> → la douceur gagne, toujours.
-      Comme à la nage : <b>palmes</b> vs <b>mains nues</b>.<br><br>
-      Les 🔴 du schéma ? Ce sont les <b>bouts d'aile</b> : l'eau les contourne en tourbillon → ils <b>freinent sans
-      porter</b>. Ces <b>zones mortes</b> ont la même taille sur toutes les ailes — une aile <b>courte</b> est donc
-      presque <b>toute en bouts morts</b>, une <b>longue</b> les dilue dans de l'envergure qui porte.<br><br>
-      Et la quantité d'eau ne dépend que d'une chose : la <b>largeur balayée = l'envergure</b>. Ajouter de la corde
-      (donc de la surface) <b>n'élargit rien</b> — <b>⚠️ la surface fait la portance, l'envergure fait l'économie</b>.
-      Contre-intuitif, mais c'est la loi :<br><br>
-      <div class="kid-law">
-        <div class="kid-law-t">📐 La loi du foil</div>
-        <div class="kid-law-f">effort gaspillé = 1 / envergure²</div>
-        <div class="law-sq"><span class="sqcap">aile courte</span><span class="lq4"><i></i><i></i><i></i><i></i></span><span class="qar">→</span><span class="lq1"></span><span class="sqcap">envergure doublée</span></div>
-        <div class="kid-law-s">Double l'envergure → <b>4× moins</b> d'effort perdu.</div>
-        <div class="law-proof">
-          La preuve, à <b>surface égale (1900 cm²)</b> — effort gaspillé de chacune :
-          <div class="lawbars">
-            <div class="lbar"><span class="llab">🟦 Longue · 190 cm</span><span class="trk"><span class="fil" style="width:40%;background:#38bdf8">1×</span></span></div>
-            <div class="lbar"><span class="llab">🟧 Courte · 120 cm</span><span class="trk"><span class="fil" style="width:100%;background:#f59e0b">2,5× d'effort</span></span></div>
-          </div>
-          <span class="proof-cap">même surface, même portance — mais 1,6× moins d'envergure = <b>1,6² ≈ 2,5×</b> plus d'effort</span>
-        </div>
-      </div>
-      <b>👉 Plus l'aile est longue et fine, moins tu forces pour aller aussi loin.</b>
-      <div class="kid-warn">⚠️ <b>Mais elle ne pompe pas à ta place !</b> Une grande envergure rend chaque
-      coup de pompe <b>plus rentable</b> — elle ne fait pas voler toute seule. Pour tenir 1 h, il faut <b>aussi</b> la
-      technique (bien enrouler, garder la vitesse) et la <b>forme physique</b>. Change ta « forme » en haut : tu verras le
-      temps de vol bouger énormément, à aile identique.</div>
-    </div>
-    <div class="kid-src" data-i18n="kid-src">
-      📚 <b>Et comment l'aile crée-t-elle sa portance, au juste ?</b> Elle s'incline d'un <b>tout petit angle</b> dans
-      l'eau et dévie le flux : plus l'angle est grand, plus elle porte (mais plus elle freine aussi). C'est le b.a.-ba
-      de la <b>théorie des profils minces</b> — la physique, vieille de plus d'un siècle, qui fait voler <i>tous</i> les
-      foils (et les avions).
-      <a href="https://fr.wikipedia.org/wiki/Th%C3%A9orie_des_profils_minces" target="_blank" rel="noopener">Lire sur Wikipédia →</a>
-    </div>
-  </div>
-
-  </div><!-- /SLIDE 5 -->
-
   <div class="sslide so" id="velo"><!-- SLIDE 6 · vélo vs foil -->
   <div class="kid">
     <h3 data-i18n="velo-h">🚴 Vélo vs foil : le même moteur, deux factures</h3>
@@ -1214,31 +1192,8 @@
       monte</b> et que la marge fond (pump pointu, cardio réel en hausse). <b>L'envergure d'abord, l'AR ensuite.</b>
     </div>
     <div class="note-fig" aria-hidden="true" style="margin-bottom:16px">
-      <svg viewBox="0 0 380 168">
-        <!-- Aile longue (haut AR) : zones mortes = petite fraction -->
-        <g>
-          <path d="M28 46 Q190 30 352 46 Q190 54 28 46 Z" fill="#38bdf8"/>
-          <!-- flèches de portance (s'éteignent aux bouts) -->
-          <g stroke="#38bdf8" stroke-width="2.4" fill="none" stroke-linecap="round">
-            <path d="M70 36 v-9"/><path d="M100 34 v-13"/><path d="M130 33 v-16"/><path d="M160 32 v-18"/><path d="M190 32 v-19"/><path d="M220 32 v-18"/><path d="M250 33 v-16"/><path d="M280 34 v-13"/><path d="M310 36 v-9"/>
-          </g>
-          <!-- tourbillons de bout -->
-          <path d="M22 46 a8 8 0 1 1 8 8" fill="none" stroke="#f87171" stroke-width="2"/>
-          <path d="M358 46 a8 8 0 1 0 -8 8" fill="none" stroke="#f87171" stroke-width="2"/>
-          <text x="190" y="70" font-size="11" fill="#94a3b8" text-anchor="middle" font-weight="700" data-i18n="fig-tip-l1">longue : bouts morts = petite fraction</text>
-        </g>
-        <!-- Aile courte (bas AR, même surface) : zones mortes = grosse fraction -->
-        <g>
-          <path d="M118 120 Q190 100 262 120 Q190 134 118 120 Z" fill="#f59e0b"/>
-          <g stroke="#f59e0b" stroke-width="2.4" fill="none" stroke-linecap="round">
-            <path d="M160 106 v-10"/><path d="M190 104 v-14"/><path d="M220 106 v-10"/>
-          </g>
-          <path d="M112 120 a9 9 0 1 1 9 9" fill="none" stroke="#f87171" stroke-width="2.4"/>
-          <path d="M268 120 a9 9 0 1 0 -9 9" fill="none" stroke="#f87171" stroke-width="2.4"/>
-          <text x="190" y="150" font-size="11" fill="#94a3b8" text-anchor="middle" font-weight="700" data-i18n="fig-tip-l2">courte (même surface) : presque toute en bouts morts</text>
-        </g>
-      </svg>
-      <div class="nf-caps" data-i18n="fig-tip-cap"><span>🔵 <b>flèches</b> — la portance (nulle aux bouts)</span><span>🔴 <b>tourbillons</b> — la zone morte qui freine sans porter</span></div>
+      <canvas class="fig-cv" data-fig="ucurve"></canvas>
+      <div class="nf-caps" data-i18n="fig-u-cap"><span>🔴 <b>portance</b> : chère quand tu vas lentement, fond avec l'envergure</span><span>⚪ <b>frottement</b> : explose quand tu accélères</span><span>➕ les deux s'additionnent → un <b>creux</b> = ta croisière éco</span></div>
     </div>
     <div class="legend">
       <span data-i18n="leg-ind"><i class="i-ind"></i><b>🔴 Freinage « portance »</b> — le prix à payer juste pour rester en l'air. Explose si tu voles lentement ou avec une aile courte.</span>
@@ -1482,37 +1437,8 @@
         au-dessus). Le prix à payer : un peu plus de traînée et une <b>vitesse max en baisse</b> — exactement
         l'inverse de ce que cherche <a href="vitesse.html">la page vitesse</a>, qui roule cale neutre.</div>
       <div class="note-fig" aria-hidden="true">
-        <svg viewBox="0 0 380 158">
-          <text x="95" y="18" text-anchor="middle" font-size="11.5" font-weight="700" fill="#94a3b8" data-i18n="fig-rk-l1">sans cale — aile à plat</text>
-          <text x="285" y="18" text-anchor="middle" font-size="11.5" font-weight="700" fill="#f59e0b" data-i18n="fig-rk-l2">avec cale — aile inclinée</text>
-          <!-- panneau gauche : l'eau file droit, petite portance -->
-          <g stroke="rgba(56,189,248,.55)" stroke-width="2" fill="none">
-            <line class="rkFlow" x1="18" y1="58" x2="172" y2="58" stroke-dasharray="9 8"/>
-            <line class="rkFlow" x1="18" y1="74" x2="60" y2="74" stroke-dasharray="9 8"/>
-            <line class="rkFlow" x1="130" y1="74" x2="172" y2="74" stroke-dasharray="9 8"/>
-            <line class="rkFlow" x1="18" y1="90" x2="172" y2="90" stroke-dasharray="9 8"/>
-          </g>
-          <path d="M60 74 Q95 66 130 74 Q95 80 60 74 Z" fill="#38bdf8"/>
-          <line x1="95" y1="112" x2="95" y2="94" stroke="#34d399" stroke-width="3.5"/>
-          <path d="M95 88 l-6 10 h12 Z" fill="#34d399"/>
-          <text x="95" y="132" text-anchor="middle" font-size="10.5" fill="#94a3b8" data-i18n="fig-rk-s1">l'eau file droit → porte juste assez</text>
-          <!-- panneau droit : aile inclinée, l'eau est déviée vers le bas → grosse portance -->
-          <g stroke="rgba(56,189,248,.55)" stroke-width="2" fill="none">
-            <line class="rkFlow" x1="208" y1="58" x2="362" y2="58" stroke-dasharray="9 8"/>
-            <line class="rkFlow" x1="208" y1="74" x2="248" y2="74" stroke-dasharray="9 8"/>
-            <line class="rkFlow" x1="208" y1="90" x2="362" y2="90" stroke-dasharray="9 8"/>
-          </g>
-          <g stroke="rgba(56,189,248,.8)" stroke-width="2.5" fill="none">
-            <line class="rkFlow" x1="322" y1="78" x2="356" y2="90" stroke-dasharray="7 6"/>
-            <line class="rkFlow" x1="318" y1="84" x2="348" y2="97" stroke-dasharray="7 6"/>
-          </g>
-          <path d="M248 78 Q283 62 318 72 Q284 82 248 78 Z" fill="#f59e0b"/>
-          <line x1="283" y1="122" x2="283" y2="90" stroke="#34d399" stroke-width="5"/>
-          <path d="M283 82 l-8 13 h16 Z" fill="#34d399"/>
-          <text x="285" y="138" text-anchor="middle" font-size="10.5" fill="#6ee7b7" data-i18n="fig-rk-s2">l'eau est poussée vers le bas</text>
-          <text x="285" y="152" text-anchor="middle" font-size="10.5" font-weight="800" fill="#6ee7b7" data-i18n="fig-rk-s3">→ ça te porte fort ↑↑</text>
-        </svg>
-        <div class="nf-caps" data-i18n="fig-rk-cap"><span>🖐️ comme ta main par la fenêtre de la voiture</span><span>même vitesse — seule l'<b>inclinaison</b> change (la cale ≈ +1° réel, exagéré au dessin)</span></div>
+        <canvas class="fig-cv" data-fig="rake"></canvas>
+        <div class="nf-caps" data-i18n="fig-rk-cap"><span>🖐️ comme ta main par la fenêtre de la voiture : inclinée, elle <b>porte plus</b></span><span>① même vitesse → plus de portance · ② donc tu peux <b>ralentir</b> (angles exagérés au dessin : la cale ≈ +1° réel)</span></div>
       </div>
       <p class="reg-note" data-i18n="reg-note">Nos simulateurs ne modélisent pas ces angles : ils jouent sur l'<b>assiette</b> (le trim),
         pas sur le budget de traînée. Mais une assiette juste, c'est un pompage qui rend mieux — des watts
@@ -2436,6 +2362,8 @@
 
   /* ---------- Moteur i18n (statique FR conservé, dico EN) ---------- */
   const EN = {
+    'kid-anim-cap':'<span>🌀 below the wing it pushes, above it sucks → water <b>curls around the tips</b>: those vortices carry your energy away, they are <b>the brake</b></span><span>🟧 same weight on <b>less span</b> → stronger vortices → <b>2.5× more brake</b> to pump against</span>',
+    'fig-u-cap':'<span>🔴 <b>lift</b>: expensive when you go slow, melts with span</span><span>⚪ <b>friction</b>: explodes when you speed up</span><span>➕ both add up → a <b>dip</b> = your eco cruise</span>',
     'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve','tb-more':'Links ▾','tb-model':'💻 Physics model',
     'xp-lbl':'Explanations',
     'deb-cta':'🎓 Never flown yet? Start here — the learning setup',
@@ -2507,8 +2435,6 @@
     'imp-matos':'<div class="imp-h">🛠️ 1. Your gear</div><div class="imp-big">−15 to −30% effort</div><div class="imp-s">with a <b>wide span</b> (long &amp; thin wing, high AR) — the only lever you can buy.</div><div class="imp-rank"><b>🥇 Span ~30%</b> · 🥈 Thin profile ~10% · mast / stab / fuselage ~1-5%</div>',
     'kid-h':'🧒 Why does a big wing tire you less?',
     'kid-def':'👉 Here, «<b>big wing</b>» means <b>wide span</b> (long tip-to-tip) — <b>not</b> necessarily more surface. And span, not surface, is the real lever — <b>yes, it\'s very counter-intuitive</b>, we\'ll get there.',
-    'kid-cap1':'<b>Wide span</b><br>the dead tips 🔴 = a <b>small share</b> → almost all of it lifts',
-    'kid-cap2':'<b>Short span</b> (same area)<br>the dead tips 🔴 <b>eat the wing</b> → it brakes as much as it lifts',
     'kid-txt':'To hold you up, the wing <b>pushes water downward</b> — and <b>force = amount of water × pushing speed</b>. Two ways to get the same push: 🟦 <b>push lots of water, gently</b> · 🟧 <b>whip a little water, hard</b>.<br><br>But waste explodes <b>with the square of speed</b> → gentle always wins. Like swimming: <b>fins</b> vs <b>bare hands</b>.<br><br>The 🔴 on the drawing? Those are the <b>wingtips</b>: the water wraps around them in a vortex → they <b>brake without lifting</b>. These <b>dead zones</b> are about the same size on every wing — so a <b>short</b> wing is almost <b>all dead tips</b>, a <b>long</b> one dilutes them across lifting span.<br><br>And the amount of water depends on one thing only: the <b>swept width = the span</b>. Adding chord (hence surface) <b>widens nothing</b> — <b>⚠️ surface makes the lift, span makes the savings</b>. Counter-intuitive, but it\'s the law:<br><br><div class="kid-law"><div class="kid-law-t">📐 The law of foiling</div><div class="kid-law-f">wasted effort = 1 / span²</div><div class="law-sq"><span class="sqcap">short wing</span><span class="lq4"><i></i><i></i><i></i><i></i></span><span class="qar">→</span><span class="lq1"></span><span class="sqcap">doubled span</span></div><div class="kid-law-s">Double the span → <b>4× less</b> effort lost.</div><div class="law-proof">The proof, at <b>equal area (1900 cm²)</b> — each wing\'s wasted effort:<div class="lawbars"><div class="lbar"><span class="llab">🟦 Long · 190 cm</span><span class="trk"><span class="fil" style="width:40%;background:#38bdf8">1×</span></span></div><div class="lbar"><span class="llab">🟧 Short · 120 cm</span><span class="trk"><span class="fil" style="width:100%;background:#f59e0b">2.5× the effort</span></span></div></div><span class="proof-cap">same area, same lift — but 1.6× less span = <b>1.6² ≈ 2.5×</b> more effort</span></div></div><b>👉 The longer and thinner the wing, the less you strain to go just as far.</b><div class="kid-warn">⚠️ <b>But it doesn\'t pump for you!</b> A wide span makes each pump stroke <b>more rewarding</b> — it doesn\'t fly on its own. To last 1 h you <b>also</b> need technique (linking bumps well, keeping speed) and <b>fitness</b>. Change your «fitness» above: you\'ll see flight time move a lot, on the very same wing.</div>',
     'kid-src':'📚 <b>And how does the wing actually make lift?</b> It tilts by a <b>tiny angle</b> in the water and deflects the flow: the bigger the angle, the more it lifts (but the more it drags too). That\'s the ABC of <b>thin airfoil theory</b> — the century-old physics that makes <i>every</i> foil (and aircraft) fly. <a href="https://en.wikipedia.org/wiki/Thin_airfoil_theory" target="_blank" rel="noopener">Read on Wikipedia →</a>',
     'story-sum-s':'📖 The idea in 30 seconds',
@@ -2565,9 +2491,9 @@
     'fig-mast-l1':'~15-20 cm immersed ✓',
     'fig-mast-l2':'40 cm+ = a big brake',
     'fig-mast-cap':'<span>🟢 <b>high</b> = mast almost dry</span><span>🔴 <b>low</b> = every cm drags</span>',
-    'fig-tip-l1':'long: dead tips = a tiny fraction',
-    'fig-tip-l2':'short (same area): almost all dead tips',
-    'fig-tip-cap':'<span>🔵 <b>arrows</b> — the lift (zero at the tips)</span><span>🔴 <b>vortices</b> — the dead zone that drags without lifting</span>',
+    
+    
+    
     'choc-h3':'⚡ What slows you down (and burns your watts)',
     'choc-lede':'Two drags add up. The classic wing pays mostly the <b style="color:var(--induced)">"lift" drag</b>: slow + short span = big wingtip vortices. The long-distance wing can cut it <b>3-5×</b> thanks to its wide span (the exact figure depends on both wings — check the bars).',
     'leg-ind':'<i class="i-ind"></i><b>🔴 "Lift" drag</b> — the price to pay just to stay airborne. Explodes if you fly slow or with a short span.',
@@ -2592,8 +2518,8 @@
     'reg1':'<div class="rh">📐 The shims</div><div class="note-fig" aria-hidden="true"><svg viewBox="0 0 360 100"><path d="M108 30 Q72 10 42 22" stroke="#34d399" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M42 22 l13 -7 M42 22 l6 12" stroke="#34d399" stroke-width="3" stroke-linecap="round"/><text x="118" y="18" font-size="12" fill="#34d399" font-weight="700">the nose lifts</text><rect x="64" y="48" width="228" height="6" rx="3" fill="#64748b"/><ellipse cx="60" cy="51" rx="50" ry="9" fill="#38bdf8"/><ellipse cx="306" cy="47" rx="26" ry="5" fill="#94a3b8" transform="rotate(-8 306 47)"/><path d="M282 55 L330 55 L330 70 Z" fill="#f59e0b"/><text x="306" y="86" font-size="12" fill="#f59e0b" font-weight="700" text-anchor="middle">shim</text></svg></div><p><b>Under the stab</b> (rake, ±0.5 to 2°): <b>more angle</b> = more lift, easier pumping; <b>less</b> = faster, more demanding. Long distance: slight positive rake; speed: neutral.<br><b>At the mast base</b> (if your gear allows): tilts the <b>whole foil as one block</b> relative to the board → acts directly on <b>takeoff speed</b>. Nose up = takes off early; nose down = later but faster.</p><p style="margin-top:8px; font-size:.92em; color:var(--dim)">⚠️ <b>When it matters:</b> a well- vs badly-chosen shim ≈ <b>~5 W</b> (trim drag ~1-2.5%). If you hold <b>less than 5 min</b>, your next gain is in <b>technique</b> (~30% wasted watts at first) and <b>span</b> — set the shim <b>once</b> (neutral, slightly nose-up), then forget it and pump.</p>',
     'reg2':'<div class="rh">↔️ Mast position on the board</div><div class="note-fig" aria-hidden="true"><svg viewBox="0 0 360 94"><path d="M60 22 H300" stroke="#34d399" stroke-width="3" stroke-linecap="round"/><path d="M60 22 l11 -6 M60 22 l11 6" stroke="#34d399" stroke-width="3" stroke-linecap="round"/><path d="M300 22 l-11 -6 M300 22 l-11 6" stroke="#34d399" stroke-width="3" stroke-linecap="round"/><text x="60" y="12" font-size="12" fill="#34d399" font-weight="700">forward = playful</text><text x="300" y="12" font-size="12" fill="#34d399" font-weight="700" text-anchor="end">back = stable</text><path d="M30 46 q2 -12 30 -14 h240 q28 0 28 12 v6 H30 z" fill="#64748b"/><rect x="150" y="43" width="96" height="5" rx="2" fill="#0f172a"/><rect x="178" y="41" width="38" height="8" rx="2" fill="#38bdf8"/><rect x="193" y="49" width="7" height="36" rx="2" fill="#38bdf8"/><text x="46" y="64" font-size="11" fill="#94a3b8" text-anchor="middle">nose</text><text x="208" y="80" font-size="11" fill="#94a3b8">mast</text></svg></div><p>In the tracks: <b>forward</b> = more lift, more playful; <b>back</b> = more stable and fast. Move in <b>~5 mm</b> steps — it\'s huge underfoot.</p>',
     'reg3':'<div class="rh">🦶 Your feet</div><p>The permanent tuning. <b>Fighting the nose-up</b>? Move forward 1-2 cm (or move the mast back). Board <b>diving</b>? Step back — or add shim. When nothing forces anymore, it\'s tuned.</p>',
-    'fig-rk-l1':'no shim — wing flat','fig-rk-l2':'with shim — wing tilted','fig-rk-s1':'water flows straight → barely enough lift','fig-rk-s2':'water pushed downward','fig-rk-s3':'→ it carries you hard ↑↑',
-    'fig-rk-cap':'<span>🖐️ like your hand out the car window</span><span>same speed — only the <b>tilt</b> changes (the shim ≈ +1° real, exaggerated here)</span>',
+    
+    'fig-rk-cap':'<span>🖐️ like your hand out the car window: tilted, it <b>lifts more</b></span><span>① same speed → more lift · ② so you can <b>slow down</b> (angles exaggerated in the drawing: the shim ≈ +1° for real)</span>',
     'reg-why':'<b>Why does a positive shim help for long distance?</b> Plainly: with the shim, your foil naturally flies <b>nose slightly higher</b>. The front wing meets the water at a bigger angle → it <b>lifts harder at the same speed</b>. Direct consequence: you can <b>slow down without dropping</b> — and flying slowly is where you spend the fewest watts (the bottom of the power curve above). The price: a bit more drag and a <b>lower top speed</b> — exactly the opposite of what <a href="vitesse.html?lang=en">the speed page</a> wants, which runs a neutral shim.',
     'reg-note':'Our simulators don\'t model these angles: they act on <b>trim</b>, not on the drag budget. But a right trim means pumping that pays back better — free watts, as long as you write down what you change.',
     'mental-h3':'🧠 Mental comfort & cognitive load',
@@ -2617,6 +2543,224 @@
     'foot-note':'ρ = 1025 (sea water) · induced drag = C<sub>L</sub>²/(π·AR) · stall at 13° — like foilphysics; thin profiles are capped earlier (real ventilation) · η_pump (<b>estimated</b> pumping efficiency) grows with AR and mast stiffness. Watts and flight time are illustrative estimates (critical-power model, adjustable to your fitness) — not a real effort measurement.'
   };
   const FRC = {};
+  /* ---------- figures animées pédagogiques (canvas[data-fig]) ----------
+     kid    : pourquoi une grande envergure fatigue moins (l'eau poussée vers le bas, vue de derrière)
+     ucurve : les deux freinages qui s'additionnent → la courbe en U, aile classique vs longue distance
+     rake   : pourquoi une cale positive aide (même vitesse → porte plus → on peut ralentir)
+     Les canvas sont retrouvés à chaque image : la bascule FR/EN remplace le HTML qui les contient. */
+  (() => {
+    const RMF = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const FW = 360, FH = {kid:224, ucurve:214, rake:206};
+    const ssf = u => u <= 0 ? 0 : u >= 1 ? 1 : u*u*(3-2*u);
+    const FONT = 'system-ui,-apple-system,sans-serif';
+    function ctxFor(c){
+      const w = c.clientWidth; if(!w) return null;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2), pw = Math.round(w*dpr);
+      if(c.width !== pw){ c.width = pw; c.height = Math.round(pw*FH[c.dataset.fig]/FW); }
+      const g = c.getContext('2d'), k = c.width/FW; g.setTransform(k,0,0,k,0,0); return g;
+    }
+    function label(g, s, x, y, col, size, weight, align){
+      g.fillStyle = col; g.font = (weight||700) + ' ' + (size||10) + 'px ' + FONT;
+      g.textAlign = align || 'center'; g.textBaseline = 'alphabetic'; g.fillText(s, x, y);
+    }
+    function arrow(g, x, y, dx, dy, col, w, head){
+      const L = Math.hypot(dx,dy); if(L < 1.5) return;
+      const ux = dx/L, uy = dy/L, h = head || 6;
+      g.strokeStyle = col; g.fillStyle = col; g.lineWidth = w; g.lineCap = 'round';
+      g.beginPath(); g.moveTo(x,y); g.lineTo(x+dx-ux*h*.6, y+dy-uy*h*.6); g.stroke();
+      g.beginPath(); g.moveTo(x+dx, y+dy); g.lineTo(x+dx-ux*h-uy*h*.6, y+dy-uy*h+ux*h*.6);
+      g.lineTo(x+dx-ux*h+uy*h*.6, y+dy-uy*h-ux*h*.6); g.closePath(); g.fill();
+    }
+    const rnd = (() => { let s = 7; return () => (s = (s*16807) % 2147483647) / 2147483647; })();
+
+    /* ① grande envergure : ce qui freine, ce sont les TOURBILLONS de bout d'aile. Sous l'aile ça pousse,
+       dessus ça aspire → l'eau fuit autour des bouts et s'enroule. Même portance (ton poids) sur moins
+       d'envergure → la fuite est plus forte : intensité du tourbillon ∝ 1/envergure, et l'énergie qu'il
+       emporte (= la traînée induite, ce que tu paies en pompant) ∝ 1/envergure² → 190 vs 120 cm : ×2,5. */
+    const KID = [{b:190, x:84, col:'#38bdf8'}, {b:120, x:282, col:'#f59e0b'}].map(W => Object.assign(W, {k:190/W.b, half:W.b*.385, chord:1900/W.b*.9}));
+    function drawKid(g, now){
+      g.clearRect(0,0,FW,FH.kid);
+      const wy = 64, y1 = 176;
+      for(const W of KID){
+        const long = W.b === 190, k = W.k, drag = k*k;
+        label(g, W.b + ' cm', W.x, 14, W.col, 12.5, 800);
+        label(g, long ? t('petits tourbillons','small vortices') : t('gros tourbillons','big vortices'), W.x, 27, '#cbd5e1', 9.5, 700);
+        // sens de marche
+        g.globalAlpha = .45; arrow(g, W.x, wy - 18, 0, -12, '#e2e8f0', 1.4, 4); g.globalAlpha = 1;
+        // le sillage : un tourbillon part de chaque bout et s'enroule (vu du dessus, une hélice qui défile)
+        for(const sg of [-1,1]){
+          const tx = W.x + sg*W.half, A = 3.2*k*k, om = 5.5*k;
+          for(let strand=0; strand<2; strand++){
+            g.beginPath();
+            for(let y=wy+2; y<=y1; y+=2){
+              const d = (y - wy)/(y1 - wy), r = A*(0.35 + 0.65*Math.min(1, d*3));
+              const x = tx - sg*d*3 + r*Math.sin((y - wy)*0.34 - now*om*sg + strand*Math.PI);
+              y === wy+2 ? g.moveTo(x, y) : g.lineTo(x, y);
+            }
+            g.strokeStyle = strand ? 'rgba(248,113,113,.28)' : 'rgba(248,113,113,' + Math.min(.95, .5 + .28*(k-1)*2).toFixed(2) + ')';
+            g.lineWidth = strand ? 1 : 1.2 + .9*k; g.stroke();
+          }
+          // l'enroulement au bout d'aile (petites bulles qui tournent)
+          for(let i=0;i<5;i++){
+            const a = now*om*2*sg + i*1.2566, rr = 2 + A*.9;
+            g.fillStyle = 'rgba(254,202,202,.8)'; g.beginPath(); g.arc(tx + Math.cos(a)*rr, wy + 6 + Math.sin(a)*rr*.6, .9 + .25*k, 0, 6.2832); g.fill();
+          }
+        }
+        // l'aile vue du dessus (même surface : la courte a une corde plus large)
+        g.fillStyle = W.col;
+        g.beginPath(); g.moveTo(W.x - W.half, wy);
+        g.quadraticCurveTo(W.x, wy - W.chord*1.1, W.x + W.half, wy); g.quadraticCurveTo(W.x, wy + W.chord*.55, W.x - W.half, wy); g.fill();
+        // le frein : il tire l'aile vers l'arrière, 2,5× plus fort pour la courte
+        const L = 18*drag;
+        arrow(g, W.x, wy + W.chord*.3 + 2, 0, L, '#f43f5e', 3.2, 7);
+        label(g, t('frein ','brake ') + (drag > 1.01 ? num(drag,1) : '1') + '×', W.x, wy + W.chord*.3 + L + 16, '#fda4af', 10.5, 800);
+        // énergie emportée par les tourbillons
+        label(g, t('énergie emportée','energy carried off'), W.x - 74, 190, '#94a3b8', 9, 700, 'left');
+        g.fillStyle = 'rgba(148,163,184,.18)'; g.beginPath(); g.roundRect(W.x-74, 195, 148, 11, 5.5); g.fill();
+        g.fillStyle = '#f43f5e'; g.beginPath(); g.roundRect(W.x-74, 195, 148*drag/2.6, 11, 5.5); g.fill();
+        label(g, (drag > 1.01 ? num(drag,1) : '1') + '×', W.x - 74 + 148*drag/2.6 + (drag > 1.01 ? -5 : 5), 204, '#f8fafc', 9.5, 800, drag > 1.01 ? 'right' : 'left');
+      }
+      // encart : d'où vient le tourbillon (vu de derrière, un bout d'aile)
+      const ix = 196, iy = 116;
+      g.fillStyle = 'rgba(15,23,42,.6)'; g.beginPath(); g.roundRect(ix - 27, iy - 30, 54, 58, 7); g.fill();
+      g.fillStyle = '#94a3b8'; g.fillRect(ix - 24, iy - 1.5, 26, 3);
+      label(g, '−', ix - 12, iy - 6, '#93c5fd', 11, 800); label(g, '+', ix - 12, iy + 14, '#fca5a5', 11, 800);
+      g.strokeStyle = '#f87171'; g.lineWidth = 1.6;
+      const a0 = now*3;
+      g.beginPath(); g.arc(ix + 3, iy, 10, Math.PI*.5, Math.PI*1.6); g.stroke();
+      arrow(g, ix + 3 + 10*Math.cos(Math.PI*1.6), iy + 10*Math.sin(Math.PI*1.6), -5, -1.5, '#f87171', 1.4, 4);
+      g.fillStyle = 'rgba(254,202,202,.8)'; g.beginPath(); g.arc(ix + 3 + 10*Math.cos(a0), iy + 10*Math.sin(a0), 1.3, 0, 6.2832); g.fill();
+      label(g, t('bout d\'aile','wingtip'), ix, iy + 24, '#cbd5e1', 7.5, 700);
+      label(g, t('même surface · même portance (ton poids)','same area · same lift (your weight)'), FW/2, 219, '#94a3b8', 8.8, 600);
+    }
+
+    /* ② ce qui te freine : freinage « portance » (∝ 1/(envergure²·v)) + « frottement » (∝ v³) = courbe en U */
+    const WINGS = [
+      {n:() => t('🪽 aile classique · 95 cm','🪽 classic wing · 95 cm'), b:.95, c:.9, col:'#f59e0b'},
+      {n:() => t('🌊 aile longue distance · 150 cm','🌊 long-distance wing · 150 cm'), b:1.5, c:1.0, col:'#38bdf8'}
+    ];
+    const pInd = (W,v) => 700/(v*W.b*W.b)/0.75, pFr = (W,v) => W.c*v*v*v/0.75;
+    function drawU(g, now){
+      g.clearRect(0,0,FW,FH.ucurve);
+      const X0 = 40, X1 = 286, Y0 = 176, Y1 = 30, V0 = 9, V1 = 30, PMAX = 840;
+      const X = kmh => X0 + (kmh-V0)/(V1-V0)*(X1-X0), Y = p => Y0 - Math.min(p, PMAX)/PMAX*(Y0-Y1);
+      const CYC = 14, cyc = Math.floor(now/CYC), u = now % CYC, A = WINGS[cyc % 2], B = WINGS[1 - cyc % 2];
+      const kmh = 19.5 - 9*Math.cos(2*Math.PI*u/7), v = kmh/3.6;
+      // axes
+      g.strokeStyle = '#475569'; g.lineWidth = 1;
+      g.beginPath(); g.moveTo(X0, Y1-6); g.lineTo(X0, Y0); g.lineTo(X1+4, Y0); g.stroke();
+      for(const k of [10,15,20,25,30]){ label(g, String(k), X(k), Y0+12, '#94a3b8', 9, 600); }
+      label(g, t('vitesse (km/h)','speed (km/h)'), (X0+X1)/2, Y0+24, '#64748b', 9, 600);
+      for(const p of [0,200,400,600,800]){ label(g, String(p), X0-5, Y(p)+3, '#94a3b8', 9, 600, 'right'); }
+      label(g, 'W', X0-5, Y1-8, '#64748b', 9, 700, 'right');
+      const curve = (f, col, w, dash) => {
+        g.beginPath();
+        for(let k=V0; k<=V1+.01; k+=.25){ const p = f(k/3.6); k === V0 ? g.moveTo(X(k), Y(p)) : g.lineTo(X(k), Y(p)); }
+        g.strokeStyle = col; g.lineWidth = w; g.setLineDash(dash || []); g.stroke(); g.setLineDash([]);
+      };
+      curve(vv => pInd(B,vv) + pFr(B,vv), B.col, 1.4, [3,4]);            // l'autre aile, pour comparer
+      curve(vv => pInd(A,vv), '#f43f5e', 1.6, [5,4]);
+      curve(vv => pFr(A,vv), '#94a3b8', 1.6, [5,4]);
+      curve(vv => pInd(A,vv) + pFr(A,vv), A.col, 3);
+      // le creux : la croisière éco
+      let vm = 3, pm = 1e9; for(let k=V0; k<=V1; k+=.1){ const p = pInd(A,k/3.6)+pFr(A,k/3.6); if(p < pm){ pm = p; vm = k; } }
+      g.fillStyle = A.col; g.beginPath(); g.arc(X(vm), Y(pm), 2.6, 0, 6.2832); g.fill();
+      label(g, t('creux = croisière éco','dip = eco cruise'), X(vm), Y(pm)+14, A.col, 9, 700);
+      label(g, t('portance','lift'), X(10.2), Y(pInd(A,10.2/3.6))-5, '#fb7185', 9.5, 800, 'left');
+      label(g, t('frottement','friction'), X(29.6), Y(pFr(A,29.6/3.6))+14, '#cbd5e1', 9.5, 800, 'right');
+      // le rider qui balaie les vitesses
+      const pi = pInd(A,v), pf = pFr(A,v), pt = pi + pf;
+      g.strokeStyle = 'rgba(248,250,252,.25)'; g.beginPath(); g.moveTo(X(kmh), Y0); g.lineTo(X(kmh), Y(pt)); g.stroke();
+      g.fillStyle = '#f8fafc'; g.beginPath(); g.arc(X(kmh), Y(pt), 5, 0, 6.2832); g.fill();
+      g.strokeStyle = A.col; g.lineWidth = 2; g.stroke();
+      // la barre empilée : ce que tu paies, maintenant
+      const bx = 306, bw = 26, hb = p => Math.min(p, PMAX)/PMAX*(Y0-Y1);
+      g.fillStyle = '#94a3b8'; g.fillRect(bx, Y0 - hb(pf), bw, hb(pf));
+      g.fillStyle = '#f43f5e'; g.fillRect(bx, Y0 - hb(pf) - hb(pi), bw, hb(pi));
+      label(g, Math.round(pt) + ' W', bx + bw/2, Math.max(Y1, Y0 - hb(pt)) - 5, '#f8fafc', 10.5, 800);
+      label(g, Math.round(kmh) + ' km/h', bx + bw/2, Y0 + 12, '#cbd5e1', 9, 700);
+      label(g, A.n(), (X0+X1)/2, 13, A.col, 11, 800);
+      label(g, kmh < 15 ? t('lent : la portance coûte cher','slow: lift is expensive') : kmh > 24 ? t('vite : le frottement explose','fast: friction explodes') : t('entre les deux : le moins cher','in between: cheapest'),
+            (X0+X1)/2, 26, '#cbd5e1', 9.5, 600);
+    }
+
+    /* ③ la cale positive : ① même vitesse, l'aile inclinée pousse plus d'eau vers le bas → porte plus ;
+       ② donc on peut ralentir jusqu'à ce que la portance retombe à ton poids → plus près du creux du U. */
+    const A0 = 2.5, AF = 2;                          // incidence « à portance nulle » (cambrure) · incidence de vol
+    function drawRake(g, now){
+      g.clearRect(0,0,FW,FH.rake);
+      const CYC = 13, u = now % CYC;
+      const shim = ssf((u-3)/1.4);                   // la cale entre en jeu
+      const slow = ssf((u-6.6)/2.6);                 // puis on ralentit
+      const alpha = AF + shim;                       // +1° de cale
+      const v = 16*(1 - slow*(1 - Math.sqrt((A0+AF)/(A0+AF+1))));
+      const lift = (v/16)*(v/16)*(A0+alpha)/(A0+AF);
+      const wx = 150, wy = 104, ch = 74, drawA = -alpha*3.2*Math.PI/180;   // angle exagéré au dessin
+      // l'eau défile (le rider va vers la droite) : lignes de courant, déviées vers le bas derrière l'aile
+      const down = 22*(A0+alpha)/(A0+AF+1)*(v/16);
+      const yOf = (x, y0) => { const k = Math.exp(-Math.abs(y0 - wy)/34), behind = ssf((wx + ch*.3 - x)/90);
+        return y0 + down*k*behind - 5*k*ssf((x - wx + 10)/50)*(1 - behind); };
+      for(let r=0;r<7;r++){
+        const y0 = 46 + r*20, k = Math.exp(-Math.abs(y0 - wy)/34);
+        g.beginPath(); for(let x=-4; x<=FW+4; x+=6){ const y = yOf(x, y0); x < 0 ? g.moveTo(x, y) : g.lineTo(x, y); }
+        g.strokeStyle = 'rgba(165,243,252,' + (.10 + .16*k).toFixed(2) + ')'; g.lineWidth = 1; g.stroke();
+        g.strokeStyle = 'rgba(207,250,254,' + (.45 + .45*k).toFixed(2) + ')'; g.lineWidth = 1.8; g.lineCap = 'round';
+        for(let i=0;i<9;i++){
+          const x = (((i*44 + r*17 - now*v*5.2) % 396) + 396) % 396 - 18;
+          g.beginPath(); g.moveTo(x, yOf(x, y0)); g.lineTo(x + 8, yOf(x + 8, y0)); g.stroke();
+        }
+      }
+      // l'aile (profil) et son mât
+      g.save(); g.translate(wx, wy); g.rotate(drawA);
+      g.fillStyle = shim > .5 ? '#f59e0b' : '#38bdf8';
+      g.beginPath(); g.moveTo(ch*.45, 0); g.quadraticCurveTo(-ch*.1, -9, -ch*.55, -1); g.quadraticCurveTo(-ch*.1, 3, ch*.45, 0); g.fill();
+      g.restore();
+      g.fillStyle = 'rgba(203,213,225,.7)'; g.fillRect(wx-1.5, 34, 3, wy-38);
+      // portance vs poids
+      const Lpx = 44*lift;
+      arrow(g, wx+30, wy-6, 0, -Lpx, '#34d399', 4, 8);
+      g.strokeStyle = 'rgba(248,250,252,.5)'; g.setLineDash([3,3]); g.lineWidth = 1;
+      g.beginPath(); g.moveTo(wx+18, wy-6-44); g.lineTo(wx+42, wy-6-44); g.stroke(); g.setLineDash([]);
+      label(g, t('ton poids','your weight'), wx+15, wy-47, '#cbd5e1', 9, 700, 'right');
+      label(g, lift > 1.04 ? t('porte plus fort ↑','lifts harder ↑') : t('portance = poids','lift = weight'), wx+46, wy-6-Lpx+4, '#6ee7b7', 9.5, 800, 'left');
+      // compteur + angle
+      label(g, num(v,1) + ' km/h', 20, 196, '#f8fafc', 12, 800, 'left');
+      label(g, shim > .5 ? t('cale +1°','shim +1°') : t('sans cale','no shim'), 104, 196, shim > .5 ? '#f59e0b' : '#94a3b8', 11, 800, 'left');
+      // étape en cours
+      const step = u < 3 ? t('sans cale : l\'aile porte juste ton poids','no shim: the wing carries just your weight')
+                 : u < 6.6 ? t('① avec la cale, même vitesse : l\'eau part plus bas → ça porte plus','① with the shim, same speed: water goes lower → more lift')
+                 : t('② donc tu peux ralentir sans tomber','② so you can slow down without dropping');
+      label(g, step, FW/2, 16, '#f8fafc', 10.5, 800);
+      // le U miniature : ralentir = descendre vers le creux
+      const ux0 = 256, uy0 = 188, uw = 94, uh = 58, U = s => 311/(s/3.6) + (s/3.6)*(s/3.6)*(s/3.6), U0 = U(11.5), U1 = U(22);
+      const px = s => ux0 + (s-10)/12*uw, py = s => uy0 - (U(s)-U0)/(U1-U0)*uh;
+      g.fillStyle = 'rgba(15,23,42,.55)'; g.beginPath(); g.roundRect(ux0-8, uy0-uh-18, uw+16, uh+30, 7); g.fill();
+      g.beginPath(); for(let s=10; s<=22; s+=.25){ s === 10 ? g.moveTo(px(s), py(s)) : g.lineTo(px(s), py(s)); }
+      g.strokeStyle = '#38bdf8'; g.lineWidth = 1.8; g.stroke();
+      g.fillStyle = '#f8fafc'; g.beginPath(); g.arc(px(v), py(v), 3.6, 0, 6.2832); g.fill();
+      label(g, t('watts','watts'), ux0-2, uy0-uh-6, '#94a3b8', 8.5, 700, 'left');
+      label(g, t('← ralentir = moins de watts','← slower = fewer watts'), ux0+uw/2, uy0+9, '#cbd5e1', 8, 700);
+    }
+
+    const DRAW = {kid:drawKid, ucurve:drawU, rake:drawRake};
+    let start = 0;
+    function tick(ts){
+      if(!start) start = ts;
+      const now = (ts - start)/1000;
+      for(const c of document.querySelectorAll('canvas[data-fig]')){
+        const r = c.getBoundingClientRect();
+        if(r.bottom < 0 || r.top > innerHeight || !DRAW[c.dataset.fig]) continue;
+        const g = ctxFor(c); if(g) DRAW[c.dataset.fig](g, now);
+      }
+      requestAnimationFrame(tick);
+    }
+    if(RMF){
+      const STILL = {kid:1, ucurve:5.2, rake:10.5};
+      const still = () => { for(const c of document.querySelectorAll('canvas[data-fig]')){ const f = c.dataset.fig, g = DRAW[f] && ctxFor(c); if(g) DRAW[f](g, STILL[f]); } };
+      addEventListener('resize', still); setInterval(still, 800); still();
+    } else requestAnimationFrame(tick);
+  })();
+
   function applyLang(l){
     LANG = l;
     document.documentElement.lang = l;
