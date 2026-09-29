@@ -329,7 +329,7 @@
     <h2 data-i18n="rf-h2">🏁 La course : rapide ET maniable, c'est possible</h2>
     <p class="rf-sub" data-i18n="rf-sub">Deux <b>parcours jumeaux</b> (ils ne se croisent jamais — sécurité), 2 virages chacun, même effort. Surprise : la <b>lame de vitesse tourne presque aussi serré</b> que la carve — sa résistance au roulis (<b>surface × envergure²</b>) est quasi la même. Elle perd un poil aux bouées… et reprend tout en ligne droite.</p>
     <div class="rf-stage">
-      <canvas id="rf-cv" role="img" aria-label="Deux parcours jumeaux vus du dessus : la carve tourne serré autour des bouées, la lame de vitesse élargit ses virages"></canvas>
+      <canvas id="rf-cv" role="img" aria-label="Deux parcours jumeaux vus du dessus : la carve et la lame de vitesse tournent presque aussi serré autour des bouées"></canvas>
     </div>
     <div class="rf-hud">
       <div class="rf-card"><span class="rf-dot" style="background:#34d399"></span>
@@ -351,7 +351,7 @@
     <div class="rf-combo" data-i18n="rf-combo">
       <div class="rf-combo-t">🏆 Le combo idéal (théorique) — course courte ≈ 300 m, 2 virages</div>
       <div class="rf-combo-grid">
-        <div><span>🪽 Aile</span><b>~750-820 cm² · ~95-100 cm · allongement ~12-13 · profil fin</b><p><b>petite surface</b> = faible inertie = tourne quand même serré ; <b>profil fin</b> = rapide sur les droites ; <b>allongement élevé</b> = relance et tient la vitesse. (Pas besoin de plus grand : à ce niveau tu sprintes fort.)</p></div>
+        <div><span>🪽 Aile</span><b>~750-820 cm² · ~95-100 cm · allongement ~12-13 · profil fin</b><p><b>petite surface</b> = faible résistance au roulis = tourne quand même serré ; <b>profil fin</b> = rapide sur les droites ; <b>allongement élevé</b> = relance et tient la vitesse. (Pas besoin de plus grand : à ce niveau tu sprintes fort.)</p></div>
         <div><span>🚀 Vitesse de pointe</span><b>surtout tes watts</b><p>33-37 km/h = <b>gros sprint</b> (1 300 W+) + profil fin. L'allongement ne monte <b>pas</b> la pointe : à profil égal, les Vmax se tiennent à 1-2 km/h près.</p></div>
         <div><span>🪶 Stab</span><b>moyen (~90-110 cm²)</b><p>assez de <b>grip</b> pour tenir les 2 carves sans déraper, sans plomber la relance.</p></div>
         <div><span>🔩 Fuselage + 🦶 straps</span><b>court/moyen · straps oui</b><p>fuselage court = <b>pivot vif</b> ; straps = <b>relance</b> au pompage et tu tiens le rail en virage.</p></div>
@@ -394,7 +394,7 @@
 
   <!-- VERDICTS -->
   <section class="a-in">
-    <h3 data-i18n="vd-h3">🧾 Le verdict, en 8 cartes</h3>
+    <h3 data-i18n="vd-h3">🧾 Le verdict, en 9 cartes</h3>
     <p class="lede" data-i18n="vd-lede">Chiffres des cartes calculés pour une référence <b>800 W · 75 kg</b> — le tornado ci-dessus, lui, suit <b>ta</b> config.</p>
     <div class="cards">
       <div class="card ok" data-i18n="vd1">
@@ -511,7 +511,7 @@
             <line x1="80" y1="22" x2="90" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/>
             <rect x="92" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="1.3"/>
             <text x="130" y="20" text-anchor="middle" font-size="10" fill="#cbd5e1" font-weight="700">viscosité</text>
-            <text x="130" y="32" text-anchor="middle" font-size="10" fill="#cbd5e1">+40 %</text>
+            <text x="130" y="32" text-anchor="middle" font-size="10" fill="#cbd5e1">+70 %</text>
             <line x1="170" y1="22" x2="180" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/>
             <rect x="182" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="1.3"/>
             <text x="220" y="20" text-anchor="middle" font-size="10" fill="#cbd5e1" font-weight="700">Reynolds</text>
@@ -560,7 +560,7 @@
     Vmax résout P(v) = ton sprint, <b>traînée aérienne du rider incluse</b> (CdA ≈ 0,45 groupé — ~90 W à 25 km/h !).
     ρ = 1025 · span efficiency e=0,91 + trim drag (cohérent avec l'index) · η estimé (croît avec l'allongement) · fuselage court fixé · mât compté à ~55 % immergé (à Vmax tu voles haut) ·
     C_D stab et fuselage = milieux de fourchette, <b>calibrés sur les vitesses de course réelles</b> (30-38 km/h observés,
-    specs Takoon Flow / GONG Veloce H) · cavitation ignorée (négligeable sous ~45 km/h : le 37 km/h du champion reste sous le seuil) · hors houle, hors départ ·
+    specs Takoon Flow / GONG Veloce H — points d'ancrage : strappé sur une 600, 30 km/h ≈ 750 W · 33 ≈ 1 000 W · les ~37 km/h du champion ≈ 1 300 W en pointe) · cavitation ignorée (négligeable sous ~45 km/h : le 37 km/h du champion reste sous le seuil) · hors houle, hors départ ·
     straps = +20 % de rendement (traction à la remontée, cf. le clamp « unstrapped » du modèle d'origine). Estimations pédagogiques, pas un banc d'essai.<br>
     ⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> ·
     📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> ·
@@ -589,9 +589,7 @@
     'h1a':'The Race for <span class="hi">km/h</span> in pump foil',
     'h1b':'🚀 what makes a foil fast?',
         'tldr-t':'For pure speed: <b>small thin wing</b> + <b>small stab</b><br>+ your <b>sprint watts</b>.',
-        'disc':'⚠️ <b>Estimated figures</b> (± ~15%) — same physics model as <a href="long-distance.html?lang=en">long distance</a>; Vmax = the speed where required power reaches your sprint.',
     'sim-h3':'🎛️ Your top speed',
-    'sim-lede':'Set your watts (anaerobic): <b>held sprint</b> 30 s-1 min ≈ <b>400-900 W</b> depending on level · <b>race burst</b> 10-20 s ≈ <b>1,000-1,400 W</b> — where the 30-38 km/h of races happen.',
     'sim-learn':'💡 <b>But top speed is only one piece</b>: a real race is won on <b>acceleration</b> and in the <b>turns</b> (handling), and over distance you <b>can\'t hold sprint watts</b> — speed drops. See “The race” just below ↓',
     'l-s':'Wing area','l-b':'Span','l-prof':'Wing profile','l-mast':'Mast','l-stab':'Stab',
     'l-w':'Weight (you + gear)','l-p':'Your watts (sprint or burst)',
@@ -607,10 +605,10 @@
     'cb2-k':'Sprint ~800 W — top sprinter',
     'cb2-p':'Thin profile, stab 50, 13 mm mast → <b>~30 km/h</b>, flight window 26-30 km/h. The small blade of your intuition — but it <b>demands</b> that engine (and straps to aim higher).',
     'cb-btn':'⚙️ Apply this combo',
-    'vd-h3':'🧾 The verdict, in 8 cards',
+    'vd-h3':'🧾 The verdict, in 9 cards',
     'xp-lbl':'Explanations',
     'vd-lede':'Card figures computed for a <b>800 W · 75 kg</b> reference — the tornado above follows <b>your</b> config.',
-    'vd6':'<div class="k">🌡️ Cold water ≠ denser</div><div class="big">it\'s the viscosity</div><p class="xpl">Common myth: «cold water is denser, so it changes everything». Actually <b>density</b> shifts only <b>~0.3%</b> over 20 °C. What really changes is the <b>viscosity</b> — how well the flow <b>stays attached to the profile</b> (Reynolds number). So the same wing <b>stalls and glides differently</b> in winter vs summer — its <b>working range moves</b>. (Viscosity = «stickiness»: cold oil gloopy, hot oil runny.)</p><div class="note-fig" aria-hidden="true"><svg viewBox="0 0 360 90" role="img"><defs><marker id="vf-ar2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#64748b"/></marker></defs><rect x="2" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.3"/><text x="40" y="20" text-anchor="middle" font-size="10" fill="#38bdf8" font-weight="700">cold water</text><text x="40" y="32" text-anchor="middle" font-size="10" fill="#38bdf8">5 °C</text><line x1="80" y1="22" x2="90" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/><rect x="92" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="1.3"/><text x="130" y="20" text-anchor="middle" font-size="10" fill="#cbd5e1" font-weight="700">viscosity</text><text x="130" y="32" text-anchor="middle" font-size="10" fill="#cbd5e1">+40%</text><line x1="170" y1="22" x2="180" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/><rect x="182" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="1.3"/><text x="220" y="20" text-anchor="middle" font-size="10" fill="#cbd5e1" font-weight="700">Reynolds</text><text x="220" y="32" text-anchor="middle" font-size="10" fill="#cbd5e1">−40%</text><line x1="260" y1="22" x2="270" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/><rect x="272" y="6" width="86" height="32" rx="8" fill="#1e293b" stroke="#f87171" stroke-width="1.3"/><text x="315" y="20" text-anchor="middle" font-size="10" fill="#f87171" font-weight="700">stall</text><text x="315" y="32" text-anchor="middle" font-size="10" fill="#f87171">margin ↓</text><rect x="95" y="56" width="170" height="26" rx="13" fill="none" stroke="#34d399" stroke-width="1.3"/><text x="180" y="73" text-anchor="middle" font-size="10.5" fill="#34d399" font-weight="700">Vmax: only ~−1%</text></svg><div class="nf-caps"><span>cold water shifts the <b>working range</b> — not your top speed</span></div></div><p class="xpl" style="margin-top:8px; font-size:.92em; color:var(--dim)"><b>Direction &amp; size:</b> cold = more viscous = lower Reynolds = a bit <b>more drag</b> → slightly slower, but <b>~1% on Vmax</b> (in the noise). What you actually feel: <b>less stall margin</b> and slightly worse low-speed glide — not «you lose 5 km/h».</p>',
+    'vd6':'<div class="k">🌡️ Cold water ≠ denser</div><div class="big">it\'s the viscosity</div><p class="xpl">Common myth: «cold water is denser, so it changes everything». Actually <b>density</b> shifts only <b>~0.3%</b> over 20 °C. What really changes is the <b>viscosity</b> — how well the flow <b>stays attached to the profile</b> (Reynolds number). So the same wing <b>stalls and glides differently</b> in winter vs summer — its <b>working range moves</b>. (Viscosity = «stickiness»: cold oil gloopy, hot oil runny.)</p><div class="note-fig" aria-hidden="true"><svg viewBox="0 0 360 90" role="img"><defs><marker id="vf-ar2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#64748b"/></marker></defs><rect x="2" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.3"/><text x="40" y="20" text-anchor="middle" font-size="10" fill="#38bdf8" font-weight="700">cold water</text><text x="40" y="32" text-anchor="middle" font-size="10" fill="#38bdf8">5 °C</text><line x1="80" y1="22" x2="90" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/><rect x="92" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="1.3"/><text x="130" y="20" text-anchor="middle" font-size="10" fill="#cbd5e1" font-weight="700">viscosity</text><text x="130" y="32" text-anchor="middle" font-size="10" fill="#cbd5e1">+70%</text><line x1="170" y1="22" x2="180" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/><rect x="182" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="1.3"/><text x="220" y="20" text-anchor="middle" font-size="10" fill="#cbd5e1" font-weight="700">Reynolds</text><text x="220" y="32" text-anchor="middle" font-size="10" fill="#cbd5e1">−40%</text><line x1="260" y1="22" x2="270" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/><rect x="272" y="6" width="86" height="32" rx="8" fill="#1e293b" stroke="#f87171" stroke-width="1.3"/><text x="315" y="20" text-anchor="middle" font-size="10" fill="#f87171" font-weight="700">stall</text><text x="315" y="32" text-anchor="middle" font-size="10" fill="#f87171">margin ↓</text><rect x="95" y="56" width="170" height="26" rx="13" fill="none" stroke="#34d399" stroke-width="1.3"/><text x="180" y="73" text-anchor="middle" font-size="10.5" fill="#34d399" font-weight="700">Vmax: only ~−1%</text></svg><div class="nf-caps"><span>cold water shifts the <b>working range</b> — not your top speed</span></div></div><p class="xpl" style="margin-top:8px; font-size:.92em; color:var(--dim)"><b>Direction &amp; size:</b> cold = more viscous = lower Reynolds = a bit <b>more drag</b> → slightly slower, but <b>~1% on Vmax</b> (in the noise). What you actually feel: <b>less stall margin</b> and slightly worse low-speed glide — not «you lose 5 km/h».</p>',
     'vd8':'<div class="k">📐 The shim (rake): here, neutral</div><div class="big">the opposite of long distance</div><p class="xpl">The <a href="long-distance.html?lang=en">long-distance page</a> shims its stab <b>positive</b> to fly slowly. Speed is the opposite: tilting the wing is <b>the hand out the car window</b> — more lift but <b>more brake</b>. At 30 km/h you already have all the lift you need → <b>neutral shim</b> (even slightly negative for racers) = less drag = <b>higher Vmax</b>. The price: it <b>stalls higher</b> — the flight window closes from below.</p>',
     'vd7':'<div class="k">⚖️ Weight: double-edged</div><div class="big">heavier = more watts</div><p class="xpl">For endurance, weight <b>hurts</b> (drag ∝ lift²) — hence «light = distance». But in <b>pure speed</b>, heavier = <b>more absolute power</b>: at comparable watts/kg, the heavier rider can go <b>faster in a straight line</b> and <b>launch a small wing</b> harder (drop start). In races, the big strong riders often beat the small light ones. <b>Efficiency vs raw power</b> — depends what you\'re after.</p>',
     'fig-pr-l1':'thick profile (~17%)','fig-pr-l2':'thin blade (~11%)','fig-pr-s1':'big brake (drag)','fig-pr-s2':'slices the water ✓','fig-pr-s3':'same speed — friction in v³: every mm of thickness is paid for',
@@ -686,7 +684,7 @@
     const warn = agi<70;                                       // dès que l'inertie monte (grande envergure/surface)
     return '<div class="ar-maniab">🌀 <span>'+t('Maniabilité en virage','Turn handling')+'</span> : '
       + '<b style="color:'+band.c+'">'+band.l+'</b>'
-      + (warn ? ' — '+t('envergure trop grande : tu <b>tournes moins vite</b> (plus l’aile est large, plus elle est lente à basculer) ; voir « La course » ↓','span getting big: you <b>turn slower</b> (roll inertia ∝ span²); see “The race” ↓') : '')
+      + (warn ? ' — '+t('envergure trop grande : tu <b>tournes moins vite</b> (plus l’aile est large, plus elle est lente à basculer) ; voir « La course » ↓','span getting big: you <b>turn slower</b> (the longer the wing, the slower it flips); see “The race” ↓') : '')
       + '</div>';
   }
   function render(){
@@ -843,8 +841,8 @@
 <script>
 /* Course : deux parcours JUMEAUX (ne se croisent pas), 2 virages chacun, vus du dessus. Même effort, aile
    différente : la carve tourne SERRÉ autour de la bouée et garde sa vitesse ; la lame de vitesse va plus vite
-   en ligne droite mais ÉLARGIT (grand rayon) et ralentit dans les virages.
-   Court = les virages font gagner la carve ; long = la ligne droite fait gagner la lame de vitesse. */
+   en ligne droite et tourne presque aussi serré (même résistance au roulis, surface × envergure² ≈ 7,0 vs 7,5).
+   Résultat honnête : la lame gagne, et l'écart grandit avec la distance. */
 (function(){
   const cv = document.getElementById('rf-cv'); if(!cv) return;
   const g = cv.getContext('2d');
@@ -872,8 +870,8 @@
   function status(){
     const w = $('rf-status');
     if(C.fin && L.fin){ w.style.color='#fb923c';
-      w.innerHTML = tt('🏁 La lame gagne : elle tourne <b>presque aussi serré</b> (même surface × envergure²) et va plus vite en ligne droite. Ce qui fait tourner large, c’est une <b>grande envergure</b> — pas l’allongement.',
-                       '🏁 The blade wins: it turns <b>almost as tight</b> (same area × span²) and is faster on the straights. What makes a wing run wide is a <b>long span</b> — not aspect ratio.');
+      w.innerHTML = tt('🏁 La lame gagne : elle tourne <b>presque aussi serré</b> (surface × envergure² quasi la même) et va plus vite en ligne droite. Ce qui fait tourner large, c’est une <b>grande envergure</b> — pas l’allongement.',
+                       '🏁 The blade wins: it turns <b>almost as tight</b> (nearly the same area × span²) and is faster on the straights. What makes a wing run wide is a <b>long span</b> — not aspect ratio.');
       if(!resetAt) resetAt = raceT + 3.5; }
     else if(L.fin){ w.style.color='#fb923c'; w.textContent = tt('🟠 La lame boucle en tête — à peine ralentie aux bouées…','🟠 The blade finishes first — barely slowed at the buoys…'); }
     else if(C.fin){ w.style.color='#34d399'; w.textContent = tt('🟢 La carve boucle en tête…','🟢 The carve finishes first…'); }
@@ -1019,7 +1017,7 @@
       const label=D>=1000?(D/1000)+' km':D+' m', col=carveWins?'#34d399':'#fb923c';
       box.insertAdjacentHTML('beforeend',
         '<div class="rf-dcell'+(flip?' flip':'')+'"><div class="d-km">'+label+'</div>'+
-        '<div class="d-win" style="color:'+col+'">'+(carveWins?'🟢':'🟠')+' +'+gap.toFixed(1).replace('.',',')+' s</div>'+
+        '<div class="d-win" style="color:'+col+'">'+(carveWins?'🟢':'🟠')+' +'+gap.toFixed(1).replace('.', EN() ? '.' : ',')+' s</div>'+
         '<div class="d-times">🟢 '+rc.t.toFixed(0)+'s · 🟠 '+rl.t.toFixed(0)+'s</div></div>');
     });
     // bascule : plus petite distance où la lame passe devant

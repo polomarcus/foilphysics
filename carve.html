@@ -91,7 +91,7 @@
   .pg-btns .preset-btn{padding:6px 11px; font-size:.82rem;}
   @media(max-width:560px){ .pg-label{min-width:100%;} }
   .inputs{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 14px; margin-top:4px;}
-  @media(min-width:820px){ .inputs{grid-template-columns:repeat(4,1fr);} }
+  @media(min-width:820px){ .inputs{grid-template-columns:repeat(4,1fr);} body:not(.tune) .fld-b, body:not(.tune) .fld-s{grid-column:span 2;} }
   .inputs .field{display:flex; flex-direction:column;}
   .inputs .field input[type=range]{margin-top:auto;}   /* curseur ancré en bas → sliders alignés même si un label passe sur 2 lignes */
   .field-kg{grid-column:1/-1; border-top:1px dashed var(--line); padding-top:8px; margin-top:2px;}
@@ -131,6 +131,12 @@
   .ar-desc{font-size:.85rem; color:var(--muted); margin-top:7px;}
   .ar-desc b{color:var(--txt);}
   #xp-btn.on{border-color:var(--carve); color:var(--carve);}
+  /* 🎛️ réglages fins (même principe que la page longue distance) : repliés par défaut */
+  .tunebtn{display:block; margin:10px auto 14px; background:transparent; border:1px solid var(--line); color:var(--muted);
+    border-radius:10px; padding:9px 18px; font-weight:700; cursor:pointer; font-size:.82rem;}
+  .tunebtn:hover{color:var(--txt);} .tunebtn.on{border-color:var(--carve); color:var(--carve);}
+  body:not(.tune) .fld-fus, body:not(.tune) .fld-stab, body:not(.tune) .ar-gauge, body:not(.tune) .ar-ticks,
+  body:not(.tune) .ar-ends, body:not(.tune) #o-bk .axr-pivot{display:none;}
   body.noexp .axr-gloss, body.noexp .ar-ends, body.noexp .xpl, body.noexp .anim-cap{display:none;}
   body.noexp .axr{margin:7px 0;}
 
@@ -233,7 +239,7 @@
 
   <div class="tldr">
     <div class="t" data-i18n="tldr-t">Pour tourner serré : <b>envergure courte</b> + <b>petite surface</b> + <b>fuselage court</b>.</div>
-    <div class="s" data-i18n="tldr-s">L'inertie de roulis ≈ <b>masse × envergure²</b> — une aile 20 % plus courte tourne ~1,5× plus vite.
+    <div class="s" data-i18n="tldr-s">La résistance au roulis ≈ <b>surface × envergure²</b> — une aile 20 % plus courte bascule ~1,5× plus vite.
       Exactement l'inverse de la longue distance.</div>
   </div>
 
@@ -241,7 +247,7 @@
   <!-- SIMULATEUR -->
   <section id="sim" class="a-in">
     <h3 data-i18n="sim-h3">🎛️ Compare les ailes</h3>
-    <p class="lede" data-i18n="sim-lede">Choisis un <b>preset réel</b> (il règle l'<b>aile</b> ; fuselage et stab restent à toi) ou joue des 4 curseurs — tout bouge en direct.
+    <p class="lede" data-i18n="sim-lede">Choisis un <b>preset réel</b> ou joue des curseurs — tout bouge en direct.
       Le bouton <b>💡 Explications</b> déplie la physique de chaque score.</p>
     <div class="showcase">
       <div class="vout" aria-live="polite">
@@ -278,6 +284,7 @@
           <button class="preset-btn" type="button" data-p="140|1900" data-i18n="p-ld">longue distance (140 cm)</button>
         </div></div>
       </div>
+      <button class="tunebtn" id="tune-btn" type="button" aria-pressed="false" data-i18n="tune-btn">🎛️ Régler finement (fuselage, stab, allongement détaillé)</button>
       <div class="inputs">
         <div class="field fld-b"><label for="i-b"><span data-i18n="l-b">Envergure</span> : <span class="fval" id="v-b">89</span> cm</label>
           <input type="range" id="i-b" min="70" max="150" step="1" value="89"></div>
@@ -287,7 +294,7 @@
           <input type="range" id="i-fus" min="58" max="72" step="1" value="65"></div>
         <div class="field fld-stab"><label for="i-stab"><span data-i18n="l-stab">Stab</span> : <span class="fval" id="v-stab">90</span> cm² <span id="v-stabq" style="color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0"></span></label>
           <input type="range" id="i-stab" min="60" max="130" step="5" value="90"></div>
-        <div class="field field-kg"><label for="i-kg"><span data-i18n="l-kg">🧍 Ton poids</span> : <span class="fval" id="v-kg">85</span> kg <span id="v-kgq" style="color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0" data-i18n="l-kg-note">· pèse sur glisse, endurance &amp; décollage</span></label>
+        <div class="field field-kg"><label for="i-kg"><span data-i18n="l-kg">🧍 Ton poids</span> : <span class="fval" id="v-kg">85</span> kg <span id="v-kgq" style="color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0" data-i18n="l-kg-note">· pèse sur glisse, endurance &amp; démarrage</span></label>
           <input type="range" id="i-kg" min="55" max="110" step="1" value="85"></div>
       </div>
       <div class="hero">
@@ -369,14 +376,14 @@
         <div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><canvas class="fig-cv" data-fig="takeoff"></canvas></div>
         <p style="margin-top:8px"><b>Double peine au carve</b> : seuil plus haut, et envergure courte → plus de traînée pour
           l'atteindre en pompant. Le chiffre estimé pour ton aile s'affiche sur l'axe 🚀 démarrage.</p>
-        <p class="xpl" style="margin-top:8px">💡 L'astuce : le départ <b>sauté / poppé</b>. Un gros pump vertical fait décoller
+        <p class="xpl" style="margin-top:8px">💡 L'astuce : le départ <b>sauté / poppé</b>. Un gros pump vertical fait démarrer
           <b>sous</b> ce seuil (portance instationnaire, voir <a href="long-distance.html#cadence">cadence &amp; Strouhal</a>) —
           souvent le seul moyen de lancer une petite aile.</p>
       </div>
       <div class="card" data-i18n="vd7">
         <div class="k">🌊 Deux sous-types de surf</div>
         <div class="big">pivot ↔ connexion</div>
-        <p><b>Les deux carvent bien.</b> Ce qui te place, c'est l'<b>envergure</b> (agilité) croisée à l'<b>élancement / AR</b> (glisse) :</p>
+        <p><b>Les deux carvent bien.</b> Ce qui te place, c'est l'<b>envergure</b> (agilité) croisée avec l'<b>élancement / AR</b> (glisse) :</p>
         <p>🔥 <b>Surf pur et dur — 1-2 vagues</b> (<b>envergure courte</b> ~84-95 cm, type F-One Sushi) : très <b>vive</b>,
           pivot ultra-radical dans une vague franche. Le prix : envergure courte = <b>grosse traînée induite</b> → <b>peu
           de glisse</b>, tu te reposes vite.</p>
@@ -429,9 +436,9 @@
       </div>
     </div>
     <p class="cards-note xpl" style="font-size:.82rem;color:var(--dim);text-align:center;max-width:640px;margin:14px auto 0" data-i18n="cards-note">
-      * Durée « de vol continu », glisse et vitesse de décollage : <b>estimations</b> pour un rider <b>entraîné</b>
+      * Durée « de vol continu », glisse et vitesse de démarrage : <b>estimations</b> pour un rider <b>entraîné</b>
       à <b>ton poids</b> (règle le curseur 🧍 — modèle de la page longue distance). Tout se joue au <b>seuil</b> : sous ta
-      puissance soutenable tu voles « longtemps », au-dessus tu tombes en minutes. Le décollage monte avec le poids (√poids),
+      puissance soutenable tu voles « longtemps », au-dessus tu tombes en minutes. La vitesse de démarrage monte avec le poids (√poids),
       et plus tu es <b>léger</b>, plus tu voles lentement → mieux tu exploites une aile élancée. Vivacité et drive, eux, ne
       dépendent que de l'aile.</p>
 
@@ -446,7 +453,7 @@
       <div class="tip" data-i18n="t1"><span class="ti">👀</span><p><b>Regarde où tu vas.</b> Le regard initie tout : tête → épaules → hanches → foil. Fixe la sortie du virage, pas tes pieds.</p></div>
       <div class="tip" data-i18n="t2"><span class="ti">🦵</span><p><b>Charge le pied arrière.</b> Le carve vient de l'arrière : appuie pour enfoncer le rail et faire mordre l'aile. C'est le <b>drive</b> qu'offre la petite surface.</p></div>
       <div class="tip" data-i18n="t3"><span class="ti">🌀</span><p><b>Incline le corps, le foil suit.</b> Bascule par les hanches et les épaules (le <i>bank</i>), ne braque pas les pieds. La courte envergure rend ce roulis quasi instantané — c'est tout l'intérêt.</p></div>
-      <div class="tip" data-i18n="t4"><span class="ti">⏱️</span><p><b>Anticipe le délai.</b> Même vive, l'aile tourne avec un temps de retard (inertie) : déclenche ton mouvement un peu <b>avant</b> le moment voulu.</p></div>
+      <div class="tip" data-i18n="t4"><span class="ti">⏱️</span><p><b>Anticipe le délai.</b> Même vive, l'aile bascule avec un temps de retard : déclenche ton mouvement un peu <b>avant</b> le moment voulu.</p></div>
       <div class="tip" data-i18n="t5"><span class="ti">💨</span><p><b>Garde de la vitesse dans le virage.</b> Le foil a besoin de flux : entrer trop lent = décrochage au milieu du carve. Rentre <b>rapide</b>, quitte à ralentir en sortie.</p></div>
       <div class="tip" data-i18n="t6"><span class="ti">🌊</span><p><b>Tourne dans la pente (le pocket).</b> Là où la vague pousse, tu as l'énergie pour enrouler serré — et des inputs <b>progressifs</b> : un coup brutal fait ventiler/sortir l'aile.</p></div>
       <div class="tip" data-i18n="t7"><span class="ti">🦶</span><p><b>Écartement des pieds : contrôle vs pompe.</b> Pieds <b>écartés</b> = grande zone pour déplacer ton centre de gravité → plus de <b>contrôle</b> pour engager et tenir le carve. Pieds <b>rapprochés</b> = force plus <b>verticale</b> → pompe plus efficace, mais moins stable. Et cale ton placement <b>avant/arrière</b> pour équilibrer tes jambes : si le <b>pied arrière crampe</b>, recule un peu.</p></div>
@@ -458,7 +465,7 @@
   </section>
 
   <footer data-i18n="foot"><b style="color:var(--txt)">Modèle</b> — indice de maniabilité, pas un banc d'essai.
-    Inertie de roulis ∝ <b>masse × envergure²</b>, agilité = son inverse ; le <b>caractère</b> (pivot/track)
+    Résistance au roulis ∝ <b>surface × envergure²</b>, vivacité = son inverse ; le <b>caractère</b> (pivot/track)
     combine fuselage et stab.
     Le carve réel dépend surtout de la <b>technique</b>, de la vague et du réglage — ce sont des <b>ordres de
     grandeur pédagogiques</b>. Specs ailes : <a href="https://www.realwatersports.com/products/axis-surge-front-wing" target="_blank" rel="noopener">Axis Surge</a> (surf, AR ~9,5 — table officielle : 740→1010 mm) · Alpine RSX Carve (gamme AR 11 : 700→1100, soit 89→112 cm).<br>
@@ -480,18 +487,17 @@
   const FRC = {};
   const EN = {
     'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve',
+    'tune-btn':'🎛️ Fine-tune (fuselage, stab, detailed aspect ratio)',
     'tb-more':'Links ▾','tb-model':'💻 Physics model',
     'h1a':'The <span class="hi">Carve</span>','h1b':'🌊 turning tight in the waves',
     'tldr-t':'For tight turns: <b>short span</b> + <b>small area</b> + <b>short fuselage</b>.',
-    'tldr-s':'Roll inertia ≈ <b>mass × span²</b> — a wing 20% shorter turns ~1.5× faster. The exact opposite of long distance.',
+    'tldr-s':'Roll resistance ≈ <b>area × span²</b> — a wing 20% shorter flips ~1.5× faster. The exact opposite of long distance.',
     'sim-h3':'🎛️ Compare the wings',
-    'sim-lede':'Pick a <b>real preset</b> (it sets the <b>wing</b>; fuselage and stab stay yours) or play the 4 sliders — everything updates live. The <b>💡 Explanations</b> button unfolds the physics behind each score.',
+    'sim-lede':'Pick a <b>real preset</b> or play the sliders — everything updates live. The <b>💡 Explanations</b> button unfolds the physics behind each score.',
     'pg-ref':'📏 Glide reference','p-ld':'long-distance (140 cm)',
     'l-b':'Span','l-s':'Area','l-fus':'Fuselage','l-stab':'Stab','l-kg':'🧍 Your weight','l-kg-note':'· drives glide, endurance &amp; takeoff',
     'anim-cap':'its line in the wave: the livelier the wing, the <b>tighter</b> it turns and the harder it <b>banks</b>',
     'xp-lbl':'Explanations',
-    'o-f1':'Short (60 cm) — pivots freely (surfy)','o-f2':'Medium (65 cm) — balanced','o-f3':'Long (70 cm) — locked in (tracks)',
-    'o-s1':'60 cm² — very loose / skate','o-s2':'70 cm² — endurance (thin, low drag)','o-s3':'90 cm² — all-round','o-s4':'110 cm²','o-s5':'130 cm² — waves (grip, control)',
     'vd-h3':'🧾 What makes it turn, in 8 cards',
     'vd1':'<div class="k">📐 Span — the #1 lever</div><div class="big">roll resistance ≈ area × span²</div><p>Switching rails means <b>rolling</b> the wing: one tip <b>rises</b>, the other <b>dives</b> — through the water. Each tip has to <b>push water</b> out of the way: that resistance is what your feet must overcome.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><canvas class="fig-cv" data-fig="span"></canvas><div class="nf-caps"><span>① tip further out → it sweeps <b>more water, faster</b> (× span)</span><span>② further from the axis → that resistance has <b>more leverage</b> against your feet (× span)</span></div></div><p style="margin-top:8px">① × ② = <b>span × span</b>, hence the « squared ». A wing 20% shorter: 0.8 × 0.8 = <b>0.64</b> of the resistance → for the same foot effort, it rolls <b>1 / 0.64 ≈ 1.5× faster</b>.</p><p style="margin-top:8px"><b>And area?</b> It sets <b>how much water</b> each tip pushes (and the wing\'s weight). It doesn\'t add to the span, it <b>multiplies</b> with it: gains stack up… and so do handicaps.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><canvas class="fig-cv" data-fig="mix"></canvas><div class="nf-caps"><span>🦶 same foot rhythm for all 4</span><span>long <b>and</b> big: 1.56 × 1.44 ≈ <b>×2.2</b> the resistance</span></div></div><p style="margin-top:8px">The trap: a <b>short but very wide</b> wing (big chord) keeps a big area → it stays slow (bottom left). The liveliest is <b>short AND small</b>. <span class="xpl">People often say « roll inertia »: in the water it\'s mostly this resistance that dominates, and it follows the same law.</span></p>',
     'vd2':'<div class="k">🎯 Small area — «drive»</div><div class="big">load the back foot and turn</div><p><b>Drive</b> is <b>pressing the back foot</b> to bury the rail and turn. But when the wave speeds you up, lift climbs with <b>speed²</b>. A <b>big</b> wing then lifts <b>too much</b>: it wants to breach, you have to <b>push the front foot</b> to hold it down… no way to load the back foot. A <b>small</b> one stays <b>planted</b>: you load it, it bites.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><canvas class="fig-cv" data-fig="drive"></canvas></div><p class="xpl" style="margin-top:8px">Shapers call it <b>wing loading</b>: the weight each cm² of wing carries — the smaller the wing, the higher it is.</p>',
@@ -512,11 +518,11 @@
     't1':'<span class="ti">👀</span><p><b>Look where you\'re going.</b> Your eyes lead everything: head → shoulders → hips → foil. Fix the exit of the turn, not your feet.</p>',
     't2':'<span class="ti">🦵</span><p><b>Load the back foot.</b> The carve comes from the back: press to bury the rail and make the wing bite. That\'s the <b>drive</b> a small area gives you.</p>',
     't3':'<span class="ti">🌀</span><p><b>Lean the body, the foil follows.</b> Roll from the hips and shoulders (the <i>bank</i>), don\'t steer with your feet. A short span makes that roll near-instant — the whole point.</p>',
-    't4':'<span class="ti">⏱️</span><p><b>Anticipate the lag.</b> Even lively, the wing turns with a delay (inertia): start your move slightly <b>before</b> the moment you want it.</p>',
+    't4':'<span class="ti">⏱️</span><p><b>Anticipate the lag.</b> Even lively, the wing flips with a delay: start your move slightly <b>before</b> the moment you want it.</p>',
     't5':'<span class="ti">💨</span><p><b>Keep speed into the turn.</b> The foil needs flow: entering too slow = stalling mid-carve. Come in <b>fast</b>, even if you slow on exit.</p>',
     't6':'<span class="ti">🌊</span><p><b>Turn in the pocket.</b> Where the wave pushes, you have the energy to carve tight — with <b>progressive</b> inputs: a brutal stomp makes the wing ventilate/break out.</p>',
     't7':'<span class="ti">🦶</span><p><b>Stance width: control vs pump.</b> Feet <b>wide</b> = a big area to shift your center of gravity → more <b>control</b> to set and hold the carve. Feet <b>close</b> = more <b>vertical</b> force → a more efficient pump, but less stable. And tune your <b>fore-aft</b> position to balance your legs: if the <b>back foot cramps</b>, move back a touch.</p>',
-    'foot':'<b style="color:var(--txt)">Model</b> — a maneuverability index, not a test bench. Roll inertia ∝ <b>mass × span²</b>, agility = its inverse; the <b>character</b> (pivot/track) combines fuselage and stab. Real carving depends mostly on <b>technique</b>, the wave and tuning — these are <b>educational orders of magnitude</b>. Wing specs: <a href="https://www.realwatersports.com/products/axis-surge-front-wing" target="_blank" rel="noopener">Axis Surge</a> (surf, AR ~9.5 — official size table: 740→1010 mm) · Alpine RSX Carve (AR 11 range: 700→1100, i.e. 89→112 cm).<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
+    'foot':'<b style="color:var(--txt)">Model</b> — a maneuverability index, not a test bench. Roll resistance ∝ <b>area × span²</b>, liveliness = its inverse; the <b>character</b> (pivot/track) combines fuselage and stab. Real carving depends mostly on <b>technique</b>, the wave and tuning — these are <b>educational orders of magnitude</b>. Wing specs: <a href="https://www.realwatersports.com/products/axis-surge-front-wing" target="_blank" rel="noopener">Axis Surge</a> (surf, AR ~9.5 — official size table: 740→1010 mm) · Alpine RSX Carve (AR 11 range: 700→1100, i.e. 89→112 cm).<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
   };
   function applyLang(l){
     LANG = l;
@@ -1403,8 +1409,8 @@
       (agility >= 70 ? t('<b>Très vive</b> — elle s\'enroule au quart de tour. ','<b>Very lively</b> — it rolls in a snap. ')
        : agility >= 45 ? t('<b>Équilibrée</b>. ','<b>Balanced</b>. ')
        : t('<b>Posée</b> — elle tracke plus qu\'elle ne tourne. ','<b>Steady</b> — it tracks more than it turns. '))
-      + '<span class="xpl">' + t('L\'inertie de roulis ≈ <b>masse × envergure²</b> : plus l\'aile est <b>courte ET petite en surface</b> (légère), plus elle bascule vite.',
-          'Roll inertia ≈ <b>mass × span²</b>: the <b>shorter AND smaller in area</b> (lighter) the wing, the faster it flips.') + '</span>';
+      + '<span class="xpl">' + t('La résistance au roulis ≈ <b>surface × envergure²</b> : plus l\'aile est <b>courte ET petite</b>, plus elle bascule vite.',
+          'Roll resistance ≈ <b>area × span²</b>: the <b>shorter AND smaller</b> the wing, the faster it flips.') + '</span>';
 
     const qual = (v, w) => v < 40 ? w[0] : v < 70 ? w[1] : w[2];   // mot-clé selon le score
     const AX = [
@@ -1431,6 +1437,7 @@
         '<div class="axr-gloss">'+gloss+'</div>'+
         '<span class="trk"><span class="fil" style="width:'+v+'%;background:'+col+'"></span></span></div>'
       ).join('');
+    const pv = $('o-bk').querySelector('.axr'); if(pv) pv.classList.add('axr-pivot');   // pivot = fuselage + stab → avec les réglages fins
   }
 
   function applyPresetBtn(btn){
@@ -1462,6 +1469,14 @@
   $('xp-btn').addEventListener('click', ()=> setXp(document.body.classList.contains('noexp')));
   let xp0 = true; try{ const v = localStorage.getItem('lcw-carve-xp'); if(v !== null) xp0 = v === '1'; }catch(e){}  // ON à la 1re visite, mémorisé ensuite
   setXp(xp0);
+  function setTune(on){
+    document.body.classList.toggle('tune', on);
+    const b = $('tune-btn'); b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on));
+    try{ localStorage.setItem('lcw-carve-tune', on ? '1' : '0'); }catch(e){}
+  }
+  $('tune-btn').addEventListener('click', ()=> setTune(!document.body.classList.contains('tune')));
+  let tune0 = false; try{ tune0 = localStorage.getItem('lcw-carve-tune') === '1'; }catch(e){}
+  setTune(tune0);
 
   if(!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window){
     const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('seen'); io.unobserve(e.target); } }), {threshold:0, rootMargin:'0px 0px -40px 0px'});
