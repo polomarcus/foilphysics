@@ -251,6 +251,21 @@
   .wc-tbl td{padding:4px 6px; color:#cbd5e1; border-bottom:1px solid rgba(51,65,85,.5);}
   .wc-tbl tr.on td{color:var(--txt); font-weight:800; background:rgba(148,163,184,.08);}
   .wc-note{font-size:.72rem; color:var(--muted); margin-top:8px; line-height:1.45;}
+  .wc-tblw{overflow-x:auto; -webkit-overflow-scrolling:touch;}
+  @media(max-width:560px){ .wcombo{padding:12px 10px;} .wc-tbl{font-size:.68rem;} .wc-tbl th, .wc-tbl td{padding:3px 3px;} .wc-chip{min-width:0; padding:5px 9px;} .wc-chip b{font-size:1rem;} }
+  /* vue minimaliste (💡 éteint) : titre + phrase clé + animation ; le reste se déplie avec 💡 */
+  body.noexp .cards .card p:not(:has(button)), body.noexp .rf-combo-grid p, body.noexp #rf-dist-note{display:none;}
+  /* vue minimaliste : une carte sans figure devient une ligne compacte (titre · phrase clé) sur toute la largeur,
+     les cartes à figure restent 2 par ligne et se regroupent (dense) → plus de grands trous dans la grille */
+  body.noexp .cards{grid-auto-flow:row dense; align-items:start;}
+  body.noexp .cards .card:not(:has(.note-fig, svg, canvas, button)){grid-column:1 / -1; display:flex; align-items:baseline;
+    justify-content:space-between; gap:6px 18px; flex-wrap:wrap; padding:12px 16px;}
+  body.noexp .cards .card:not(:has(.note-fig, svg, canvas, button)) .k{margin:0; text-align:left;}
+  body.noexp .cards .card:not(:has(.note-fig, svg, canvas, button)) .big{margin:0; font-size:1.05rem; text-align:right;}
+  /* une carte à 2 figures prend toute la largeur (figures côte à côte sur grand écran) */
+  body.noexp .cards .card:has(.note-fig ~ .note-fig){grid-column:1 / -1;}
+  @media(min-width:760px){ body.noexp .cards .card:has(.note-fig ~ .note-fig){display:grid; grid-template-columns:1fr 1fr; gap:0 16px; align-items:start;}
+    body.noexp .cards .card:has(.note-fig ~ .note-fig) > :not(.note-fig){grid-column:1 / -1;} }
 </style>
 </head>
 <body>
@@ -457,7 +472,7 @@
       </div>
       <div class="card no" data-i18n="vd2">
         <div class="k">❌ « Le stab ne joue pas »</div>
-        <div class="big">si — beaucoup</div>
+        <div class="big">stab 200 ≈ −3,5 km/h face à un stab 50</div>
         <p class="xpl">Par cm², le stab est l'appendice <b>le plus sale</b> du foil (il travaille dans l'eau perturbée,
           souvent chargé). Un <b>stab 200 coûte ~3,5 km/h</b> face à un stab 50 — autant que changer
           d'aile ! Même un stab 100 laisse ~1,3 km/h. Si les setups de vitesse courent tous en stab minuscule, ce n'est pas pour rien.</p>
@@ -471,7 +486,7 @@
       </div>
       <div class="card ok" data-i18n="vd5">
         <div class="k">🦶 Le game changer : les straps</div>
-        <div class="big">comme les pédales auto</div>
+        <div class="big">+20 % de rendement ≈ +2 km/h</div>
         <p class="xpl">Pieds libres, tu ne peux que <b>pousser</b> — la moitié du cycle est perdue. Strappé, tu <b>tires
           aussi à la remontée</b> : ~+20 % de rendement ≈ <b>+2 km/h</b> à watts égaux — le plus gros gain
           « gratuit » de la page.</p>
@@ -549,7 +564,7 @@
       </div>
       <div class="card you" data-i18n="vd7">
         <div class="k">⚖️ Le poids : à double tranchant</div>
-        <div class="big">lourd = plus de watts</div>
+        <div class="big">plus lourd = plus de watts bruts → plus vite en ligne droite</div>
         <p class="xpl">Pour l'endurance, le poids <b>pénalise</b> (traînée ∝ portance²) — d'où « léger = distance ». Mais en
           <b>vitesse pure</b>, plus lourd = <b>plus de puissance absolue</b> : à watts/kg comparables, le plus lourd
           peut <b>aller plus vite en ligne droite</b> et <b>lancer une petite aile</b> plus fort (drop start). En
@@ -557,8 +572,8 @@
           dépend de ce que tu cherches.</p>
       </div>
       <div class="card meh" data-i18n="vd8">
-        <div class="k">📐 La cale (rake) : ici, neutre</div>
-        <div class="big">l'inverse de la longue distance</div>
+        <div class="k">📐 La cale (rake) : neutre en vitesse</div>
+        <div class="big">0°, voire un poil négative : moins de frein → Vmax plus haute</div>
         <p class="xpl">La <a href="long-distance.html">page longue distance</a> cale son stab en <b>positif</b> pour
           voler lentement. En vitesse, c'est l'inverse : incliner l'aile, c'est <b>la main par la fenêtre</b> —
           ça porte plus mais <b>ça freine</b>. À 30 km/h tu as déjà toute la portance qu'il te faut →
@@ -626,15 +641,15 @@
     'xp-lbl':'Explanations',
     'vd-lede':'Card figures computed for a <b>800 W · 75 kg</b> reference — the tornado above follows <b>your</b> config.',
     'vd6':'<div class="k">🌡️ Cold water ≠ denser</div><div class="big">it\'s the viscosity</div><p class="xpl">Common myth: «cold water is denser, so it changes everything». Actually <b>density</b> shifts only <b>~0.3%</b> over 20 °C. What really changes is the <b>viscosity</b> — how well the flow <b>stays attached to the profile</b> (Reynolds number). So the same wing <b>stalls and glides differently</b> in winter vs summer — its <b>working range moves</b>. (Viscosity = «stickiness»: cold oil gloopy, hot oil runny.)</p><div class="note-fig" aria-hidden="true"><svg viewBox="0 0 360 90" role="img"><defs><marker id="vf-ar2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#64748b"/></marker></defs><rect x="2" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.3"/><text x="40" y="20" text-anchor="middle" font-size="10" fill="#38bdf8" font-weight="700">cold water</text><text x="40" y="32" text-anchor="middle" font-size="10" fill="#38bdf8">5 °C</text><line x1="80" y1="22" x2="90" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/><rect x="92" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="1.3"/><text x="130" y="20" text-anchor="middle" font-size="10" fill="#cbd5e1" font-weight="700">viscosity</text><text x="130" y="32" text-anchor="middle" font-size="10" fill="#cbd5e1">+70%</text><line x1="170" y1="22" x2="180" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/><rect x="182" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="1.3"/><text x="220" y="20" text-anchor="middle" font-size="10" fill="#cbd5e1" font-weight="700">Reynolds</text><text x="220" y="32" text-anchor="middle" font-size="10" fill="#cbd5e1">−40%</text><line x1="260" y1="22" x2="270" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/><rect x="272" y="6" width="86" height="32" rx="8" fill="#1e293b" stroke="#f87171" stroke-width="1.3"/><text x="315" y="20" text-anchor="middle" font-size="10" fill="#f87171" font-weight="700">stall</text><text x="315" y="32" text-anchor="middle" font-size="10" fill="#f87171">margin ↓</text><rect x="95" y="56" width="170" height="26" rx="13" fill="none" stroke="#34d399" stroke-width="1.3"/><text x="180" y="73" text-anchor="middle" font-size="10.5" fill="#34d399" font-weight="700">Vmax: only ~−1%</text></svg><div class="nf-caps"><span>cold water shifts the <b>working range</b> — not your top speed</span></div></div><p class="xpl" style="margin-top:8px; font-size:.92em; color:var(--dim)"><b>Direction &amp; size:</b> cold = more viscous = lower Reynolds = a bit <b>more drag</b> → slightly slower, but <b>~1% on Vmax</b> (in the noise). What you actually feel: <b>less stall margin</b> and slightly worse low-speed glide — not «you lose 5 km/h».</p>',
-    'vd8':'<div class="k">📐 The shim (rake): here, neutral</div><div class="big">the opposite of long distance</div><p class="xpl">The <a href="long-distance.html?lang=en">long-distance page</a> shims its stab <b>positive</b> to fly slowly. Speed is the opposite: tilting the wing is <b>the hand out the car window</b> — more lift but <b>more brake</b>. At 30 km/h you already have all the lift you need → <b>neutral shim</b> (even slightly negative for racers) = less drag = <b>higher Vmax</b>. The price: it <b>stalls higher</b> — the flight window closes from below.</p>',
-    'vd7':'<div class="k">⚖️ Weight: double-edged</div><div class="big">heavier = more watts</div><p class="xpl">For endurance, weight <b>hurts</b> (drag ∝ lift²) — hence «light = distance». But in <b>pure speed</b>, heavier = <b>more absolute power</b>: at comparable watts/kg, the heavier rider can go <b>faster in a straight line</b> and <b>launch a small wing</b> harder (drop start). In races, the big strong riders often beat the small light ones. <b>Efficiency vs raw power</b> — depends what you\'re after.</p>',
+    'vd8':'<div class="k">📐 The shim (rake): neutral for speed</div><div class="big">0°, even slightly negative: less drag → higher Vmax</div><p class="xpl">The <a href="long-distance.html?lang=en">long-distance page</a> shims its stab <b>positive</b> to fly slowly. Speed is the opposite: tilting the wing is <b>the hand out the car window</b> — more lift but <b>more brake</b>. At 30 km/h you already have all the lift you need → <b>neutral shim</b> (even slightly negative for racers) = less drag = <b>higher Vmax</b>. The price: it <b>stalls higher</b> — the flight window closes from below.</p>',
+    'vd7':'<div class="k">⚖️ Weight: double-edged</div><div class="big">heavier = more raw watts → faster in a straight line</div><p class="xpl">For endurance, weight <b>hurts</b> (drag ∝ lift²) — hence «light = distance». But in <b>pure speed</b>, heavier = <b>more absolute power</b>: at comparable watts/kg, the heavier rider can go <b>faster in a straight line</b> and <b>launch a small wing</b> harder (drop start). In races, the big strong riders often beat the small light ones. <b>Efficiency vs raw power</b> — depends what you\'re after.</p>',
     'fig-pr-l1':'thick profile (~17%)','fig-pr-l2':'thin blade (~11%)','fig-pr-s1':'big brake (drag)','fig-pr-s2':'slices the water ✓','fig-pr-s3':'same speed — friction in v³: every mm of thickness is paid for',
     'vd-ar':'<div class="k">🏁 Where your top speed comes from</div><div class="big">area and profile, not aspect ratio</div><p>Two brakes add up: the <b style="color:#38bdf8">«lift» brake</b>, which aspect ratio reduces, and <b style="color:#fb923c">friction</b> (area + profile thickness). The first one <b>melts as you speed up</b>: flat out, only friction is left — and that is what sets your top speed.</p><div class="note-fig" aria-hidden="true"><canvas class="fig-cv" data-fig="vmax"></canvas></div><p style="margin-top:8px">Aspect ratio pays off where you go <b>slow</b>: taking off, re-accelerating out of a turn, holding on when your watts drop.</p>',
     'vd1':'<div class="k">✅ Your intuition: the small thin wing</div><div class="big">lever #1</div><p class="xpl">Wing friction costs <b>area × v³</b>: at 25 km/h, every cm² is expensive. Going from a cruise wing (1500 cm², medium profile) to a thin 700 cm² blade ≈ <b>+7 km/h</b> at 800 W. And a small wing <b>cannot</b> fly slowly — it forces you to speed.</p><div class="note-fig" aria-hidden="true"><svg viewBox="0 0 380 150"><text x="95" y="18" text-anchor="middle" font-size="11.5" font-weight="700" fill="#f59e0b">thick profile (~17%)</text><text x="285" y="18" text-anchor="middle" font-size="11.5" font-weight="700" fill="#38bdf8">thin blade (~11%)</text><g stroke="rgba(56,189,248,.55)" stroke-width="2" fill="none"><path class="vFlow" d="M14 52 H52 Q80 40 116 44 Q150 48 172 52" stroke-dasharray="9 8"/><path class="vFlow" d="M14 92 H52 Q80 104 116 100 Q150 96 172 92" stroke-dasharray="9 8"/></g><ellipse cx="88" cy="72" rx="38" ry="13" fill="#f59e0b"/><path d="M138 62 a7 7 0 1 1 7 7" fill="none" stroke="rgba(148,163,184,.8)" stroke-width="2"/><path d="M144 84 a6 6 0 1 0 -6 6" fill="none" stroke="rgba(148,163,184,.8)" stroke-width="2"/><line x1="88" y1="118" x2="58" y2="118" stroke="#f87171" stroke-width="5"/><path d="M50 118 l12 -7 v14 Z" fill="#f87171"/><text x="98" y="122" font-size="10.5" fill="#f87171">big brake (drag)</text><g stroke="rgba(56,189,248,.55)" stroke-width="2" fill="none"><line class="vFlow" x1="208" y1="58" x2="362" y2="58" stroke-dasharray="9 8"/><line class="vFlow" x1="208" y1="86" x2="362" y2="86" stroke-dasharray="9 8"/></g><path d="M248 72 Q285 67 322 72 Q285 76 248 72 Z" fill="#38bdf8"/><line x1="285" y1="118" x2="271" y2="118" stroke="#f87171" stroke-width="3"/><path d="M265 118 l9 -5 v10 Z" fill="#f87171"/><text x="294" y="122" font-size="10.5" fill="#6ee7b7">slices the water ✓</text><text x="190" y="144" text-anchor="middle" font-size="10.5" fill="#94a3b8">same speed — friction in v³: every mm of thickness is paid for</text></svg></div>',
-    'vd2':'<div class="k">❌ «The stab plays no role»</div><div class="big">it does — a lot</div><p class="xpl">Per cm², the stab is the foil\'s <b>dirtiest</b> appendage (it works in disturbed water, often loaded). A <b>stab 200 costs ~3.5 km/h</b> vs a stab 50 — as much as changing wings! Even a stab 100 leaves ~1.3 km/h. Speed setups run tiny stabs for a reason.</p>',
+    'vd2':'<div class="k">❌ «The stab plays no role»</div><div class="big">a 200 stab ≈ −3.5 km/h vs a 50</div><p class="xpl">Per cm², the stab is the foil\'s <b>dirtiest</b> appendage (it works in disturbed water, often loaded). A <b>stab 200 costs ~3.5 km/h</b> vs a stab 50 — as much as changing wings! Even a stab 100 leaves ~1.3 km/h. Speed setups run tiny stabs for a reason.</p>',
     'vd3':'<div class="k">🔄 The surprise: span still helps</div><div class="big">+15 cm ≈ +1.4 km/h</div><p class="xpl">Even at 25 km/h, staying airborne costs ~10 N if the span is short. At equal area, lengthening the wing cuts that bill <b>without adding friction</b>. The limit lies elsewhere: stiffness, control, turns — not hydrodynamics.</p>',
     'l-straps':'🦶 Straps — you also pull on the upstroke, like clipless pedals (+~20% efficiency)',
-    'vd5':'<div class="k">🦶 The game changer: straps</div><div class="big">like clipless pedals</div><p class="xpl">Strapless, you can only <b>push</b> — half the cycle is wasted. Strapped in, you <b>also pull on the upstroke</b>: ~+20% efficiency ≈ <b>+2 km/h</b> at equal watts — the biggest «free» gain on the page.</p>',
+    'vd5':'<div class="k">🦶 The game changer: straps</div><div class="big">+20% efficiency ≈ +2 km/h</div><p class="xpl">Strapless, you can only <b>push</b> — half the cycle is wasted. Strapped in, you <b>also pull on the upstroke</b>: ~+20% efficiency ≈ <b>+2 km/h</b> at equal watts — the biggest «free» gain on the page.</p>',
     'vd4':'<div class="k">🫀 The real ceiling: your sprint</div><div class="big">Vmax ∝ ∛watts</div><p class="xpl">Your Vmax is where the power curve crosses your sprint. Doubling your sprint only gives <b>+26%</b> Vmax. Pure speed is first a <b>sprinter\'s</b> exercise — then a gear one.</p><div class="note-fig" aria-hidden="true"><svg viewBox="0 0 360 170" role="img"><defs><pattern id="vf-h1" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="7" stroke="#94a3b8" stroke-width="1" opacity=".35"/></pattern></defs><rect x="40" y="12" width="46" height="128" fill="#94a3b8" opacity=".08"/><rect x="40" y="12" width="46" height="128" fill="url(#vf-h1)"/><text x="66" y="78" transform="rotate(-90 66 78)" text-anchor="middle" font-size="11" fill="#94a3b8">stall</text><line x1="40" y1="12" x2="40" y2="140" stroke="#64748b"/><line x1="40" y1="140" x2="345" y2="140" stroke="#64748b"/><text x="40" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">15</text><text x="116" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">20</text><text x="192" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">25</text><text x="268" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">30</text><text x="344" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">35</text><text x="192" y="167" text-anchor="middle" font-size="10" fill="#64748b">speed (km/h)</text><text x="35" y="143" text-anchor="end" font-size="10" fill="#94a3b8">0</text><text x="35" y="100" text-anchor="end" font-size="10" fill="#94a3b8">400</text><text x="35" y="58" text-anchor="end" font-size="10" fill="#94a3b8">800</text><text x="35" y="16" text-anchor="end" font-size="10" fill="#94a3b8">1200</text><text x="10" y="80" transform="rotate(-90 10 80)" text-anchor="middle" font-size="10" fill="#64748b">watts</text><line x1="40" y1="55" x2="345" y2="55" stroke="#f59e0b" stroke-width="1.6" stroke-dasharray="6 5"/><text x="92" y="48" font-size="11" fill="#f59e0b" font-weight="700">your sprint (800 W)</text><path d="M40,130 C110,118 180,100 235,76 C285,54 320,36 345,13" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/><text x="160" y="84" text-anchor="middle" font-size="11" fill="#38bdf8">×2 speed = ×8 watts</text><line x1="279" y1="61" x2="279" y2="140" stroke="#f59e0b" stroke-dasharray="3 4" opacity=".55"/><circle cx="279" cy="55" r="5" fill="#f59e0b" stroke="#0f172a" stroke-width="1.5"/><text x="286" y="94" font-size="12" fill="#f59e0b" font-weight="800">Vmax</text></svg><div class="nf-caps"><span>🔵 <b>P(v)</b> — required power, rises as the cube</span><span>🟠 where it crosses <b>your sprint</b> = your Vmax</span></div></div>',
     'foot':'<b style="color:var(--txt)">Model</b> — steady flight (lift = weight), based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>: <code>P(v) = [weight²/(½ρv²·π·span²) + ½ρv²·(area·C_D0 + mast + fuselage + stab)] · v / η</code>; Vmax solves P(v) = your sprint, <b>rider air drag included</b> (CdA ≈ 0.45 tucked — ~90 W at 25 km/h!). ρ = 1025 · span efficiency e=0.91 + trim drag (consistent with the index) · estimated η (grows with aspect ratio) · short fuselage fixed · mast counted ~55% immersed (at Vmax you fly high) · stab & fuselage C_D mid-range, <b>calibrated on real race speeds</b> (observed 30-38 km/h, Takoon Flow / GONG Veloce H specs — anchor points: strapped on a 600, 30 km/h ≈ 750 W · 33 ≈ 1,000 W · the champion\'s ~37 km/h ≈ 1,300 W burst) · cavitation ignored (negligible below ~45 km/h: the champion\'s 37 km/h stays under the threshold) · no swell, no take-off · straps = +20% efficiency (upstroke pull, cf. the original model\'s «unstrapped» clamp). Educational estimates, not a test bench.<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
   };
@@ -713,7 +728,7 @@
     el.innerHTML = '<h4>🎯 '+t('Le combo selon ton poids','The combo for your weight')+' — '+o.title+'</h4>'
       + '<div class="wc-sub">'+o.sub+'</div><div class="wc-main">'+chips+'</div>'
       + (btns ? '<div class="wc-btns">'+btns+'</div>' : '')
-      + '<table class="wc-tbl"><tr>'+o.head.map(h => '<th>'+h+'</th>').join('')+'</tr>'+rows+'</table>'
+      + '<div class="wc-tblw"><table class="wc-tbl"><tr>'+o.head.map(h => '<th>'+h+'</th>').join('')+'</tr>'+rows+'</table></div>'
       + '<div class="wc-note">'+o.note+'</div>';
     el.querySelectorAll('[data-wc]').forEach(b => b.addEventListener('click', () => o.btns[+b.dataset.wc].fn()));
   }
@@ -881,11 +896,11 @@
     document.body.classList.toggle('noexp', !on);
     const b = $('xp-btn'); b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on));
     b.querySelector('.xp-state').textContent = on ? ' ✓' : '';
-    try{ localStorage.setItem('lcw-vit-xp', on ? '1' : '0'); }catch(e){}
+    try{ localStorage.setItem('lcw-vit-xp2', on ? '1' : '0'); }catch(e){}
   }
   $('xp-btn').addEventListener('click', ()=> setXp(document.body.classList.contains('noexp')));
-  let xp0 = true;   // défaut : ON à la première visite
-  try{ const v = localStorage.getItem('lcw-vit-xp'); if(v !== null) xp0 = v === '1'; }catch(e){}
+  let xp0 = false;   // défaut : vue minimaliste (💡 éteint) à la première visite
+  try{ const v = localStorage.getItem('lcw-vit-xp2'); if(v !== null) xp0 = v === '1'; }catch(e){}   // minimaliste par défaut
   setXp(xp0);
 
   /* animations d'entrée */

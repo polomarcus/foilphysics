@@ -433,11 +433,12 @@
   .wing-mark .pin{font-size:11px; line-height:1; margin-top:1px;}
   .scale-bar{position:relative; height:14px; border-radius:7px; background:var(--panel-2); border:1px solid var(--line); overflow:visible;}
   .scale-bar .zone{position:absolute; top:0; bottom:0; border-radius:7px;}
-  .zone-cap{position:absolute; top:24px; font-size:.68rem; font-weight:700; white-space:nowrap;}
+  .zone-cap{position:absolute; top:42px; font-size:.68rem; font-weight:700; white-space:nowrap;}
+  @media(max-width:560px){ .zone-cap{font-size:.6rem;} .cp-line span{font-size:.62rem;} }
   .cp-line{position:absolute; top:-6px; bottom:-6px; border-left:2px dashed #f8fafc;}
   .cp-line span{position:absolute; top:24px; left:-50px; width:100px; text-align:center; font-size:.7rem;
     font-weight:800; color:#f8fafc; white-space:nowrap;}
-  .tick-layer{position:relative; height:44px; margin-top:34px;}
+  .tick-layer{position:relative; height:44px; margin-top:52px;}
   .scale-tick{position:absolute; top:0; transform:translateX(-50%); text-align:center; width:84px;}
   .scale-tick .ln{width:1px; height:8px; margin:0 auto; background:var(--dim);}
   .scale-tick .tw{font-size:.72rem; font-weight:700; color:var(--txt); margin-top:2px;}
@@ -622,6 +623,21 @@
   .wc-tbl td{padding:4px 6px; color:#cbd5e1; border-bottom:1px solid rgba(51,65,85,.5);}
   .wc-tbl tr.on td{color:var(--txt); font-weight:800; background:rgba(148,163,184,.08);}
   .wc-note{font-size:.72rem; color:var(--muted); margin-top:8px; line-height:1.45;}
+  .wc-tblw{overflow-x:auto; -webkit-overflow-scrolling:touch;}
+  @media(max-width:560px){ .wcombo{padding:12px 10px;} .wc-tbl{font-size:.68rem;} .wc-tbl th, .wc-tbl td{padding:3px 3px;} .wc-chip{min-width:0; padding:5px 9px;} .wc-chip b{font-size:1rem;} }
+  /* vue minimaliste (💡 éteint) : titre + phrase clé + animation ; le reste se déplie avec 💡 */
+  body.noexp .imp-rank, body.noexp [data-i18n="mh-note"],
+  body.noexp .cmp-note, body.noexp details.story, body.noexp .kid-warn, body.noexp .kid-src, body.noexp [data-i18n="velo-txt"],
+  body.noexp .hiar3, body.noexp .hiar-cap{display:none;}
+  /* 🔬 Pour aller plus loin : les sections avancées, repliées */
+  .deepgroup{margin:8px 0 56px;}
+  .deep{background:var(--panel); border:1px solid var(--line); border-radius:12px; margin:10px 0; overflow:hidden;}
+  .deep > summary{cursor:pointer; padding:14px 18px; font-weight:800; font-size:1.02rem; color:var(--txt); list-style:none;}
+  .deep > summary::-webkit-details-marker{display:none;}
+  .deep > summary::after{content:'▾'; float:right; color:var(--sky);}
+  .deep[open] > summary::after{content:'▴';}
+  .deep > .sslide{margin:0; padding:0 16px 18px;}
+  .deep .deep-src{display:none;}
 </style>
 <script type="application/ld+json">
 {
@@ -1190,6 +1206,10 @@
 
   </div><!-- /SLIDE E2 -->
 
+  <section class="deepgroup" id="plus">
+    <h3 data-i18n="deep-h3">🔬 Pour aller plus loin</h3>
+    <p class="lede" data-i18n="deep-lede">Le détail du modèle, section par section — clique pour déplier.</p>
+  <details class="deep"><summary><span class="deep-t"></span></summary>
   <div class="sslide" id="watts"><!-- SLIDE E1 · où partent les watts -->
   <!-- OÙ PARTENT LES WATTS -->
   <div class="shock">
@@ -1298,7 +1318,8 @@
   </div>
 
   </div><!-- /SLIDE E1 -->
-
+  </details>
+  <details class="deep"><summary><span class="deep-t"></span></summary>
   <div class="sslide" id="sensibilite"><!-- SLIDE E3 · sensibilité -->
   <!-- SENSIBILITÉ -->
   <div class="shock">
@@ -1311,7 +1332,8 @@
   </div>
 
   </div><!-- /SLIDE E3 -->
-
+  </details>
+  <details class="deep"><summary><span class="deep-t"></span></summary>
   <div class="sslide" id="virages"><!-- SLIDE E4 · virages -->
   <!-- VIRAGES / MANIABILITÉ -->
   <div class="shock">
@@ -1326,7 +1348,8 @@
   </div>
 
   </div><!-- /SLIDE E4 -->
-
+  </details>
+  <details class="deep"><summary><span class="deep-t"></span></summary>
   <div class="sslide" id="reglages"><!-- SLIDE E4b · réglages -->
   <div class="shock">
       <h3 data-i18n="reg-h3">🔧 Les réglages : les watts gratuits</h3>
@@ -1402,7 +1425,8 @@
   </div>
 
   </div><!-- /SLIDE E4b -->
-
+  </details>
+  <details class="deep"><summary><span class="deep-t"></span></summary>
   <div class="sslide" id="cadence"><!-- SLIDE E4c · cadence & Strouhal -->
   <div class="shock">
       <h3 data-i18n="cad-h3">🌀 Cadence & Strouhal — l'angle mort du modèle</h3>
@@ -1445,7 +1469,8 @@
   </div>
 
   </div><!-- /SLIDE E4c -->
-
+  </details>
+  <details class="deep"><summary><span class="deep-t"></span></summary>
   <div class="sslide" id="mental"><!-- SLIDE E5 · confort mental -->
   <!-- CONFORT MENTAL -->
   <div class="shock">
@@ -1478,6 +1503,8 @@
   </div>
 
   </div><!-- /SLIDE E5 -->
+  </details>
+  </section>
 
   <div class="sslide" id="sources"><!-- SLIDE 7 · sources & formules -->
   <footer>
@@ -1666,8 +1693,8 @@
       '<div class="zone" style="left:0;width:'+cp+'%;background:rgba(34,197,94,.45)"></div>'+
       '<div class="zone" style="left:'+cp+'%;right:0;background:rgba(239,68,68,.35)"></div>'+
       '<div class="cp-line" style="left:'+cp+'%"><span>🫀 '+t('ton seuil','your threshold')+' '+num(riderCP(),0)+' W</span></div>'+
-      '<div class="zone-cap" style="right:calc('+(100-cp)+'% + 54px);color:#86efac">'+t('← tenable des heures','← sustainable for hours')+'</div>'+
-      '<div class="zone-cap" style="left:calc('+cp+'% + 54px);color:#fca5a5">'+t('tu puises dans la réserve →','you burn your reserve →')+'</div>';
+      '<div class="zone-cap" style="left:0;color:#86efac">'+t('← tenable des heures','← sustainable for hours')+'</div>'+
+      '<div class="zone-cap" style="right:0;color:#fca5a5">'+t('tu puises dans la réserve →','you burn your reserve →')+'</div>';
   }
 
   function difficulty(AR){
@@ -1964,7 +1991,7 @@
     el.innerHTML = '<h4>🎯 '+t('Le combo selon ton poids','The combo for your weight')+' — '+o.title+'</h4>'
       + '<div class="wc-sub">'+o.sub+'</div><div class="wc-main">'+chips+'</div>'
       + (btns ? '<div class="wc-btns">'+btns+'</div>' : '')
-      + '<table class="wc-tbl"><tr>'+o.head.map(h => '<th>'+h+'</th>').join('')+'</tr>'+rows+'</table>'
+      + '<div class="wc-tblw"><table class="wc-tbl"><tr>'+o.head.map(h => '<th>'+h+'</th>').join('')+'</tr>'+rows+'</table></div>'
       + '<div class="wc-note">'+o.note+'</div>';
     el.querySelectorAll('[data-wc]').forEach(b => b.addEventListener('click', () => o.btns[+b.dataset.wc].fn()));
   }
@@ -2110,15 +2137,34 @@
   setTune(stored('lcw-ld-tune') === '1' || /[?&]mode=expert/i.test(location.search));   // anciens liens ?mode=expert → réglages ouverts
 
   // 💡 Explications : replie/déplie les blocs .xpl (story Simple + notes texte scale-note) — mémorisé, ON par défaut
+  // 🔬 volets « Pour aller plus loin » : le titre du volet reprend le h3 de la section (traduit), le h3 est masqué
+  function syncDeep(){
+    document.querySelectorAll('details.deep').forEach(d => {
+      const h = d.querySelector('h3'); if(!h) return;
+      h.classList.add('deep-src');
+      const c = h.cloneNode(true); c.querySelectorAll('.anchor-btn').forEach(x => x.remove());
+      d.querySelector('.deep-t').innerHTML = c.innerHTML;
+    });
+    // vue minimaliste : le long texte de « Pourquoi une grande aile… » passe derrière 💡 (la loi du foil reste visible)
+    document.querySelectorAll('[data-i18n="kid-txt"]').forEach(k => {
+      const law = k.querySelector('.kid-law'); if(!law || k.querySelector(':scope > .xpl-lead')) return;
+      const sp = document.createElement('div'); sp.className = 'xpl xpl-lead';
+      while(k.firstChild && k.firstChild !== law) sp.appendChild(k.firstChild);
+      k.insertBefore(sp, law);
+    });
+  }
+  syncDeep(); new MutationObserver(syncDeep).observe(document.documentElement, {attributes:true, attributeFilter:['lang']});
+  document.querySelectorAll('details.deep').forEach(d => d.addEventListener('toggle', () => { if(d.open) window.dispatchEvent(new Event('resize')); }));
+
   function setXp(on){
     document.body.classList.toggle('noexp', !on);
     const b = document.getElementById('xp-btn');
     b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on));
     b.querySelector('.xp-state').textContent = on ? ' ✓' : '';
-    store('lcw-ld-xp', on ? '1' : '0');
+    store('lcw-ld-xp2', on ? '1' : '0');
   }
   document.getElementById('xp-btn').addEventListener('click', ()=> setXp(document.body.classList.contains('noexp')));
-  setXp(stored('lcw-ld-xp') !== '0');   // première visite (null) → visible
+  setXp(stored('lcw-ld-xp2') === '1');   // vue minimaliste à la première visite (💡 éteint), mémorisée ensuite
   document.getElementById('winner-why').addEventListener('click', ()=>{
     setTune(true);
     // amène directement aux cartes de réglages (la promesse du bouton), pas au moteur humain
@@ -2349,6 +2395,8 @@
 
   /* ---------- Moteur i18n (statique FR conservé, dico EN) ---------- */
   const EN = {
+    'deep-h3':'🔬 Going further',
+    'deep-lede':'The model in detail, section by section — click to unfold.',
     'kid-anim-cap':'<span>🌀 below the wing it pushes, above it sucks → water <b>curls around the tips</b>: those vortices carry your energy away, they are <b>the brake</b></span><span>🟧 same weight on <b>less span</b> → stronger vortices → <b>2.5× more brake</b> to pump against</span>',
     'fig-u-cap':'<span>🔴 <b>lift</b>: expensive when you go slow, melts with span</span><span>⚪ <b>friction</b>: explodes when you speed up</span><span>➕ both add up → a <b>dip</b> = your eco cruise</span>',
     'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve','tb-more':'Links ▾','tb-model':'💻 Physics model',
@@ -2853,6 +2901,7 @@
   if(anchorTarget && anchorTarget !== 'en'){
     const tEl = document.getElementById(anchorTarget);
     if(tEl && tEl.classList.contains('sslide')){
+      const dd = tEl.closest('details'); if(dd) dd.open = true;   // section avancée repliée → on la déplie
       setTimeout(()=> tEl.scrollIntoView({block:'start'}), 120);
     }
   }

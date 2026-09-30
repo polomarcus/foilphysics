@@ -167,6 +167,19 @@
     .a-in{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s cubic-bezier(.22,1,.36,1);}
     .a-in.seen{opacity:1; transform:none;}
   }
+  /* vue minimaliste (💡 éteint) : titre + phrase clé + animation ; le reste se déplie avec 💡 — sauf la sécurité */
+  body.noexp .cards:not(.secu-cards) .card p:not(:has(button)){display:none;}
+  /* vue minimaliste : une carte sans figure devient une ligne compacte (titre · phrase clé) sur toute la largeur,
+     les cartes à figure restent 2 par ligne et se regroupent (dense) → plus de grands trous dans la grille */
+  body.noexp .cards:not(.secu-cards){grid-auto-flow:row dense; align-items:start;}
+  body.noexp .cards:not(.secu-cards) .card:not(:has(.note-fig, svg, canvas, button)){grid-column:1 / -1; display:flex; align-items:baseline;
+    justify-content:space-between; gap:6px 18px; flex-wrap:wrap; padding:12px 16px;}
+  body.noexp .cards:not(.secu-cards) .card:not(:has(.note-fig, svg, canvas, button)) .k{margin:0; text-align:left;}
+  body.noexp .cards:not(.secu-cards) .card:not(:has(.note-fig, svg, canvas, button)) .big{margin:0; font-size:1.05rem; text-align:right;}
+  /* une carte à 2 figures prend toute la largeur (figures côte à côte sur grand écran) */
+  body.noexp .cards:not(.secu-cards) .card:has(.note-fig ~ .note-fig){grid-column:1 / -1;}
+  @media(min-width:760px){ body.noexp .cards:not(.secu-cards) .card:has(.note-fig ~ .note-fig){display:grid; grid-template-columns:1fr 1fr; gap:0 16px; align-items:start;}
+    body.noexp .cards:not(.secu-cards) .card:has(.note-fig ~ .note-fig) > :not(.note-fig){grid-column:1 / -1;} }
 </style>
 </head>
 <body>
@@ -402,7 +415,7 @@
       </div>
       <div class="card ok" data-i18n="vd2">
         <div class="k">🛞 Le gros stab = tes roues d'entraînement</div>
-        <div class="big">la stabilité d'abord</div>
+        <div class="big">il calme le tangage : le foil devient prévisible</div>
         <p class="xpl">Sur <a href="vitesse.html">la page vitesse</a>, un stab 200 coûte ~3,5 km/h — ici c'est ton meilleur
           allié : il <b>calme le tangage</b> (piqué du nez) et rend le foil prévisible. Et rien ne presse : un gros stab
           <b>se garde longtemps</b> — tu le réduiras bien après l'aile, quand il commencera vraiment à te
@@ -439,7 +452,7 @@
       </div>
       <div class="card ok" data-i18n="vd8">
         <div class="k">🪜 Les accélérateurs d'apprentissage</div>
-        <div class="big">échelle &amp; trottinette</div>
+        <div class="big">échelle de quai + trottinette de pump</div>
         <p class="xpl">Une <b>échelle de mise à l'eau</b> transforme n'importe quel quai en spot : hauteur constante,
           départs <b>répétables à volonté</b>. Et la <b>trottinette de pump</b> — un foil à <b>guidon</b> —
           offre un troisième appui : le geste s'apprend bien plus vite, puis se transfère tel quel sur la
@@ -580,10 +593,10 @@
     'dk1':'<div class="num">🚶</div><div><h4>The spot</h4><p>A dock <b>knee-to-hip high</b>, deep water in front, a clear edge for two running steps — and <b>flat water</b>: no waves, no wind to start with. No usable dock? The <b><a href="https://piouz.org/" target="_blank" rel="noopener">Piouz.org</a> ladders</b> turn any quay into a spot (details in the gear section below 👇).</p></div>',
     'dk4':'<div class="num">🛫</div><div><h4>Why a big wing: the takeoff speed</h4><p>A foil only carries you <b>above a minimum speed</b> — the <b>takeoff speed</b>. The <b>bigger and thicker</b> the wing, the <b>lower</b> it is: a beginner wing lifts off around <b>~10 km/h</b>, the momentum of two dock steps is enough. That\'s <b>the whole reason to start big</b>: you lift off early, fly longer, learn faster.<br><b>You progress by succeeding, not by grinding</b>: better to string together <b>clean starts</b> on a big wing — every takeoff teaches you something — than to exhaust and discourage yourself on a <b>too-small</b> wing that won\'t fly. You\'ll size down soon enough.</p><div class="note-fig" aria-hidden="true"><svg viewBox="0 0 360 110"><rect x="20" y="64" width="176" height="9" rx="2" fill="#34d399" opacity=".18"/><text x="106" y="57" text-anchor="middle" font-size="10" font-weight="700" fill="#6ee7b7">2 dock steps of momentum</text><line x1="20" y1="73" x2="344" y2="73" stroke="#64748b" stroke-width="2"/><path d="M352 73 l-9 -4.5 v9 Z" fill="#64748b"/><g stroke="#475569" stroke-width="1.5"><line x1="20" y1="69" x2="20" y2="77"/><line x1="100" y1="69" x2="100" y2="77"/><line x1="180" y1="69" x2="180" y2="77"/><line x1="260" y1="69" x2="260" y2="77"/><line x1="340" y1="69" x2="340" y2="77"/></g><g font-size="11" font-weight="700" fill="#94a3b8" text-anchor="middle"><text x="20" y="92">0</text><text x="100" y="92">5</text><text x="180" y="92">10</text><text x="260" y="92">15</text><text x="340" y="92">20</text></g><text x="352" y="106" text-anchor="end" font-size="10" fill="#64748b">km/h</text><line x1="180" y1="22" x2="180" y2="70" stroke="#34d399" stroke-width="2.5"/><circle cx="180" cy="73" r="4.5" fill="#34d399"/><text x="180" y="16" text-anchor="middle" font-size="12" font-weight="800" fill="#6ee7b7">big wing lifts off here ✓</text><line x1="268" y1="44" x2="268" y2="70" stroke="#fb923c" stroke-width="2.5"/><circle cx="268" cy="73" r="4" fill="#fb923c"/><text x="270" y="38" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fdba74">small wing: out of reach</text></svg></div></div>',
     'vd7':'<div class="k">🛹 The board: small and light</div><div class="big">the dock does the carrying</div><p class="xpl">For dock starts, <b>no volume needed</b>: the energy comes from the dock, not from buoyancy. A short board (80-110 cm, usually ~90 cm), light, a grippy pad — and every kilo saved comes back as <a href="long-distance.html?lang=en">watts</a>. Second-hand too, obviously.</p>',
-    'vd8':'<div class="k">🪜 The learning accelerators</div><div class="big">ladder &amp; scooter</div><p class="xpl">A <b>water-entry ladder</b> turns any quay into a spot: constant height, starts <b>repeatable at will</b>. And the <b>pump scooter</b> — a foil with a <b>handlebar</b> — gives a third point of contact: the motion is learned much faster, then transfers as-is to the regular board.</p>',
+    'vd8':'<div class="k">🪜 The learning accelerators</div><div class="big">dock ladder + pump scooter</div><p class="xpl">A <b>water-entry ladder</b> turns any quay into a spot: constant height, starts <b>repeatable at will</b>. And the <b>pump scooter</b> — a foil with a <b>handlebar</b> — gives a third point of contact: the motion is learned much faster, then transfers as-is to the regular board.</p>',
     'vd-h3':'🧾 The complete gear, in 8 cards',
     'vd1':'<div class="k">📏 Area = your margin for error</div><div class="big">~20-25 cm²/kg · never under ~1500</div><p class="xpl">A big wing stalls around <b>10 km/h</b>: when you miss a pump and slow down, it <b>catches you</b> instead of dropping you. A race blade stalls at 20+ km/h — zero room for error. Area means seconds of flight per session, which means learning per session.</p>',
-    'vd2':'<div class="k">🛞 The big stab = your training wheels</div><div class="big">stability first</div><p class="xpl">On <a href="vitesse.html?lang=en">the speed page</a> a stab 200 costs ~3.5 km/h — here it\'s your best ally: it <b>tames the pitch</b> (nose dive) and makes the foil predictable. And there\'s no rush: a big stab <b>stays with you a long time</b> — you\'ll size it down well after the wing, when it truly starts holding you back. It\'ll then be <b>the cheapest upgrade</b> on the whole foil.</p>',
+    'vd2':'<div class="k">🛞 The big stab = your training wheels</div><div class="big">it calms pitch: the foil becomes predictable</div><p class="xpl">On <a href="vitesse.html?lang=en">the speed page</a> a stab 200 costs ~3.5 km/h — here it\'s your best ally: it <b>tames the pitch</b> (nose dive) and makes the foil predictable. And there\'s no rush: a big stab <b>stays with you a long time</b> — you\'ll size it down well after the wing, when it truly starts holding you back. It\'ll then be <b>the cheapest upgrade</b> on the whole foil.</p>',
     'vd3':'<div class="k">🍞 Thick profile = gentle stall</div><div class="big">it warns before letting go</div><p class="xpl">A thick profile (~15-17%) sinks <b>progressively</b> when you go too slow — you feel it and correct. A thin profile <b>lets go at once</b>, no warning. The extra drag? You don\'t care: you\'re not here for speed.</p>',
     'vd4':'<div class="k">📐 Moderate aspect ratio (AR ~9)</div><div class="big">docile before efficient</div><p class="xpl"><a href="long-distance.html?lang=en">The comparator</a> will tell you a wide span saves your watts — true, <b>later</b>. A very elongated wing (AR 11+) demands more precision: it flies faster and stalls from the tips. Modern school wings all sit at <b>AR ~9</b>: the docile/efficient sweet spot, validated by the market.</p>',
     'vd5':'<div class="k">🩳 Short mast (60-70 cm)</div><div class="big">falling from lower</div><p class="xpl">Less leverage underfoot = a <b>calmer</b> foil, softer falls, and shallow water stays usable. The downside (less room to pump high) won\'t concern you for months — then you\'ll move to 75-85 cm.</p>',
@@ -711,10 +724,10 @@
     document.body.classList.toggle('noexp', !on);
     const b = $('xp-btn'); b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on));
     document.querySelector('#xp-btn .xp-state').textContent = on ? ' ✓' : '';
-    try{ localStorage.setItem('lcw-deb-xp', on ? '1' : '0'); }catch(e){}
+    try{ localStorage.setItem('lcw-deb-xp2', on ? '1' : '0'); }catch(e){}
   }
   $('xp-btn').addEventListener('click', ()=> setXp(document.body.classList.contains('noexp')));
-  let xp0 = true; try{ const s = localStorage.getItem('lcw-deb-xp'); if(s !== null) xp0 = s === '1'; }catch(e){}
+  let xp0 = false; try{ const s = localStorage.getItem('lcw-deb-xp2'); if(s !== null) xp0 = s === '1'; }catch(e){}   // minimaliste par défaut
   setXp(xp0);
 
   /* animations d'entrée */
