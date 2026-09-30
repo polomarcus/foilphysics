@@ -206,6 +206,22 @@
     .a-in{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s cubic-bezier(.22,1,.36,1);}
     .a-in.seen{opacity:1; transform:none;}
   }
+  /* 🎯 Le combo selon ton poids (même bloc sur les pages longue distance, vitesse et carve) */
+  .wcombo{max-width:760px; margin:18px auto 22px; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:14px 16px; text-align:center;}
+  .wcombo h4{font-size:1.05rem; font-weight:800; margin:0 0 2px; color:var(--txt);}
+  .wc-sub{font-size:.8rem; color:var(--muted);}
+  .wc-main{display:flex; justify-content:center; flex-wrap:wrap; gap:8px; margin:12px 0 8px;}
+  .wc-chip{background:var(--panel-2); border:1px solid var(--line); border-radius:10px; padding:6px 12px; min-width:92px;}
+  .wc-chip b{display:block; font-size:1.12rem; font-weight:800; color:var(--txt); font-variant-numeric:tabular-nums;}
+  .wc-chip span{font-size:.7rem; color:var(--muted);}
+  .wc-btns{display:flex; justify-content:center; flex-wrap:wrap; gap:8px; margin:4px 0 10px;}
+  .wc-btns button{background:transparent; border:1px solid var(--line); color:var(--txt); border-radius:999px; padding:6px 14px; font-weight:700; font-size:.8rem; cursor:pointer;}
+  .wc-btns button:hover{border-color:var(--wc-acc, #38bdf8); color:var(--wc-acc, #38bdf8);}
+  .wc-tbl{width:100%; border-collapse:collapse; font-size:.76rem; margin-top:4px; font-variant-numeric:tabular-nums;}
+  .wc-tbl th{color:var(--muted); font-weight:700; padding:4px 6px; border-bottom:1px solid var(--line);}
+  .wc-tbl td{padding:4px 6px; color:#cbd5e1; border-bottom:1px solid rgba(51,65,85,.5);}
+  .wc-tbl tr.on td{color:var(--txt); font-weight:800; background:rgba(148,163,184,.08);}
+  .wc-note{font-size:.72rem; color:var(--muted); margin-top:8px; line-height:1.45;}
 </style>
 </head>
 <body>
@@ -301,6 +317,7 @@
         <div class="ar-read" id="o-ar"></div>
       </div>
       <div class="bk" id="o-bk"></div>
+      <div class="wcombo" id="wc"></div>
     </div>
   </section>
 
@@ -1334,6 +1351,49 @@
       addEventListener('resize', still); setInterval(still, 800); still();
     } else requestAnimationFrame(tick);
   })();
+
+  function wcDraw(el, o){
+    if(!el) return;
+    el.style.setProperty('--wc-acc', o.acc);
+    const chips = o.chips.map(c => '<div class="wc-chip"><b>'+c.v+'</b><span>'+c.l+'</span></div>').join('');
+    const btns = (o.btns||[]).map((b,i) => '<button type="button" data-wc="'+i+'">'+b.l+'</button>').join('');
+    const rows = o.rows.map(r => '<tr'+(r.on?' class="on"':'')+'>'+r.c.map(x => '<td>'+x+'</td>').join('')+'</tr>').join('');
+    el.innerHTML = '<h4>🎯 '+t('Le combo selon ton poids','The combo for your weight')+' — '+o.title+'</h4>'
+      + '<div class="wc-sub">'+o.sub+'</div><div class="wc-main">'+chips+'</div>'
+      + (btns ? '<div class="wc-btns">'+btns+'</div>' : '')
+      + '<table class="wc-tbl"><tr>'+o.head.map(h => '<th>'+h+'</th>').join('')+'</tr>'+rows+'</table>'
+      + '<div class="wc-note">'+o.note+'</div>';
+    el.querySelectorAll('[data-wc]').forEach(b => b.addEventListener('click', () => o.btns[+b.dataset.wc].fn()));
+  }
+  const WC_KG = [60, 75, 90, 105];
+
+  // Carve : l'équilibre vivacité = démarrage pour le poids du curseur (mêmes formules que les barres, sans arrondi),
+  // allongement fixé à ~9 (le cœur du surf-carve). Chercher l'optimum libre sur une grille donnait des sauts
+  // d'un kilo à l'autre (le « meilleur équilibre » est un plateau très plat) ; ici la réponse est continue et
+  // croît avec le poids, pour un score à ~1 point de l'optimum libre.
+  const WC_CACHE = {}, WC_AR = 9;
+  function carveBest(kg){
+    if(WC_CACHE[kg]) return WC_CACHE[kg];
+    const ag = (b, S) => 100*(30 - S*b*b/1e6)/26;
+    const to = (b, S) => 50*(22 - Math.sqrt((kg*9.81)/(0.5*1025*(S/1e4)*1.2))*3.6*1.15)/13 + 50*(400 - takeoffPower(b, S, kg))/230;
+    let lo = 500, hi = 2600;
+    for(let i=0; i<50; i++){ const S = (lo+hi)/2, b = Math.sqrt(WC_AR*S); (ag(b,S) > to(b,S)) ? lo = S : hi = S; }
+    const S = (lo+hi)/2, b = Math.sqrt(WC_AR*S), clamp = x => Math.max(0, Math.min(100, Math.round(x)));
+    return WC_CACHE[kg] = {b:Math.round(b), S:Math.round(S/10)*10, ar:WC_AR, ag:clamp(ag(b,S)), to:clamp(to(b,S))};
+  }
+  function wcCarve(){
+    const gid = id => document.getElementById(id), kg = +gid('i-kg').value, c = carveBest(kg);
+    wcDraw(gid('wc'), {acc:'#c084fc', title:'carve',
+      sub: t('pour ','for ')+kg+' kg '+t('(curseur 🧍) : le meilleur équilibre entre vivacité et facilité de démarrage','(🧍 slider): the best balance between liveliness and ease of takeoff'),
+      chips:[{v:c.b+' cm', l:t('envergure','span')}, {v:c.S+' cm²', l:t('surface','area')}, {v:'AR '+num(c.ar,1), l:t('allongement','aspect ratio')}, {v:c.ag+' · '+c.to, l:t('vivacité · démarrage','liveliness · takeoff')}],
+      btns:[{l:t('🎛️ Essayer ce combo','🎛️ Try this combo'), fn:()=>{ gid('i-b').value = c.b; gid('i-s').value = Math.round(c.S/5)*5; gid('i-s').dispatchEvent(new Event('input')); }}],
+      head:[t('poids','weight'), t('envergure','span'), t('surface','area'), 'AR', t('vivacité','liveliness'), t('démarrage','takeoff')],
+      rows: WC_KG.map(k => { const r = carveBest(k); return {on:Math.abs(k-kg) < 7.5, c:[k+' kg', r.b+' cm', r.S+' cm²', num(r.ar,1), r.ag, r.to]}; }),
+      note: t('Estimation avec les formules de la page, allongement ~9 (le cœur du surf-carve). Plus tu es lourd, plus il faut de surface pour démarrer… et moins l\'aile est vive.','Estimate from this page\'s formulas, aspect ratio ~9 (the heart of surf-carve). The heavier you are, the more area you need to get going… and the less lively the wing.')});
+  }
+  document.getElementById('i-kg').addEventListener('input', wcCarve);
+  new MutationObserver(wcCarve).observe(document.documentElement, {attributes:true, attributeFilter:['lang']});
+  setTimeout(wcCarve, 0);
 
   function render(){
     $('v-b').textContent = $('i-b').value;

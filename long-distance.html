@@ -606,6 +606,22 @@
     .kid-law .lq1{transition:transform .7s cubic-bezier(.22,1,.36,1) .35s, opacity .7s ease .35s;}
     .a-watch:not(.seen) .kid-law .lq1{transform:scale(.25); opacity:.15;}
   }
+  /* 🎯 Le combo selon ton poids (même bloc sur les pages longue distance, vitesse et carve) */
+  .wcombo{max-width:760px; margin:18px auto 22px; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:14px 16px; text-align:center;}
+  .wcombo h4{font-size:1.05rem; font-weight:800; margin:0 0 2px; color:var(--txt);}
+  .wc-sub{font-size:.8rem; color:var(--muted);}
+  .wc-main{display:flex; justify-content:center; flex-wrap:wrap; gap:8px; margin:12px 0 8px;}
+  .wc-chip{background:var(--panel-2); border:1px solid var(--line); border-radius:10px; padding:6px 12px; min-width:92px;}
+  .wc-chip b{display:block; font-size:1.12rem; font-weight:800; color:var(--txt); font-variant-numeric:tabular-nums;}
+  .wc-chip span{font-size:.7rem; color:var(--muted);}
+  .wc-btns{display:flex; justify-content:center; flex-wrap:wrap; gap:8px; margin:4px 0 10px;}
+  .wc-btns button{background:transparent; border:1px solid var(--line); color:var(--txt); border-radius:999px; padding:6px 14px; font-weight:700; font-size:.8rem; cursor:pointer;}
+  .wc-btns button:hover{border-color:var(--wc-acc, #38bdf8); color:var(--wc-acc, #38bdf8);}
+  .wc-tbl{width:100%; border-collapse:collapse; font-size:.76rem; margin-top:4px; font-variant-numeric:tabular-nums;}
+  .wc-tbl th{color:var(--muted); font-weight:700; padding:4px 6px; border-bottom:1px solid var(--line);}
+  .wc-tbl td{padding:4px 6px; color:#cbd5e1; border-bottom:1px solid rgba(51,65,85,.5);}
+  .wc-tbl tr.on td{color:var(--txt); font-weight:800; background:rgba(148,163,184,.08);}
+  .wc-note{font-size:.72rem; color:var(--muted); margin-top:8px; line-height:1.45;}
 </style>
 <script type="application/ld+json">
 {
@@ -824,6 +840,8 @@
     </div>
     <span class="rider-hint" data-i18n="rh1">La <b>forme</b> fixe ta puissance critique (l'effort que tu tiens des heures). Au-dessus, tu puises dans la réserve et tu finis par tomber. Repères course↔watts calibrés pour ~75 kg.</span>
   </div>
+
+  <div class="wcombo" id="wc"></div>
 
   <!-- MOTEUR HUMAIN -->
   <div class="shock">
@@ -1936,6 +1954,46 @@
         : t('À St ≈ '+sv+', tu es <b>au régime efficace</b> (~St 0,3) : pomper plus vite ne rend plus — privilégie de grands coups nets.',
             'At St ≈ '+sv+', you\'re <b>at the efficient regime</b> (~St 0.3): pumping faster no longer pays — favour big clean strokes.');
   }
+
+  function wcDraw(el, o){
+    if(!el) return;
+    el.style.setProperty('--wc-acc', o.acc);
+    const chips = o.chips.map(c => '<div class="wc-chip"><b>'+c.v+'</b><span>'+c.l+'</span></div>').join('');
+    const btns = (o.btns||[]).map((b,i) => '<button type="button" data-wc="'+i+'">'+b.l+'</button>').join('');
+    const rows = o.rows.map(r => '<tr'+(r.on?' class="on"':'')+'>'+r.c.map(x => '<td>'+x+'</td>').join('')+'</tr>').join('');
+    el.innerHTML = '<h4>🎯 '+t('Le combo selon ton poids','The combo for your weight')+' — '+o.title+'</h4>'
+      + '<div class="wc-sub">'+o.sub+'</div><div class="wc-main">'+chips+'</div>'
+      + (btns ? '<div class="wc-btns">'+btns+'</div>' : '')
+      + '<table class="wc-tbl"><tr>'+o.head.map(h => '<th>'+h+'</th>').join('')+'</tr>'+rows+'</table>'
+      + '<div class="wc-note">'+o.note+'</div>';
+    el.querySelectorAll('[data-wc]').forEach(b => b.addEventListener('click', () => o.btns[+b.dataset.wc].fn()));
+  }
+  const WC_KG = [60, 75, 90, 105];
+
+  // Endurance : surface pour voler lentement (~12 km/h mini = décrochage +30 %, profil moyen CLmax ~1,1),
+  // envergure la plus longue possible en gardant l'allongement ≤ 16 (au-delà le gain s'aplatit, le décrochage monte).
+  function ldBest(kg){
+    const W = kg*G, S = Math.round(W/(0.5*1025*Math.pow(12/3.6/1.3, 2)*1.1)*1e4/50)*50;
+    const b13 = Math.round(Math.sqrt(13*S)), b16 = Math.min(200, Math.round(Math.sqrt(16*S)));
+    const whkm = bcm => { const b = bcm/100, Sm = S/1e4, AR = b*b/Sm, cd0 = 0.013, v = 12/3.6, q = 0.5*1025*v*v;
+      const D = W*W/(q*Math.PI*b*b*E) + q*(Sm*cd0 + 0.065*M_IMM*CD_MAST + 0.035*CD_FUS + 0.028*CD_STAB);
+      return D*v/Math.min(0.80, 0.44 + 0.015*AR)/(v*3.6); };
+    return {S, b13, b16, lo:whkm(b13), hi:whkm(b16)};
+  }
+  function wcLD(){
+    const gid = id => document.getElementById(id), kg = Math.max(30, Math.min(150, +gid('rider-w').value || 75)), c = ldBest(kg);
+    wcDraw(gid('wc'), {acc:'#38bdf8', title:t('endurance','endurance'),
+      sub: t('pour ','for ')+kg+' kg '+t('(ton poids ci-dessus) : de la surface pour voler lentement, et l\'envergure la plus longue que tu maîtrises','(your weight above): enough area to fly slowly, and the longest span you can handle'),
+      chips:[{v:'~'+c.S+' cm²', l:t('surface','area')}, {v:c.b13+'–'+c.b16+' cm', l:t('envergure','span')}, {v:'AR 13–16', l:t('allongement','aspect ratio')}, {v:num(c.hi,0)+'–'+num(c.lo,0)+' Wh/km', l:t('à ~12 km/h','at ~12 km/h')}],
+      btns:[{l:t('🎛️ Essayer sur l\'aile 2','🎛️ Try it on wing 2'), fn:()=>{ gid('b2').value = Math.max(90, Math.min(250, c.b16)); gid('s2').value = Math.max(800, Math.min(3100, c.S)); if(!document.body.classList.contains('tune')) gid('tune-btn').click(); gid('s2').dispatchEvent(new Event('input')); gid('card-2').scrollIntoView({block:'center', behavior:'smooth'}); }}],
+      head:[t('poids','weight'), t('surface','area'), t('envergure (AR 13–16)','span (AR 13–16)'), 'Wh/km'],
+      rows: WC_KG.map(k => { const r = ldBest(k); return {on:Math.abs(k-kg) < 7.5, c:[k+' kg', '~'+r.S+' cm²', r.b13+'–'+r.b16+' cm', num(r.hi,0)+'–'+num(r.lo,0)]}; }),
+      note: t('Surface calculée pour voler dès ~12 km/h (décrochage +30 %, profil moyen). L\'envergure fait l\'économie : prends le haut de la fourchette si tu la maîtrises. Au-delà d\'AR ~16, le gain s\'aplatit et le décrochage monte.',
+               'Area sized to fly from ~12 km/h (stall +30%, medium profile). Span makes the savings: take the top of the range if you can handle it. Past AR ~16, the gain flattens and stall speed climbs.')});
+  }
+  document.getElementById('rider-w').addEventListener('input', wcLD);
+  new MutationObserver(wcLD).observe(document.documentElement, {attributes:true, attributeFilter:['lang']});
+  setTimeout(wcLD, 0);
 
   function render(){
     drawFriction();

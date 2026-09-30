@@ -235,6 +235,22 @@
     .a-in{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s cubic-bezier(.22,1,.36,1);}
     .a-in.seen{opacity:1; transform:none;}
   }
+  /* 🎯 Le combo selon ton poids (même bloc sur les pages longue distance, vitesse et carve) */
+  .wcombo{max-width:760px; margin:18px auto 22px; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:14px 16px; text-align:center;}
+  .wcombo h4{font-size:1.05rem; font-weight:800; margin:0 0 2px; color:var(--txt);}
+  .wc-sub{font-size:.8rem; color:var(--muted);}
+  .wc-main{display:flex; justify-content:center; flex-wrap:wrap; gap:8px; margin:12px 0 8px;}
+  .wc-chip{background:var(--panel-2); border:1px solid var(--line); border-radius:10px; padding:6px 12px; min-width:92px;}
+  .wc-chip b{display:block; font-size:1.12rem; font-weight:800; color:var(--txt); font-variant-numeric:tabular-nums;}
+  .wc-chip span{font-size:.7rem; color:var(--muted);}
+  .wc-btns{display:flex; justify-content:center; flex-wrap:wrap; gap:8px; margin:4px 0 10px;}
+  .wc-btns button{background:transparent; border:1px solid var(--line); color:var(--txt); border-radius:999px; padding:6px 14px; font-weight:700; font-size:.8rem; cursor:pointer;}
+  .wc-btns button:hover{border-color:var(--wc-acc, #38bdf8); color:var(--wc-acc, #38bdf8);}
+  .wc-tbl{width:100%; border-collapse:collapse; font-size:.76rem; margin-top:4px; font-variant-numeric:tabular-nums;}
+  .wc-tbl th{color:var(--muted); font-weight:700; padding:4px 6px; border-bottom:1px solid var(--line);}
+  .wc-tbl td{padding:4px 6px; color:#cbd5e1; border-bottom:1px solid rgba(51,65,85,.5);}
+  .wc-tbl tr.on td{color:var(--txt); font-weight:800; background:rgba(148,163,184,.08);}
+  .wc-note{font-size:.72rem; color:var(--muted); margin-top:8px; line-height:1.45;}
 </style>
 </head>
 <body>
@@ -318,6 +334,7 @@
             <button type="button" class="wp-chip" data-w="1300"><span data-i18n="wp3">🏆 pointe élite · 1 300</span></button>
           </div></div>
       </div>
+      <div class="wcombo" id="wc"></div>
 
       <div class="ar-read" id="o-ar"></div>
 
@@ -351,12 +368,12 @@
     <div class="rf-combo" data-i18n="rf-combo">
       <div class="rf-combo-t">🏆 Le combo idéal (théorique) — course courte ≈ 300 m, 2 virages</div>
       <div class="rf-combo-grid">
-        <div><span>🪽 Aile</span><b>~750-820 cm² · ~95-100 cm · allongement ~12-13 · profil fin</b><p><b>petite surface</b> = faible résistance au roulis = tourne quand même serré ; <b>profil fin</b> = rapide sur les droites ; <b>allongement élevé</b> = relance et tient la vitesse. (Pas besoin de plus grand : à ce niveau tu sprintes fort.)</p></div>
+        <div><span>🪽 Aile</span><b>~675 cm² · ~104 cm · allongement ~16 · profil fin</b><p>pour <b>75 kg</b> — ton poids : « 🎯 Le combo selon ton poids » dans le simulateur. <b>petite surface</b> = faible résistance au roulis = tourne quand même serré ; <b>profil fin</b> = rapide sur les droites ; <b>allongement élevé</b> = relance et tient la vitesse. Sur <b>1 km</b> : plutôt ~1 100 cm² · ~133 cm (King of the Lake).</p></div>
         <div><span>🚀 Vitesse de pointe</span><b>surtout tes watts</b><p>33-37 km/h = <b>gros sprint</b> (1 300 W+) + profil fin. L'allongement ne monte <b>pas</b> la pointe : à profil égal, les Vmax se tiennent à 1-2 km/h près.</p></div>
         <div><span>🪶 Stab</span><b>moyen (~90-110 cm²)</b><p>assez de <b>grip</b> pour tenir les 2 carves sans déraper, sans plomber la relance.</p></div>
         <div><span>🔩 Fuselage + 🦶 straps</span><b>court/moyen · straps oui</b><p>fuselage court = <b>pivot vif</b> ; straps = <b>relance</b> au pompage et tu tiens le rail en virage.</p></div>
       </div>
-      <div class="rf-combo-note">⚠️ <b>La règle qui prime sur tout</b> : prends l'aile que tu <b>décolles à coup sûr</b>. Ce combo décolle vers <b>16-17 km/h</b> — si tes départs ne sont pas <b>automatiques</b>, monte d'un cran en <b>envergure/surface</b> (décollage plus facile) : tu perds ~1 km/h de pointe mais tu <b>finis la course</b>. Un départ manqué coûte bien plus que ça. Et sur 300 m, tout se joue au <b>départ</b> et en <b>sortie de virage</b> — aux pieds.</div>
+      <div class="rf-combo-note">⚠️ <b>La règle qui prime sur tout</b> : prends l'aile que tu <b>démarres à coup sûr</b>. Ce combo démarre vers <b>~17 km/h</b> — si tes départs ne sont pas <b>automatiques</b>, monte d'un cran en <b>envergure/surface</b> (démarrage plus facile) : tu perds ~1 km/h de pointe mais tu <b>finis la course</b>. Un départ manqué coûte bien plus que ça. Et sur 300 m, tout se joue au <b>départ</b> et en <b>sortie de virage</b> — aux pieds.</div>
     </div>
   </section>
 
@@ -584,7 +601,7 @@
     'rf-h2':'🏁 The race: fast AND agile is possible','rf-sub':'Two <b>twin courses</b> (they never cross — safety), 2 turns each, same effort. Surprise: the <b>speed blade turns almost as tight</b> as the carve — its roll resistance (<b>area × span²</b>) is nearly the same. It loses a hair at the buoys… and takes it all back on the straights.',
     'rf-c-name':'Carve wing','rf-c-tag':'<b>88 cm · 900 cm² · AR 8.6</b> — area × span² ≈ 7.0 → <b>turns tight</b>','rf-l-name':'Speed blade','rf-l-tag':'<b>100 cm · 750 cm² · AR 13.3</b> — area × span² ≈ 7.5 → <b>turns almost the same</b> (even better strapped); small area + thin profile = <b>faster in a straight line</b>','rf-btn':'↻ Replay the race',
     'rf-dt':'🏁 And who wins by distance? (2 turns, same effort)',
-    'rf-combo':'<div class="rf-combo-t">🏆 The ideal (theoretical) combo — short course ≈300 m, 2 turns</div><div class="rf-combo-grid"><div><span>🪽 Wing</span><b>~750-820 cm² · ~95-100 cm · aspect ~12-13 · thin profile</b><p><b>small area</b> = low inertia = still turns tight; <b>thin profile</b> = fast on the straights; <b>high aspect</b> = re-accelerates and holds speed. (No need for bigger: at this level you sprint hard.)</p></div><div><span>🚀 Top speed</span><b>mostly your watts</b><p>33-37 km/h = a <b>big sprint</b> (1,300 W+) + thin profile. Aspect ratio does <b>not</b> raise top speed: at equal profile, Vmax stays within 1-2 km/h.</p></div><div><span>🪶 Stab</span><b>medium (~90-110 cm²)</b><p>enough <b>grip</b> to hold the 2 carves without sliding, without killing the rebound.</p></div><div><span>🔩 Fuselage + 🦶 straps</span><b>short/medium · straps yes</b><p>short fuselage = <b>lively pivot</b>; straps = <b>rebound</b> on the pump and rail hold in turns.</p></div></div><div class="rf-combo-note">⚠️ <b>The rule that beats everything</b>: ride the wing you can <b>take off every time</b>. This combo lifts off around <b>16-17 km/h</b> — if your starts aren\'t <b>automatic</b>, go one step up in <b>span/area</b> (easier takeoff): you lose ~1 km/h of top end but you <b>finish the race</b>. A blown start costs far more. And on 300 m, it\'s all won at the <b>start</b> and out of the <b>turns</b> — with your feet.</div>',
+    'rf-combo':'<div class="rf-combo-t">🏆 The ideal (theoretical) combo — short course ≈300 m, 2 turns</div><div class="rf-combo-grid"><div><span>🪽 Wing</span><b>~675 cm² · ~104 cm · aspect ratio ~16 · thin profile</b><p>for <b>75 kg</b> — your weight: «🎯 The combo for your weight» in the simulator. <b>small area</b> = low roll resistance = still turns tight; <b>thin profile</b> = fast on the straights; <b>high aspect ratio</b> = re-accelerates and holds speed. Over <b>1 km</b>: rather ~1,100 cm² · ~133 cm (King of the Lake).</p></div><div><span>🚀 Top speed</span><b>mostly your watts</b><p>33-37 km/h = a <b>big sprint</b> (1,300 W+) + thin profile. Aspect ratio does <b>not</b> raise top speed: at equal profile, Vmax stays within 1-2 km/h.</p></div><div><span>🪶 Stab</span><b>medium (~90-110 cm²)</b><p>enough <b>grip</b> to hold the 2 carves without sliding, without killing the rebound.</p></div><div><span>🔩 Fuselage + 🦶 straps</span><b>short/medium · straps yes</b><p>short fuselage = <b>lively pivot</b>; straps = <b>rebound</b> on the pump and rail hold in turns.</p></div></div><div class="rf-combo-note">⚠️ <b>The rule that beats everything</b>: ride the wing you can <b>take off every time</b>. This combo takes off around <b>~17 km/h</b> — if your starts aren\'t <b>automatic</b>, go one step up in <b>span/area</b> (easier takeoff): you lose ~1 km/h of top end but you <b>finish the race</b>. A blown start costs far more. And on 300 m, it\'s all won at the <b>start</b> and out of the <b>turns</b> — with your feet.</div>',
     'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve','tb-more':'Links ▾','tb-model':'💻 Physics model',
     'h1a':'The Race for <span class="hi">km/h</span> in pump foil',
     'h1b':'🚀 what makes a foil fast?',
@@ -687,6 +704,57 @@
       + (warn ? ' — '+t('envergure trop grande : tu <b>tournes moins vite</b> (plus l’aile est large, plus elle est lente à basculer) ; voir « La course » ↓','span getting big: you <b>turn slower</b> (the longer the wing, the slower it flips); see “The race” ↓') : '')
       + '</div>';
   }
+  function wcDraw(el, o){
+    if(!el) return;
+    el.style.setProperty('--wc-acc', o.acc);
+    const chips = o.chips.map(c => '<div class="wc-chip"><b>'+c.v+'</b><span>'+c.l+'</span></div>').join('');
+    const btns = (o.btns||[]).map((b,i) => '<button type="button" data-wc="'+i+'">'+b.l+'</button>').join('');
+    const rows = o.rows.map(r => '<tr'+(r.on?' class="on"':'')+'>'+r.c.map(x => '<td>'+x+'</td>').join('')+'</tr>').join('');
+    el.innerHTML = '<h4>🎯 '+t('Le combo selon ton poids','The combo for your weight')+' — '+o.title+'</h4>'
+      + '<div class="wc-sub">'+o.sub+'</div><div class="wc-main">'+chips+'</div>'
+      + (btns ? '<div class="wc-btns">'+btns+'</div>' : '')
+      + '<table class="wc-tbl"><tr>'+o.head.map(h => '<th>'+h+'</th>').join('')+'</tr>'+rows+'</table>'
+      + '<div class="wc-note">'+o.note+'</div>';
+    el.querySelectorAll('[data-wc]').forEach(b => b.addEventListener('click', () => o.btns[+b.dataset.wc].fn()));
+  }
+  const WC_KG = [60, 75, 90, 105];
+
+  // Vitesse : combo le plus rapide sur 300 m et 1 km pour ce poids (modèle puissance-durée de « La course »),
+  // sous deux contraintes terrain : démarrer à coup sûr (≤ 17 km/h) et garder +20 % de marge au-dessus du
+  // décrochage dans les virages. Calé sur King of the Lake (1 km sur ~1100 cm² à ~75 kg).
+  const WC_CACHE = {};
+  function vitBest(kg, D){
+    const key = kg+'|'+D; if(WC_CACHE[key]) return WC_CACHE[key];
+    const RHO_ = 1025, WN = kg*9.81, CP = 3.5*kg, WP = 280*kg;
+    const lo = S => Math.round(Math.sqrt(WN/(0.5*RHO_*S/1e4*1.2))*3.6*1.15);
+    let best = null;
+    for(let S=450; S<=1800; S+=25) for(let ar=10; ar<=16; ar++){
+      const b = Math.sqrt(ar*S); if(b > 150) continue;
+      const A = WN*WN/(0.5*RHO_*Math.PI*(b/100)*(b/100)*0.91), Kp = S/1e4*0.013 + 0.065*0.55*0.008 + 0.028*0.010 + 0.020*0.020;
+      const vAt = P => { let a = 1, c = 18; for(let i=0; i<40; i++){ const v = (a+c)/2; ((A/v + 0.5*RHO_*Kp*v*v*v)/0.7 < P) ? a = v : c = v; } return (a+c)/2; };
+      let tt = D/7, vs = 5; for(let i=0; i<24; i++){ vs = vAt(CP + WP/tt); tt = 50/(vs*0.8) + Math.max(0, D-50)/vs; }
+      const vst = Math.sqrt(WN/(0.5*RHO_*S/1e4*0.9));
+      if(vs*0.8 < 1.2*vst || lo(S) > 17) continue;
+      if(!best || tt < best.t) best = {S, b:Math.round(b), ar, t:tt, v:vs*3.6, to:lo(S)};
+    }
+    return WC_CACHE[key] = best;
+  }
+  function wcVit(){
+    const gid = id => document.getElementById(id), kg = +gid('i-w').value, a = vitBest(kg, 300), c = vitBest(kg, 1000);
+    const tryIt = r => () => { gid('i-s').value = Math.max(450, Math.min(1800, Math.round(r.S/10)*10)); gid('i-b').value = Math.max(55, Math.min(130, r.b)); gid('i-b').dispatchEvent(new Event('input')); gid('i-s').scrollIntoView({block:'center', behavior:'smooth'}); };
+    wcDraw(gid('wc'), {acc:'#f59e0b', title:t('vitesse','speed'),
+      sub: t('pour ','for ')+kg+' kg '+t('(toi + matos, curseur ci-dessus) · allongement ~16, profil fin, stab ~90-110 cm², straps','(you + gear, slider above) · aspect ratio ~16, thin profile, ~90-110 cm² stab, straps'),
+      chips:[{v:a.S+' cm² · '+a.b+' cm', l:t('course 300 m','300 m race')}, {v:c.S+' cm² · '+c.b+' cm', l:t('course 1 km','1 km race')}, {v:'≤ '+Math.max(a.to, c.to)+' km/h', l:t('démarre à coup sûr','reliable takeoff')}],
+      btns:[{l:t('🎛️ Essayer (300 m)','🎛️ Try (300 m)'), fn:tryIt(a)}, {l:t('🎛️ Essayer (1 km)','🎛️ Try (1 km)'), fn:tryIt(c)}],
+      head:[t('poids','weight'), '300 m', '1 km'],
+      rows: WC_KG.map(k => { const p = vitBest(k, 300), q = vitBest(k, 1000); return {on:Math.abs(k-kg) < 7.5, c:[k+' kg', p.S+' cm² · '+p.b+' cm', q.S+' cm² · '+q.b+' cm']}; }),
+      note: t('Hypothèses : rider entraîné (~3,5 W/kg tenus), départ à coup sûr et +20 % de marge au-dessus du décrochage dans les virages (fatigue, bouées, eau agitée). Calé sur <b>King of the Lake</b> : 1 km sur des ailes de ~1100 cm². Plus la course est longue, plus l\'aile grandit.',
+               'Assumptions: trained rider (~3.5 W/kg sustained), reliable takeoff and +20% margin above stall in the turns (fatigue, buoys, choppy water). Calibrated on <b>King of the Lake</b>: 1 km on ~1100 cm² wings. The longer the race, the bigger the wing.')});
+  }
+  document.getElementById('i-w').addEventListener('input', wcVit);
+  new MutationObserver(wcVit).observe(document.documentElement, {attributes:true, attributeFilter:['lang']});
+  setTimeout(wcVit, 0);
+
   function render(){
     ['s','b','w','p'].forEach(k => $('v-'+k).textContent = $('i-'+k).value);
     syncWp();
