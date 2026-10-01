@@ -162,6 +162,15 @@
   .ws-btn.on{background:var(--carve); border-color:var(--carve); color:#1e1b4b;} .ws-btn.on small{color:#3b0764;}
   .ws-btn.on::before{content:'✓ ';}
   .wave-info{margin:0 0 6px;}
+  /* le contexte du calcul (aile · poids · niveau), visible en haut alors que les réglages sont plus bas */
+  .ctx{margin:14px auto 0; display:flex; flex-wrap:wrap; justify-content:center; gap:6px; max-width:360px;}
+  .ctx .cx{background:var(--bg); border:1px solid var(--line); border-radius:999px; padding:4px 10px; font-size:.78rem; font-weight:700; color:var(--txt);}
+  .ctx .cx-edit, .wi-ctx button{background:transparent; border:1px solid var(--carve); color:var(--carve); border-radius:999px; padding:4px 10px; font-size:.78rem; font-weight:800; cursor:pointer;}
+  .ctx .cx-edit:hover, .wi-ctx button:hover{background:rgba(192,132,252,.12);}
+  .wi-ctx{font-size:.72rem; color:var(--muted); text-align:center; margin-top:6px;}
+  .wi-ctx button{padding:1px 8px; font-size:.7rem; margin-left:4px;}
+  @keyframes flashField{0%,100%{box-shadow:none} 30%{box-shadow:0 0 0 3px rgba(192,132,252,.55)}}
+  .flash{animation:flashField 1.4s ease-out 1; border-radius:10px;}
   .wi-tiles{display:grid; grid-template-columns:repeat(3,1fr);}
   .wi-t{padding:2px 4px; text-align:center;} .wi-t + .wi-t{border-left:1px solid var(--line);}
   .wi-t span{display:block; font-size:.66rem; color:var(--muted); font-weight:700;}
@@ -305,6 +314,7 @@
       <div class="vout" aria-live="polite">
         <div class="n" id="o-agil">—</div>
         <div class="win" id="o-why"></div>
+        <div class="ctx" id="o-ctx"></div>
       </div>
       <div class="carve-anim">
         <canvas id="anim-cv" aria-hidden="true"></canvas>
@@ -358,8 +368,8 @@
             <option value="0" selected data-i18n="sd-0">stab plat</option>
             <option value="u" data-i18n="sd-u">dièdre U</option>
           </select></div>
-        <div class="field field-kg"><label for="i-kg"><span data-i18n="l-kg">🧍 Ton poids</span> : <span class="fval" id="v-kg">85</span> kg <span id="v-kgq" style="color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0" data-i18n="l-kg-note">· pèse sur glisse, endurance &amp; démarrage</span></label>
-          <input type="range" autocomplete="off" id="i-kg" min="55" max="110" step="1" value="85"></div>
+        <div class="field field-kg"><label for="i-kg"><span data-i18n="l-kg">🧍 Ton poids</span> : <span class="fval" id="v-kg">80</span> kg <span id="v-kgq" style="color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0" data-i18n="l-kg-note">· pèse sur glisse, endurance &amp; démarrage</span></label>
+          <input type="range" autocomplete="off" id="i-kg" min="55" max="110" step="1" value="80"></div>
         <div class="field fld-lvl"><label for="i-lvl" data-i18n="l-lvl">🏄 Ton niveau</label>
           <select autocomplete="off" id="i-lvl" class="stabd" style="margin-top:4px">
             <option value="1" data-i18n="lv-1">en progression</option>
@@ -622,10 +632,10 @@
   // pour un rider de référence ~85 kg entraîné. Calé sur le terrain : RSX Carve 1100 (112 cm, 1100 cm²) ≈ 2 min.
   // Puissance de croisière (W) — cœur physique commun à l'endurance ET au score « glisse/relance »,
   // pour que la barre et le texte « X min » ne puissent JAMAIS se contredire. Plus P est basse, mieux ça glisse.
-  function riderKg(){ const v = $('i-kg'); return v ? +v.value : 85; }   // poids rider (curseur) — 85 par défaut
+  function riderKg(){ const v = $('i-kg'); return v ? +v.value : 80; }   // poids rider (curseur) — 80 par défaut
   function cruiseP(b_cm, S_cm2, WKG){ return cruiseState(b_cm, S_cm2, WKG).P; }
   function cruiseState(b_cm, S_cm2, WKG){
-    WKG = WKG || 85;
+    WKG = WKG || 80;
     const RHO=1025, E=0.91, M_IMM=0.55, G=9.81, cd0=0.014;
     const S=S_cm2/1e4, b=b_cm/100, W=WKG*G, AR=b*b/S;
     // stab : sa vraie taille (curseur) ; Cd effectif 0,044 (le stab travaille dans l'eau perturbée, c'est l'appendice
@@ -687,7 +697,7 @@
   // Vitesse de décollage estimée : V = √(poids / (½·ρ·S·CLmax)), rider ~85 kg, CLmax ~1,2.
   // ×1,15 : on ne décolle pas au ras du décrochage (pump réel).
   function liftoffKmh(S_cm2, WKG){
-    WKG = WKG || 85;
+    WKG = WKG || 80;
     const RHO=1025, G=9.81, CLMAX=1.2;
     const v = Math.sqrt((WKG*G)/(0.5*RHO*(S_cm2/1e4)*CLMAX));
     return Math.round(v*3.6*1.15);
@@ -699,7 +709,7 @@
   // fixe la vitesse de décollage (et la traînée de frottement : q·S·Cd0 + appendices). η = 0,7 (pompage).
   // Sans ce terme, l'ancien score (vitesse de décollage seule) recommandait une « brique » AR 4.
   function takeoffPower(b_cm, S_cm2, WKG){
-    WKG = WKG || 85;
+    WKG = WKG || 80;
     const RHO=1025, G=9.81, CLMAX=1.2, W = WKG*G, S = S_cm2/1e4, AR = b_cm*b_cm/S_cm2;
     const v = Math.sqrt(W/(0.5*RHO*S*CLMAX))*1.15, CL = CLMAX/(1.15*1.15), q = W/(S*CL);
     const Di = W*CL/(Math.PI*0.9*AR), Dp = q*(S*0.012 + 0.0008);
@@ -1380,11 +1390,11 @@
 
     /* ④ le décollage : portance ∝ surface × vitesse². Chacun décolle quand la barre atteint son poids.
        Et l'aile de carve (envergure courte) accélère en plus moins vite : plus de traînée à basse vitesse. */
-    const TKO = [{S:2200, col:'#34d399', tau:2.2}, {S:1100, col:'#c084fc', tau:3.4}].map(w => Object.assign(w, {vto:liftoffKmh(w.S, 85)}));
+    const TKO = [{S:2200, col:'#34d399', tau:2.2}, {S:1100, col:'#c084fc', tau:3.4}].map(w => Object.assign(w, {vto:liftoffKmh(w.S, 80)}));
     function drawTakeoff(g, now){
       g.clearRect(0,0,FW,FH.takeoff);
       const CYC = 11, u = now % CYC, run = Math.max(0, u - .6);
-      label(g, t('même rider (85 kg), même pompage','same rider (85 kg), same pumping'), FW/2, 13, '#cbd5e1', 10, 700);
+      label(g, t('même rider (80 kg), même pompage','same rider (80 kg), same pumping'), FW/2, 13, '#cbd5e1', 10, 700);
       TKO.forEach((W, i) => {
         const y0 = 26 + i*94, wl = y0 + 50;
         const v = Math.min(22, 17*(1 - Math.exp(-run/W.tau))*(u > 10.4 ? 0 : 1));   // km/h
@@ -1540,6 +1550,18 @@
     setWave(waveK(WAVE_H)); render(); wcCarve();
   }));
 
+  // nom de l'aile courante : le preset sélectionné, sinon ses dimensions
+  function wingName(){
+    const on = document.querySelector('.preset-btn.on');
+    return on ? on.getAttribute('aria-label') || on.textContent.trim() : $('i-b').value+' cm · '+$('i-s').value+' cm²';
+  }
+  // « ✎ modifier » : descend jusqu'aux réglages (aile, poids, niveau) et les met en évidence un instant
+  document.addEventListener('click', e => {
+    if(!e.target.closest('.js-edit')) return;
+    const box = document.querySelector('.presets'); if(box) window.scrollTo({top: box.getBoundingClientRect().top + scrollY - 70, behavior:'smooth'});   // marge : barre du haut fixe
+    ['.presets', '.field-kg', '.fld-lvl'].forEach(sel => { const el = document.querySelector(sel); if(!el) return; el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); });
+  });
+
   function render(){
     $('v-b').textContent = $('i-b').value;
     $('v-s').textContent = $('i-s').value;
@@ -1621,6 +1643,8 @@
     const H = waveH(), vw = Math.round(Math.sqrt(22*H)*3.6), vl = liftoffKmh(S, kg);
     document.querySelectorAll('.ws-btn').forEach(b => b.classList.toggle('on', +b.dataset.h === H));
     const ses = waveSession(b, S, kg, H), ok = ses.free;
+    $('o-ctx').innerHTML = '<span class="cx">🪽 '+wingName()+'</span><span class="cx">🧍 '+kg+' kg</span><span class="cx">🏄 '+t(riderLvl().fr, riderLvl().en)+'</span>'
+      + '<button type="button" class="cx-edit js-edit">'+t('✎ modifier','✎ change')+'</button>';
     $('wave-info').innerHTML = '<div class="wi-tiles">'
       + '<div class="wi-t"><span>'+t('🌊 la vague','🌊 the wave')+'</span><b>~'+vw+' km/h</b><i>'+t('sa vitesse','its speed')+'</i></div>'
       + '<div class="wi-t"><span>'+t('🪽 ton aile','🪽 your wing')+'</span><b style="color:'+(ok ? '#6ee7b7' : '#fca5a5')+'">~'+vl+' km/h</b><i>'+t('vole dès','flies from')+'</i></div>'
@@ -1628,6 +1652,7 @@
       + (ses.unlimited ? t('sans limite','no limit') : ses.links === 0 ? t('puis tu tombes','then you drop') : '~'+Math.max(1, Math.round(ses.min))+' min '+t('de vol','of flight'))+'</i></div></div>'
       + '<div class="wi-v" style="color:'+(ok ? '#6ee7b7' : '#fca5a5')+'">'+(ok ? t('✓ la vague te lance toute seule','✓ the wave launches you by itself') : t('✗ tu dois pomper pour la prendre (+'+(vl-vw)+' km/h)','✗ you must pump to catch it (+'+(vl-vw)+' km/h)'))+'</div>'
       + (!ses.unlimited && ses.links === 0 ? '<div class="wi-v" style="color:#fca5a5">'+t('✗ repomper ~200 m te coûte ~','✗ pumping back ~200 m costs you ~')+Math.round(ses.P/10)*10+t(' W, au-dessus de ton seuil ('+riderLvl().cp+' W) : tu ne rejoins pas la suivante',' W, above your threshold ('+riderLvl().cp+' W): you don\'t reach the next one')+'</div>' : '')
+      + '<div class="wi-ctx">'+t('calculé pour ','computed for ')+'<b>'+wingName()+'</b> · '+kg+' kg · '+t(riderLvl().fr, riderLvl().en)+'<button type="button" class="js-edit">'+t('✎ modifier','✎ change')+'</button></div>'
       + '<div class="wi-d xpl">'+t('Une vague = ~30 s de ride, puis ~200 m jusqu\'à la suivante, qui vient vers toi (~','One wave = ~30 s of riding, then ~200 m to the next one, which comes towards you (~')+Math.round(ses.tc)+' s · ~'+Math.round(ses.P/10)*10+' W). '
       + t('Estimation pour un rider '+riderLvl().fr+' (règle « ton niveau » à côté du poids).','Estimate for your level: '+riderLvl().en+' (set “your level” next to the weight).')+'</div>';
     $('o-why').innerHTML =
@@ -1653,7 +1678,7 @@
         [t('faible','poor'),t('correcte','fair'),t('excellente','great')],
         t('<b>envergure + allongement</b> (et un stab pas trop gros) : glisser loin et <b>repomper</b> entre deux vagues (connecter)','<b>span + aspect ratio</b> (and a stab not too big): glide far and <b>pump back</b> between waves (connecting)')
         + ' · <b style="color:#818cf8">≈ '+endurance(b,S,kg)+'</b> '+t('de vol continu*','of continuous flight*')
-        + '<br><span style="opacity:.75">'+t('échelle à 85 kg : <b>faible</b> = surf pur (&lt;1 min) · <b>correcte</b> = connecte · <b>excellente</b> = aile de distance','scale at 85 kg: <b>poor</b> = pure surf (&lt;1 min) · <b>fair</b> = connects · <b>great</b> = distance wing')+'</span>']
+        + '<br><span style="opacity:.75">'+t('échelle : <b>faible</b> = surf pur (&lt;1 min) · <b>correcte</b> = connecte · <b>excellente</b> = aile de distance','scale: <b>poor</b> = pure surf (&lt;1 min) · <b>fair</b> = connects · <b>great</b> = distance wing')+'</span>']
     ];
     const hsl = v => 'hsl('+Math.round(v*1.2)+',68%,55%)';   // 0 rouge → 100 vert (intensité du trait, pas une note)
     $('o-bk').innerHTML = '<div class="bk-cat">' + t('Le caractère de l\'aile — 0 = peu · 100 = beaucoup de ce trait (ni bon ni mauvais : un style)','The wing\'s character — 0 = little · 100 = lots of this trait (neither good nor bad: a style)') + '</div>' +
