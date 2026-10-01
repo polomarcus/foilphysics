@@ -266,6 +266,8 @@
   body.noexp .cards .card:has(.note-fig ~ .note-fig){grid-column:1 / -1;}
   @media(min-width:760px){ body.noexp .cards .card:has(.note-fig ~ .note-fig){display:grid; grid-template-columns:1fr 1fr; gap:0 16px; align-items:start;}
     body.noexp .cards .card:has(.note-fig ~ .note-fig) > :not(.note-fig){grid-column:1 / -1;} }
+  @media(max-width:620px){ body.noexp .cards .card:not(:has(.note-fig, svg, canvas, button)){flex-direction:column; align-items:flex-start; gap:4px;}
+    body.noexp .cards .card:not(:has(.note-fig, svg, canvas, button)) .big{text-align:left;} }
 </style>
 </head>
 <body>
