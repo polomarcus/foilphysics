@@ -1643,14 +1643,19 @@
     const H = waveH(), vw = Math.round(Math.sqrt(22*H)*3.6), vl = liftoffKmh(S, kg);
     document.querySelectorAll('.ws-btn').forEach(b => b.classList.toggle('on', +b.dataset.h === H));
     const ses = waveSession(b, S, kg, H), ok = ses.free;
+    // en biais, tu vas plus vite que la vague : v = vague ÷ cos(angle) → angle pour voler à ta vitesse de démarrage
+    const ang = vl > vw ? Math.round(Math.acos(vw/vl)*180/Math.PI) : 0, near = !ok && ang <= 40;
+    const vcol = ok ? '#6ee7b7' : near ? '#fcd34d' : '#fca5a5';
     $('o-ctx').innerHTML = '<span class="cx">🪽 '+wingName()+'</span><span class="cx">🧍 '+kg+' kg</span><span class="cx">🏄 '+t(riderLvl().fr, riderLvl().en)+'</span>'
       + '<button type="button" class="cx-edit js-edit">'+t('✎ modifier','✎ change')+'</button>';
     $('wave-info').innerHTML = '<div class="wi-tiles">'
       + '<div class="wi-t"><span>'+t('🌊 la vague','🌊 the wave')+'</span><b>~'+vw+' km/h</b><i>'+t('sa vitesse','its speed')+'</i></div>'
-      + '<div class="wi-t"><span>'+t('🪽 ton aile','🪽 your wing')+'</span><b style="color:'+(ok ? '#6ee7b7' : '#fca5a5')+'">~'+vl+' km/h</b><i>'+t('vole dès','flies from')+'</i></div>'
+      + '<div class="wi-t"><span>'+t('🪽 ton aile','🪽 your wing')+'</span><b style="color:'+vcol+'">~'+vl+' km/h</b><i>'+t('vole dès','flies from')+'</i></div>'
       + '<div class="wi-t"><span>'+t('⏱️ session','⏱️ session')+'</span><b>'+(ses.unlimited ? '∞' : '~'+ses.n+' '+t('vague'+(ses.n > 1 ? 's' : ''),'wave'+(ses.n > 1 ? 's' : '')))+'</b><i>'
       + (ses.unlimited ? t('sans limite','no limit') : ses.links === 0 ? t('puis tu tombes','then you drop') : '~'+Math.max(1, Math.round(ses.min))+' min '+t('de vol','of flight'))+'</i></div></div>'
-      + '<div class="wi-v" style="color:'+(ok ? '#6ee7b7' : '#fca5a5')+'">'+(ok ? t('✓ la vague te lance toute seule','✓ the wave launches you by itself') : t('✗ tu dois pomper pour la prendre (+'+(vl-vw)+' km/h)','✗ you must pump to catch it (+'+(vl-vw)+' km/h)'))+'</div>'
+      + '<div class="wi-v" style="color:'+vcol+'">'+(ok ? t('✓ la vague te porte toute seule','✓ the wave carries you by itself')
+          : near ? t('≈ juste : prends-la en biais (~'+ang+'°) et donne quelques coups de pompe','≈ tight: ride it at an angle (~'+ang+'°) and add a few pumps')
+          : t('✗ trop lente pour ton aile : tu pompes aussi sur la vague','✗ too slow for your wing: you keep pumping on the wave'))+'</div>'
       + (!ses.unlimited && ses.links === 0 ? '<div class="wi-v" style="color:#fca5a5">'+t('✗ repomper ~200 m te coûte ~','✗ pumping back ~200 m costs you ~')+Math.round(ses.P/10)*10+t(' W, au-dessus de ton seuil ('+riderLvl().cp+' W) : tu ne rejoins pas la suivante',' W, above your threshold ('+riderLvl().cp+' W): you don\'t reach the next one')+'</div>' : '')
       + '<div class="wi-ctx">'+t('calculé pour ','computed for ')+'<b>'+wingName()+'</b> · '+kg+' kg · '+t(riderLvl().fr, riderLvl().en)+'<button type="button" class="js-edit">'+t('✎ modifier','✎ change')+'</button></div>'
       + '<div class="wi-d xpl">'+t('Une vague = ~30 s de ride, puis ~200 m jusqu\'à la suivante, qui vient vers toi (~','One wave = ~30 s of riding, then ~200 m to the next one, which comes towards you (~')+Math.round(ses.tc)+' s · ~'+Math.round(ses.P/10)*10+' W). '
