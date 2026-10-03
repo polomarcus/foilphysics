@@ -89,6 +89,8 @@
   .pg-label{font-size:.72rem; font-weight:800; color:var(--muted); min-width:132px; text-transform:uppercase; letter-spacing:.03em;}
   .pg-btns{display:flex; gap:6px; flex-wrap:wrap;}
   .pg-btns .preset-btn{padding:6px 11px; font-size:.82rem;}
+  .preset-btn small{display:block; font-size:.62rem; font-weight:600; color:var(--muted); margin-top:1px; white-space:nowrap;}
+  .preset-btn.on small{color:inherit; opacity:.8;}
   @media(max-width:560px){ .pg-label{min-width:100%;} }
   .inputs{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 14px; margin-top:4px;}
   @media(min-width:820px){ .inputs{grid-template-columns:repeat(4,1fr);} body:not(.tune) .inputs{grid-template-columns:repeat(3,1fr);} }
@@ -165,10 +167,8 @@
   /* le contexte du calcul (aile · poids · niveau), visible en haut alors que les réglages sont plus bas */
   .ctx{margin:14px auto 0; display:flex; flex-wrap:wrap; justify-content:center; gap:6px; max-width:360px;}
   .ctx .cx{background:var(--bg); border:1px solid var(--line); border-radius:999px; padding:4px 10px; font-size:.78rem; font-weight:700; color:var(--txt);}
-  .ctx .cx-edit, .wi-ctx button{background:transparent; border:1px solid var(--carve); color:var(--carve); border-radius:999px; padding:4px 10px; font-size:.78rem; font-weight:800; cursor:pointer;}
-  .ctx .cx-edit:hover, .wi-ctx button:hover{background:rgba(192,132,252,.12);}
-  .wi-ctx{font-size:.72rem; color:var(--muted); text-align:center; margin-top:6px;}
-  .wi-ctx button{padding:1px 8px; font-size:.7rem; margin-left:4px;}
+  .ctx .cx-edit{background:transparent; border:1px solid var(--carve); color:var(--carve); border-radius:999px; padding:4px 10px; font-size:.78rem; font-weight:800; cursor:pointer;}
+  .ctx .cx-edit:hover{background:rgba(192,132,252,.12);}
   @keyframes flashField{0%,100%{box-shadow:none} 30%{box-shadow:0 0 0 3px rgba(192,132,252,.55)}}
   .flash{animation:flashField 1.4s ease-out 1; border-radius:10px;}
   .wi-tiles{display:grid; grid-template-columns:repeat(3,1fr);}
@@ -178,6 +178,26 @@
   .wi-t i{display:block; font-style:normal; font-size:.64rem; color:var(--muted);}
   .wi-v{font-size:.78rem; font-weight:700; text-align:center; margin-top:6px;}
   .wi-d{font-size:.72rem; color:var(--muted); text-align:center; margin-top:2px;}
+  .win-map{margin:2px 0 8px; padding-top:8px; border-top:1px solid var(--line);}
+  .vout .win-map{margin:16px 0 0; padding-top:12px;}
+  #win-cv{display:block; width:100%; aspect-ratio:360/214;}   /* taille « téléphone » partout : sinon textes énormes sur ordi */
+  /* Mini-barre : le résultat suit les réglages quand le score est hors écran */
+  .mini-score{position:fixed; left:50%; bottom:14px; transform:translateX(-50%); z-index:60; display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:4px 14px;
+    max-width:calc(100% - 24px); padding:8px 16px; border-radius:999px; background:rgba(15,23,42,.96); border:1px solid var(--carve); color:var(--txt);
+    font:inherit; font-size:.8rem; cursor:pointer; box-shadow:0 6px 24px rgba(0,0,0,.5);}
+  .mini-score[hidden]{display:none;}
+  .mini-score b{font-size:1.05rem; font-weight:900; font-variant-numeric:tabular-nums;}
+  .mini-score span{color:var(--muted); white-space:nowrap;} .mini-score span b{color:var(--txt);}
+  .win-box{position:relative; max-width:400px; margin:0 auto;}
+  #win-cv{cursor:crosshair; touch-action:pan-y;}
+  .win-tip{position:absolute; pointer-events:none; background:rgba(15,23,42,.96); border:1px solid var(--line); border-radius:8px; padding:6px 9px;
+    font-size:.7rem; line-height:1.45; color:#cbd5e1; text-align:left; white-space:nowrap; z-index:5; box-shadow:0 4px 14px rgba(0,0,0,.4);}
+  .win-tip b{color:var(--txt);} .win-tip .tt-h{font-weight:800; color:var(--txt); margin-bottom:2px;} .win-tip .tt-c{color:var(--muted); font-size:.64rem; margin-top:2px;}
+  .win-leg{display:flex; flex-wrap:wrap; justify-content:center; gap:3px 12px; font-size:.68rem; color:var(--muted); margin:4px 0 6px;}
+  .win-leg i{display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px; vertical-align:-1px;}
+  .win-leg i.hatch{background:repeating-linear-gradient(135deg, rgba(148,163,184,.35) 0 1px, transparent 1px 4px);}
+  .win-v{font-size:.76rem; font-weight:700; text-align:center; color:var(--txt); margin-top:2px; line-height:1.4;}
+  .win-v small{display:block; font-weight:600; font-size:.68rem; color:var(--muted);}
   .anim-cap{font-size:.68rem; color:var(--dim); text-align:center; margin:0 0 5px; line-height:1.45;}
   .anim-cap b{color:var(--muted);}
   .hero{display:grid; grid-template-columns:1fr; gap:12px; margin:12px 0 4px; align-items:center;}
@@ -325,32 +345,33 @@
           <button type="button" class="ws-btn" data-h="1.75" data-i18n="ws-3">🌊 1,5-2 m<small>puissante</small></button>
         </div>
         <div class="wave-info" id="wave-info"></div>
+        <div class="win-map"><div class="win-box"><canvas id="win-cv" aria-hidden="true"></canvas><div class="win-tip" id="win-tip" hidden></div></div><div class="win-leg" id="win-leg"></div><div class="win-v" id="win-v"></div></div>
         <div class="anim-cap" data-i18n="anim-cap">sa ligne dans la vague : plus l'aile est vive, plus ça tourne <b>serré</b> et plus ça <b>gîte</b></div>
       </div>
     </div>
     <div class="panel">
       <div class="presets">
         <div class="preset-grp"><span class="pg-label">🏄 Axis Surge</span><div class="pg-btns">
-          <button class="preset-btn" type="button" data-p="89|835">890</button>
-          <button class="preset-btn" type="button" data-p="95|949">950</button>
-          <button class="preset-btn" type="button" data-p="101|1076">1010</button>
+          <button class="preset-btn" type="button" data-p="89|835">890<small>89 cm · 835 cm²</small></button>
+          <button class="preset-btn" type="button" data-p="95|949">950<small>95 cm · 949 cm²</small></button>
+          <button class="preset-btn" type="button" data-p="101|1076">1010<small>101 cm · 1 076 cm²</small></button>
         </div></div>
         <div class="preset-grp"><span class="pg-label">🌀 Alpine RSX Carve</span><div class="pg-btns">
-          <button class="preset-btn" type="button" data-p="96|820">820</button>
-          <button class="preset-btn" type="button" data-p="103|960">960</button>
-          <button class="preset-btn" type="button" data-p="112|1100">1100</button>
+          <button class="preset-btn" type="button" data-p="96|820">820<small>96 cm · 820 cm²</small></button>
+          <button class="preset-btn" type="button" data-p="103|960">960<small>103 cm · 960 cm²</small></button>
+          <button class="preset-btn" type="button" data-p="112|1100">1100<small>112 cm · 1 100 cm²</small></button>
         </div></div>
         <div class="preset-grp"><span class="pg-label">🌊 Alpine DW</span><div class="pg-btns">
-          <button class="preset-btn" type="button" data-p="81|840">840</button>
-          <button class="preset-btn" type="button" data-p="93|980">980</button>
-          <button class="preset-btn" type="button" data-p="94|1180">1180</button>
+          <button class="preset-btn" type="button" data-p="81|840">840<small>81 cm · 840 cm²</small></button>
+          <button class="preset-btn" type="button" data-p="93|980">980<small>93 cm · 980 cm²</small></button>
+          <button class="preset-btn" type="button" data-p="94|1180">1180<small>94 cm · 1 180 cm²</small></button>
         </div></div>
         <div class="preset-grp"><span class="pg-label">🌊 F-One Jam</span><div class="pg-btns">
-          <button class="preset-btn" type="button" data-p="120|1400">1400</button>
-          <button class="preset-btn" type="button" data-p="128|1600">1600</button>
+          <button class="preset-btn" type="button" data-p="120|1400">1400<small>120 cm · 1 400 cm²</small></button>
+          <button class="preset-btn" type="button" data-p="128|1600">1600<small>128 cm · 1 600 cm²</small></button>
         </div></div>
         <div class="preset-grp"><span class="pg-label" data-i18n="pg-ref">📏 Repère glisse</span><div class="pg-btns">
-          <button class="preset-btn" type="button" data-p="140|1900" data-i18n="p-ld">longue distance (140 cm)</button>
+          <button class="preset-btn" type="button" data-p="140|1900" data-i18n="p-ld">longue distance<small>140 cm · 1 900 cm²</small></button>
         </div></div>
       </div>
       <button class="tunebtn" id="tune-btn" type="button" aria-pressed="false" data-i18n="tune-btn">🎛️ Régler finement (fuselage, allongement détaillé)</button>
@@ -383,6 +404,7 @@
       <div class="bk" id="o-bk"></div>
       <div class="wcombo" id="wc"></div>
     </div>
+    <button type="button" class="mini-score" id="mini-score" aria-live="polite" hidden></button>
   </section>
 
 
@@ -522,7 +544,7 @@
       * Durée « de vol continu », glisse et vitesse de démarrage : <b>estimations</b> à <b>ton poids</b>, et la durée selon <b>ton niveau</b> (🏄)
       (règle le curseur 🧍 — modèle de la page longue distance). Tout se joue au <b>seuil</b> : sous ta
       puissance soutenable tu voles « longtemps », au-dessus tu tombes en minutes. La vitesse de démarrage monte avec le poids (√poids),
-      et plus tu es <b>léger</b>, plus tu voles lentement → mieux tu exploites une aile élancée. Vivacité et drive, eux, ne
+      et plus tu es <b>léger</b>, plus tu voles lentement → mieux tu exploites une aile élancée. Maniabilité et drive, eux, ne
       dépendent que de l'aile.</p>
 
   </section>
@@ -548,7 +570,7 @@
   </section>
 
   <footer data-i18n="foot"><b style="color:var(--txt)">Modèle</b> — indice de maniabilité, pas un banc d'essai.
-    Résistance au roulis ∝ <b>surface × envergure²</b>, vivacité = son inverse ; le <b>caractère</b> (tourne facilement / va droit)
+    Résistance au roulis ∝ <b>surface × envergure²</b>, maniabilité = son inverse ; le <b>caractère</b> (tourne facilement / va droit)
     vient surtout du stab (taille et dièdre), un peu du fuselage.
     Le carve réel dépend surtout de la <b>technique</b>, de la vague et du réglage — ce sont des <b>ordres de
     grandeur pédagogiques</b>. Specs ailes : <a href="https://www.realwatersports.com/products/axis-surge-front-wing" target="_blank" rel="noopener">Axis Surge</a> (surf, AR ~9,5 — table officielle : 740→1010 mm) · Alpine RSX Carve (gamme AR 11 : 700→1100, soit 89→112 cm).<br>
@@ -581,7 +603,7 @@
     'tldr-s':'Roll resistance ≈ <b>area × span²</b> — a wing 20% shorter flips ~1.5× faster. The exact opposite of long distance.',
     'sim-h3':'🎛️ Compare the wings',
     'sim-lede':'Pick a <b>real preset</b> or play the sliders — everything updates live. The <b>💡 Explanations</b> button unfolds the physics behind each score.',
-    'pg-ref':'📏 Glide reference','p-ld':'long-distance (140 cm)',
+    'pg-ref':'📏 Glide reference','p-ld':'long distance<small>140 cm · 1,900 cm²</small>',
     'l-b':'Span','l-s':'Area','l-fus':'Fuselage','l-stab':'Stab','l-kg':'🧍 Your weight','l-kg-note':'· drives glide, endurance &amp; takeoff',
     'anim-cap':'its line in the wave: the livelier the wing, the <b>tighter</b> it turns and the harder it <b>banks</b>',
     'xp-lbl':'Explanations',
@@ -609,7 +631,7 @@
     't5':'<span class="ti">💨</span><p><b>Keep speed into the turn.</b> The foil needs flow: entering too slow = stalling mid-carve. Come in <b>fast</b>, even if you slow on exit.</p>',
     't6':'<span class="ti">🌊</span><p><b>Turn in the pocket.</b> Where the wave pushes, you have the energy to carve tight — with <b>progressive</b> inputs: a brutal stomp makes the wing ventilate/break out.</p>',
     't7':'<span class="ti">🦶</span><p><b>Stance width: control vs pump.</b> Feet <b>wide</b> = a big area to shift your center of gravity → more <b>control</b> to set and hold the carve. Feet <b>close</b> = more <b>vertical</b> force → a more efficient pump, but less stable. And tune your <b>fore-aft</b> position to balance your legs: if the <b>back foot cramps</b>, move back a touch.</p>',
-    'foot':'<b style="color:var(--txt)">Model</b> — a maneuverability index, not a test bench. Roll resistance ∝ <b>area × span²</b>, liveliness = its inverse; the <b>character</b> (turns easily / goes straight) comes mostly from the stab (size and dihedral), a little from the fuselage. Real carving depends mostly on <b>technique</b>, the wave and tuning — these are <b>educational orders of magnitude</b>. Wing specs: <a href="https://www.realwatersports.com/products/axis-surge-front-wing" target="_blank" rel="noopener">Axis Surge</a> (surf, AR ~9.5 — official size table: 740→1010 mm) · Alpine RSX Carve (AR 11 range: 700→1100, i.e. 89→112 cm).<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
+    'foot':'<b style="color:var(--txt)">Model</b> — a maneuverability index, not a test bench. Roll resistance ∝ <b>area × span²</b>, maneuverability = its inverse; the <b>character</b> (turns easily / goes straight) comes mostly from the stab (size and dihedral), a little from the fuselage. Real carving depends mostly on <b>technique</b>, the wave and tuning — these are <b>educational orders of magnitude</b>. Wing specs: <a href="https://www.realwatersports.com/products/axis-surge-front-wing" target="_blank" rel="noopener">Axis Surge</a> (surf, AR ~9.5 — official size table: 740→1010 mm) · Alpine RSX Carve (AR 11 range: 700→1100, i.e. 89→112 cm).<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
   };
   function applyLang(l){
     LANG = l;
@@ -716,7 +738,7 @@
     return (Di + Dp)*v/0.7;
   }
 
-  /* ---------- animation : un carve sur la face d'une vague, piloté par le score de vivacité ---------- */
+  /* ---------- animation : un carve sur la face d'une vague, piloté par le score de maniabilité ---------- */
   // Vague vue de face qui déroule vers la droite (tube à gauche, épaule à droite), caméra en
   // travelling qui suit le rider. Trajectoire : le CAP oscille, θ(s) = θmax·sin(2π·s/P) — pas une
   // sinusoïde en y : ça donne des arcs (bottom turn / top turn) reliés par des portions tendues.
@@ -1500,9 +1522,9 @@
   const WC_KG = [60, 75, 90, 105];
 
   // Carve : le combo selon le poids ET les conditions de vague (mêmes formules que les barres, sans arrondi).
-  //  • vague ~1 m : équilibre vivacité = démarrage à allongement ~9 (réponse continue, croît avec le poids) ;
+  //  • vague ~1 m : équilibre maniabilité = démarrage à allongement ~9 (réponse continue, croît avec le poids) ;
   //  • houle molle ~0,5 m : l'aile doit te porter à la vitesse de la vague (≈ √(22·H)) → surface mini, AR ~9,5 ;
-  //  • vague puissante 1,5-2 m : c'est la vague qui lance → tout pour la vivacité, aile qui porte dès ~75 % de
+  //  • vague puissante 1,5-2 m : c'est la vague qui lance → tout pour la maniabilité, aile qui porte dès ~75 % de
   //    la vitesse de la vague, AR ~8,5.
   const WC_CACHE = {};
   function carveBest(kg){
@@ -1524,14 +1546,14 @@
     const gid = id => document.getElementById(id), kg = +gid('i-kg').value, c = carveBest(kg), H = waveH();
     const wl = H <= 0.5 ? t('houle molle ~0,5 m','soft swell ~0.5 m') : H <= 1 ? t('vague ~1 m','wave ~1 m') : t('vague puissante 1,5-2 m','powerful wave 1.5-2 m');
     const rule = H <= 0.5 ? t('l\'aile doit te porter à la vitesse de la vague (~12 km/h)','the wing must carry you at the wave\'s speed (~12 km/h)')
-               : H <= 1 ? t('le meilleur équilibre entre vivacité et facilité de démarrage','the best balance between liveliness and ease of takeoff')
-               : t('c\'est la vague qui te lance : tout pour la vivacité','the wave launches you: everything for liveliness');
+               : H <= 1 ? t('le meilleur équilibre entre maniabilité et facilité de démarrage','the best balance between maneuverability and ease of takeoff')
+               : t('c\'est la vague qui te lance : tout pour la maniabilité','the wave launches you: everything for maneuverability');
     wcDraw(gid('wc'), {acc:'#c084fc', title:'carve · '+wl,
       sub: t('pour ','for ')+kg+' kg '+t('(curseur 🧍) · ','(🧍 slider) · ')+rule,
-      chips:[{v:c.b+' cm', l:t('envergure','span')}, {v:c.S+' cm²', l:t('surface','area')}, {v:'AR '+num(c.ar,1), l:t('allongement','aspect ratio')}, {v:c.ag+' · '+c.to, l:t('vivacité · démarrage','liveliness · takeoff')},
+      chips:[{v:c.b+' cm', l:t('envergure','span')}, {v:c.S+' cm²', l:t('surface','area')}, {v:'AR '+num(c.ar,1), l:t('allongement','aspect ratio')}, {v:c.ag+' · '+c.to, l:t('maniabilité · démarrage','maneuverability · takeoff')},
              (() => { const ss = waveSession(c.b, c.S, kg, H); return {v:ss.unlimited ? '∞' : '~'+ss.n+' '+t('vague'+(ss.n > 1 ? 's' : ''),'wave'+(ss.n > 1 ? 's' : '')), l:t('session (ton niveau, ton stab)','session (your level, your stab)')}; })()],
       btns:[{l:t('🎛️ Essayer ce combo','🎛️ Try this combo'), fn:()=>{ gid('i-b').value = c.b; gid('i-s').value = Math.round(c.S/5)*5; gid('i-s').dispatchEvent(new Event('input')); }}],
-      head:[t('poids','weight'), t('envergure','span'), t('surface','area'), 'AR', t('vivacité','liveliness'), t('démarrage','takeoff')],
+      head:[t('poids','weight'), t('envergure','span'), t('surface','area'), 'AR', t('maniabilité','maneuverability'), t('démarrage','takeoff')],
       rows: WC_KG.map(k => { const r = carveBest(k); return {on:Math.abs(k-kg) < 7.5, c:[k+' kg', r.b+' cm', r.S+' cm²', num(r.ar,1), r.ag, r.to]}; }),
       note: (H <= 0.5 ? t('🌀 Tu veux plutôt <b>enchaîner</b> que tourner ? Une aile de pump à grande envergure (à '+kg+' kg : ~'+c.pumpB+' cm · ~'+c.pumpS+' cm²) part toute seule et glisse d\'une vague à l\'autre — peu vive, mais c\'est la glisse qui fait la session en petite houle. ','🌀 Rather <b>link waves</b> than turn? A long-span pump wing (at '+kg+' kg: ~'+c.pumpB+' cm · ~'+c.pumpS+' cm²) takes off by itself and glides from one wave to the next — not lively, but in small swell glide makes the session. ') : '')
         + t('Estimation avec les formules de la page ; vitesse de la vague ≈ √(22 × hauteur). Ordres de grandeur : la période, le fond et ton angle sur la face comptent aussi.','Estimate from this page\'s formulas; wave speed ≈ √(22 × height). Orders of magnitude: period, bottom and your angle on the face matter too.')});
@@ -1553,7 +1575,7 @@
   // nom de l'aile courante : le preset sélectionné, sinon ses dimensions
   function wingName(){
     const on = document.querySelector('.preset-btn.on');
-    return on ? on.getAttribute('aria-label') || on.textContent.trim() : $('i-b').value+' cm · '+$('i-s').value+' cm²';
+    return on ? on.getAttribute('aria-label') || on.firstChild.textContent.trim() : $('i-b').value+' cm · '+$('i-s').value+' cm²';
   }
   // « ✎ modifier » : descend jusqu'aux réglages (aile, poids, niveau) et les met en évidence un instant
   document.addEventListener('click', e => {
@@ -1562,6 +1584,174 @@
     ['.presets', '.field-kg', '.fld-lvl'].forEach(sel => { const el = document.querySelector(sel); if(!el) return; el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); });
   });
 
+  // 🗺️ La fenêtre « fun + endurant » : chaque point = une aile (envergure × surface).
+  // Ailes d'allongement 7 à 13 seulement. 🎉 tu carves à fond = maniabilité ≥ 45 (surface × envergure² ≤ 18,3) · 🔋 tu tiens = session ≥ 30 min (ton poids, ton niveau,
+  // ta vague, ton stab). Le calcul de la grille est mis en cache : seuls poids / niveau / vague / stab / fuselage le changent.
+  const WIN = {key:'', g:null, B0:80, B1:140, S0:700, S1:1700, DB:1, DS:20};
+  function winGrid(kg, H){
+    const key = [kg, H, $('i-lvl') ? $('i-lvl').value : 2, $('i-stab').value, $('i-fus').value].join('|');
+    if(WIN.key === key) return WIN.g;
+    const g = [];
+    for(let b = WIN.B0; b <= WIN.B1; b += WIN.DB) for(let S = WIN.S0; S <= WIN.S1; S += WIN.DS){
+      const ar = b*b/S; if(ar < 7 || ar > 13) continue;   // ailes de surf / carve réalistes
+      const fun = S*b*b/1e6 <= 18.3, ses = waveSession(b, S, kg, H), end = ses.unlimited || ses.min >= 30;
+      g.push([b, S, fun, end]);
+    }
+    WIN.key = key; WIN.g = g; return g;
+  }
+  // Le point vert le plus proche de ton aile → « il te faudrait +3 cm d'envergure · −100 cm² »
+  function winHint(both, b, S){
+    let best = null, dmin = Infinity;
+    both.forEach(([bb, ss]) => { const d = ((bb - b)/10)**2 + ((ss - S)/150)**2; if(d < dmin){ dmin = d; best = [bb, ss]; } });
+    const db = best[0] - b, ds = Math.round((best[1] - S)/10)*10, parts = [];
+    if(Math.abs(db) >= 1) parts.push((db > 0 ? '+' : '−')+Math.abs(db)+' cm '+t('d\'envergure','of span'));
+    if(Math.abs(ds) >= 40) parts.push((ds > 0 ? '+' : '−')+num(Math.abs(ds))+' cm²');
+    return t('le plus proche pour ton aile : ','closest for your wing: ')+(parts.join(' · ') || t('juste au bord','right at the edge'));
+  }
+  function drawWin(b, S, kg, H){
+    WIN.args = [b, S, kg, H];
+    const cv = $('win-cv'); if(!cv) return;
+    const W = 360, Hh = 214, dpr = Math.min(window.devicePixelRatio || 1, 2), w = cv.clientWidth || 320;
+    cv.width = Math.round(w*dpr); cv.height = Math.round(w*dpr*Hh/W);
+    const c = cv.getContext('2d'), k = cv.width/W; c.setTransform(k,0,0,k,0,0); c.clearRect(0,0,W,Hh);
+    const X0 = 40, X1 = 328, Y0 = 10, Y1 = 178;
+    WIN.geo = {X0, X1, Y0, Y1, W, kg, H};
+    const px = v => X0 + (v - WIN.B0)/(WIN.B1 - WIN.B0)*(X1 - X0), py = v => Y1 - (v - WIN.S0)/(WIN.S1 - WIN.S0)*(Y1 - Y0);
+    const cw = (X1 - X0)/(WIN.B1 - WIN.B0)*WIN.DB + 1.2, ch = (Y1 - Y0)/(WIN.S1 - WIN.S0)*WIN.DS + 1.2;
+    const g = winGrid(kg, H), both = [];
+    // fond hachuré = ailes hors gamme surf (trop larges AR < 7, ou trop fines AR > 13) : non calculées
+    c.save(); c.beginPath(); c.rect(X0, Y0, X1 - X0, Y1 - Y0); c.clip();
+    c.strokeStyle = 'rgba(148,163,184,.22)'; c.lineWidth = 1;
+    for(let d = -(Y1 - Y0); d < X1 - X0; d += 6){ c.beginPath(); c.moveTo(X0 + d, Y1); c.lineTo(X0 + d + (Y1 - Y0), Y0); c.stroke(); }
+    c.restore();
+    g.forEach(([bb, ss, fun, end]) => {
+      c.fillStyle = fun && end ? 'rgb(52,211,153)' : fun ? 'rgb(124,90,184)' : end ? 'rgb(37,112,160)' : 'rgb(51,62,84)';   // opaques (pré-mélangés sur le fond) : pas de coutures entre cases
+      c.fillRect(px(bb) - cw/2, py(ss) - ch/2, cw, ch);
+      if(fun && end) both.push([bb, ss]);
+    });
+    // lignes de même maniabilité (surface × envergure² constant) — étiquetées sur le bord droit
+    c.save(); c.beginPath(); c.rect(X0, Y0, X1 - X0, Y1 - Y0); c.clip();
+    c.setLineDash([3, 3]); c.lineWidth = 1; c.strokeStyle = 'rgba(255,255,255,.45)';
+    const isoLab = [];
+    [20, 45, 70].forEach(m => {
+      const K = (30 - m*0.26)*1e6; c.beginPath(); let last = null;
+      for(let bb = WIN.B0; bb <= WIN.B1; bb += 0.5){ const ss = K/(bb*bb), x = px(bb), y = py(ss); if(last) c.lineTo(x, y); else c.moveTo(x, y); last = [bb, ss]; }
+      c.stroke();
+      // point de sortie : bord droit, ou bord haut si la courbe sort par le haut
+      const sR = K/(WIN.B1*WIN.B1);
+      // sortie par la droite → chiffre sur le bord droit ; sortie par le bas → chiffre au pied de la courbe
+      isoLab.push(sR >= WIN.S0 ? [X1 + 2, py(Math.min(sR, WIN.S1)), m, 'left'] : [px(Math.sqrt(K/WIN.S0)) + 3, Y1 - 3, m, 'left']);
+    });
+    c.restore();
+    c.font = '800 9px system-ui, sans-serif'; c.fillStyle = '#e2e8f0';
+    isoLab.forEach(([x, y, m, al]) => { c.textAlign = al; c.fillText(m, x, y + 3); });
+    // titre de l'échelle de droite, vertical, centré sur les chiffres
+    const ys = isoLab.filter(l => l[0] > X1).map(l => l[1]), yc = ys.length ? (Math.min(...ys) + Math.max(...ys))/2 : (Y0 + Y1)/2;
+    c.save(); c.translate(W - 5, yc); c.rotate(-Math.PI/2); c.textAlign = 'center'; c.font = '800 9px system-ui, sans-serif'; c.fillStyle = '#e2e8f0';
+    c.fillText(t('maniabilité','maneuverability'), 0, 0); c.restore();
+    c.textAlign = 'left'; c.fillStyle = '#94a3b8'; c.font = '700 8px system-ui, sans-serif';
+    // axes
+    c.font = '600 9px system-ui, sans-serif'; c.fillStyle = '#94a3b8'; c.textAlign = 'center';
+    for(let v = 90; v <= 130; v += 10){ c.fillText(v, px(v), Y1 + 11); }
+    c.fillText(t('envergure (cm) →','span (cm) →'), (X0 + X1)/2, Y1 + 24);
+    c.textAlign = 'right';
+    for(let v = 800; v <= 1600; v += 200){ c.fillText(num(v), X0 - 4, py(v) + 3); }
+    c.save(); c.translate(9, (Y0 + Y1)/2); c.rotate(-Math.PI/2); c.textAlign = 'center'; c.fillText(t('surface (cm²) →','area (cm²) →'), 0, 0); c.restore();
+    // zones : étiquettes directes
+    c.font = '800 10px system-ui, sans-serif'; c.textAlign = 'left';
+    c.fillStyle = '#d8b4fe'; c.fillText(t('🎉 tu carves à fond','🎉 full carve'), px(83), Y1 - 8);
+    c.textAlign = 'right'; c.fillStyle = '#7dd3fc'; c.fillText(t('🔋 tu tiens la session','🔋 you last'), px(139), Y0 + 11);
+    // ton aile
+    const inB = b >= WIN.B0 && b <= WIN.B1 && S >= WIN.S0 && S <= WIN.S1;
+    if(inB){
+      const x = px(b), y = py(S);
+      c.beginPath(); c.arc(x, y, 5.5, 0, 7); c.fillStyle = '#fff'; c.fill(); c.lineWidth = 2; c.strokeStyle = '#0f172a'; c.stroke();
+      c.font = '800 10px system-ui, sans-serif'; c.fillStyle = '#fff'; c.textAlign = x > X1 - 70 ? 'right' : 'left';
+      c.fillText(t('ton aile','your wing'), x + (x > X1 - 70 ? -9 : 9), y + 3.5);
+    }
+    const lg = $('win-leg');
+    if(lg) lg.innerHTML = [['rgb(124,90,184)', t('tourne facilement (maniabilité ≥ 45)','turns easily (maneuverability ≥ 45)')],
+        ['rgb(37,112,160)', t('tient la session (≥ 30 min)','lasts the session (≥ 30 min)')],
+        ['rgb(52,211,153)', t('les deux','both')], ['rgb(51,62,84)', t('ni l\'un ni l\'autre','neither')]]
+      .map(([col, l]) => '<span><i style="background:'+col+'"></i>'+l+'</span>').join('')
+      + '<span><i style="background:none; border-top:1.5px dashed rgba(255,255,255,.6); height:0; width:14px; vertical-align:3px"></i>'+t('même maniabilité (chiffre à droite)','same maneuverability (number on the right)')+'</span>'
+      + '<span><i class="hatch"></i>'+t('ailes trop larges ou trop fines pour le surf','wings too wide or too slender for surf')+'</span>';
+    // verdict
+    const v = $('win-v'); if(!v) return;
+    const lv = t(riderLvl().fr, riderLvl().en);
+    if(!both.length){
+      WIN.inside = null;
+      v.innerHTML = '<span style="color:#fcd34d">'+t('Aucune aile ne fait les deux','No wing does both')+'</span> '
+        + t('à '+kg+' kg ('+lv+') sur cette vague : choisis fun <b>ou</b> endurance.','at '+kg+' kg ('+lv+') on this wave: pick fun <b>or</b> endurance.')
+        + '<small>'+t('Plus léger, meilleur niveau ou vague plus forte → la zone verte apparaît.','Lighter, better level or a stronger wave → the green zone appears.')+'</small>';
+    } else {
+      const bs = both.map(x => x[0]), ss = both.map(x => x[1]);
+      const me = waveSession(b, S, kg, H), arMe = b*b/S, inside = arMe >= 7 && arMe <= 13 && S*b*b/1e6 <= 18.3 && (me.unlimited || me.min >= 30);
+      WIN.inside = inside;
+      v.innerHTML = '<span style="color:#6ee7b7">✨ '+t('les deux','both')+'</span> : '
+        + Math.min(...bs)+'-'+Math.max(...bs)+' cm · '+num(Math.min(...ss))+'-'+num(Math.max(...ss))+' cm²'
+        + '<small>'+(inside ? t('✓ ton aile est dedans','✓ your wing is in it') : winHint(both, b, S))
+        + ' · '+kg+' kg · '+lv+'</small>';
+    }
+  }
+  // Sur ordi (2 colonnes), la carte remplit la colonne de gauche sous le score ; sur téléphone elle reste sous les vagues.
+  function placeWin(){
+    const m = document.querySelector('.win-map'), wide = matchMedia('(min-width:820px)').matches;
+    const host = wide ? document.querySelector('.showcase .vout') : $('wave-info');
+    if(!m || !host) return;
+    if(wide && m.parentNode !== host) host.appendChild(m);
+    if(!wide && m.previousElementSibling !== host) host.after(m);
+  }
+  placeWin();
+  // La mini-barre n'apparaît que quand tu règles (panneau visible) et que le score est sorti de l'écran.
+  (function(){
+    const ms = $('mini-score'), sc = $('o-agil'), pn = document.querySelector('#sim .panel');
+    if(!ms || !sc || !pn || !('IntersectionObserver' in window)) return;
+    const vis = {sc:true, pn:false};
+    const upd = () => { ms.hidden = !(vis.pn && !vis.sc); };
+    new IntersectionObserver(es => { es.forEach(e => { vis.sc = e.isIntersecting; }); upd(); }, {threshold:0}).observe(sc);
+    new IntersectionObserver(es => { es.forEach(e => { vis.pn = e.isIntersecting; }); upd(); }, {threshold:0}).observe(pn);
+    ms.addEventListener('click', () => { const t0 = document.querySelector('.showcase'); window.scrollTo({top: t0.getBoundingClientRect().top + scrollY - 70, behavior:'smooth'}); });
+  })();
+  // Survol : les caractéristiques de l'aile sous le curseur · clic : l'essayer dans le simulateur.
+  (function(){
+    const cv = $('win-cv'), tip = $('win-tip'); if(!cv || !tip) return;
+    const pick = e => {
+      const g = WIN.geo; if(!g) return null;
+      const r = cv.getBoundingClientRect(), x = (e.clientX - r.left)*g.W/r.width, y = (e.clientY - r.top)*g.W/r.width;
+      if(x < g.X0 || x > g.X1 || y < g.Y0 || y > g.Y1) return null;
+      const b = Math.round(WIN.B0 + (x - g.X0)/(g.X1 - g.X0)*(WIN.B1 - WIN.B0));
+      const S = Math.round((WIN.S0 + (g.Y1 - y)/(g.Y1 - g.Y0)*(WIN.S1 - WIN.S0))/10)*10;
+      return {b, S, x: e.clientX - r.left, y: e.clientY - r.top, w: r.width};
+    };
+    const show = e => {
+      const p = pick(e); if(!p){ tip.hidden = true; return; }
+      const g = WIN.geo, ar = p.b*p.b/p.S, viv = Math.max(0, Math.min(100, Math.round(100*(30 - p.S*p.b*p.b/1e6)/26)));
+      const fits = ar >= 7 && ar <= 13, ses = fits ? waveSession(p.b, p.S, g.kg, g.H) : null;
+      const sesTxt = !ses ? '' : ses.unlimited ? t('sans limite','no limit') : '~'+Math.max(1, Math.round(ses.min))+' min';
+      tip.innerHTML = '<div class="tt-h">'+p.b+' cm · '+num(p.S)+' cm² · AR '+num(ar, 1)+'</div>'
+        + (fits ? t('maniabilité','maneuverability')+' <b>'+viv+'</b> · '+t('glisse','glide')+' <b>'+glideScore(p.b, p.S, g.kg)+'</b><br>'
+          + t('vole dès','flies from')+' <b>~'+liftoffKmh(p.S, g.kg)+' km/h</b> · '+t('session','session')+' <b>'+sesTxt+'</b>'
+          + '<div class="tt-c">'+t('clic : l\'essayer','click: try it')+'</div>'
+          : '<span style="color:var(--muted)">'+(ar < 7 ? t('trop large pour le surf (AR < 7)','too wide for surf (AR < 7)') : t('trop fine pour le surf (AR > 13)','too slender for surf (AR > 13)'))+'</span>');
+      tip.hidden = false;
+      const tw = tip.offsetWidth, th = tip.offsetHeight;
+      tip.style.left = Math.max(0, Math.min(p.w - tw, p.x + 12 + tw > p.w ? p.x - tw - 12 : p.x + 12))+'px';
+      tip.style.top = Math.max(0, p.y - th - 10)+'px';
+    };
+    cv.addEventListener('pointermove', show);
+    cv.addEventListener('pointerdown', show);
+    cv.addEventListener('pointerleave', () => { tip.hidden = true; });
+    cv.addEventListener('click', e => {
+      const p = pick(e); if(!p || p.b*p.b/p.S < 7 || p.b*p.b/p.S > 13) return;
+      const ib = $('i-b'), is = $('i-s');
+      ib.value = Math.max(+ib.min, Math.min(+ib.max, p.b)); is.value = Math.max(+is.min, Math.min(+is.max, p.S));
+      document.querySelectorAll('.preset-btn.on, .preset-btn.active').forEach(x => x.classList.remove('on', 'active'));
+      ib.dispatchEvent(new Event('input', {bubbles:true})); is.dispatchEvent(new Event('input', {bubbles:true}));
+      show(e);
+    });
+  })();
+  addEventListener('resize', () => { placeWin(); if(WIN.args) drawWin(...WIN.args); });
   function render(){
     $('v-b').textContent = $('i-b').value;
     $('v-s').textContent = $('i-s').value;
@@ -1614,7 +1804,7 @@
     const pivot    = clamp(100*(fusFactor*stab*dF-0.68)/(1.44-0.68));
 
     // Allongement AR (déjà calculé plus haut) : gouverne la GLISSE / la corde. AR bas = corde large = porte à basse
-    // vitesse mais traîne ; AR haut = élancé = glisse & relance. (L'agilité, elle, dépend de l'envergure → « vivacité ».)
+    // vitesse mais traîne ; AR haut = élancé = glisse & relance. (L'agilité, elle, dépend de l'envergure → « maniabilité ».)
     const surfy = b <= 118;   // au-delà : aile de distance — le discours « surf » n'a plus de sens
     let arBand =
         ar<6.5   ? {c:'#fb923c', l:t('corde très large','very wide chord'), d:t('grosse portance à basse vitesse, mais ça traîne et ventile','lots of low-speed lift, but draggy and it ventilates')}
@@ -1636,7 +1826,7 @@
       + '<div class="ar-desc"><span class="xpl">'+arBand.d+(surfy?' · ':'')+'</span>'
       + (surfy ? t('cible surf pour','surf target for')+' '+b+' cm : <b>~'+sLo+'-'+sHi+' cm²</b> (AR 8-10)' : '')+'</div>';
 
-    $('o-agil').innerHTML = '<span style="color:hsl('+Math.round(agility*1.2)+',68%,55%)">' + agility + '</span> <small>/ 100 ' + t('vivacité','liveliness') + '</small>';
+    $('o-agil').innerHTML = '<span style="color:hsl('+Math.round(agility*1.2)+',68%,55%)">' + agility + '</span> <small>/ 100 ' + t('maniabilité','maneuverability') + '</small>';
     setAnim(agility, 'hsl('+Math.round(agility*1.2)+',68%,55%)');
     // 🌊 conditions : une vague qui déferle avance à ≈ √(g·(profondeur + hauteur)) avec profondeur ≈ 1,3 × hauteur
     // → ≈ √(22·H). Si ton aile ne te porte qu'au-dessus de cette vitesse, c'est toi qui comble l'écart en pompant.
@@ -1657,11 +1847,20 @@
           : near ? t('≈ juste : prends-la en biais (~'+ang+'°) et donne quelques coups de pompe','≈ tight: ride it at an angle (~'+ang+'°) and add a few pumps')
           : t('✗ trop lente pour ton aile : tu pompes aussi sur la vague','✗ too slow for your wing: you keep pumping on the wave'))+'</div>'
       + (!ses.unlimited && ses.links === 0 ? '<div class="wi-v" style="color:#fca5a5">'+t('✗ repomper ~200 m te coûte ~','✗ pumping back ~200 m costs you ~')+Math.round(ses.P/10)*10+t(' W, au-dessus de ton seuil ('+riderLvl().cp+' W) : tu ne rejoins pas la suivante',' W, above your threshold ('+riderLvl().cp+' W): you don\'t reach the next one')+'</div>' : '')
-      + '<div class="wi-ctx">'+t('calculé pour ','computed for ')+'<b>'+wingName()+'</b> · '+kg+' kg · '+t(riderLvl().fr, riderLvl().en)+'<button type="button" class="js-edit">'+t('✎ modifier','✎ change')+'</button></div>'
       + '<div class="wi-d xpl">'+t('Une vague = ~30 s de ride, puis ~200 m jusqu\'à la suivante, qui vient vers toi (~','One wave = ~30 s of riding, then ~200 m to the next one, which comes towards you (~')+Math.round(ses.tc)+' s · ~'+Math.round(ses.P/10)*10+' W). '
       + t('Estimation pour un rider '+riderLvl().fr+' (règle « ton niveau » à côté du poids).','Estimate for your level: '+riderLvl().en+' (set “your level” next to the weight).')+'</div>';
+    drawWin(b, S, kg, H);
+    const funMe = agility >= 45, endMe = ses.unlimited || ses.min >= 30;
+    const ms = $('mini-score');
+    if(ms) ms.innerHTML = '<span><b style="color:hsl('+Math.round(agility*1.2)+',68%,55%)">'+agility+'</b> '+t('maniabilité','maneuverability')+'</span>'
+      + '<span>'+t('glisse','glide')+' <b>'+glisse+'</b></span>'
+      + '<span>⏱️ <b>'+(ses.unlimited ? '∞' : '~'+Math.max(1, Math.round(ses.min))+' min')+'</b></span>'
+      + '<span>'+(funMe && endMe ? '✨ <b style="color:#34d399">'+t('maniable + endurante','maneuverable + lasting')+'</b>'
+          : funMe ? '🎉 '+t('maniable, mais tu t\'épuises','maneuverable, but you tire')
+          : endMe ? '🔋 '+t('endurante, mais peu maniable','lasting, but not very maneuverable')
+          : t('ni maniable ni endurante','neither maneuverable nor lasting'))+'</span>';
     $('o-why').innerHTML =
-      (agility >= 70 ? t('<b>Très vive</b> — elle s\'enroule au quart de tour. ','<b>Very lively</b> — it rolls in a snap. ')
+      (agility >= 70 ? t('<b>Très maniable</b> — elle s\'enroule au quart de tour. ','<b>Very maneuverable</b> — it rolls in a snap. ')
        : agility >= 45 ? t('<b>Équilibrée</b>. ','<b>Balanced</b>. ')
        : t('<b>Posée</b> — elle va droit plus qu\'elle ne tourne. ','<b>Steady</b> — it goes straight more than it turns. '))
       + '<span class="xpl">' + t('La résistance au roulis ≈ <b>surface × envergure²</b> : plus l\'aile est <b>courte ET petite</b>, plus elle bascule vite.',
@@ -1703,7 +1902,7 @@
   }
   document.querySelectorAll('.preset-btn').forEach(btn => {
     const grp = btn.closest('.preset-grp'); const lab = grp ? grp.querySelector('.pg-label') : null;
-    if(lab) btn.setAttribute('aria-label', lab.textContent.replace(/^[^A-Za-zÀ-ÿ0-9]+/,'').trim() + ' ' + btn.textContent.trim());
+    if(lab) btn.setAttribute('aria-label', lab.textContent.replace(/^[^A-Za-zÀ-ÿ0-9]+/,'').trim() + ' ' + btn.firstChild.textContent.trim());   // sans le sous-texte « cm · cm² »
     btn.addEventListener('click', ()=> applyPresetBtn(btn));
   });
   const onSetting = el => ()=>{
