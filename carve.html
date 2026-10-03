@@ -631,6 +631,7 @@
   </footer>
 </main>
 
+<script src="ailes.js"></script>
 <script>
 (function(){
   const $ = id => document.getElementById(id);
@@ -1825,37 +1826,7 @@
 
   // 🗺️ ATLAS — la même carte en grand, avec les vraies ailes (filtre par marque). Plage large : du carve au planeur.
   const ATL = {key:'', g:null, B0:70, B1:195, S0:450, S1:1800, DB:1.5, DS:20, AR0:6, AR1:24, solo:null};   // > 1 800 cm² retirées : plus de place pour les ailes de surf
-  const ATL_BRANDS = [
-    {k:'alp', n:'Alpine Foil', c:'#f472b6', w:[['RSX Carve 700',89,700],['RSX Carve 820',95.8,820],['RSX Carve 960',103,960],['RSX Carve 1100',112.2,1100],
-      ['RSX 860',106,860],['RSX 1060',116.6,1063],['RSX 1260',125.1,1260],['RSX 1400 G2',132,1400],['RSX 1540',139.9,1540],['RSX Ultra 730',112,730],['RSX Ultra 930',126.6,935],
-      ['DW 840',81,840],['DW 980',93,980],['DW 1180',94,1180],['DW 1370',109,1370],['DK 1240',124,1790],['DK 1499',149.9,1698],['Regata 850',88,850],['Regata 1100',100,1100]]},
-    {k:'axs', n:'Axis', c:'#fb923c', w:[['Surge 740',74,590],['Surge 780',78,643],['Surge 830',83,728],['Surge 890',89,835],['Surge 950',95,949],['Surge 1010',101,1076],
-      ['Surge 1080',108,1142],['Surge 1150',115,1199],['Surge 1240',124,1340],['Fireball 880',88,604],['Fireball 940',94,689],['Fireball 1000',100,773],['Fireball 1070',107,877],['Fireball 1160',116,996],
-      ['Fireball 1250',125,1133],['Fireball 1350',135,1309],['Fireball 1500',150,1313],['Fireball 1750',175,1525],
-      ['Tempo 890',89,495],['Tempo 920',92,528],['Tempo 960',96,578],['Tempo 1020',102,653],['Tempo 1090',109,746]]},
-    {k:'gng', n:'GONG', c:'#fde047', w:[['Sirus L',116,1450],['Sirus XL',136,1700],['Sirus XXL',156,2000],['Sirus 3XL',186,2400],['Sirus 5XL',249,3100],
-      ['Ultra Trail L',133,1000],['Ultra Trail XXL',162,1500],['Ultra Trail 3XL',175,1750],['Ultra Trail 4XL',188,2000],
-      ['Hypertrail S',89,700],['Hypertrail M',98,850],['Hypertrail L',107,1000],['Hypertrail XL',119,1250],['Hypertrail XXL',131,1500],['Hypertrail 3XL',141,1750],
-      ['Veloce DW XS',92,600],['Veloce DW S',103,750],['Veloce DW M',113,900],['Veloce DW L',122,1050],['Veloce DW XL',130,1200],
-      ['Veloce XTR XS',101,600],['Veloce XTR S',109,700],['Veloce XTR M',116,800],['Veloce XTR L',123,900]]},
-    {k:'tak', n:'Takoon', c:'#22d3ee', w:[['Pump 1500',123,1500],['Pump 1700',133,1700],['Pump 1900',141,1900],['Swell 1050',110,1050],['Flare 850',84,850],['Flare 950',89,950],['Flare 1050',95,1050],['Flare 1200',101.5,1200],['Flare 1400',110,1400],['Flow 600',80,600],['Flow 700',86.5,700],['Flow 800',92,800],['Flow 900',98,900],['Flow 1050',105,1050],['Flow 1200',112,1200],['Pump Pro 950',112,950],['Pump Pro 1150',122,1150],['Pump Pro 1250',128,1250],['Pump Pro 1350',133,1350],['Pump Pro 1550',142,1550],
-      ['Pump Pro 1750',151,1750],['Pump Pro 1950',159,1950],['Pump Pro 2300',173.5,2300],['Extreme 1400',157,1400],['Extreme 1600',173,1600],['Extreme 1800',190,1800]]},
-    {k:'sab', n:'Sabfoil', c:'#a3e635', w:[['Leviathan 950',95,1300],['Leviathan 1750',175,2400],['Blackbird 1300',128,1330],['Blackbird 1400',138,1549],['Blackbird FreeMove 1155',115.5,1345]]},
-    {k:'ket', n:'Ketos', c:'#f87171', w:[['166 LD',166,1466],['Kobun 99',99,777],['Kobun 111',111,960],['Kobun 122',122,1122],['Kobun 133',133,1340],
-      ['Evo 133',133,1770],['Karve 750',83.5,750],['Karve 950',94,950],['Karve 1250 V2',108,1238],['Karve 1450',116,1450],['Rage 100',100,600],['Rage 105',105,770]]},
-    {k:'afs', n:'AFS', c:'#93c5fd', w:[['Enduro 800',94,800],['Enduro 900',99.4,900],['Enduro 1000',105,1000],['Enduro 1100',110,1100],['Enduro 1300',119,1300],
-      ['Enduro GLT 1600',132.3,1600],['HA Ultra 750',106,750],['HA Ultra 900',112,900]]},
-    {k:'ind', n:'Indiana', c:'#2dd4bf', w:[['Dolphin S',82.7,720],['Dolphin M',92.5,900],['Dolphin L',101.3,1080],['Dolphin XL',109.4,1260],
-      ['Marlin S',79.5,840],['Marlin M',86,990],['Marlin L',92.5,1140],['Marlin XL',102,1390],
-      ['Barracuda S',75,535],['Barracuda M',95,850],['Barracuda L',105,1050],['Barracuda L+',116.6,1252],['Barracuda XL',132,1600],
-      ['Condor S',110,1362],['Condor M',126,1737],['Condor XL',169.6,2274],['Manta XL',139.6,2047]]},
-    {k:'fone', n:'F-One', c:'#e2e8f0', w:[['Sushi 740',75.5,740],['Sushi 820',79.5,820],['Sushi 920',84,920],['Sushi 1020',88.5,1020],
-      ['Eagle 790',86.5,790],['Eagle 890',92.5,890],['Eagle 990',97,990],['Eagle 1090',102,1090],['Eagle 1190',106,1190],['Eagle 1290',110.5,1290],
-      ['Eagle X 800',98,800],['Eagle X 900',104,900],['Eagle X 1000',109.5,1000],
-      ['SK8 750',77.5,750],['SK8 850',82.5,850],['SK8 950',87,950],['SK8 1050',91.5,1050],['SK8 1150',96,1150],
-      ['Seven Seas 1100',94,1100],['Seven Seas 1200',98,1200],['Seven Seas 1300',102,1300],['Seven Seas 1400',105.5,1400],['Seven Seas 1500',109.5,1500],['Seven Seas 1600',113,1600],
-      ['Jam 1400',120,1400],['Jam 1600',128,1600],['Jam 1900',140,1900]]}
-  ];
+  const ATL_BRANDS = window.FOIL_WINGS || [];   // base partagée : ailes.js
   // 8 familles d'ailes pour TON poids / niveau / vague. Ordre de priorité : trop petite → puis maniable × endurante.
   // Couleurs : palette de référence (thème sombre) vérifiée au validateur — chaque paire de zones VOISINES passe
   // (daltonisme ΔE ≥ 8, vision normale ≥ 15). « école » = ni l'un ni l'autre → gris neutre. Noms posés sur les zones.
