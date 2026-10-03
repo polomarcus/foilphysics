@@ -193,6 +193,15 @@
   .win-tip{position:absolute; pointer-events:none; background:rgba(15,23,42,.96); border:1px solid var(--line); border-radius:8px; padding:6px 9px;
     font-size:.7rem; line-height:1.45; color:#cbd5e1; text-align:left; white-space:nowrap; z-index:5; box-shadow:0 4px 14px rgba(0,0,0,.4);}
   .win-tip b{color:var(--txt);} .win-tip .tt-h{font-weight:800; color:var(--txt); margin-bottom:2px;} .win-tip .tt-c{color:var(--muted); font-size:.64rem; margin-top:2px;}
+  .atl-brands{display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin:4px 0 10px;}
+  .atl-brands button{display:inline-flex; align-items:center; gap:6px; background:var(--panel-2); border:1px solid var(--line); color:var(--muted);
+    border-radius:999px; padding:5px 12px; font:inherit; font-size:.8rem; font-weight:700; cursor:pointer;}
+  .atl-brands button i{width:10px; height:10px; border-radius:50%; border:1.5px solid #0f172a; opacity:.35;}
+  .atl-brands button.on{color:var(--txt); border-color:#64748b;} .atl-brands button.on i{opacity:1;}
+  .atl-fam{display:flex; flex-wrap:wrap; justify-content:center; gap:4px 14px; font-size:.78rem; font-weight:700; color:var(--txt); margin:0 0 8px; min-height:0;}
+  .atl-fam i{display:inline-block; width:10px; height:10px; border-radius:50%; border:1.5px solid #0f172a; margin-right:5px; vertical-align:-1px;}
+  .atl-box{position:relative; max-width:900px; margin:0 auto; background:var(--panel-2); border-radius:12px; padding:8px;}
+  #atl-cv{display:block; width:100%; aspect-ratio:600/380; cursor:crosshair; touch-action:pan-y;}
   .win-leg{display:flex; flex-wrap:wrap; justify-content:center; gap:3px 12px; font-size:.68rem; color:var(--muted); margin:4px 0 6px;}
   .win-leg i{display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px; vertical-align:-1px;}
   .win-leg i.hatch{background:repeating-linear-gradient(135deg, rgba(148,163,184,.35) 0 1px, transparent 1px 4px);}
@@ -549,6 +558,16 @@
 
   </section>
 
+  <!-- 🗺️ ATLAS : toutes les ailes sur la carte maniable × endurante -->
+  <section id="atlas" class="a-in">
+    <h3 data-i18n="atl-h3">🗺️ Toutes les ailes sur la carte</h3>
+    <p class="lede" data-i18n="atl-lede">Calculée pour <b>ton poids, ton niveau et la vague</b> choisis plus haut. Survole un point pour ses chiffres, clique une aile pour l'essayer.</p>
+    <div class="atl-brands" id="atl-brands"></div>
+    <div class="atl-fam" id="atl-fam"></div>
+    <div class="atl-box"><canvas id="atl-cv" aria-hidden="true"></canvas><div class="win-tip" id="atl-tip" hidden></div></div>
+    <div class="win-leg" id="atl-leg"></div>
+  </section>
+
   <!-- TECHNIQUE -->
   <section id="tech" class="a-in">
     <h3 data-i18n="tech-h3">🎯 Le matos aide, la technique fait le carve</h3>
@@ -602,6 +621,8 @@
     'tldr-t':'For tight turns: <b>short span</b> + <b>small area</b> + <b>the right stab</b>.',
     'tldr-s':'Roll resistance ≈ <b>area × span²</b> — a wing 20% shorter flips ~1.5× faster. The exact opposite of long distance.',
     'sim-h3':'🎛️ Compare the wings',
+    'atl-h3':'🗺️ All the wings on the map',
+    'atl-lede':'Computed for <b>your weight, your level and the wave</b> chosen above. Hover a point for its numbers, click a wing to try it.',
     'sim-lede':'Pick a <b>real preset</b> or play the sliders — everything updates live. The <b>💡 Explanations</b> button unfolds the physics behind each score.',
     'pg-ref':'📏 Glide reference','p-ld':'long distance<small>140 cm · 1,900 cm²</small>',
     'l-b':'Span','l-s':'Area','l-fus':'Fuselage','l-stab':'Stab','l-kg':'🧍 Your weight','l-kg-note':'· drives glide, endurance &amp; takeoff',
@@ -1587,17 +1608,18 @@
   // 🗺️ La fenêtre « fun + endurant » : chaque point = une aile (envergure × surface).
   // Ailes d'allongement 7 à 13 seulement. 🎉 tu carves à fond = maniabilité ≥ 45 (surface × envergure² ≤ 18,3) · 🔋 tu tiens = session ≥ 30 min (ton poids, ton niveau,
   // ta vague, ton stab). Le calcul de la grille est mis en cache : seuls poids / niveau / vague / stab / fuselage le changent.
-  const WIN = {key:'', g:null, B0:80, B1:140, S0:700, S1:1700, DB:1, DS:20};
-  function winGrid(kg, H){
+  const WIN = {key:'', g:null, B0:80, B1:140, S0:700, S1:1700, DB:1, DS:20, AR0:7, AR1:13};   // ailes de surf / carve réalistes
+  function winGrid(kg, H, C){
+    C = C || WIN;
     const key = [kg, H, $('i-lvl') ? $('i-lvl').value : 2, $('i-stab').value, $('i-fus').value].join('|');
-    if(WIN.key === key) return WIN.g;
+    if(C.key === key) return C.g;
     const g = [];
-    for(let b = WIN.B0; b <= WIN.B1; b += WIN.DB) for(let S = WIN.S0; S <= WIN.S1; S += WIN.DS){
-      const ar = b*b/S; if(ar < 7 || ar > 13) continue;   // ailes de surf / carve réalistes
+    for(let b = C.B0; b <= C.B1; b += C.DB) for(let S = C.S0; S <= C.S1; S += C.DS){
+      const ar = b*b/S; if(ar < C.AR0 || ar > C.AR1) continue;   // hors gamme : non calculé (hachuré)
       const fun = S*b*b/1e6 <= 18.3, ses = waveSession(b, S, kg, H), end = ses.unlimited || ses.min >= 30;
       g.push([b, S, fun, end]);
     }
-    WIN.key = key; WIN.g = g; return g;
+    C.key = key; C.g = g; return g;
   }
   // Le point vert le plus proche de ton aile → « il te faudrait +3 cm d'envergure · −100 cm² »
   function winHint(both, b, S){
@@ -1752,6 +1774,169 @@
     });
   })();
   addEventListener('resize', () => { placeWin(); if(WIN.args) drawWin(...WIN.args); });
+
+  // 🗺️ ATLAS — la même carte en grand, avec les vraies ailes (filtre par marque). Plage large : du carve au planeur.
+  const ATL = {key:'', g:null, B0:70, B1:200, S0:450, S1:2500, DB:2, DS:25, AR0:6, AR1:24, solo:null};
+  const ATL_BRANDS = [
+    {k:'alp', n:'Alpine Foil', c:'#f472b6', w:[['RSX Carve 700',89,700],['RSX Carve 820',95.8,820],['RSX Carve 960',103,960],['RSX Carve 1100',112.2,1100],
+      ['RSX 860',106,860],['RSX 1060',116.6,1063],['RSX 1260',125.1,1260],['RSX 1400 G2',132,1400],['RSX 1540',139.9,1540],['RSX Ultra 930',126.5,930],
+      ['DW 840',81,840],['DW 980',93,980],['DW 1180',94,1180],['DW 1370',109,1370],['DK 1240',124,1790],['Regata 850',88,850],['Regata 1100',100,1100]]},
+    {k:'axs', n:'Axis', c:'#fb923c', w:[['Surge 740',74,590],['Surge 780',78,643],['Surge 830',83,728],['Surge 890',89,835],['Surge 950',95,949],['Surge 1010',101,1076],
+      ['Surge 1080',108,1142],['Surge 1150',115,1199],['Surge 1240',124,1340],['Fireball 880',88,604],['Fireball 940',94,689],['Fireball 1000',100,773],['Fireball 1070',107,877],['Fireball 1160',116,996],
+      ['Fireball 1250',125,1133],['Fireball 1350',135,1309],['Fireball 1500',150,1313],['Fireball 1750',175,1525],
+      ['Tempo 890',89,495],['Tempo 920',92,528],['Tempo 960',96,578],['Tempo 1020',102,653],['Tempo 1090',109,746]]},
+    {k:'gng', n:'GONG', c:'#fde047', w:[['Sirus L',116,1450],['Sirus XL',136,1700],['Sirus XXL',156,2000],['Sirus 3XL',186,2400],
+      ['Ultra Trail L',133,1000],['Ultra Trail XXL',162,1500],['Ultra Trail 3XL',175,1750],['Ultra Trail 4XL',188,2000],
+      ['Hypertrail S',89,700],['Hypertrail M',98,850],['Hypertrail L',107,1000],['Hypertrail XL',119,1250],['Hypertrail XXL',131,1500],['Hypertrail 3XL',141,1750],
+      ['Veloce DW XS',92,600],['Veloce DW S',103,750],['Veloce DW M',113,900],['Veloce DW L',122,1050],['Veloce DW XL',130,1200],
+      ['Veloce XTR XS',101,600],['Veloce XTR S',109,700],['Veloce XTR M',116,800],['Veloce XTR L',123,900]]},
+    {k:'tak', n:'Takoon', c:'#22d3ee', w:[['Pump 1500',123,1500],['Pump 1700',133,1700],['Pump 1900',141,1900],['Swell 1050',110,1050],['Flare 850',84,850],['Flare 950',89,950],['Flare 1050',95,1050],['Flare 1200',101.5,1200],['Flare 1400',110,1400],['Flow 600',80,600],['Flow 700',86.5,700],['Flow 800',92,800],['Flow 900',98,900],['Flow 1050',105,1050],['Flow 1200',112,1200],['Pump Pro 950',112,950],['Pump Pro 1150',122,1150],['Pump Pro 1250',128,1250],['Pump Pro 1350',133,1350],['Pump Pro 1550',142,1550],
+      ['Pump Pro 1750',151,1750],['Pump Pro 1950',159,1950],['Pump Pro 2300',173.5,2300],['Extreme 1400',157,1400],['Extreme 1600',173,1600],['Extreme 1800',190,1800]]},
+    {k:'sab', n:'Sabfoil', c:'#a3e635', w:[['Leviathan 950',95,1300],['Leviathan 1750',175,2400],['Blackbird 1300',128,1330],['Blackbird 1400',138,1549],['Blackbird FreeMove 1155',115.5,1345]]},
+    {k:'ket', n:'Ketos', c:'#f87171', w:[['166 LD',166,1466],['Kobun 99',99,777],['Kobun 111',111,960],['Kobun 122',122,1122],['Kobun 133',133,1340],
+      ['Evo 133',133,1770],['Karve 750',83.5,750],['Karve 950',94,950],['Karve 1250 V2',108,1238],['Karve 1450',116,1450],['Rage 100',100,600],['Rage 105',105,770]]},
+    {k:'ind', n:'Indiana', c:'#2dd4bf', w:[['Dolphin S',82.7,720],['Dolphin M',92.5,900],['Dolphin L',101.3,1080],['Dolphin XL',109.4,1260],
+      ['Marlin S',79.5,840],['Marlin M',86,990],['Marlin L',92.5,1140],['Marlin XL',102,1390],
+      ['Barracuda S',75,535],['Barracuda M',95,850],['Barracuda L',105,1050],['Barracuda L+',116.6,1252],['Barracuda XL',132,1600],
+      ['Condor S',110,1362],['Condor M',126,1737],['Condor XL',169.6,2274],['Manta XL',139.6,2047]]},
+    {k:'fone', n:'F-One', c:'#e2e8f0', w:[['Sushi 740',75.5,740],['Sushi 820',79.5,820],['Sushi 920',84,920],['Sushi 1020',88.5,1020],
+      ['Eagle 790',86.5,790],['Eagle 890',92.5,890],['Eagle 990',97,990],['Eagle 1090',102,1090],['Eagle 1190',106,1190],['Eagle 1290',110.5,1290],
+      ['Eagle X 800',98,800],['Eagle X 900',104,900],['Eagle X 1000',109.5,1000],
+      ['SK8 750',77.5,750],['SK8 850',82.5,850],['SK8 950',87,950],['SK8 1050',91.5,1050],['SK8 1150',96,1150],
+      ['Seven Seas 1100',94,1100],['Seven Seas 1200',98,1200],['Seven Seas 1300',102,1300],['Seven Seas 1400',105.5,1400],['Seven Seas 1500',109.5,1500],['Seven Seas 1600',113,1600],
+      ['Jam 1400',120,1400],['Jam 1600',128,1600],['Jam 1900',140,1900]]}
+  ];
+  function atlBrandsUI(){
+    const box = $('atl-brands'); if(!box) return;
+    // un clic = cette marque seule (avec les noms des ailes) · « Toutes » = tout réafficher
+    box.innerHTML = '<button type="button" data-k="" class="'+(ATL.solo ? '' : 'on')+'">'+t('Toutes','All')+'</button>'
+      + ATL_BRANDS.map(B => '<button type="button" data-k="'+B.k+'" class="'+(!ATL.solo || ATL.solo === B.k ? 'on' : '')+'"><i style="background:'+B.c+'"></i>'+B.n+'</button>').join('');
+    box.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => {
+      const k = bt.dataset.k; ATL.solo = !k || ATL.solo === k ? null : k; atlBrandsUI(); if(ATL.args) drawAtlas(...ATL.args); }));
+  }
+  // repère logique ≈ largeur réelle (380-600) : sur téléphone les textes gardent une taille lisible
+  function atlGeo(w){ const W = Math.max(380, Math.min(600, w)), H = Math.round(W*380/600); return {W, H, X0:52, X1:W - 44, Y0:12, Y1:H - 40}; }
+  function drawAtlas(b, S, kg, H){
+    ATL.args = [b, S, kg, H];
+    if(ATL.lang !== LANG){ ATL.lang = LANG; atlBrandsUI(); }   // « Toutes / All » suit la langue
+    const cv = $('atl-cv'); if(!cv) return;
+    const w = cv.clientWidth || 600, G = atlGeo(w), dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = Math.round(w*dpr); cv.height = Math.round(w*dpr*G.H/G.W);
+    const c = cv.getContext('2d'), k = cv.width/G.W; c.setTransform(k,0,0,k,0,0); c.clearRect(0,0,G.W,G.H);
+    const {X0, X1, Y0, Y1} = G;
+    const px = v => X0 + (v - ATL.B0)/(ATL.B1 - ATL.B0)*(X1 - X0), py = v => Y1 - (v - ATL.S0)/(ATL.S1 - ATL.S0)*(Y1 - Y0);
+    ATL.geo = Object.assign({px, py, kg, H}, G);
+    // fond hachuré (hors gamme), puis les zones
+    c.save(); c.beginPath(); c.rect(X0, Y0, X1 - X0, Y1 - Y0); c.clip();
+    c.strokeStyle = 'rgba(148,163,184,.22)'; c.lineWidth = 1;
+    for(let d = -(Y1 - Y0); d < X1 - X0; d += 7){ c.beginPath(); c.moveTo(X0 + d, Y1); c.lineTo(X0 + d + (Y1 - Y0), Y0); c.stroke(); }
+    const cw = (X1 - X0)/(ATL.B1 - ATL.B0)*ATL.DB + 1.2, ch = (Y1 - Y0)/(ATL.S1 - ATL.S0)*ATL.DS + 1.2;
+    winGrid(kg, H, ATL).forEach(([bb, ss, fun, end]) => {
+      c.fillStyle = fun && end ? 'rgb(52,211,153)' : fun ? 'rgb(124,90,184)' : end ? 'rgb(37,112,160)' : 'rgb(51,62,84)';
+      c.fillRect(px(bb) - cw/2, py(ss) - ch/2, cw, ch);
+    });
+    // lignes de même maniabilité
+    c.setLineDash([3, 3]); c.strokeStyle = 'rgba(255,255,255,.4)';
+    const lab = [];
+    [0, 20, 45, 70].forEach(m => {
+      const K = (30 - m*0.26)*1e6; c.beginPath();
+      for(let bb = ATL.B0, f = 1; bb <= ATL.B1; bb += 1, f = 0){ const x = px(bb), y = py(K/(bb*bb)); f ? c.moveTo(x, y) : c.lineTo(x, y); }
+      c.stroke();
+      const sR = K/(ATL.B1*ATL.B1); lab.push(sR >= ATL.S0 ? [X1 + 3, py(Math.min(sR, ATL.S1)), m] : [px(Math.sqrt(K/ATL.S0)) + 3, Y1 - 4, m]);
+    });
+    c.restore();
+    c.font = '800 10px system-ui, sans-serif'; c.fillStyle = '#e2e8f0'; c.textAlign = 'left';
+    lab.forEach(([x, y, m]) => c.fillText(m, x, y + 3));
+    // axes
+    c.font = '600 10px system-ui, sans-serif'; c.fillStyle = '#94a3b8'; c.textAlign = 'center';
+    for(let v = 80; v <= 200; v += 20) c.fillText(v, px(v), Y1 + 13);
+    c.fillText(t('envergure (cm) →','span (cm) →'), (X0 + X1)/2, Y1 + 28);
+    c.textAlign = 'right';
+    for(let v = 600; v <= 2400; v += 300) c.fillText(num(v), X0 - 5, py(v) + 3);
+    c.save(); c.translate(12, (Y0 + Y1)/2); c.rotate(-Math.PI/2); c.textAlign = 'center'; c.fillText(t('surface (cm²) →','area (cm²) →'), 0, 0); c.restore();
+    c.save(); c.translate(G.W - 6, (Y0 + Y1)/2); c.rotate(-Math.PI/2); c.textAlign = 'center'; c.font = '800 10px system-ui, sans-serif'; c.fillStyle = '#e2e8f0';
+    c.fillText(t('maniabilité','maneuverability'), 0, 0); c.restore();
+    // les ailes
+    const act = ATL_BRANDS.filter(B => !ATL.solo || ATL.solo === B.k), few = !!ATL.solo, pts = [];
+    // marque seule : une couleur par gamme (nom sans la taille : « RSX Carve 1100 » → « RSX Carve »)
+    const fam = n => n.replace(/\s+(\d[\d.]*|X{0,2}[SML]\+?|\dXL)(\s+[GV]\d)?$/, ''), famCol = {};
+    const PAL = ['#f472b6', '#b7793f', '#fde047', '#22d3ee', '#a3e635', '#f87171', '#ffffff', '#fb923c', '#818cf8', '#2dd4bf'];
+    act.forEach(B => B.w.forEach(([n, bb, ss]) => {
+      if(bb < ATL.B0 || bb > ATL.B1 || ss < ATL.S0 || ss > ATL.S1) return;
+      const f = fam(n); if(few && !(f in famCol)) famCol[f] = PAL[Object.keys(famCol).length % PAL.length];
+      const x = px(bb), y = py(ss); pts.push({n: B.n+' '+n, short: n, b: bb, S: ss, x, y});
+      c.beginPath(); c.arc(x, y, 5, 0, 7); c.fillStyle = few ? famCol[f] : B.c; c.fill(); c.lineWidth = 1.5; c.strokeStyle = '#0f172a'; c.stroke();
+    }));
+    const fl = $('atl-fam');
+    if(fl) fl.innerHTML = few ? Object.entries(famCol).map(([f, col]) => '<span><i style="background:'+col+'"></i>'+f+'</span>').join('') : '';
+    // noms (marque seule) : à droite du point, sinon à gauche ; s'il chevauche un nom ou un point, il reste visible au survol
+    if(few){
+      c.font = '700 9px system-ui, sans-serif'; c.textAlign = 'left'; c.lineWidth = 3; c.lineJoin = 'round';
+      const boxes = pts.map(p => [p.x - 5, p.y - 5, 10, 10]);
+      const hit = (x0, y0, w0) => boxes.some(r => x0 < r[0] + r[2] && x0 + w0 > r[0] && y0 - 5 < r[1] + r[3] && y0 + 5 > r[1]);
+      pts.forEach(p => {
+        const tw = c.measureText(p.short).width;
+        // 4 places essayées : droite, gauche, dessus, dessous
+        const spots = [[p.x + 7, p.y], [p.x - 7 - tw, p.y], [p.x - tw/2, p.y - 11], [p.x - tw/2, p.y + 12]];
+        const ok = spots.find(([lx, ly]) => lx >= X0 - 4 && lx + tw <= X1 + 4 && !hit(lx, ly, tw));
+        if(!ok) return;
+        const [lx, ly] = ok;
+        boxes.push([lx, ly - 5, tw, 10]);
+        c.strokeStyle = 'rgba(15,23,42,.9)'; c.strokeText(p.short, lx, ly + 3); c.fillStyle = '#f1f5f9'; c.fillText(p.short, lx, ly + 3);
+      });
+    }
+    ATL.pts = pts;
+    const lg = $('atl-leg');
+    if(lg) lg.innerHTML = [['rgb(124,90,184)', t('tu carves à fond (maniabilité ≥ 45)','full carve (maneuverability ≥ 45)')],
+        ['rgb(37,112,160)', t('tu tiens la session (≥ 30 min)','you last the session (≥ 30 min)')], ['rgb(52,211,153)', t('les deux','both')],
+        ['rgb(51,62,84)', t('ni l\'un ni l\'autre','neither')]]
+      .map(([col, l]) => '<span><i style="background:'+col+'"></i>'+l+'</span>').join('')
+      + '<span><i style="background:none; border-top:1.5px dashed rgba(255,255,255,.6); height:0; width:14px; vertical-align:3px"></i>'+t('même maniabilité (chiffre à droite)','same maneuverability (number on the right)')+'</span>'
+      + '<span><i class="hatch"></i>'+t('hors gamme (AR < 6 ou > 24)','out of range (AR < 6 or > 24)')+'</span>'
+      + '<span>'+kg+' kg · '+t(riderLvl().fr, riderLvl().en)+' · '+t('vague','wave')+' '+num(H, H % 1 ? 2 : 0).replace(/0$/,'')+' m</span>';
+  }
+  (function(){
+    const cv = $('atl-cv'), tip = $('atl-tip'); if(!cv || !tip) return;
+    atlBrandsUI();
+    const pick = e => {
+      const g = ATL.geo; if(!g) return null;
+      const r = cv.getBoundingClientRect(), x = (e.clientX - r.left)*g.W/r.width, y = (e.clientY - r.top)*g.W/r.width;
+      if(x < g.X0 || x > g.X1 || y < g.Y0 || y > g.Y1) return null;
+      let wing = null, dm = 81;
+      (ATL.pts || []).forEach(p => { const d = (p.x - x)**2 + (p.y - y)**2; if(d < dm){ dm = d; wing = p; } });
+      const b = wing ? wing.b : Math.round(ATL.B0 + (x - g.X0)/(g.X1 - g.X0)*(ATL.B1 - ATL.B0));
+      const S = wing ? wing.S : Math.round((ATL.S0 + (g.Y1 - y)/(g.Y1 - g.Y0)*(ATL.S1 - ATL.S0))/10)*10;
+      return {b, S, wing, x: e.clientX - r.left, y: e.clientY - r.top, w: r.width};
+    };
+    const show = e => {
+      const p = pick(e); if(!p){ tip.hidden = true; return; }
+      const g = ATL.geo, ar = p.b*p.b/p.S, man = Math.max(0, Math.min(100, Math.round(100*(30 - p.S*p.b*p.b/1e6)/26)));
+      const ses = waveSession(p.b, p.S, g.kg, g.H), sesTxt = ses.unlimited ? t('sans limite','no limit') : '~'+Math.max(1, Math.round(ses.min))+' min';
+      const inSl = p.b >= +$('i-b').min && p.b <= +$('i-b').max && p.S >= +$('i-s').min && p.S <= +$('i-s').max;
+      tip.innerHTML = (p.wing ? '<div class="tt-h">'+p.wing.n+'</div>' : '')
+        + '<div class="'+(p.wing ? 'tt-s' : 'tt-h')+'">'+p.b+' cm · '+num(p.S)+' cm² · AR '+num(ar, 1)+'</div>'
+        + t('maniabilité','maneuverability')+' <b>'+man+'</b> · '+t('glisse','glide')+' <b>'+glideScore(p.b, p.S, g.kg)+'</b><br>'
+        + t('vole dès','flies from')+' <b>~'+liftoffKmh(p.S, g.kg)+' km/h</b> · '+t('session','session')+' <b>'+sesTxt+'</b>'
+        + (p.wing ? '<div class="tt-c">'+(inSl ? t('clic : l\'essayer dans le simulateur','click: try it in the simulator') : t('hors des curseurs du simulateur','outside the simulator sliders'))+'</div>' : '');
+      tip.hidden = false;
+      const tw = tip.offsetWidth, th = tip.offsetHeight;
+      tip.style.left = Math.max(0, Math.min(p.w - tw, p.x + 14 + tw > p.w ? p.x - tw - 14 : p.x + 14))+'px';
+      tip.style.top = Math.max(0, p.y - th - 12)+'px';
+    };
+    cv.addEventListener('pointermove', show);
+    cv.addEventListener('pointerdown', show);
+    cv.addEventListener('pointerleave', () => { tip.hidden = true; });
+    cv.addEventListener('click', e => {
+      const p = pick(e); if(!p || !p.wing) return;
+      const ib = $('i-b'), is = $('i-s');
+      if(p.b < +ib.min || p.b > +ib.max || p.S < +is.min || p.S > +is.max) return;
+      ib.value = Math.round(p.b); is.value = p.S;
+      document.querySelectorAll('.preset-btn.on').forEach(x => x.classList.remove('on'));
+      ib.dispatchEvent(new Event('input', {bubbles:true})); is.dispatchEvent(new Event('input', {bubbles:true}));
+      const sc = document.querySelector('.showcase'); window.scrollTo({top: sc.getBoundingClientRect().top + scrollY - 70, behavior:'smooth'});
+    });
+    addEventListener('resize', () => { if(ATL.args) drawAtlas(...ATL.args); });
+  })();
   function render(){
     $('v-b').textContent = $('i-b').value;
     $('v-s').textContent = $('i-s').value;
@@ -1850,6 +2035,7 @@
       + '<div class="wi-d xpl">'+t('Une vague = ~30 s de ride, puis ~200 m jusqu\'à la suivante, qui vient vers toi (~','One wave = ~30 s of riding, then ~200 m to the next one, which comes towards you (~')+Math.round(ses.tc)+' s · ~'+Math.round(ses.P/10)*10+' W). '
       + t('Estimation pour un rider '+riderLvl().fr+' (règle « ton niveau » à côté du poids).','Estimate for your level: '+riderLvl().en+' (set “your level” next to the weight).')+'</div>';
     drawWin(b, S, kg, H);
+    drawAtlas(b, S, kg, H);
     const funMe = agility >= 45, endMe = ses.unlimited || ses.min >= 30;
     const ms = $('mini-score');
     if(ms) ms.innerHTML = '<span><b style="color:hsl('+Math.round(agility*1.2)+',68%,55%)">'+agility+'</b> '+t('maniabilité','maneuverability')+'</span>'
