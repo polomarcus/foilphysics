@@ -591,7 +591,7 @@
   <!-- 🗺️ ATLAS : toutes les ailes sur la carte maniable × endurante -->
   <section id="atlas" class="a-in">
     <h3 data-i18n="atl-h3"><a class="h-anchor" href="#atlas">🗺️ Toutes les ailes sur la carte</a></h3>
-    <p class="lede" data-i18n="atl-lede">Calculée pour <b>ton poids, ton niveau et la vague</b> choisis plus haut. Survole un point pour ses chiffres, clique une aile pour l'essayer.</p>
+    <p class="lede" data-i18n="atl-lede">🧍 <b>La carte s'adapte à toi</b> : les zones bougent avec <b>ton poids</b>, <b>ton niveau</b> et <b>la taille de la houle</b> — règle-les juste en dessous et regarde les frontières glisser. Survole un point pour ses chiffres, clique une aile pour l'essayer.</p>
     <div class="rc-row" id="atl-rider"></div>
     <div class="atl-brands" id="atl-brands"></div>
     <div class="atl-fam" id="atl-fam"></div>
@@ -655,7 +655,7 @@
     'tldr-s':'Roll resistance ≈ <b>area × span²</b> — a wing 20% shorter flips ~1.5× faster. The exact opposite of long distance.',
     'sim-h3':'🎛️ Compare the wings',
     'atl-h3':'<a class="h-anchor" href="#atlas">🗺️ All the wings on the map</a>',
-    'atl-lede':'Computed for <b>your weight, your level and the wave</b> chosen above. Hover a point for its numbers, click a wing to try it.',
+    'atl-lede':'🧍 <b>The map adapts to you</b>: the zones move with <b>your weight</b>, <b>your level</b> and <b>the swell size</b> — set them just below and watch the boundaries shift. Hover a point for its numbers, click a wing to try it.',
     'sim-lede':'Pick a <b>real preset</b> or play the sliders — everything updates live. The <b>💡 Explanations</b> button unfolds the physics behind each score.',
     'pg-ref':'📏 Glide reference','p-ld':'long distance<small>140 cm · 1,900 cm²</small>',
     'l-b':'Span','l-s':'Area','l-fus':'Fuselage','l-stab':'Stab','l-kg':'🧍 Your weight','l-kg-note':'· drives glide, endurance &amp; takeoff',
@@ -1932,11 +1932,22 @@
     const cellCat = new Map(), catCells = {};
     winGrid(kg, H, ATL).forEach(([bb, ss, fun, end]) => {
       const k = atlCat(bb, ss, kg, fun, end);
-      c.fillStyle = ATL_CAT[k].c;
-      c.fillRect(px(bb) - cw/2, py(ss) - ch/2, cw, ch);
       cellCat.set(Math.round((bb - ATL.B0)/ATL.DB)+','+Math.round((ss - ATL.S0)/ATL.DS), k);
       (catCells[k] = catCells[k] || []).push([px(bb), py(ss)]);
     });
+    // ZONES FLOUES : chaque petit carré prend la couleur MOYENNE des zones autour (± ~3 cm, ± ~60 cm²) → les frontières
+    // se fondent au lieu de faire des marches : une aile près d'une frontière est vraiment « entre deux » (le modèle
+    // n'est pas précis au centimètre). Le hachuré (hors gamme) n'entre pas dans la moyenne.
+    const rgb = {}; Object.entries(ATL_CAT).forEach(([k, C]) => { rgb[k] = [1, 3, 5].map(i => parseInt(C.c.slice(i, i + 2), 16)); });
+    const ci = x => Math.round(((x - X0)/(X1 - X0)*(ATL.B1 - ATL.B0))/ATL.DB), cj = y => Math.round(((Y1 - y)/(Y1 - Y0)*(ATL.S1 - ATL.S0))/ATL.DS);
+    const FZ = 3;
+    for(let x = X0; x < X1; x += FZ) for(let y = Y0; y < Y1; y += FZ){
+      const i0 = ci(x + FZ/2), j0 = cj(y + FZ/2);
+      if(!cellCat.has(i0+','+j0)) continue;
+      let r = 0, g = 0, bl = 0, n = 0;
+      for(let di = -2; di <= 2; di++) for(let dj = -3; dj <= 3; dj++){ const k = cellCat.get((i0 + di)+','+(j0 + dj)); if(!k) continue; const q = rgb[k]; r += q[0]; g += q[1]; bl += q[2]; n++; }
+      c.fillStyle = 'rgb('+Math.round(r/n)+','+Math.round(g/n)+','+Math.round(bl/n)+')'; c.fillRect(x, y, FZ + .6, FZ + .6);
+    }
     const catAt = (x, y) => cellCat.get(Math.round(((x - X0)/(X1 - X0)*(ATL.B1 - ATL.B0))/ATL.DB)+','+Math.round(((Y1 - y)/(Y1 - Y0)*(ATL.S1 - ATL.S0))/ATL.DS));
     // lignes de même maniabilité
     c.setLineDash([6, 4]); c.lineWidth = 1.4; c.strokeStyle = 'rgba(255,255,255,.7)';   // maniabilité : tirets blancs
