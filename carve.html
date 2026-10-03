@@ -180,7 +180,7 @@
   .wi-d{font-size:.72rem; color:var(--muted); text-align:center; margin-top:2px;}
   .win-map{margin:2px 0 8px; padding-top:8px; border-top:1px solid var(--line);}
   .vout .win-map{margin:16px 0 0; padding-top:12px;}
-  #win-cv{display:block; width:100%; aspect-ratio:360/214;}   /* taille « téléphone » partout : sinon textes énormes sur ordi */
+  #win-cv{display:block; width:100%; aspect-ratio:360/228;}   /* taille « téléphone » partout : sinon textes énormes sur ordi */
   /* Mini-barre : le résultat suit les réglages quand le score est hors écran */
   .mini-score{position:fixed; left:50%; bottom:14px; transform:translateX(-50%); z-index:60; display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:4px 14px;
     max-width:calc(100% - 24px); padding:8px 16px; border-radius:999px; background:rgba(15,23,42,.96); border:1px solid var(--carve); color:var(--txt);
@@ -193,6 +193,8 @@
   .win-tip{position:absolute; pointer-events:none; background:rgba(15,23,42,.96); border:1px solid var(--line); border-radius:8px; padding:6px 9px;
     font-size:.7rem; line-height:1.45; color:#cbd5e1; text-align:left; white-space:nowrap; z-index:5; box-shadow:0 4px 14px rgba(0,0,0,.4);}
   .win-tip b{color:var(--txt);} .win-tip .tt-h{font-weight:800; color:var(--txt); margin-bottom:2px;} .win-tip .tt-c{color:var(--muted); font-size:.64rem; margin-top:2px;}
+  #atlas{scroll-margin-top:70px;}   /* lien direct : simulator.foil-house.com/carve.html#atlas */
+  .h-anchor{color:inherit; text-decoration:none;} .h-anchor:hover::after{content:' #'; color:var(--muted);}
   .atl-brands{display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin:4px 0 10px;}
   .atl-brands button{display:inline-flex; align-items:center; gap:6px; background:var(--panel-2); border:1px solid var(--line); color:var(--muted);
     border-radius:999px; padding:5px 12px; font:inherit; font-size:.8rem; font-weight:700; cursor:pointer;}
@@ -200,6 +202,9 @@
   .atl-brands button.on{color:var(--txt); border-color:#64748b;} .atl-brands button.on i{opacity:1;}
   .atl-fam{display:flex; flex-wrap:wrap; justify-content:center; gap:4px 14px; font-size:.78rem; font-weight:700; color:var(--txt); margin:0 0 8px; min-height:0;}
   .atl-fam i{display:inline-block; width:10px; height:10px; border-radius:50%; border:1.5px solid #0f172a; margin-right:5px; vertical-align:-1px;}
+  .atl-cats{flex:0 0 100%; display:grid; grid-template-columns:minmax(0, 600px); justify-content:center; gap:4px; margin:4px 0 8px; text-align:left;}   /* une ligne par couleur */
+  .atl-cats div{font-size:.8rem; color:var(--txt); line-height:1.35;} .atl-cats div i{width:12px; height:12px; border-radius:3px;}
+  .atl-cats b{font-weight:800;} .atl-cats span{color:var(--muted);}
   .atl-box{position:relative; max-width:900px; margin:0 auto; background:var(--panel-2); border-radius:12px; padding:8px;}
   #atl-cv{display:block; width:100%; aspect-ratio:600/400; cursor:crosshair; touch-action:pan-y;}
   .win-leg{display:flex; flex-wrap:wrap; justify-content:center; gap:3px 12px; font-size:.68rem; color:var(--muted); margin:4px 0 6px;}
@@ -560,7 +565,7 @@
 
   <!-- 🗺️ ATLAS : toutes les ailes sur la carte maniable × endurante -->
   <section id="atlas" class="a-in">
-    <h3 data-i18n="atl-h3">🗺️ Toutes les ailes sur la carte</h3>
+    <h3 data-i18n="atl-h3"><a class="h-anchor" href="#atlas">🗺️ Toutes les ailes sur la carte</a></h3>
     <p class="lede" data-i18n="atl-lede">Calculée pour <b>ton poids, ton niveau et la vague</b> choisis plus haut. Survole un point pour ses chiffres, clique une aile pour l'essayer.</p>
     <div class="atl-brands" id="atl-brands"></div>
     <div class="atl-fam" id="atl-fam"></div>
@@ -621,7 +626,7 @@
     'tldr-t':'For tight turns: <b>short span</b> + <b>small area</b> + <b>the right stab</b>.',
     'tldr-s':'Roll resistance ≈ <b>area × span²</b> — a wing 20% shorter flips ~1.5× faster. The exact opposite of long distance.',
     'sim-h3':'🎛️ Compare the wings',
-    'atl-h3':'🗺️ All the wings on the map',
+    'atl-h3':'<a class="h-anchor" href="#atlas">🗺️ All the wings on the map</a>',
     'atl-lede':'Computed for <b>your weight, your level and the wave</b> chosen above. Hover a point for its numbers, click a wing to try it.',
     'sim-lede':'Pick a <b>real preset</b> or play the sliders — everything updates live. The <b>💡 Explanations</b> button unfolds the physics behind each score.',
     'pg-ref':'📏 Glide reference','p-ld':'long distance<small>140 cm · 1,900 cm²</small>',
@@ -1633,10 +1638,10 @@
   function drawWin(b, S, kg, H){
     WIN.args = [b, S, kg, H];
     const cv = $('win-cv'); if(!cv) return;
-    const W = 360, Hh = 214, dpr = Math.min(window.devicePixelRatio || 1, 2), w = cv.clientWidth || 320;
+    const W = 360, Hh = 228, dpr = Math.min(window.devicePixelRatio || 1, 2), w = cv.clientWidth || 320;
     cv.width = Math.round(w*dpr); cv.height = Math.round(w*dpr*Hh/W);
     const c = cv.getContext('2d'), k = cv.width/W; c.setTransform(k,0,0,k,0,0); c.clearRect(0,0,W,Hh);
-    const X0 = 40, X1 = 328, Y0 = 10, Y1 = 178;
+    const X0 = 40, X1 = 328, Y0 = 24, Y1 = 192;
     WIN.geo = {X0, X1, Y0, Y1, W, kg, H};
     const px = v => X0 + (v - WIN.B0)/(WIN.B1 - WIN.B0)*(X1 - X0), py = v => Y1 - (v - WIN.S0)/(WIN.S1 - WIN.S0)*(Y1 - Y0);
     const cw = (X1 - X0)/(WIN.B1 - WIN.B0)*WIN.DB + 1.2, ch = (Y1 - Y0)/(WIN.S1 - WIN.S0)*WIN.DS + 1.2;
@@ -1646,14 +1651,16 @@
     c.strokeStyle = 'rgba(148,163,184,.22)'; c.lineWidth = 1;
     for(let d = -(Y1 - Y0); d < X1 - X0; d += 6){ c.beginPath(); c.moveTo(X0 + d, Y1); c.lineTo(X0 + d + (Y1 - Y0), Y0); c.stroke(); }
     c.restore();
+    const present = new Set();
     g.forEach(([bb, ss, fun, end]) => {
-      c.fillStyle = fun && end ? 'rgb(52,211,153)' : fun ? 'rgb(124,90,184)' : end ? 'rgb(37,112,160)' : 'rgb(51,62,84)';   // opaques (pré-mélangés sur le fond) : pas de coutures entre cases
+      const k = atlCat(bb, ss, kg, fun, end); present.add(k);   // mêmes 7 familles et couleurs que la grande carte
+      c.fillStyle = ATL_CAT[k].c;
       c.fillRect(px(bb) - cw/2, py(ss) - ch/2, cw, ch);
-      if(fun && end) both.push([bb, ss]);
+      if(k === 'both') both.push([bb, ss]);
     });
     // lignes de même maniabilité (surface × envergure² constant) — étiquetées sur le bord droit
     c.save(); c.beginPath(); c.rect(X0, Y0, X1 - X0, Y1 - Y0); c.clip();
-    c.setLineDash([3, 3]); c.lineWidth = 1; c.strokeStyle = 'rgba(255,255,255,.45)';
+    c.setLineDash([6, 4]); c.lineWidth = 1.4; c.strokeStyle = 'rgba(255,255,255,.7)';   // maniabilité : tirets blancs
     const isoLab = [];
     [20, 45, 70].forEach(m => {
       const K = (30 - m*0.26)*1e6; c.beginPath(); let last = null;
@@ -1664,6 +1671,15 @@
       // sortie par la droite → chiffre sur le bord droit ; sortie par le bas → chiffre au pied de la courbe
       isoLab.push(sR >= WIN.S0 ? [X1 + 2, py(Math.min(sR, WIN.S1)), m, 'left'] : [px(Math.sqrt(K/WIN.S0)) + 3, Y1 - 3, m, 'left']);
     });
+    // lignes de même allongement — trait fin jaune, chiffre en haut
+    c.setLineDash([]); c.lineWidth = 1; c.strokeStyle = 'rgba(253,230,138,.5)';
+    const arLab = [];
+    [8, 10, 12].forEach(A => {
+      c.beginPath();
+      for(let bb = WIN.B0, f = 1; bb <= WIN.B1; bb += 0.5, f = 0){ const x = px(bb), y = py(bb*bb/A); f ? c.moveTo(x, y) : c.lineTo(x, y); }
+      c.stroke();
+      const bT = Math.sqrt(A*WIN.S1); if(bT <= WIN.B1) arLab.push([px(bT), A]);
+    });
     c.restore();
     c.font = '800 9px system-ui, sans-serif'; c.fillStyle = '#e2e8f0';
     isoLab.forEach(([x, y, m, al]) => { c.textAlign = al; c.fillText(m, x, y + 3); });
@@ -1671,7 +1687,9 @@
     const ys = isoLab.filter(l => l[0] > X1).map(l => l[1]), yc = ys.length ? (Math.min(...ys) + Math.max(...ys))/2 : (Y0 + Y1)/2;
     c.save(); c.translate(W - 5, yc); c.rotate(-Math.PI/2); c.textAlign = 'center'; c.font = '800 9px system-ui, sans-serif'; c.fillStyle = '#e2e8f0';
     c.fillText(t('maniabilité','maneuverability'), 0, 0); c.restore();
-    c.textAlign = 'left'; c.fillStyle = '#94a3b8'; c.font = '700 8px system-ui, sans-serif';
+    c.font = '800 9px system-ui, sans-serif'; c.fillStyle = '#fde68a'; c.textAlign = 'center';
+    arLab.forEach(([x, A]) => c.fillText(A, x, Y0 - 4));
+    c.font = '700 9px system-ui, sans-serif'; c.textAlign = 'left'; c.fillText('AR →', X0, Y0 - 4);
     // axes
     c.font = '600 9px system-ui, sans-serif'; c.fillStyle = '#94a3b8'; c.textAlign = 'center';
     for(let v = 90; v <= 130; v += 10){ c.fillText(v, px(v), Y1 + 11); }
@@ -1679,10 +1697,6 @@
     c.textAlign = 'right';
     for(let v = 800; v <= 1600; v += 200){ c.fillText(num(v), X0 - 4, py(v) + 3); }
     c.save(); c.translate(9, (Y0 + Y1)/2); c.rotate(-Math.PI/2); c.textAlign = 'center'; c.fillText(t('surface (cm²) →','area (cm²) →'), 0, 0); c.restore();
-    // zones : étiquettes directes
-    c.font = '800 10px system-ui, sans-serif'; c.textAlign = 'left';
-    c.fillStyle = '#d8b4fe'; c.fillText(t('🎉 tu carves à fond','🎉 full carve'), px(83), Y1 - 8);
-    c.textAlign = 'right'; c.fillStyle = '#7dd3fc'; c.fillText(t('🔋 tu tiens la session','🔋 you last'), px(139), Y0 + 11);
     // ton aile
     const inB = b >= WIN.B0 && b <= WIN.B1 && S >= WIN.S0 && S <= WIN.S1;
     if(inB){
@@ -1692,25 +1706,24 @@
       c.fillText(t('ton aile','your wing'), x + (x > X1 - 70 ? -9 : 9), y + 3.5);
     }
     const lg = $('win-leg');
-    if(lg) lg.innerHTML = [['rgb(124,90,184)', t('tourne facilement (maniabilité ≥ 45)','turns easily (maneuverability ≥ 45)')],
-        ['rgb(37,112,160)', t('tient la session (≥ 30 min)','lasts the session (≥ 30 min)')],
-        ['rgb(52,211,153)', t('les deux','both')], ['rgb(51,62,84)', t('ni l\'un ni l\'autre','neither')]]
-      .map(([col, l]) => '<span><i style="background:'+col+'"></i>'+l+'</span>').join('')
-      + '<span><i style="background:none; border-top:1.5px dashed rgba(255,255,255,.6); height:0; width:14px; vertical-align:3px"></i>'+t('même maniabilité (chiffre à droite)','same maneuverability (number on the right)')+'</span>'
+    if(lg) lg.innerHTML = '<div class="atl-cats">'+Object.entries(ATL_CAT).filter(([k]) => present.has(k))
+        .map(([k, C]) => '<div><i style="background:'+C.c+'"></i><b>'+t(C.sfr, C.sen)+'</b> <span>'+t(C.fr, C.en)+'</span></div>').join('')+'</div>'
+      + '<span><i style="background:repeating-linear-gradient(90deg, rgba(255,255,255,.85) 0 5px, transparent 5px 8px); height:2px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même maniabilité (chiffre à droite)','same maneuverability (number on the right)')+'</span>'
+      + '<span><i style="background:#fde68a; height:1px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même allongement AR (chiffre en haut)','same aspect ratio AR (number on top)')+'</span>'
       + '<span><i class="hatch"></i>'+t('ailes trop larges ou trop fines pour le surf','wings too wide or too slender for surf')+'</span>';
     // verdict
     const v = $('win-v'); if(!v) return;
     const lv = t(riderLvl().fr, riderLvl().en);
     if(!both.length){
       WIN.inside = null;
-      v.innerHTML = '<span style="color:#fcd34d">'+t('Aucune aile ne fait les deux','No wing does both')+'</span> '
+      v.innerHTML = '<span style="color:#fcd34d">'+t('Pas de zone ✨ carve + endurance','No ✨ carve + endurance zone')+'</span> '
         + t('à '+kg+' kg ('+lv+') sur cette vague : choisis fun <b>ou</b> endurance.','at '+kg+' kg ('+lv+') on this wave: pick fun <b>or</b> endurance.')
-        + '<small>'+t('Plus léger, meilleur niveau ou vague plus forte → la zone verte apparaît.','Lighter, better level or a stronger wave → the green zone appears.')+'</small>';
+        + '<small>'+t('Plus léger, meilleur niveau ou vague plus forte → elle apparaît.','Lighter, better level or a stronger wave → it appears.')+'</small>';
     } else {
       const bs = both.map(x => x[0]), ss = both.map(x => x[1]);
       const me = waveSession(b, S, kg, H), arMe = b*b/S, inside = arMe >= 7 && arMe <= 13 && S*b*b/1e6 <= 18.3 && (me.unlimited || me.min >= 30);
       WIN.inside = inside;
-      v.innerHTML = '<span style="color:#6ee7b7">✨ '+t('les deux','both')+'</span> : '
+      v.innerHTML = '<span style="color:#34d399">✨ carve + endurance</span> : '
         + Math.min(...bs)+'-'+Math.max(...bs)+' cm · '+num(Math.min(...ss))+'-'+num(Math.max(...ss))+' cm²'
         + '<small>'+(inside ? t('✓ ton aile est dedans','✓ your wing is in it') : winHint(both, b, S))
         + ' · '+kg+' kg · '+lv+'</small>';
@@ -1754,6 +1767,7 @@
       tip.innerHTML = '<div class="tt-h">'+p.b+' cm · '+num(p.S)+' cm² · AR '+num(ar, 1)+'</div>'
         + (fits ? t('maniabilité','maneuverability')+' <b>'+viv+'</b> · '+t('glisse','glide')+' <b>'+glideScore(p.b, p.S, g.kg)+'</b><br>'
           + t('vole dès','flies from')+' <b>~'+liftoffKmh(p.S, g.kg)+' km/h</b> · '+t('session','session')+' <b>'+sesTxt+'</b>'
+          + '<div style="margin-top:2px; font-weight:700">'+(C => t(C.sfr, C.sen))(ATL_CAT[atlCat(p.b, p.S, g.kg, p.S*p.b*p.b/1e6 <= 18.3, ses.unlimited || ses.min >= 30)])+'</div>'
           + '<div class="tt-c">'+t('clic : l\'essayer','click: try it')+'</div>'
           : '<span style="color:var(--muted)">'+(ar < 7 ? t('trop large pour le surf (AR < 7)','too wide for surf (AR < 7)') : t('trop fine pour le surf (AR > 13)','too slender for surf (AR > 13)'))+'</span>');
       tip.hidden = false;
@@ -1809,14 +1823,16 @@
       ['Jam 1400',120,1400],['Jam 1600',128,1600],['Jam 1900',140,1900]]}
   ];
   // 8 familles d'ailes pour TON poids / niveau / vague. Ordre de priorité : trop petite → puis maniable × endurante.
+  // Couleurs : palette de référence (thème sombre) vérifiée au validateur — chaque paire de zones VOISINES passe
+  // (daltonisme ΔE ≥ 8, vision normale ≥ 15). « école » = ni l'un ni l'autre → gris neutre. Noms posés sur les zones.
   const ATL_CAT = {
-    plume:{c:'rgb(110,62,100)', fr:'🪶 poids plume — trop petite pour toi (vole dès 18 km/h et +)', en:'🪶 featherweight — too small for you (flies from 18 km/h+)'},
-    rad:  {c:'rgb(190,60,110)', fr:'🔥 surf radical — très maniable (≥ 70), session courte', en:'🔥 radical surf — very maneuverable (≥ 70), short session'},
-    carve:{c:'rgb(124,90,184)', fr:'🎉 tu carves à fond — maniable (45-70), session courte', en:'🎉 full carve — maneuverable (45-70), short session'},
-    both: {c:'rgb(52,211,153)', fr:'✨ carve + endurance — maniable et tu tiens 30 min+', en:'✨ carve + endurance — maneuverable and you last 30 min+'},
-    glide:{c:'rgb(37,112,160)', fr:'🌊 enchaîner les vagues — endurante, encore un peu maniable (20-45)', en:'🌊 linking waves — lasting, still a bit maneuverable (20-45)'},
-    dw:   {c:'rgb(150,105,45)', fr:'🧭 tout droit dans la houle — endurante, peu maniable (< 20)', en:'🧭 straight down the swell — lasting, barely maneuverable (< 20)'},
-    ecole:{c:'rgb(71,85,105)', fr:'🎓 école — porte facilement, ni maniable ni endurante', en:'🎓 school — easy lift, neither maneuverable nor lasting'}
+    plume:{xfr:'🪶 plume', xen:'🪶 feather', c:'#c98500', sfr:'🪶 poids plume', sen:'🪶 featherweight', fr:'trop petite pour toi : ne vole qu\'à partir de 18 km/h', en:'too small for you: only flies from 18 km/h'},
+    rad:  {xfr:'🔥 radical', xen:'🔥 radical', c:'#d55181', sfr:'🔥 surf radical', sen:'🔥 radical surf', fr:'très maniable (≥ 70), session courte', en:'very maneuverable (≥ 70), short session'},
+    carve:{xfr:'🎉 carve', xen:'🎉 carve', c:'#9085e9', sfr:'🎉 carve à fond', sen:'🎉 full carve', fr:'maniable (45-70), session courte', en:'maneuverable (45-70), short session'},
+    both: {xfr:'✨ les deux', xen:'✨ both', c:'#199e70', sfr:'✨ carve + endurance', sen:'✨ carve + endurance', fr:'maniable et tu tiens 30 min et +', en:'maneuverable and you last 30 min+'},
+    glide:{xfr:'🌊 enchaîner', xen:'🌊 linking', c:'#3987e5', sfr:'🌊 enchaîner', sen:'🌊 linking waves', fr:'endurante, encore un peu maniable (20-45)', en:'lasting, still a bit maneuverable (20-45)'},
+    dw:   {xfr:'🧭 houle', xen:'🧭 swell', c:'#008300', sfr:'🧭 tout droit dans la houle', sen:'🧭 straight down the swell', fr:'endurante, peu maniable (< 20)', en:'lasting, barely maneuverable (< 20)'},
+    ecole:{xfr:'🎓 école', xen:'🎓 school', c:'#475569', sfr:'🎓 école', sen:'🎓 school', fr:'porte facilement, ni maniable ni endurante', en:'easy lift, neither maneuverable nor lasting'}
   };
   function atlCat(b, S, kg, fun, end){
     if(liftoffKmh(S, kg) >= 18) return 'plume';
@@ -1851,12 +1867,17 @@
     c.strokeStyle = 'rgba(148,163,184,.22)'; c.lineWidth = 1;
     for(let d = -(Y1 - Y0); d < X1 - X0; d += 7){ c.beginPath(); c.moveTo(X0 + d, Y1); c.lineTo(X0 + d + (Y1 - Y0), Y0); c.stroke(); }
     const cw = (X1 - X0)/(ATL.B1 - ATL.B0)*ATL.DB + 1.2, ch = (Y1 - Y0)/(ATL.S1 - ATL.S0)*ATL.DS + 1.2;
+    const cellCat = new Map(), catCells = {};
     winGrid(kg, H, ATL).forEach(([bb, ss, fun, end]) => {
-      c.fillStyle = ATL_CAT[atlCat(bb, ss, kg, fun, end)].c;
+      const k = atlCat(bb, ss, kg, fun, end);
+      c.fillStyle = ATL_CAT[k].c;
       c.fillRect(px(bb) - cw/2, py(ss) - ch/2, cw, ch);
+      cellCat.set(Math.round((bb - ATL.B0)/ATL.DB)+','+Math.round((ss - ATL.S0)/ATL.DS), k);
+      (catCells[k] = catCells[k] || []).push([px(bb), py(ss)]);
     });
+    const catAt = (x, y) => cellCat.get(Math.round(((x - X0)/(X1 - X0)*(ATL.B1 - ATL.B0))/ATL.DB)+','+Math.round(((Y1 - y)/(Y1 - Y0)*(ATL.S1 - ATL.S0))/ATL.DS));
     // lignes de même maniabilité
-    c.setLineDash([3, 3]); c.strokeStyle = 'rgba(255,255,255,.4)';
+    c.setLineDash([6, 4]); c.lineWidth = 1.4; c.strokeStyle = 'rgba(255,255,255,.7)';   // maniabilité : tirets blancs
     const lab = [];
     [0, 20, 45, 70].forEach(m => {
       const K = (30 - m*0.26)*1e6; c.beginPath();
@@ -1865,7 +1886,7 @@
       const sR = K/(ATL.B1*ATL.B1); lab.push(sR >= ATL.S0 ? [X1 + 3, py(Math.min(sR, ATL.S1)), m] : [px(Math.sqrt(K/ATL.S0)) + 3, Y1 - 4, m]);
     });
     // lignes de même allongement (AR = envergure² / surface) — chiffrées en haut
-    c.setLineDash([1.5, 3.5]); c.strokeStyle = 'rgba(253,230,138,.55)';
+    c.setLineDash([]); c.lineWidth = 1; c.strokeStyle = 'rgba(253,230,138,.5)';   // allongement : trait fin jaune, continu
     const arLab = [];
     [8, 10, 13, 16, 20].forEach(A => {
       c.beginPath();
@@ -1899,14 +1920,69 @@
       if(bb < ATL.B0 || bb > ATL.B1 || ss < ATL.S0 || ss > ATL.S1) return;
       const f = fam(n); if(few && !(f in famCol)) famCol[f] = PAL[Object.keys(famCol).length % PAL.length];
       const x = px(bb), y = py(ss); pts.push({n: B.n+' '+n, short: n, b: bb, S: ss, x, y});
-      c.beginPath(); c.arc(x, y, 5, 0, 7); c.fillStyle = few ? famCol[f] : B.c; c.fill(); c.lineWidth = 1.5; c.strokeStyle = '#0f172a'; c.stroke();
+      c.beginPath(); c.arc(x, y, 5, 0, 7); c.fillStyle = few ? famCol[f] : B.c; c.fill(); c.lineWidth = 2; c.strokeStyle = '#0f172a'; c.stroke();
     }));
     const fl = $('atl-fam');
     if(fl) fl.innerHTML = few ? Object.entries(famCol).map(([f, col]) => '<span><i style="background:'+col+'"></i>'+f+'</span>').join('') : '';
+    // noms des zones posés SUR leur couleur : la place qui tient entièrement dans la zone, le plus loin possible des points
+    const boxes = pts.map(p => [p.x - 6, p.y - 6, 12, 12]);
+    c.font = '900 12px system-ui, sans-serif'; c.textAlign = 'center'; c.lineWidth = 4; c.lineJoin = 'round';
+    const placed = []; ATL.placed = placed;   // noms de zones effectivement posés (contrôle)
+    Object.keys(ATL_CAT).forEach(k => {
+      const cells = catCells[k]; if(!cells || cells.length < 4) return;
+      // nom complet ; s'il ne trouve aucune place (écran étroit), nom court
+      for(const txt of [t(ATL_CAT[k].sfr, ATL_CAT[k].sen), t(ATL_CAT[k].xfr, ATL_CAT[k].xen)]){
+      const tw = c.measureText(txt).width;
+      // score = part de l'étiquette qui tombe dans sa zone (prioritaire), puis distance aux points
+      let best = null, bs = -1;
+      for(let i = 0; i < cells.length; i += 2){
+        const [x, y] = cells[i], x0 = x - tw/2 - 3, x1 = x + tw/2 + 3, y0 = y - 7, y1 = y + 7;
+        if(x0 < X0 || x1 > X1 || y0 < Y0 || y1 > Y1) continue;
+        const probe = [[x0,y0],[x1,y0],[x0,y1],[x1,y1],[x,y0],[x,y1],[(x0+x)/2,y],[(x1+x)/2,y],[x0,y],[x1,y]];
+        const cats = probe.map(([a, b2]) => catAt(a, b2)), inside = cats.filter(q => q === k).length;
+        if(inside < 7 || cats.some(q => q && q !== k)) continue;   // jamais à cheval sur une AUTRE zone (le hachuré, passe)
+        let d = 40; pts.forEach(p => { const dx = Math.max(0, Math.abs(p.x - x) - tw/2 - 4), dy = Math.max(0, Math.abs(p.y - y) - 8); d = Math.min(d, Math.hypot(dx, dy)); });
+        boxes.forEach(r => { if(x0 < r[0] + r[2] && x1 > r[0] && y0 < r[1] + r[3] && y1 > r[1]) d = Math.min(d, 0) - 50; });
+        const sc = inside*100 + d;
+        if(sc > bs){ bs = sc; best = [x, y]; }
+      }
+      let anchor = null;
+      // zone trop étroite : nom posé à côté, relié à la zone par un trait — d'abord dans le hachuré (hors zones),
+      // en dernier recours n'importe où sans chevaucher un autre nom ou un point
+      const nearby = strict => {
+        let bd = 1e9;
+        for(let i = 0; i < cells.length; i += Math.max(1, Math.floor(cells.length/60))){
+          const [ax, ay] = cells[i];
+          [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([sx, sy]) => [14, 26, 40, 60, 85].forEach(r => {
+            const x = ax + sx*(tw/2 + r), y = ay + sy*(r + 4), x0 = x - tw/2 - 3, x1 = x + tw/2 + 3, y0 = y - 7, y1 = y + 7;
+            if(x0 < X0 || x1 > X1 || y0 < Y0 || y1 > Y1) return;
+            if(strict && [[x0,y0],[x1,y0],[x0,y1],[x1,y1],[x,y0],[x,y1],[x0,y],[x1,y],[x,y]].some(([a, b2]) => catAt(a, b2))) return;
+            if(boxes.some(q => x0 < q[0] + q[2] && x1 > q[0] && y0 < q[1] + q[3] && y1 > q[1])) return;
+            const d = Math.hypot(x - ax, y - ay);
+            if(d < bd){ bd = d; best = [x, y]; anchor = [ax, ay]; }
+          }));
+        }
+      };
+      if(!best) nearby(true);
+      if(!best) nearby(false);
+      if(!best) continue;
+      if(anchor){
+        // trait du bord de l'étiquette jusqu'à la zone
+        const ex = Math.max(best[0] - tw/2, Math.min(best[0] + tw/2, anchor[0])), ey = Math.abs(anchor[0] - ex) < 1 ? best[1] + (anchor[1] > best[1] ? 7 : -7) : best[1];
+        c.save(); c.lineWidth = 1.5; c.strokeStyle = '#fff'; c.beginPath(); c.moveTo(ex, ey); c.lineTo(anchor[0], anchor[1]); c.stroke();
+        c.beginPath(); c.arc(anchor[0], anchor[1], 2.5, 0, 7); c.fillStyle = '#fff'; c.fill(); c.restore();
+        c.lineWidth = 4;
+      }
+      boxes.push([best[0] - tw/2 - 3, best[1] - 8, tw + 6, 16]);
+      placed.push(k);
+      // nom de zone : texte de la couleur de la zone, contour blanc → ne se confond pas avec les noms d'ailes (blancs, contour sombre)
+      c.lineWidth = 4; c.strokeStyle = '#fff'; c.strokeText(txt, best[0], best[1] + 4); c.fillStyle = ATL_CAT[k].c; c.fillText(txt, best[0], best[1] + 4);
+      break;
+      }
+    });
     // noms (marque seule) : à droite du point, sinon à gauche ; s'il chevauche un nom ou un point, il reste visible au survol
     if(few){
       c.font = '700 9px system-ui, sans-serif'; c.textAlign = 'left'; c.lineWidth = 3; c.lineJoin = 'round';
-      const boxes = pts.map(p => [p.x - 5, p.y - 5, 10, 10]);
       const hit = (x0, y0, w0) => boxes.some(r => x0 < r[0] + r[2] && x0 + w0 > r[0] && y0 - 5 < r[1] + r[3] && y0 + 5 > r[1]);
       pts.forEach(p => {
         const tw = c.measureText(p.short).width;
@@ -1921,9 +1997,14 @@
     }
     ATL.pts = pts;
     const lg = $('atl-leg');
-    if(lg) lg.innerHTML = Object.values(ATL_CAT).map(C => '<span><i style="background:'+C.c+'"></i>'+t(C.fr, C.en)+'</span>').join('')
-      + '<span><i style="background:none; border-top:1.5px dashed rgba(255,255,255,.6); height:0; width:14px; vertical-align:3px"></i>'+t('même maniabilité (chiffre à droite)','same maneuverability (number on the right)')+'</span>'
-      + '<span><i style="background:none; border-top:1.5px dotted #fde68a; height:0; width:14px; vertical-align:3px"></i>'+t('même allongement AR (chiffre en haut)','same aspect ratio AR (number on top)')+'</span>'
+    // « poids plume » dépend de TON poids : surface sous laquelle l'aile ne te porte qu'à partir de 18 km/h
+    let sPl = 300; while(sPl < 2500 && liftoffKmh(sPl, kg) >= 18) sPl += 10;
+    const catTxt = (k, C) => k === 'plume'
+      ? t('trop petite pour toi à '+kg+' kg : sous ~'+num(sPl)+' cm², elle ne te porte qu\'à partir de 18 km/h', 'too small for you at '+kg+' kg: below ~'+num(sPl)+' cm² it only carries you from 18 km/h')
+      : t(C.fr, C.en);
+    if(lg) lg.innerHTML = '<div class="atl-cats">'+Object.entries(ATL_CAT).map(([k, C]) => '<div><i style="background:'+C.c+'"></i><b>'+t(C.sfr, C.sen)+'</b> <span>'+catTxt(k, C)+'</span></div>').join('')+'</div>'
+      + '<span><i style="background:repeating-linear-gradient(90deg, rgba(255,255,255,.85) 0 5px, transparent 5px 8px); height:2px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même maniabilité (tirets blancs, chiffre à droite)','same maneuverability (white dashes, number on the right)')+'</span>'
+      + '<span><i style="background:#fde68a; height:1px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même allongement AR (trait jaune, chiffre en haut)','same aspect ratio AR (yellow line, number on top)')+'</span>'
       + '<span><i class="hatch"></i>'+t('hors gamme (AR < 6 ou > 24)','out of range (AR < 6 or > 24)')+'</span>'
       + '<span>'+kg+' kg · '+t(riderLvl().fr, riderLvl().en)+' · '+t('vague','wave')+' '+num(H, H % 1 ? 2 : 0).replace(/0$/,'')+' m</span>';
   }
@@ -1949,7 +2030,7 @@
         + '<div class="'+(p.wing ? 'tt-s' : 'tt-h')+'">'+p.b+' cm · '+num(p.S)+' cm² · AR '+num(ar, 1)+'</div>'
         + t('maniabilité','maneuverability')+' <b>'+man+'</b> · '+t('glisse','glide')+' <b>'+glideScore(p.b, p.S, g.kg)+'</b><br>'
         + t('vole dès','flies from')+' <b>~'+liftoffKmh(p.S, g.kg)+' km/h</b> · '+t('session','session')+' <b>'+sesTxt+'</b>'
-        + (ar >= ATL.AR0 && ar <= ATL.AR1 ? '<div style="margin-top:2px; font-weight:700">'+(C => t(C.fr, C.en).split(' — ')[0])(ATL_CAT[atlCat(p.b, p.S, g.kg, p.S*p.b*p.b/1e6 <= 18.3, ses.unlimited || ses.min >= 30)])+'</div>' : '')
+        + (ar >= ATL.AR0 && ar <= ATL.AR1 ? '<div style="margin-top:2px; font-weight:700">'+(C => t(C.sfr, C.sen))(ATL_CAT[atlCat(p.b, p.S, g.kg, p.S*p.b*p.b/1e6 <= 18.3, ses.unlimited || ses.min >= 30)])+'</div>' : '')
         + (p.wing ? '<div class="tt-c">'+(inSl ? t('clic : l\'essayer dans le simulateur','click: try it in the simulator') : t('hors des curseurs du simulateur','outside the simulator sliders'))+'</div>' : '');
       tip.hidden = false;
       const tw = tip.offsetWidth, th = tip.offsetHeight;
