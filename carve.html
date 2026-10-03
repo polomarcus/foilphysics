@@ -201,7 +201,7 @@
   .atl-fam{display:flex; flex-wrap:wrap; justify-content:center; gap:4px 14px; font-size:.78rem; font-weight:700; color:var(--txt); margin:0 0 8px; min-height:0;}
   .atl-fam i{display:inline-block; width:10px; height:10px; border-radius:50%; border:1.5px solid #0f172a; margin-right:5px; vertical-align:-1px;}
   .atl-box{position:relative; max-width:900px; margin:0 auto; background:var(--panel-2); border-radius:12px; padding:8px;}
-  #atl-cv{display:block; width:100%; aspect-ratio:600/380; cursor:crosshair; touch-action:pan-y;}
+  #atl-cv{display:block; width:100%; aspect-ratio:600/400; cursor:crosshair; touch-action:pan-y;}
   .win-leg{display:flex; flex-wrap:wrap; justify-content:center; gap:3px 12px; font-size:.68rem; color:var(--muted); margin:4px 0 6px;}
   .win-leg i{display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px; vertical-align:-1px;}
   .win-leg i.hatch{background:repeating-linear-gradient(135deg, rgba(148,163,184,.35) 0 1px, transparent 1px 4px);}
@@ -1776,11 +1776,11 @@
   addEventListener('resize', () => { placeWin(); if(WIN.args) drawWin(...WIN.args); });
 
   // 🗺️ ATLAS — la même carte en grand, avec les vraies ailes (filtre par marque). Plage large : du carve au planeur.
-  const ATL = {key:'', g:null, B0:70, B1:200, S0:450, S1:2500, DB:2, DS:25, AR0:6, AR1:24, solo:null};
+  const ATL = {key:'', g:null, B0:70, B1:195, S0:450, S1:1800, DB:1.5, DS:20, AR0:6, AR1:24, solo:null};   // > 1 800 cm² retirées : plus de place pour les ailes de surf
   const ATL_BRANDS = [
     {k:'alp', n:'Alpine Foil', c:'#f472b6', w:[['RSX Carve 700',89,700],['RSX Carve 820',95.8,820],['RSX Carve 960',103,960],['RSX Carve 1100',112.2,1100],
-      ['RSX 860',106,860],['RSX 1060',116.6,1063],['RSX 1260',125.1,1260],['RSX 1400 G2',132,1400],['RSX 1540',139.9,1540],['RSX Ultra 930',126.5,930],
-      ['DW 840',81,840],['DW 980',93,980],['DW 1180',94,1180],['DW 1370',109,1370],['DK 1240',124,1790],['Regata 850',88,850],['Regata 1100',100,1100]]},
+      ['RSX 860',106,860],['RSX 1060',116.6,1063],['RSX 1260',125.1,1260],['RSX 1400 G2',132,1400],['RSX 1540',139.9,1540],['RSX Ultra 730',112,730],['RSX Ultra 930',126.6,935],
+      ['DW 840',81,840],['DW 980',93,980],['DW 1180',94,1180],['DW 1370',109,1370],['DK 1240',124,1790],['DK 1499',149.9,1698],['Regata 850',88,850],['Regata 1100',100,1100]]},
     {k:'axs', n:'Axis', c:'#fb923c', w:[['Surge 740',74,590],['Surge 780',78,643],['Surge 830',83,728],['Surge 890',89,835],['Surge 950',95,949],['Surge 1010',101,1076],
       ['Surge 1080',108,1142],['Surge 1150',115,1199],['Surge 1240',124,1340],['Fireball 880',88,604],['Fireball 940',94,689],['Fireball 1000',100,773],['Fireball 1070',107,877],['Fireball 1160',116,996],
       ['Fireball 1250',125,1133],['Fireball 1350',135,1309],['Fireball 1500',150,1313],['Fireball 1750',175,1525],
@@ -1795,6 +1795,8 @@
     {k:'sab', n:'Sabfoil', c:'#a3e635', w:[['Leviathan 950',95,1300],['Leviathan 1750',175,2400],['Blackbird 1300',128,1330],['Blackbird 1400',138,1549],['Blackbird FreeMove 1155',115.5,1345]]},
     {k:'ket', n:'Ketos', c:'#f87171', w:[['166 LD',166,1466],['Kobun 99',99,777],['Kobun 111',111,960],['Kobun 122',122,1122],['Kobun 133',133,1340],
       ['Evo 133',133,1770],['Karve 750',83.5,750],['Karve 950',94,950],['Karve 1250 V2',108,1238],['Karve 1450',116,1450],['Rage 100',100,600],['Rage 105',105,770]]},
+    {k:'afs', n:'AFS', c:'#93c5fd', w:[['Enduro 800',94,800],['Enduro 900',99.4,900],['Enduro 1000',105,1000],['Enduro 1100',110,1100],['Enduro 1300',119,1300],
+      ['Enduro GLT 1600',132.3,1600],['HA Ultra 750',106,750],['HA Ultra 900',112,900]]},
     {k:'ind', n:'Indiana', c:'#2dd4bf', w:[['Dolphin S',82.7,720],['Dolphin M',92.5,900],['Dolphin L',101.3,1080],['Dolphin XL',109.4,1260],
       ['Marlin S',79.5,840],['Marlin M',86,990],['Marlin L',92.5,1140],['Marlin XL',102,1390],
       ['Barracuda S',75,535],['Barracuda M',95,850],['Barracuda L',105,1050],['Barracuda L+',116.6,1252],['Barracuda XL',132,1600],
@@ -1806,6 +1808,24 @@
       ['Seven Seas 1100',94,1100],['Seven Seas 1200',98,1200],['Seven Seas 1300',102,1300],['Seven Seas 1400',105.5,1400],['Seven Seas 1500',109.5,1500],['Seven Seas 1600',113,1600],
       ['Jam 1400',120,1400],['Jam 1600',128,1600],['Jam 1900',140,1900]]}
   ];
+  // 8 familles d'ailes pour TON poids / niveau / vague. Ordre de priorité : trop petite → puis maniable × endurante.
+  const ATL_CAT = {
+    plume:{c:'rgb(110,62,100)', fr:'🪶 poids plume — trop petite pour toi (vole dès 18 km/h et +)', en:'🪶 featherweight — too small for you (flies from 18 km/h+)'},
+    rad:  {c:'rgb(190,60,110)', fr:'🔥 surf radical — très maniable (≥ 70), session courte', en:'🔥 radical surf — very maneuverable (≥ 70), short session'},
+    carve:{c:'rgb(124,90,184)', fr:'🎉 tu carves à fond — maniable (45-70), session courte', en:'🎉 full carve — maneuverable (45-70), short session'},
+    both: {c:'rgb(52,211,153)', fr:'✨ carve + endurance — maniable et tu tiens 30 min+', en:'✨ carve + endurance — maneuverable and you last 30 min+'},
+    glide:{c:'rgb(37,112,160)', fr:'🌊 enchaîner les vagues — endurante, encore un peu maniable (20-45)', en:'🌊 linking waves — lasting, still a bit maneuverable (20-45)'},
+    dw:   {c:'rgb(150,105,45)', fr:'🧭 tout droit dans la houle — endurante, peu maniable (< 20)', en:'🧭 straight down the swell — lasting, barely maneuverable (< 20)'},
+    ecole:{c:'rgb(71,85,105)', fr:'🎓 école — porte facilement, ni maniable ni endurante', en:'🎓 school — easy lift, neither maneuverable nor lasting'}
+  };
+  function atlCat(b, S, kg, fun, end){
+    if(liftoffKmh(S, kg) >= 18) return 'plume';
+    const man = 100*(30 - S*b*b/1e6)/26;
+    if(fun && end) return 'both';
+    if(fun) return man >= 70 ? 'rad' : 'carve';
+    if(end) return man >= 20 ? 'glide' : 'dw';
+    return 'ecole';
+  }
   function atlBrandsUI(){
     const box = $('atl-brands'); if(!box) return;
     // un clic = cette marque seule (avec les noms des ailes) · « Toutes » = tout réafficher
@@ -1815,7 +1835,7 @@
       const k = bt.dataset.k; ATL.solo = !k || ATL.solo === k ? null : k; atlBrandsUI(); if(ATL.args) drawAtlas(...ATL.args); }));
   }
   // repère logique ≈ largeur réelle (380-600) : sur téléphone les textes gardent une taille lisible
-  function atlGeo(w){ const W = Math.max(380, Math.min(600, w)), H = Math.round(W*380/600); return {W, H, X0:52, X1:W - 44, Y0:12, Y1:H - 40}; }
+  function atlGeo(w){ const W = Math.max(380, Math.min(600, w)), H = Math.round(W*400/600); return {W, H, X0:52, X1:W - 44, Y0:34, Y1:H - 40}; }
   function drawAtlas(b, S, kg, H){
     ATL.args = [b, S, kg, H];
     if(ATL.lang !== LANG){ ATL.lang = LANG; atlBrandsUI(); }   // « Toutes / All » suit la langue
@@ -1832,7 +1852,7 @@
     for(let d = -(Y1 - Y0); d < X1 - X0; d += 7){ c.beginPath(); c.moveTo(X0 + d, Y1); c.lineTo(X0 + d + (Y1 - Y0), Y0); c.stroke(); }
     const cw = (X1 - X0)/(ATL.B1 - ATL.B0)*ATL.DB + 1.2, ch = (Y1 - Y0)/(ATL.S1 - ATL.S0)*ATL.DS + 1.2;
     winGrid(kg, H, ATL).forEach(([bb, ss, fun, end]) => {
-      c.fillStyle = fun && end ? 'rgb(52,211,153)' : fun ? 'rgb(124,90,184)' : end ? 'rgb(37,112,160)' : 'rgb(51,62,84)';
+      c.fillStyle = ATL_CAT[atlCat(bb, ss, kg, fun, end)].c;
       c.fillRect(px(bb) - cw/2, py(ss) - ch/2, cw, ch);
     });
     // lignes de même maniabilité
@@ -1844,15 +1864,29 @@
       c.stroke();
       const sR = K/(ATL.B1*ATL.B1); lab.push(sR >= ATL.S0 ? [X1 + 3, py(Math.min(sR, ATL.S1)), m] : [px(Math.sqrt(K/ATL.S0)) + 3, Y1 - 4, m]);
     });
+    // lignes de même allongement (AR = envergure² / surface) — chiffrées en haut
+    c.setLineDash([1.5, 3.5]); c.strokeStyle = 'rgba(253,230,138,.55)';
+    const arLab = [];
+    [8, 10, 13, 16, 20].forEach(A => {
+      c.beginPath();
+      for(let bb = ATL.B0, f = 1; bb <= ATL.B1; bb += 1, f = 0){ const x = px(bb), y = py(bb*bb/A); f ? c.moveTo(x, y) : c.lineTo(x, y); }
+      c.stroke();
+      const bT = Math.sqrt(A*ATL.S1); if(bT <= ATL.B1) arLab.push([px(bT), A]);
+    });
+    c.setLineDash([]);
     c.restore();
     c.font = '800 10px system-ui, sans-serif'; c.fillStyle = '#e2e8f0'; c.textAlign = 'left';
     lab.forEach(([x, y, m]) => c.fillText(m, x, y + 3));
+    c.font = '800 10px system-ui, sans-serif'; c.fillStyle = '#fde68a'; c.textAlign = 'center';
+    arLab.forEach(([x, A]) => c.fillText(A, x, Y0 - 5));
+    c.font = '700 10px system-ui, sans-serif'; c.textAlign = 'left';
+    c.fillText(t('allongement (AR) →','aspect ratio (AR) →'), X0, Y0 - 20);
     // axes
     c.font = '600 10px system-ui, sans-serif'; c.fillStyle = '#94a3b8'; c.textAlign = 'center';
-    for(let v = 80; v <= 200; v += 20) c.fillText(v, px(v), Y1 + 13);
+    for(let v = 80; v <= 180; v += 20) c.fillText(v, px(v), Y1 + 13);
     c.fillText(t('envergure (cm) →','span (cm) →'), (X0 + X1)/2, Y1 + 28);
     c.textAlign = 'right';
-    for(let v = 600; v <= 2400; v += 300) c.fillText(num(v), X0 - 5, py(v) + 3);
+    for(let v = 600; v <= 1800; v += 200) c.fillText(num(v), X0 - 5, py(v) + 3);
     c.save(); c.translate(12, (Y0 + Y1)/2); c.rotate(-Math.PI/2); c.textAlign = 'center'; c.fillText(t('surface (cm²) →','area (cm²) →'), 0, 0); c.restore();
     c.save(); c.translate(G.W - 6, (Y0 + Y1)/2); c.rotate(-Math.PI/2); c.textAlign = 'center'; c.font = '800 10px system-ui, sans-serif'; c.fillStyle = '#e2e8f0';
     c.fillText(t('maniabilité','maneuverability'), 0, 0); c.restore();
@@ -1887,11 +1921,9 @@
     }
     ATL.pts = pts;
     const lg = $('atl-leg');
-    if(lg) lg.innerHTML = [['rgb(124,90,184)', t('tu carves à fond (maniabilité ≥ 45)','full carve (maneuverability ≥ 45)')],
-        ['rgb(37,112,160)', t('tu tiens la session (≥ 30 min)','you last the session (≥ 30 min)')], ['rgb(52,211,153)', t('les deux','both')],
-        ['rgb(51,62,84)', t('ni l\'un ni l\'autre','neither')]]
-      .map(([col, l]) => '<span><i style="background:'+col+'"></i>'+l+'</span>').join('')
+    if(lg) lg.innerHTML = Object.values(ATL_CAT).map(C => '<span><i style="background:'+C.c+'"></i>'+t(C.fr, C.en)+'</span>').join('')
       + '<span><i style="background:none; border-top:1.5px dashed rgba(255,255,255,.6); height:0; width:14px; vertical-align:3px"></i>'+t('même maniabilité (chiffre à droite)','same maneuverability (number on the right)')+'</span>'
+      + '<span><i style="background:none; border-top:1.5px dotted #fde68a; height:0; width:14px; vertical-align:3px"></i>'+t('même allongement AR (chiffre en haut)','same aspect ratio AR (number on top)')+'</span>'
       + '<span><i class="hatch"></i>'+t('hors gamme (AR < 6 ou > 24)','out of range (AR < 6 or > 24)')+'</span>'
       + '<span>'+kg+' kg · '+t(riderLvl().fr, riderLvl().en)+' · '+t('vague','wave')+' '+num(H, H % 1 ? 2 : 0).replace(/0$/,'')+' m</span>';
   }
@@ -1917,6 +1949,7 @@
         + '<div class="'+(p.wing ? 'tt-s' : 'tt-h')+'">'+p.b+' cm · '+num(p.S)+' cm² · AR '+num(ar, 1)+'</div>'
         + t('maniabilité','maneuverability')+' <b>'+man+'</b> · '+t('glisse','glide')+' <b>'+glideScore(p.b, p.S, g.kg)+'</b><br>'
         + t('vole dès','flies from')+' <b>~'+liftoffKmh(p.S, g.kg)+' km/h</b> · '+t('session','session')+' <b>'+sesTxt+'</b>'
+        + (ar >= ATL.AR0 && ar <= ATL.AR1 ? '<div style="margin-top:2px; font-weight:700">'+(C => t(C.fr, C.en).split(' — ')[0])(ATL_CAT[atlCat(p.b, p.S, g.kg, p.S*p.b*p.b/1e6 <= 18.3, ses.unlimited || ses.min >= 30)])+'</div>' : '')
         + (p.wing ? '<div class="tt-c">'+(inSl ? t('clic : l\'essayer dans le simulateur','click: try it in the simulator') : t('hors des curseurs du simulateur','outside the simulator sliders'))+'</div>' : '');
       tip.hidden = false;
       const tw = tip.offsetWidth, th = tip.offsetHeight;
