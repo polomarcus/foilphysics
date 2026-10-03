@@ -205,6 +205,21 @@
   .atl-cats{flex:0 0 100%; display:grid; grid-template-columns:minmax(0, 600px); justify-content:center; gap:4px; margin:4px 0 8px; text-align:left;}   /* une ligne par couleur */
   .atl-cats div{font-size:.8rem; color:var(--txt); line-height:1.35;} .atl-cats div i{width:12px; height:12px; border-radius:3px;}
   .atl-cats b{font-weight:800;} .atl-cats span{color:var(--muted);}
+  .atl-info{max-width:900px; margin:0 auto 12px;}
+  .atl-info:empty{display:none;}
+  .atl-reco{display:flex; flex-direction:column; gap:3px; margin-bottom:8px; font-size:.8rem;}
+  .atl-reco .atl-for{font-size:.72rem; color:var(--muted); text-align:center; margin-bottom:2px;}
+  .atl-reco > div:not(.atl-for){display:flex; align-items:center; flex-wrap:wrap; gap:2px 8px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:5px 6px 5px 12px;}
+  .atl-reco .rk{color:var(--muted); font-weight:700; min-width:92px;}
+  .atl-reco .rn{color:var(--txt); font-weight:800;}
+  .atl-reco .rd{color:#cbd5e1; font-size:.76rem; flex:1;} .atl-reco .rd i{color:var(--muted); font-style:normal;}
+  .atl-reco button{background:transparent; border:1px solid var(--carve); color:var(--carve); border-radius:999px; width:28px; height:24px; font:inherit; font-size:.72rem; font-weight:800; cursor:pointer;}
+  .atl-reco button:disabled{opacity:.35; cursor:default;}
+  .atl-rng{width:100%; border-collapse:collapse; font-size:.76rem; font-variant-numeric:tabular-nums;}
+  .atl-rng th{color:var(--muted); font-weight:700; text-align:left; padding:4px 8px; border-bottom:1px solid var(--line);}
+  .atl-rng td{padding:3px 8px; color:#cbd5e1; border-bottom:1px solid rgba(51,65,85,.5);}
+  .atl-rng td i{display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; vertical-align:0;}
+  .atl-rngw{overflow-x:auto; -webkit-overflow-scrolling:touch;}
   .atl-box{position:relative; max-width:900px; margin:0 auto; background:var(--panel-2); border-radius:12px; padding:8px;}
   #atl-cv{display:block; width:100%; aspect-ratio:600/400; cursor:crosshair; touch-action:pan-y;}
   .win-leg{display:flex; flex-wrap:wrap; justify-content:center; gap:3px 12px; font-size:.68rem; color:var(--muted); margin:4px 0 6px;}
@@ -569,6 +584,7 @@
     <p class="lede" data-i18n="atl-lede">Calculée pour <b>ton poids, ton niveau et la vague</b> choisis plus haut. Survole un point pour ses chiffres, clique une aile pour l'essayer.</p>
     <div class="atl-brands" id="atl-brands"></div>
     <div class="atl-fam" id="atl-fam"></div>
+    <div class="atl-info" id="atl-info"></div>
     <div class="atl-box"><canvas id="atl-cv" aria-hidden="true"></canvas><div class="win-tip" id="atl-tip" hidden></div></div>
     <div class="win-leg" id="atl-leg"></div>
   </section>
@@ -1611,12 +1627,14 @@
   });
 
   // 🗺️ La fenêtre « fun + endurant » : chaque point = une aile (envergure × surface).
-  // Ailes d'allongement 7 à 13 seulement. 🎉 tu carves à fond = maniabilité ≥ 45 (surface × envergure² ≤ 18,3) · 🔋 tu tiens = session ≥ 30 min (ton poids, ton niveau,
+  // Ailes d'allongement 7 à 13 seulement. maniable = maniabilité ≥ 45 (surface × envergure² ≤ 18,3) · 🔋 tu tiens = session ≥ 30 min (ton poids, ton niveau,
   // ta vague, ton stab). Le calcul de la grille est mis en cache : seuls poids / niveau / vague / stab / fuselage le changent.
   const WIN = {key:'', g:null, B0:80, B1:140, S0:700, S1:1700, DB:1, DS:20, AR0:7, AR1:13};   // ailes de surf / carve réalistes
+  // tout ce dont dépend la session (poids, vague, niveau, stab, fuselage) : la carte est recalculée si l'un change
+  function gridKey(kg, H){ return [kg, H, $('i-lvl') ? $('i-lvl').value : 2, $('i-stab').value, $('i-fus').value].join('|'); }
   function winGrid(kg, H, C){
     C = C || WIN;
-    const key = [kg, H, $('i-lvl') ? $('i-lvl').value : 2, $('i-stab').value, $('i-fus').value].join('|');
+    const key = gridKey(kg, H);
     if(C.key === key) return C.g;
     const g = [];
     for(let b = C.B0; b <= C.B1; b += C.DB) for(let S = C.S0; S <= C.S1; S += C.DS){
@@ -1760,6 +1778,7 @@
       return {b, S, x: e.clientX - r.left, y: e.clientY - r.top, w: r.width};
     };
     const show = e => {
+      if(WIN.args && WIN.geo && gridKey(WIN.geo.kg, WIN.geo.H) !== WIN.key) drawWin(...WIN.args);   // réglage changé depuis le dessin
       const p = pick(e); if(!p){ tip.hidden = true; return; }
       const g = WIN.geo, ar = p.b*p.b/p.S, viv = Math.max(0, Math.min(100, Math.round(100*(30 - p.S*p.b*p.b/1e6)/26)));
       const fits = ar >= 7 && ar <= 13, ses = fits ? waveSession(p.b, p.S, g.kg, g.H) : null;
@@ -1828,7 +1847,7 @@
   const ATL_CAT = {
     plume:{xfr:'🪶 plume', xen:'🪶 feather', c:'#c98500', sfr:'🪶 poids plume', sen:'🪶 featherweight', fr:'trop petite pour toi : ne vole qu\'à partir de 18 km/h', en:'too small for you: only flies from 18 km/h'},
     rad:  {xfr:'🔥 radical', xen:'🔥 radical', c:'#d55181', sfr:'🔥 surf radical', sen:'🔥 radical surf', fr:'très maniable (≥ 70), session courte', en:'very maneuverable (≥ 70), short session'},
-    carve:{xfr:'🎉 carve', xen:'🎉 carve', c:'#9085e9', sfr:'🎉 carve à fond', sen:'🎉 full carve', fr:'maniable (45-70), session courte', en:'maneuverable (45-70), short session'},
+    carve:{xfr:'🔄 tourne', xen:'🔄 turns', c:'#9085e9', sfr:'🔄 ça tourne bien', sen:'🔄 turns well', fr:'assez maniable (45-70), session courte', en:'fairly maneuverable (45-70), short session'},
     both: {xfr:'✨ les deux', xen:'✨ both', c:'#199e70', sfr:'✨ carve + endurance', sen:'✨ carve + endurance', fr:'maniable et tu tiens 30 min et +', en:'maneuverable and you last 30 min+'},
     glide:{xfr:'🌊 enchaîner', xen:'🌊 linking', c:'#3987e5', sfr:'🌊 enchaîner', sen:'🌊 linking waves', fr:'endurante, encore un peu maniable (20-45)', en:'lasting, still a bit maneuverable (20-45)'},
     dw:   {xfr:'🧭 houle', xen:'🧭 swell', c:'#008300', sfr:'🧭 tout droit dans la houle', sen:'🧭 straight down the swell', fr:'endurante, peu maniable (< 20)', en:'lasting, barely maneuverable (< 20)'},
@@ -1852,6 +1871,56 @@
   }
   // repère logique ≈ largeur réelle (380-600) : sur téléphone les textes gardent une taille lisible
   function atlGeo(w){ const W = Math.max(380, Math.min(600, w)), H = Math.round(W*400/600); return {W, H, X0:52, X1:W - 44, Y0:34, Y1:H - 40}; }
+  // 🏷️ Marque seule : reco selon ton poids / niveau / vague + présentation de la gamme (familles, tailles, zone pour toi)
+  function atlBrandInfo(B, kg, H, famCol, fam){
+    const box = $('atl-info'); if(!box) return;
+    if(!B){ box.innerHTML = ''; return; }
+    const ev = B.w.map(([n, b, S]) => {
+      const ses = waveSession(b, S, kg, H), man = Math.max(0, Math.min(100, Math.round(100*(30 - S*b*b/1e6)/26)));
+      const end = ses.unlimited || ses.min >= 30, ar = b*b/S;
+      const k = ar < ATL.AR0 || ar > ATL.AR1 ? null : atlCat(b, S, kg, S*b*b/1e6 <= 18.3, end);
+      return {n, b, S, ar, man, ses, end, k, glide: glideScore(b, S, kg), vl: liftoffKmh(S, kg)};
+    });
+    const sesTxt = w => w.ses.unlimited ? t('session sans limite','no-limit session') : t('session ~','session ~')+Math.max(1, Math.round(w.ses.min))+' min';
+    const ok = w => w.k && w.k !== 'plume';
+    const by = (arr, f) => arr.slice().sort((a, b2) => f(b2) - f(a))[0];
+    const both = ev.filter(w => w.k === 'both');
+    // compromis : la plus maniable des « carve + endurance » ; sinon la plus endurante parmi les maniables (≥ 45)
+    const comp = both.length ? by(both, w => w.man)
+      : by(ev.filter(w => ok(w) && w.man >= 45), w => (w.ses.unlimited ? 999 : w.ses.min)) || null;
+    const turn = by(ev.filter(ok), w => w.man);
+    const link = by(ev.filter(w => ok(w) && w.man >= 20), w => w.glide) || by(ev.filter(ok), w => w.glide);
+    const inSl = w => w.b >= +$('i-b').min && w.b <= +$('i-b').max && w.S >= +$('i-s').min && w.S <= +$('i-s').max;
+    // une ligne par reco : étiquette · aile · chiffres clés · ▶
+    const card = (lab, w, note) => !w ? '' : '<div><span class="rk">'+lab+'</span> <b class="rn">'+w.n+'</b> '
+      + '<span class="rd">'+num(w.b, w.b % 1 ? 1 : 0)+' cm · '+num(w.S)+' cm² · '+t('mania.','maneuv.')+' '+w.man+' · ⏱️ '+(w.ses.unlimited ? '∞' : '~'+Math.max(1, Math.round(w.ses.min))+' min')
+      + (note ? ' <i>'+note+'</i>' : '')+'</span>'
+      + '<button type="button" data-try="'+w.b+'|'+w.S+'"'+(inSl(w) ? ' title="'+t('l\'essayer','try it')+'"' : ' disabled title="'+t('hors des curseurs du simulateur','outside the simulator sliders')+'"')+'>▶</button></div>';
+    const lv = t(riderLvl().fr, riderLvl().en);
+    let html = '<div class="atl-reco"><div class="atl-for">'+t('Pour toi','For you')+' · '+kg+' kg · '+lv+' · '+t('vague','wave')+' '+num(H, H % 1 ? 2 : 0).replace(/0$/,'')+' m</div>'
+      + card(t('✨ compromis','✨ compromise'), comp, both.length ? '' : t('(aucune en carve + endurance)','(none in carve + endurance)'))
+      + (turn && turn !== comp ? card(t('🔥 tourner','🔥 turning'), turn, '') : '')
+      + (link && link !== comp && link !== turn ? card(t('🌊 enchaîner','🌊 linking'), link, '') : '')
+      + '</div>';
+    // la gamme : une ligne par famille
+    const fams = {};
+    ev.forEach(w => { const f = fam(w.n); (fams[f] = fams[f] || []).push(w); });
+    const rg = (a, d) => { const lo = Math.min(...a), hi = Math.max(...a); return Math.abs(hi - lo) < (d ? .15 : 1) ? num(lo, d) : num(lo, d)+'–'+num(hi, d); };
+    html += '<div class="atl-rngw"><table class="atl-rng"><tr><th>'+t('gamme','range')+'</th><th>'+t('envergure · surface','span · area')+'</th><th>AR</th><th>'+t('pour toi','for you')+'</th></tr>'
+      + Object.entries(fams).map(([f, ws]) => {
+          const cnt = {}; ws.forEach(w => { if(w.k) cnt[w.k] = (cnt[w.k] || 0) + 1; });
+          const zones = Object.entries(cnt).sort((a, b2) => b2[1] - a[1]).map(([k]) => '<span style="color:'+ATL_CAT[k].c+'; font-weight:700">'+t(ATL_CAT[k].xfr, ATL_CAT[k].xen)+'</span>').join(' · ');
+          return '<tr><td><i style="background:'+(famCol[f] || B.c)+'"></i><b>'+f+'</b> <span style="color:var(--muted)">×'+ws.length+'</span></td><td>'+rg(ws.map(w => w.b), 0)+' cm · '+rg(ws.map(w => w.S), 0)+' cm²</td><td>'+rg(ws.map(w => w.ar), 1)+'</td><td>'+(zones || '—')+'</td></tr>';
+        }).join('')+'</table></div>';
+    box.innerHTML = html;
+    box.querySelectorAll('[data-try]').forEach(bt => bt.addEventListener('click', () => {
+      const [bb, ss] = bt.dataset.try.split('|').map(Number), ib = $('i-b'), is = $('i-s');
+      ib.value = Math.round(bb); is.value = ss;
+      document.querySelectorAll('.preset-btn.on').forEach(x => x.classList.remove('on'));
+      ib.dispatchEvent(new Event('input', {bubbles:true})); is.dispatchEvent(new Event('input', {bubbles:true}));
+      const sc = document.querySelector('.showcase'); window.scrollTo({top: sc.getBoundingClientRect().top + scrollY - 70, behavior:'smooth'});
+    }));
+  }
   function drawAtlas(b, S, kg, H){
     ATL.args = [b, S, kg, H];
     if(ATL.lang !== LANG){ ATL.lang = LANG; atlBrandsUI(); }   // « Toutes / All » suit la langue
@@ -1924,6 +1993,7 @@
     }));
     const fl = $('atl-fam');
     if(fl) fl.innerHTML = few ? Object.entries(famCol).map(([f, col]) => '<span><i style="background:'+col+'"></i>'+f+'</span>').join('') : '';
+    atlBrandInfo(few ? act[0] : null, kg, H, famCol, fam);
     // noms des zones posés SUR leur couleur : la place qui tient entièrement dans la zone, le plus loin possible des points
     const boxes = pts.map(p => [p.x - 6, p.y - 6, 12, 12]);
     c.font = '900 12px system-ui, sans-serif'; c.textAlign = 'center'; c.lineWidth = 4; c.lineJoin = 'round';
@@ -2022,6 +2092,7 @@
       return {b, S, wing, x: e.clientX - r.left, y: e.clientY - r.top, w: r.width};
     };
     const show = e => {
+      if(ATL.args && ATL.geo && gridKey(ATL.geo.kg, ATL.geo.H) !== ATL.key) drawAtlas(...ATL.args);   // réglage changé depuis le dessin
       const p = pick(e); if(!p){ tip.hidden = true; return; }
       const g = ATL.geo, ar = p.b*p.b/p.S, man = Math.max(0, Math.min(100, Math.round(100*(30 - p.S*p.b*p.b/1e6)/26)));
       const ses = waveSession(p.b, p.S, g.kg, g.H), sesTxt = ses.unlimited ? t('sans limite','no limit') : '~'+Math.max(1, Math.round(ses.min))+' min';
