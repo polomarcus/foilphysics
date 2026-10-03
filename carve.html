@@ -167,6 +167,16 @@
   /* le contexte du calcul (aile · poids · niveau), visible en haut alors que les réglages sont plus bas */
   .ctx{margin:14px auto 0; display:flex; flex-wrap:wrap; justify-content:center; gap:6px; max-width:360px;}
   .ctx .cx{background:var(--bg); border:1px solid var(--line); border-radius:999px; padding:4px 10px; font-size:.78rem; font-weight:700; color:var(--txt);}
+  /* réglages rider sur place : poids −/+, niveau, vague (synchronisés avec les curseurs du panneau) */
+  .rc{display:inline-flex; align-items:center; gap:2px; background:var(--bg); border:1px solid var(--line); border-radius:999px; padding:2px 4px; font-size:.78rem; font-weight:700; color:var(--txt);}
+  .rc button{background:transparent; border:0; color:var(--carve); font:inherit; font-weight:900; min-width:24px; height:24px; border-radius:999px; cursor:pointer; padding:0 6px;}
+  .rc button:hover{background:rgba(192,132,252,.15);}
+  .rc b{min-width:46px; text-align:center;}
+  .rc-seg button{color:var(--muted); font-weight:700;}
+  .rc-seg button.on{background:var(--carve); color:#1e1b2e;}
+  .rc-row{display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin:0 0 10px;}
+  .was{display:inline-block; margin-left:6px; color:#fcd34d; font-weight:700; font-size:.92em; animation:wasIn .8s ease-out;}
+  @keyframes wasIn{from{opacity:0; transform:translateY(-3px);} to{opacity:1; transform:none;}}
   .ctx .cx-edit{background:transparent; border:1px solid var(--carve); color:var(--carve); border-radius:999px; padding:4px 10px; font-size:.78rem; font-weight:800; cursor:pointer;}
   .ctx .cx-edit:hover{background:rgba(192,132,252,.12);}
   @keyframes flashField{0%,100%{box-shadow:none} 30%{box-shadow:0 0 0 3px rgba(192,132,252,.55)}}
@@ -582,6 +592,7 @@
   <section id="atlas" class="a-in">
     <h3 data-i18n="atl-h3"><a class="h-anchor" href="#atlas">🗺️ Toutes les ailes sur la carte</a></h3>
     <p class="lede" data-i18n="atl-lede">Calculée pour <b>ton poids, ton niveau et la vague</b> choisis plus haut. Survole un point pour ses chiffres, clique une aile pour l'essayer.</p>
+    <div class="rc-row" id="atl-rider"></div>
     <div class="atl-brands" id="atl-brands"></div>
     <div class="atl-fam" id="atl-fam"></div>
     <div class="atl-info" id="atl-info"></div>
@@ -1734,15 +1745,19 @@
     const lv = t(riderLvl().fr, riderLvl().en);
     if(!both.length){
       WIN.inside = null;
-      v.innerHTML = '<span style="color:#fcd34d">'+t('Pas de zone ✨ carve + endurance','No ✨ carve + endurance zone')+'</span> '
+      const wasN = RC.before && RC.before.range && RC.before.range !== '—' ? ' <span class="was">'+t('avant : ','before: ')+RC.before.range+'</span>' : '';
+      WIN.lastRange = '—';
+      v.innerHTML = '<span style="color:#fcd34d">'+t('Pas de zone ✨ carve + endurance','No ✨ carve + endurance zone')+'</span>'+wasN+' '
         + t('à '+kg+' kg ('+lv+') sur cette vague : choisis fun <b>ou</b> endurance.','at '+kg+' kg ('+lv+') on this wave: pick fun <b>or</b> endurance.')
         + '<small>'+t('Plus léger, meilleur niveau ou vague plus forte → elle apparaît.','Lighter, better level or a stronger wave → it appears.')+'</small>';
     } else {
       const bs = both.map(x => x[0]), ss = both.map(x => x[1]);
       const me = waveSession(b, S, kg, H), arMe = b*b/S, inside = arMe >= 7 && arMe <= 13 && S*b*b/1e6 <= 18.3 && (me.unlimited || me.min >= 30);
       WIN.inside = inside;
-      v.innerHTML = '<span style="color:#34d399">✨ carve + endurance</span> : '
-        + Math.min(...bs)+'-'+Math.max(...bs)+' cm · '+num(Math.min(...ss))+'-'+num(Math.max(...ss))+' cm²'
+      const rng = Math.min(...bs)+'-'+Math.max(...bs)+' cm · '+num(Math.min(...ss))+'-'+num(Math.max(...ss))+' cm²';
+      const was = RC.before && RC.before.range && RC.before.range !== rng ? '<span class="was">'+t('avant : ','before: ')+RC.before.range+'</span>' : '';
+      WIN.lastRange = rng;
+      v.innerHTML = '<span style="color:#34d399">✨ carve + endurance</span> : '+rng+was
         + '<small>'+(inside ? t('✓ ton aile est dedans','✓ your wing is in it') : winHint(both, b, S))
         + ' · '+kg+' kg · '+lv+'</small>';
     }
@@ -1818,7 +1833,7 @@
       ['Surge 1080',108,1142],['Surge 1150',115,1199],['Surge 1240',124,1340],['Fireball 880',88,604],['Fireball 940',94,689],['Fireball 1000',100,773],['Fireball 1070',107,877],['Fireball 1160',116,996],
       ['Fireball 1250',125,1133],['Fireball 1350',135,1309],['Fireball 1500',150,1313],['Fireball 1750',175,1525],
       ['Tempo 890',89,495],['Tempo 920',92,528],['Tempo 960',96,578],['Tempo 1020',102,653],['Tempo 1090',109,746]]},
-    {k:'gng', n:'GONG', c:'#fde047', w:[['Sirus L',116,1450],['Sirus XL',136,1700],['Sirus XXL',156,2000],['Sirus 3XL',186,2400],
+    {k:'gng', n:'GONG', c:'#fde047', w:[['Sirus L',116,1450],['Sirus XL',136,1700],['Sirus XXL',156,2000],['Sirus 3XL',186,2400],['Sirus 5XL',249,3100],
       ['Ultra Trail L',133,1000],['Ultra Trail XXL',162,1500],['Ultra Trail 3XL',175,1750],['Ultra Trail 4XL',188,2000],
       ['Hypertrail S',89,700],['Hypertrail M',98,850],['Hypertrail L',107,1000],['Hypertrail XL',119,1250],['Hypertrail XXL',131,1500],['Hypertrail 3XL',141,1750],
       ['Veloce DW XS',92,600],['Veloce DW S',103,750],['Veloce DW M',113,900],['Veloce DW L',122,1050],['Veloce DW XL',130,1200],
@@ -1845,7 +1860,7 @@
   // Couleurs : palette de référence (thème sombre) vérifiée au validateur — chaque paire de zones VOISINES passe
   // (daltonisme ΔE ≥ 8, vision normale ≥ 15). « école » = ni l'un ni l'autre → gris neutre. Noms posés sur les zones.
   const ATL_CAT = {
-    plume:{xfr:'🪶 plume', xen:'🪶 feather', c:'#c98500', sfr:'🪶 poids plume', sen:'🪶 featherweight', fr:'trop petite pour toi : ne vole qu\'à partir de 18 km/h', en:'too small for you: only flies from 18 km/h'},
+    plume:{xfr:'🪶 plume', xen:'🪶 feather', c:'#c98500', sfr:'🪶 poids plume', sen:'🪶 featherweight', fr:'trop petite pour toi : démarrage trop rapide ou trop dur à pomper', en:'too small for you: takeoff too fast or too hard to pump'},
     rad:  {xfr:'🔥 radical', xen:'🔥 radical', c:'#d55181', sfr:'🔥 surf radical', sen:'🔥 radical surf', fr:'très maniable (≥ 70), session courte', en:'very maneuverable (≥ 70), short session'},
     carve:{xfr:'🔄 tourne', xen:'🔄 turns', c:'#9085e9', sfr:'🔄 ça tourne bien', sen:'🔄 turns well', fr:'assez maniable (45-70), session courte', en:'fairly maneuverable (45-70), short session'},
     both: {xfr:'✨ les deux', xen:'✨ both', c:'#199e70', sfr:'✨ carve + endurance', sen:'✨ carve + endurance', fr:'maniable et tu tiens 30 min et +', en:'maneuverable and you last 30 min+'},
@@ -1853,8 +1868,12 @@
     dw:   {xfr:'🧭 houle', xen:'🧭 swell', c:'#008300', sfr:'🧭 tout droit dans la houle', sen:'🧭 straight down the swell', fr:'endurante, peu maniable (< 20)', en:'lasting, barely maneuverable (< 20)'},
     ecole:{xfr:'🎓 école', xen:'🎓 school', c:'#475569', sfr:'🎓 école', sen:'🎓 school', fr:'porte facilement, ni maniable ni endurante', en:'easy lift, neither maneuverable nor lasting'}
   };
+  // « poids plume » (calé sur les retours de Paul, 75 kg : Sushi 740 / RSX 700 / DW 750 trop petites, DW 840 / Regata 850 OK) :
+  // elle ne te porte qu'à partir de 16,5 km/h, OU démarrer en pompant demande > 1,2 × ton seuil (envergure trop courte)
+  const liftExact = (S, kg) => Math.sqrt(kg*9.81/(0.5*1025*(S/1e4)*1.2))*3.6*1.15;
+  function isPlume(b, S, kg){ return liftExact(S, kg) >= 16.5 || takeoffPower(b, S, kg) >= 1.2*riderLvl().cp; }
   function atlCat(b, S, kg, fun, end){
-    if(liftoffKmh(S, kg) >= 18) return 'plume';
+    if(isPlume(b, S, kg)) return 'plume';
     const man = 100*(30 - S*b*b/1e6)/26;
     if(fun && end) return 'both';
     if(fun) return man >= 70 ? 'rad' : 'carve';
@@ -1896,9 +1915,11 @@
       + '<span class="rd">'+num(w.b, w.b % 1 ? 1 : 0)+' cm · '+num(w.S)+' cm² · '+t('mania.','maneuv.')+' '+w.man+' · ⏱️ '+(w.ses.unlimited ? '∞' : '~'+Math.max(1, Math.round(w.ses.min))+' min')
       + (note ? ' <i>'+note+'</i>' : '')+'</span>'
       + '<button type="button" data-try="'+w.b+'|'+w.S+'"'+(inSl(w) ? ' title="'+t('l\'essayer','try it')+'"' : ' disabled title="'+t('hors des curseurs du simulateur','outside the simulator sliders')+'"')+'>▶</button></div>';
+    ATL.lastComp = comp ? B.k+'|'+comp.n : null;
     const lv = t(riderLvl().fr, riderLvl().en);
-    let html = '<div class="atl-reco"><div class="atl-for">'+t('Pour toi','For you')+' · '+kg+' kg · '+lv+' · '+t('vague','wave')+' '+num(H, H % 1 ? 2 : 0).replace(/0$/,'')+' m</div>'
-      + card(t('✨ compromis','✨ compromise'), comp, both.length ? '' : t('(aucune en carve + endurance)','(none in carve + endurance)'))
+    let html = '<div class="atl-reco">'
+      + card(t('✨ compromis','✨ compromise'), comp, (both.length ? '' : t('(aucune en carve + endurance)','(none in carve + endurance)'))
+          + (RC.before && RC.before.comp && comp && RC.before.comp !== B.k+'|'+comp.n ? ' <span class="was">'+t('avant : ','before: ')+RC.before.comp.split('|')[1]+'</span>' : ''))
       + (turn && turn !== comp ? card(t('🔥 tourner','🔥 turning'), turn, '') : '')
       + (link && link !== comp && link !== turn ? card(t('🌊 enchaîner','🌊 linking'), link, '') : '')
       + '</div>';
@@ -1923,7 +1944,8 @@
   }
   function drawAtlas(b, S, kg, H){
     ATL.args = [b, S, kg, H];
-    if(ATL.lang !== LANG){ ATL.lang = LANG; atlBrandsUI(); }   // « Toutes / All » suit la langue
+    if(ATL.lang !== LANG){ ATL.lang = LANG; atlBrandsUI(); }
+    if($('atl-rider')) $('atl-rider').innerHTML = riderCtl(true);   // « Toutes / All » suit la langue
     const cv = $('atl-cv'); if(!cv) return;
     const w = cv.clientWidth || 600, G = atlGeo(w), dpr = Math.min(window.devicePixelRatio || 1, 2);
     cv.width = Math.round(w*dpr); cv.height = Math.round(w*dpr*G.H/G.W);
@@ -2067,10 +2089,10 @@
     }
     ATL.pts = pts;
     const lg = $('atl-leg');
-    // « poids plume » dépend de TON poids : surface sous laquelle l'aile ne te porte qu'à partir de 18 km/h
-    let sPl = 300; while(sPl < 2500 && liftoffKmh(sPl, kg) >= 18) sPl += 10;
+    // « poids plume » dépend de TON poids : surface sous laquelle l'aile ne te porte qu'à partir de 16,5 km/h (l'envergure trop courte s'ajoute via le pompage)
+    let sPl = 300; while(sPl < 2500 && liftExact(sPl, kg) >= 16.5) sPl += 10;
     const catTxt = (k, C) => k === 'plume'
-      ? t('trop petite pour toi à '+kg+' kg : sous ~'+num(sPl)+' cm², elle ne te porte qu\'à partir de 18 km/h', 'too small for you at '+kg+' kg: below ~'+num(sPl)+' cm² it only carries you from 18 km/h')
+      ? t('trop petite pour toi à '+kg+' kg : sous ~'+num(sPl)+' cm² (porte dès 16,5 km/h et +), ou envergure trop courte pour démarrer en pompant (> '+Math.round(1.2*riderLvl().cp/10)*10+' W)', 'too small for you at '+kg+' kg: below ~'+num(sPl)+' cm² (carries you from 16.5 km/h+), or span too short to pump it up (> '+Math.round(1.2*riderLvl().cp/10)*10+' W)')
       : t(C.fr, C.en);
     if(lg) lg.innerHTML = '<div class="atl-cats">'+Object.entries(ATL_CAT).map(([k, C]) => '<div><i style="background:'+C.c+'"></i><b>'+t(C.sfr, C.sen)+'</b> <span>'+catTxt(k, C)+'</span></div>').join('')+'</div>'
       + '<span><i style="background:repeating-linear-gradient(90deg, rgba(255,255,255,.85) 0 5px, transparent 5px 8px); height:2px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même maniabilité (tirets blancs, chiffre à droite)','same maneuverability (white dashes, number on the right)')+'</span>'
@@ -2122,6 +2144,30 @@
     });
     addEventListener('resize', () => { if(ATL.args) drawAtlas(...ATL.args); });
   })();
+  // 🧍 Réglages rider « sur place » : là où on lit le résultat. Un clic → mêmes curseurs du panneau → tout se recalcule,
+  // et les cartes affichent brièvement la valeur d'avant (RC.before) pour voir l'impact.
+  const RC = {before:null};
+  function riderCtl(withWave){
+    const kg = riderKg(), lv = $('i-lvl').value;
+    const seg = (pre, items, cur) => '<span class="rc rc-seg">'+items.map(([v, l]) => '<button type="button" data-rc="'+pre+v+'" class="'+(String(cur) === String(v) ? 'on' : '')+'">'+l+'</button>').join('')+'</span>';
+    return '<span class="rc"><button type="button" data-rc="kg-" aria-label="'+t('moins lourd','lighter')+'">−</button><b>🧍 '+kg+' kg</b><button type="button" data-rc="kg+" aria-label="'+t('plus lourd','heavier')+'">+</button></span>'
+      + seg('lv:', [['1', t('progression','learning')], ['2', t('confirmé','experienced')], ['3', 'expert']], lv)
+      + (withWave ? seg('h:', [['0.5', '0,5 m'], ['1', '1 m'], ['1.75', '1,5-2 m']], waveH()) : '');
+  }
+  document.addEventListener('click', e => {
+    const bt = e.target.closest('[data-rc]'); if(!bt) return;
+    const v = bt.dataset.rc;
+    RC.before = {range: WIN.lastRange, comp: ATL.lastComp};
+    if(v === 'kg-' || v === 'kg+'){
+      const k = $('i-kg'); k.value = Math.max(+k.min, Math.min(+k.max, riderKg() + (v === 'kg+' ? 5 : -5)));
+      k.dispatchEvent(new Event('input', {bubbles:true}));
+    } else if(v.startsWith('lv:')){
+      const l = $('i-lvl'); l.value = v.slice(3); l.dispatchEvent(new Event('change', {bubbles:true}));
+    } else if(v.startsWith('h:')){
+      const w = document.querySelector('.ws-btn[data-h="'+v.slice(2)+'"]'); if(w) w.click();
+    }
+    RC.before = null;   // le « avant » reste affiché jusqu'au prochain réglage
+  });
   function render(){
     $('v-b').textContent = $('i-b').value;
     $('v-s').textContent = $('i-s').value;
@@ -2206,8 +2252,8 @@
     // en biais, tu vas plus vite que la vague : v = vague ÷ cos(angle) → angle pour voler à ta vitesse de démarrage
     const ang = vl > vw ? Math.round(Math.acos(vw/vl)*180/Math.PI) : 0, near = !ok && ang <= 40;
     const vcol = ok ? '#6ee7b7' : near ? '#fcd34d' : '#fca5a5';
-    $('o-ctx').innerHTML = '<span class="cx">🪽 '+wingName()+'</span><span class="cx">🧍 '+kg+' kg</span><span class="cx">🏄 '+t(riderLvl().fr, riderLvl().en)+'</span>'
-      + '<button type="button" class="cx-edit js-edit">'+t('✎ modifier','✎ change')+'</button>';
+    $('o-ctx').innerHTML = '<span class="cx">🪽 '+wingName()+'</span>'+riderCtl(false)
+      + '<button type="button" class="cx-edit js-edit">'+t('✎ aile','✎ wing')+'</button>';
     $('wave-info').innerHTML = '<div class="wi-tiles">'
       + '<div class="wi-t"><span>'+t('🌊 la vague','🌊 the wave')+'</span><b>~'+vw+' km/h</b><i>'+t('sa vitesse','its speed')+'</i></div>'
       + '<div class="wi-t"><span>'+t('🪽 ton aile','🪽 your wing')+'</span><b style="color:'+vcol+'">~'+vl+' km/h</b><i>'+t('vole dès','flies from')+'</i></div>'
