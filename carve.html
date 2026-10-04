@@ -704,13 +704,16 @@
     const tc = DIST/(c.v + vwm);
     // vague trop lente pour ton aile : elle te pousse quand même en partie — tu ne paies que l'écart de vitesse
     const Pride = free ? 0 : P*(1 - vw/vl);
-    const tau = P => 546*Math.exp(-0.01*Math.max(0, CP-P)) + 316;
-    let wb = WP, n = 0;
-    const seg = (P, dt) => { if(P > CP) wb -= (P-CP)*dt; else wb = WP - (WP-wb)*Math.exp(-dt/tau(P)); };
+    // FATIGUE LENTE : ton seuil baisse d'~12 % sur une heure de session → une aile juste au-dessus du seuil tient
+    // 30-50 min (et non « sans limite ») ; transition douce au lieu d'une bascule brutale à quelques kilos près.
+    const cpAt = T => CP*(1 - 0.12*Math.min(1, T/3600));
+    const tau = (P, cp) => 546*Math.exp(-0.01*Math.max(0, cp-P)) + 316;
+    let wb = WP, n = 0, T = 0;
+    const seg = (P, dt) => { const cp = cpAt(T); if(P > cp) wb -= (P-cp)*dt; else wb = WP - (WP-wb)*Math.exp(-dt/tau(P, cp)); T += dt; };
     let rides = 0;                                   // vagues surfées (la 1re compte, même si tu ne rejoins pas la suivante)
-    if(P <= CP && Pride <= CP) return {P:P, tc:tc, free:free, n:Infinity, links:Infinity, min:Infinity, unlimited:true, over:false};
-    while(rides < 160){ seg(Pride, RIDE); rides++; if(wb <= 0) break; seg(P, tc); if(wb <= 0) break; n++; }
-    return {P:P, tc:tc, free:free, n:rides, links:n, min:(rides*RIDE + n*tc)/60, unlimited:rides >= 160, over:P > CP};
+    if(P <= CP*0.88 && Pride <= CP*0.88) return {P:P, tc:tc, free:free, n:Infinity, links:Infinity, min:Infinity, unlimited:true, over:false};
+    while(T < 7200){ seg(Pride, RIDE); rides++; if(wb <= 0) break; seg(P, tc); if(wb <= 0) break; n++; }
+    return {P:P, tc:tc, free:free, n:rides, links:n, min:T/60, unlimited:T >= 7200, over:P > CP};
   }
   function glideScore(b_cm, S_cm2, WKG){                     // 0-100 : P 520 W → 0 · P 240 W → 100
     // Bridage par le décrochage : les petites ailes ne peuvent pas voler lentement → « faible » glisse même à AR élevé.
@@ -1813,7 +1816,7 @@
     both: {xfr:'✨ les deux', xen:'✨ both', c:'#199e70', sfr:'✨ carve + endurance', sen:'✨ carve + endurance', fr:'maniable et tu tiens 30 min et +', en:'maneuverable and you last 30 min+'},
     glide:{xfr:'🌊 enchaîner', xen:'🌊 linking', c:'#3987e5', sfr:'🌊 enchaîner', sen:'🌊 linking waves', fr:'endurante, encore un peu maniable (20-45)', en:'lasting, still a bit maneuverable (20-45)'},
     dw:   {xfr:'🧭 houle', xen:'🧭 swell', c:'#008300', sfr:'🧭 tout droit dans la houle', sen:'🧭 straight down the swell', fr:'endurante, peu maniable (< 20)', en:'lasting, barely maneuverable (< 20)'},
-    ecole:{xfr:'🎓 école', xen:'🎓 school', c:'#475569', sfr:'🎓 école', sen:'🎓 school', fr:'porte facilement, ni maniable ni endurante', en:'easy lift, neither maneuverable nor lasting'}
+    ecole:{xfr:'🛟 portante', xen:'🛟 lifty', c:'#475569', sfr:'🛟 aile portante', sen:'🛟 lifty wing', fr:'porte facilement, ni maniable ni endurante', en:'easy lift, neither maneuverable nor lasting'}
   };
   // « poids plume » (calé sur les retours de Paul, 75 kg : Sushi 740 / RSX 700 / DW 750 trop petites, DW 840 / Regata 850 OK) :
   // elle ne te porte qu'à partir de 16,5 km/h, OU démarrer en pompant demande > 1,2 × ton seuil (envergure trop courte)
