@@ -286,7 +286,11 @@
   .atl-reco{display:flex; flex-direction:column; gap:3px; margin-bottom:8px; font-size:.8rem;}
   .atl-reco > div{display:flex; align-items:center; flex-wrap:wrap; gap:2px 8px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:5px 6px 5px 12px;}
   .atl-reco .rk{color:var(--muted); font-weight:700; min-width:92px;} .atl-reco .rn{color:var(--txt); font-weight:800;}
-  .atl-reco .rd{color:#cbd5e1; font-size:.76rem; flex:1;} .atl-reco .rd i{color:var(--muted); font-style:normal;}
+  .atl-reco .rd{color:#cbd5e1; font-size:.76rem; flex:1;}
+  @media(max-width:560px){ .atl-reco > div{display:grid!important; grid-template-columns:auto 1fr auto; gap:0 8px;} .atl-reco .rk{min-width:0;} .atl-reco .rd{grid-column:1 / 3; grid-row:2;} .atl-reco button{grid-row:1 / 3; grid-column:3;} }
+  .rring{display:inline-block; width:11px; height:11px; border-radius:50%; border:2.5px solid; margin-right:6px; vertical-align:-1px; box-shadow:0 0 0 1.5px #0f172a;}
+  .atl-fam .rleg{display:inline-flex; flex-wrap:wrap; gap:4px 12px; padding-left:12px; border-left:1px solid var(--line);} .atl-fam .rleg i{background:none!important; border-radius:50%!important; border-width:2.5px!important; width:11px; height:11px;}
+  .tt-rec{font-weight:900; font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; margin-bottom:3px;} .atl-reco .rd i{color:var(--muted); font-style:normal;}
   .atl-reco button{background:transparent; border:1px solid #f59e0b; color:#f59e0b; border-radius:999px; width:28px; height:24px; font:inherit; font-size:.72rem; font-weight:800; cursor:pointer;}
   .atl-reco button:disabled{opacity:.35; cursor:default;}
   .atl-rng{width:100%; border-collapse:collapse; font-size:.76rem; font-variant-numeric:tabular-nums;}
@@ -295,7 +299,7 @@
   .atl-rng td i{display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px;}
   .atl-rngw{overflow-x:auto; -webkit-overflow-scrolling:touch;}
   .atl-box{position:relative; max-width:900px; margin:0 auto; background:var(--panel-2); border-radius:12px; padding:8px;}
-  #atl-cv{display:block; width:100%; aspect-ratio:600/400; cursor:crosshair; touch-action:pan-y;}
+  #atl-cv{display:block; width:100%; cursor:crosshair; touch-action:pan-y;}
   .win-tip{position:absolute; pointer-events:none; background:rgba(15,23,42,.96); border:1px solid var(--line); border-radius:8px; padding:6px 9px; font-size:.7rem; line-height:1.45; color:#cbd5e1; text-align:left; white-space:nowrap; z-index:5; box-shadow:0 4px 14px rgba(0,0,0,.4);}
   .win-tip b{color:var(--txt);} .win-tip .tt-h{font-weight:800; color:var(--txt); margin-bottom:2px;} .win-tip .tt-c{color:var(--muted); font-size:.64rem; margin-top:2px;}
   .win-leg{display:flex; flex-wrap:wrap; justify-content:center; gap:3px 12px; font-size:.68rem; color:var(--muted); margin:4px 0 6px;}
@@ -629,9 +633,9 @@
     <p class="lede" data-i18n="atl-lede">Calculée pour <b>ton poids</b> (rider entraîné, ~3,5 W/kg tenus) : quelle aile gagne une course de <b>300 m</b> ou de <b>1 km</b>. Survole un point pour ses chiffres, clique une aile pour l'essayer.</p>
     <div class="rc-row" id="atl-rider"></div>
     <div class="atl-brands" id="atl-brands"></div>
+    <div class="atl-box"><canvas id="atl-cv" aria-hidden="true"></canvas><div class="win-tip" id="atl-tip" hidden></div></div>
     <div class="atl-fam" id="atl-fam"></div>
     <div class="atl-info" id="atl-info"></div>
-    <div class="atl-box"><canvas id="atl-cv" aria-hidden="true"></canvas><div class="win-tip" id="atl-tip" hidden></div></div>
     <div class="win-leg" id="atl-leg"></div>
   </section>
 
@@ -1259,9 +1263,10 @@
     if(VA.key === String(kg)) return VA.g;
     const g = []; let b3 = 1e9, b1 = 1e9;
     for(let b = VA.B0; b <= VA.B1; b += VA.DB) for(let S = VA.S0; S <= VA.S1; S += VA.DS){
-      const ar = b*b/S; if(ar < VA.AR0 || ar > VA.AR1) continue;
+      const ar = b*b/S; if(ar < VA.AR0 - 1 || ar > VA.AR1 + 4) continue;   // un peu au-delà : bord lisse après découpe
       const r3 = vaRace(b, S, kg, 300), r1 = vaRace(b, S, kg, 1000);
       g.push({b, S, r3, r1});
+      if(ar < VA.AR0 || ar > VA.AR1) continue;
       if(!r3.stall && r3.lo <= 17) b3 = Math.min(b3, r3.t);
       if(!r1.stall && r1.lo <= 17) b1 = Math.min(b1, r1.t);
     }
@@ -1278,7 +1283,7 @@
     const box = $('atl-brands'); if(!box) return;
     box.innerHTML = '<button type="button" data-k="" class="'+(VA.solo ? '' : 'on')+'">'+t('Toutes','All')+'</button>'
       + VA_BRANDS.map(B => '<button type="button" data-k="'+B.k+'" class="'+(!VA.solo || VA.solo === B.k ? 'on' : '')+'"><i style="background:'+B.c+'"></i>'+B.n+'</button>').join('');
-    box.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => { const k = bt.dataset.k; VA.solo = !k || VA.solo === k ? null : k; vaBrandsUI(); vaDraw(); }));
+    box.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => { const k = bt.dataset.k; VA.solo = !k || VA.solo === k ? null : k; vaBrandsUI(); vaDraw(); vaHash(); }));
   }
   const VA_RC = {before:null};
   function vaRider(){
@@ -1288,7 +1293,7 @@
   document.addEventListener('click', e => {
     const bt = e.target.closest('[data-va]'); if(!bt) return;
     VA_RC.before = VA.lastReco;
-    const w = $('i-w'); w.value = Math.max(+w.min, Math.min(+w.max, +w.value + (bt.dataset.va === '+' ? 5 : -5)));
+    const w = $('i-w'); w.value = Math.max(+w.min, Math.min(+w.max, +w.value + (bt.dataset.va === '+' ? 1 : -1)));
     w.dispatchEvent(new Event('input', {bubbles:true}));
     VA_RC.before = null;
   });
@@ -1299,10 +1304,11 @@
     const kg = +$('i-w').value;
     if(VA.lang !== curLang()){ VA.lang = curLang(); vaBrandsUI(); }
     vaRider();
-    const w = cv.clientWidth || 600, W = Math.max(380, Math.min(600, w)), Hh = Math.round(W*400/600), dpr = Math.min(window.devicePixelRatio || 1, 2);
-    cv.width = Math.round(w*dpr); cv.height = Math.round(w*dpr*Hh/W);
+    // téléphone (< 520 px) : repère presque carré, points plus petits, noms courts
+    const w = cv.clientWidth || 600, narrow = w < 520, W = Math.max(340, Math.min(600, w)), Hh = Math.round(W*(narrow ? .95 : 400/600)), dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = Math.round(w*dpr); cv.height = Math.round(w*dpr*Hh/W); cv.style.aspectRatio = W+' / '+Hh;
     const c = cv.getContext('2d'), k0 = cv.width/W; c.setTransform(k0,0,0,k0,0,0); c.clearRect(0,0,W,Hh);
-    const X0 = 52, X1 = W - 44, Y0 = 34, Y1 = Hh - 40;
+    const X0 = narrow ? 40 : 52, X1 = W - (narrow ? 30 : 44), Y0 = 34, Y1 = Hh - 40;
     const px = v => X0 + (v - VA.B0)/(VA.B1 - VA.B0)*(X1 - X0), py = v => Y1 - (v - VA.S0)/(VA.S1 - VA.S0)*(Y1 - Y0);
     VA.geo = {X0, X1, Y0, Y1, W, kg, px, py};
     c.save(); c.beginPath(); c.rect(X0, Y0, X1 - X0, Y1 - Y0); c.clip();
@@ -1313,11 +1319,31 @@
     g.forEach(q => {
       const a = q.r3.stall ? 9 : q.r3.t/VA.best.b3, d = q.r1.stall ? 9 : q.r1.t/VA.best.b1, m = Math.min(a, d);
       const k = q.r1.lo > 17 ? 'start' : a <= 1.03 && d <= 1.03 ? 'both' : a <= 1.03 ? 's300' : d <= 1.03 ? 'k1' : m <= 1.08 ? 'ok' : m <= 1.15 ? 'slow' : 'drag';
-      c.fillStyle = VA_CAT[k].c; c.fillRect(px(q.b) - cw/2, py(q.S) - ch/2, cw, ch);
       cellCat.set(Math.round((q.b - VA.B0)/VA.DB)+','+Math.round((q.S - VA.S0)/VA.DS), k);
-      (catCells[k] = catCells[k] || []).push([px(q.b), py(q.S)]);
+      const ar = q.b*q.b/q.S; if(ar >= VA.AR0 && ar <= VA.AR1) (catCells[k] = catCells[k] || []).push([px(q.b), py(q.S)]);
     });
-    const catAt = (x, y) => cellCat.get(Math.round(((x - X0)/(X1 - X0)*(VA.B1 - VA.B0))/VA.DB)+','+Math.round(((Y1 - y)/(Y1 - Y0)*(VA.S1 - VA.S0))/VA.DS));
+    // dégradés continus : 1 pixel par case, agrandi avec lissage puis flouté ; découpé le long des courbes AR 6 et 24
+    const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+    const nI = Math.round((VA.B1 - VA.B0)/VA.DB) + 1, nJ = Math.round((VA.S1 - VA.S0)/VA.DS) + 1;
+    const img = document.createElement('canvas'); img.width = nI; img.height = nJ;
+    const ix = img.getContext('2d'), id = ix.createImageData(nI, nJ);
+    cellCat.forEach((kc, key) => { const [i, j] = key.split(',').map(Number); if(i < 0 || i >= nI || j < 0 || j >= nJ) return;
+      const o = ((nJ - 1 - j)*nI + i)*4, q = hex(VA_CAT[kc].c); id.data[o] = q[0]; id.data[o + 1] = q[1]; id.data[o + 2] = q[2]; id.data[o + 3] = 255; });
+    ix.putImageData(id, 0, 0);
+    c.save(); c.beginPath();
+    for(let bb = VA.B0; bb <= VA.B1; bb += 1) c[bb === VA.B0 ? 'moveTo' : 'lineTo'](px(bb), py(Math.min(VA.S1 + 400, bb*bb/VA.AR0)));
+    for(let bb = VA.B1; bb >= VA.B0; bb -= 1) c.lineTo(px(bb), py(Math.max(VA.S0 - 400, bb*bb/VA.AR1)));
+    c.closePath(); c.clip();
+    const xA = px(VA.B0) - (X1 - X0)/(nI - 1)/2, yA = py(VA.S1) - (Y1 - Y0)/(nJ - 1)/2, wA = (X1 - X0)*nI/(nI - 1), hA = (Y1 - Y0)*nJ/(nJ - 1);
+    c.imageSmoothingEnabled = true; c.imageSmoothingQuality = 'high';
+    c.drawImage(img, xA, yA, wA, hA);
+    if('filter' in c){ c.filter = 'blur('+(narrow ? 7 : 11)+'px)'; c.drawImage(img, xA, yA, wA, hA); c.filter = 'none'; }
+    c.restore();
+    c.save(); c.beginPath(); c.rect(X0, Y0, X1 - X0, Y1 - Y0); c.clip(); c.strokeStyle = 'rgba(148,163,184,.55)'; c.lineWidth = 1;
+    [VA.AR0, VA.AR1].forEach(A => { c.beginPath(); for(let bb = VA.B0; bb <= VA.B1; bb += 1) c[bb === VA.B0 ? 'moveTo' : 'lineTo'](px(bb), py(bb*bb/A)); c.stroke(); });
+    c.restore();
+    const catAt = (x, y) => { const bb = VA.B0 + (x - X0)/(X1 - X0)*(VA.B1 - VA.B0), ss = VA.S0 + (Y1 - y)/(Y1 - Y0)*(VA.S1 - VA.S0), a = bb*bb/ss;
+      return a < VA.AR0 || a > VA.AR1 ? undefined : cellCat.get(Math.round(((x - X0)/(X1 - X0)*(VA.B1 - VA.B0))/VA.DB)+','+Math.round(((Y1 - y)/(Y1 - Y0)*(VA.S1 - VA.S0))/VA.DS)); };
     // lignes de même allongement
     c.lineWidth = 1; c.strokeStyle = 'rgba(253,230,138,.5)';
     const arLab = [];
@@ -1341,16 +1367,26 @@
       if(bb < VA.B0 || bb > VA.B1 || ss < VA.S0 || ss > VA.S1) return;
       const f = vaFam(n); if(few && !(f in famCol)) famCol[f] = PAL[Object.keys(famCol).length % PAL.length];
       const x = px(bb), y = py(ss); pts.push({n: B.n+' '+n, short: n, b: bb, S: ss, x, y});
-      c.beginPath(); c.arc(x, y, 5, 0, 7); c.fillStyle = few ? famCol[f] : B.c; c.fill(); c.lineWidth = 2; c.strokeStyle = '#0f172a'; c.stroke();
+      c.beginPath(); c.arc(x, y, narrow ? 3.4 : 5, 0, 7); c.fillStyle = few ? famCol[f] : B.c; c.fill(); c.lineWidth = narrow ? 1.4 : 2; c.strokeStyle = '#0f172a'; c.stroke();
     }));
     VA.pts = pts;
-    if($('atl-fam')) $('atl-fam').innerHTML = few ? Object.entries(famCol).map(([f, col]) => '<span><i style="background:'+col+'"></i>'+f+'</span>').join('') : '';
+    if($('atl-fam')) $('atl-fam').innerHTML = few ? Object.entries(famCol).map(([f, col]) => '<span><i style="background:'+col+'"></i>'+f+'</span>').join('')
+      + '<span class="rleg">'+[['🏁', '300 m'], ['🛣️', '1 km'], ['🏆', t('polyvalente','all-round')]].map(([e, l]) => '<span><i class="rring" style="border-color:'+VA_RC_C[e]+'"></i>'+e+' '+l+'</span>').join('')+'</span>' : '';
     // noms de zones sur leur couleur (sinon à côté avec un trait ; nom court en dernier recours)
     const boxes = pts.map(p => [p.x - 6, p.y - 6, 12, 12]);
-    c.font = '900 12px system-ui, sans-serif'; c.textAlign = 'center'; c.lineJoin = 'round';
+    vaInfo(few ? act[0] : null, kg, famCol);
+    if(few && VA.reco) VA.reco.forEach(r => {   // recos visibles sur la carte : anneau de la couleur de la reco + emoji
+      const x = px(r.b), y = py(r.S), rr = narrow ? 7 : 9;
+      c.beginPath(); c.arc(x, y, rr, 0, 7); c.lineWidth = 5; c.strokeStyle = '#0f172a'; c.stroke();
+      c.beginPath(); c.arc(x, y, rr, 0, 7); c.lineWidth = 3; c.strokeStyle = VA_RC_C[r.e]; c.stroke();
+      c.font = (narrow ? 13 : 15)+'px system-ui, sans-serif'; c.textAlign = 'center'; c.fillText(r.e, x, y - rr - 3);
+    });
+    const ringB = few && VA.reco ? VA.reco.map(r => { const x = px(r.b), y = py(r.S); return [x - 13, y - 32, 26, 45]; }) : [];
+    ringB.forEach(r => boxes.push(r));   // les noms évitent les anneaux de reco
+    c.font = (narrow ? '900 10.5px' : '900 12px')+' system-ui, sans-serif'; c.textAlign = 'center'; c.lineJoin = 'round';
     Object.keys(VA_CAT).forEach(k => {
       const cells = catCells[k]; if(!cells || cells.length < 4) return;
-      for(const txt of [vaT(VA_CAT[k].s), vaT(VA_CAT[k].x)]){
+      for(const txt of (narrow ? [vaT(VA_CAT[k].x)] : [vaT(VA_CAT[k].s), vaT(VA_CAT[k].x)])){
         const tw = c.measureText(txt).width; let best = null, bs = -1, anchor = null;
         for(let i = 0; i < cells.length; i += 2){
           const [x, y] = cells[i], x0 = x - tw/2 - 3, x1 = x + tw/2 + 3, y0 = y - 7, y1 = y + 7;
@@ -1359,6 +1395,7 @@
           const inside = cats.filter(q => q === k).length;
           if(inside < 7 || cats.some(q => q && q !== k)) continue;
           let d = 40; pts.forEach(p => { const dx = Math.max(0, Math.abs(p.x - x) - tw/2 - 4), dy = Math.max(0, Math.abs(p.y - y) - 8); d = Math.min(d, Math.hypot(dx, dy)); });
+          if(ringB.some(r => x0 < r[0] + r[2] && x1 > r[0] && y0 < r[1] + r[3] && y1 > r[1])) continue;   // jamais sur une reco
           if(boxes.some(r => x0 < r[0] + r[2] && x1 > r[0] && y0 < r[1] + r[3] && y1 > r[1])) d -= 50;
           if(inside*100 + d > bs){ bs = inside*100 + d; best = [x, y]; }
         }
@@ -1402,18 +1439,18 @@
       + '<span><i style="background:#fde68a; height:1px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même allongement AR (chiffre en haut)','same aspect ratio AR (number on top)')+'</span>'
       + '<span><i class="hatch"></i>'+t('hors gamme (AR < 6 ou > 24)','out of range (AR < 6 or > 24)')+'</span>'
       + '<span>'+kg+' kg · '+t('meilleurs temps','best times')+' : 300 m '+vaTime(VA.best.b3)+' · 1 km '+vaTime(VA.best.b1)+'</span>';
-    vaInfo(few ? act[0] : null, kg, famCol);
   }
+  const VA_RC_C = {'🏁':'#ff6fa3', '🛣️':'#3ee08f', '🏆':'#5fb0ff'};   // mêmes familles que les zones 300 m / 1 km / les deux
   function vaInfo(B, kg, famCol){
     const box = $('atl-info'); if(!box) return;
-    if(!B){ box.innerHTML = ''; VA.lastReco = null; return; }
+    if(!B){ box.innerHTML = ''; VA.lastReco = null; VA.reco = null; return; }
     const ev = B.w.map(([n, b, S]) => Object.assign({n, b, S, ar: b*b/S}, vaEval(b, S, kg)));
     const okW = ev.filter(w => w.k !== 'start');
     const by = (arr, f) => arr.slice().sort((a, b2) => f(a) - f(b2))[0];
     const r3 = by(okW.filter(w => !w.r3.stall), w => w.r3.t), r1 = by(okW.filter(w => !w.r1.stall), w => w.r1.t), poly = by(okW, w => Math.max(w.a, w.d));
     const inSl = w => w.b >= +$('i-b').min && w.b <= +$('i-b').max && w.S >= +$('i-s').min && w.S <= +$('i-s').max;
     const was = (key, w) => VA_RC.before && VA_RC.before[key] && w && VA_RC.before[key] !== w.n ? ' <span class="was">'+t('avant : ','before: ')+VA_RC.before[key]+'</span>' : '';
-    const card = (key, lab, w, info) => !w ? '' : '<div><span class="rk">'+lab+'</span> <b class="rn">'+w.n+'</b> <span class="rd">'+num(w.b, w.b % 1 ? 1 : 0)+' cm · '+num(w.S, 0)+' cm² · '+info+was(key, w)+'</span>'
+    const card = (key, lab, w, info) => !w ? '' : '<div style="border-color:'+VA_RC_C[lab.split(' ')[0]]+'"><span class="rk"><i class="rring" style="border-color:'+VA_RC_C[lab.split(' ')[0]]+'"></i>'+lab+'</span> <b class="rn">'+w.n+'</b> <span class="rd">'+num(w.b, w.b % 1 ? 1 : 0)+' cm · '+num(w.S, 0)+' cm² · '+info+was(key, w)+'</span>'
       + '<button type="button" data-try="'+w.b+'|'+w.S+'"'+(inSl(w) ? '' : ' disabled title="'+t('hors des curseurs du simulateur','outside the simulator sliders')+'"')+'>▶</button></div>';
     let html = '<div class="atl-reco">'
       + card('r3', t('🏁 300 m','🏁 300 m'), r3, vaTime(r3 ? r3.r3.t : 0)+' · ~'+(r3 ? Math.round(r3.r3.v) : 0)+' km/h')
@@ -1421,6 +1458,7 @@
       + (poly && poly !== r3 && poly !== r1 ? card('poly', t('🏆 polyvalente','🏆 all-round'), poly, '+'+Math.round((Math.max(poly.a, poly.d) - 1)*100)+' % '+t('au pire','at worst')) : '')
       + '</div>';
     VA.lastReco = {r3: r3 && r3.n, r1: r1 && r1.n, poly: poly && poly.n};
+    VA.reco = [[r3, '🏁'], [r1 !== r3 ? r1 : null, '🛣️'], [poly && poly !== r3 && poly !== r1 ? poly : null, '🏆']].filter(r => r[0]).map(([w, e]) => ({b: w.b, S: w.S, e}));
     const fams = {}; ev.forEach(w => { const f = vaFam(w.n); (fams[f] = fams[f] || []).push(w); });
     const rg = (a, d) => { const lo = Math.min(...a), hi = Math.max(...a); return Math.abs(hi - lo) < (d ? .15 : 1) ? num(lo, d) : num(lo, d)+'–'+num(hi, d); };
     html += '<div class="atl-rngw"><table class="atl-rng"><tr><th>'+t('gamme','range')+'</th><th>'+t('envergure · surface','span · area')+'</th><th>AR</th><th>'+t('pour toi','for you')+'</th></tr>'
@@ -1455,7 +1493,11 @@
       const p = pick(e); if(!p){ tip.hidden = true; return; }
       const ar = p.b*p.b/p.S, ev = vaEval(p.b, p.S, VA.geo.kg), fits = ar >= VA.AR0 && ar <= VA.AR1;
       const inSl = p.b >= +$('i-b').min && p.b <= +$('i-b').max && p.S >= +$('i-s').min && p.S <= +$('i-s').max;
-      tip.innerHTML = (p.wing ? '<div class="tt-h">'+p.wing.n+'</div>' : '')
+      const rec = p.wing && VA.solo && VA.reco ? VA.reco.find(r => Math.abs(r.b - p.b) < .01 && r.S === p.S) : null;
+      const RL = {'🏁':t('meilleure sur 300 m','best over 300 m'), '🛣️':t('meilleure sur 1 km','best over 1 km'), '🏆':t('polyvalente','all-round')};
+      tip.style.background = rec ? 'color-mix(in srgb, '+VA_RC_C[rec.e]+' 30%, #0a1020)' : ''; tip.style.borderColor = rec ? VA_RC_C[rec.e] : '';
+      tip.innerHTML = (rec ? '<div class="tt-rec" style="color:'+VA_RC_C[rec.e]+'">'+rec.e+' '+t('recommandée','recommended')+' · '+RL[rec.e]+'</div>' : '')
+        + (p.wing ? '<div class="tt-h">'+p.wing.n+'</div>' : '')
         + '<div class="'+(p.wing ? '' : 'tt-h')+'">'+p.b+' cm · '+num(p.S, 0)+' cm² · AR '+num(ar, 1)+'</div>'
         + '300 m <b>'+(ev.r3.stall ? t('décroche en virage','stalls in turns') : vaTime(ev.r3.t)+' · ~'+Math.round(ev.r3.v)+' km/h')+'</b><br>'
         + '1 km <b>'+(ev.r1.stall ? t('décroche en virage','stalls in turns') : vaTime(ev.r1.t)+' · ~'+Math.round(ev.r1.v)+' km/h')+'</b><br>'
@@ -1474,7 +1516,13 @@
     addEventListener('resize', vaDraw);
     new MutationObserver(vaDraw).observe(document.documentElement, {attributes:true, attributeFilter:['lang']});
     vaDraw();
+    vaFromHash(); addEventListener('hashchange', vaFromHash);
   })();
+  // 🔗 lien direct par marque : vitesse.html#atlas-axis, #atlas-alpine-foil… (même format que la page carve)
+  function vaSlug(B){ return B.n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+  function vaHash(){ const B = VA_BRANDS.find(x => x.k === VA.solo); try{ history.replaceState(null, '', location.pathname + location.search + (B ? '#atlas-'+vaSlug(B) : '#atlas')); }catch(e){} }
+  function vaFromHash(){ const m = /^#atlas-(.+)$/.exec(location.hash); if(!m) return; const B = VA_BRANDS.find(x => vaSlug(x) === m[1]); if(!B) return;
+    VA.solo = B.k; vaBrandsUI(); vaDraw(); const sec = $('atlas'); if(sec) setTimeout(() => sec.scrollIntoView(), 50); }
 })();
 </script>
 </body>
