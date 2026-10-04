@@ -1804,7 +1804,7 @@
   addEventListener('resize', () => { placeWin(); if(WIN.args) drawWin(...WIN.args); });
 
   // 🗺️ ATLAS — la même carte en grand, avec les vraies ailes (filtre par marque). Plage large : du carve au planeur.
-  const ATL = {key:'', g:null, B0:70, B1:195, S0:450, S1:1800, DB:1.5, DS:20, AR0:6, AR1:24, ARg0:5, ARg1:28, solo:null};   // > 1 800 cm² retirées : plus de place pour les ailes de surf
+  const ATL = {key:'', g:null, B0:70, B1:160, S0:450, S1:1800, DB:1.5, DS:20, AR0:6, AR1:24, ARg0:5, ARg1:28, solo:null};   // > 1 800 cm² retirées : plus de place pour les ailes de surf
   const ATL_BRANDS = window.FOIL_WINGS || [];   // base partagée : ailes.js
   // 8 familles d'ailes pour TON poids / niveau / vague. Ordre de priorité : trop petite → puis maniable × endurante.
   // Couleurs : palette de référence (thème sombre) vérifiée au validateur — chaque paire de zones VOISINES passe
@@ -1836,6 +1836,12 @@
     if(end) return man >= 20 ? 'glide' : 'dw';
     return 'ecole';
   }
+  // bulle : valeurs extrêmes colorées, du point de vue du CARVE (vert = atout, rouge = extrême défavorable)
+  // dégradé continu : f = 0 (défavorable, rouge) → 0,5 (neutre, blanc) → 1 (favorable, vert). grad(x, mauvais, bon) mappe la valeur.
+  const tone = (txt, f) => { f = Math.max(0, Math.min(1, f));
+    const R = [248, 113, 113], N = [226, 232, 240], G = [74, 222, 128], a = f < .5 ? R : N, b = f < .5 ? N : G, k = f < .5 ? f*2 : (f - .5)*2;
+    return '<span style="color:rgb('+a.map((v, i) => Math.round(v + (b[i] - v)*k)).join(',')+')">'+txt+'</span>'; };
+  const grad = (x, bad, good) => (x - bad)/(good - bad);
   function atlBrandsUI(){
     const box = $('atl-brands'); if(!box) return;
     // un clic = cette marque seule (avec les noms des ailes) · « Toutes » = tout réafficher
@@ -1859,8 +1865,8 @@
   addEventListener('hashchange', atlFromHash);
   // repère logique ≈ largeur réelle (380-600) : sur téléphone les textes gardent une taille lisible
   // téléphone (largeur < 520 px) : repère plus haut que large → les ailes de surf respirent ; ordi : 600 × 400
-  function atlGeo(w){ const W = Math.max(340, Math.min(600, w)), narrow = w < 520, H = Math.round(W*(narrow ? .95 : 400/600));
-    return {W, H, narrow, X0: narrow ? 40 : 52, X1: W - (narrow ? 30 : 44), Y0:34, Y1:H - 40}; }
+  function atlGeo(w){ const W = Math.max(340, Math.min(600, w)), narrow = w < 520, H = Math.round(W*(narrow ? .95 : 400/600)) + 38;   // +22 : rangée « maniabilité » sous l'axe
+    return {W, H, narrow, X0: narrow ? 40 : 52, X1: W - (narrow ? 30 : 44), Y0:34, Y1:H - 78}; }
   // 🏷️ Marque seule : reco selon ton poids / niveau / vague + présentation de la gamme (familles, tailles, zone pour toi)
   // couleur de chaque reco : même famille que sa zone, en plus lumineux pour ressortir sur la carte
   const RECO_C = {'✨':'#3ee08f', '🔥':'#ff6fa3', '🌊':'#5fb0ff'};
@@ -1971,7 +1977,7 @@
     // halo sombre sous un tiret blanc (visible sur toutes les couleurs), chiffre posé SUR la ligne dans une pastille
     const lab = [], manLab = [];
     const rawMan = (bb, ss) => wingMan(bb, ss) - 4*Math.max(0, bb*bb/ss - 12) + rearBonus();
-    [20, 45, 70].forEach(m => {
+    [20, 45, 70, 90].forEach(m => {
       // pour chaque envergure, deux passages : côté trapu (la surface fait chuter la maniabilité) et côté très fin (pénalité
       // AR > 12). La ligne fait donc demi-tour : au-delà d'une certaine envergure, aucune aile n'atteint ce niveau.
       const fall = [], rise = [];
@@ -1981,16 +1987,36 @@
           if(prev < 0 && v >= 0 && !gotR){ rise.push([bb, ss - 4*v/(v - prev)]); gotR = true; }
           if(prev >= 0 && v < 0){ fall.push([bb, ss - 4*v/(v - prev)]); break; } prev = v; }
       }
-      const pts = fall.concat(rise.slice(0, fall.length).reverse());
+      const pts = fall.concat(rise.slice().reverse());   // côté trapu (envergure croissante) puis côté fin (retour) — chaque branche garde SES envergures
       if(pts.length < 2) return;
       const path = () => { c.beginPath(); pts.forEach(([bb, ss], k) => k ? c.lineTo(px(bb), py(ss)) : c.moveTo(px(bb), py(ss))); };
       c.setLineDash([]); c.lineWidth = 4.5; c.strokeStyle = 'rgba(15,23,42,.55)'; path(); c.stroke();
       c.setLineDash([7, 5]); c.lineWidth = 2; c.strokeStyle = 'rgba(255,255,255,.95)'; path(); c.stroke();
       // pastille : au milieu de la partie de la courbe qui est dans la gamme (AR 6-24) et dans le cadre
       const inR = pts.filter(([bb, ss]) => { const a = bb*bb/ss; return a >= ATL.AR0 && a <= ATL.AR1 && ss >= ATL.S0 + 40 && ss <= ATL.S1 - 40; });
-      if(inR.length) manLab.push([inR, m]);
+      manLab.push([inR, m, pts]);
     });
     c.setLineDash([]);
+    // ⏱️ frontière ENDURANCE (30 min de session) : celle qui bouge avec ton poids / niveau / vague. Pour chaque colonne
+    // d'envergure, on repère où « tu tiens » bascule ; on relie les points voisins → trait plein ambre, distinct des tirets.
+    const endSeg = [], endMap = new Map();
+    winGrid(kg, H, ATL).forEach(([bb, ss, fun, end]) => endMap.set(Math.round((bb - ATL.B0)/ATL.DB)+','+Math.round((ss - ATL.S0)/ATL.DS), end));
+    const nI2 = Math.round((ATL.B1 - ATL.B0)/ATL.DB), nJ2 = Math.round((ATL.S1 - ATL.S0)/ATL.DS);
+    // la frontière est surtout « verticale » (elle dépend de l'envergure) : pour chaque rangée de surface, on repère où ça
+    // bascule le long de l'envergure, puis on relie les points des rangées voisines
+    let prevRow = [];
+    for(let j = 0; j <= nJ2; j++){
+      const row = [];
+      for(let i = 0; i < nI2; i++){ const a = endMap.get(i+','+j), b2 = endMap.get((i + 1)+','+j); if(a === undefined || b2 === undefined || a === b2) continue;
+        const bb = ATL.B0 + (i + .5)*ATL.DB, ss = ATL.S0 + j*ATL.DS, ar = bb*bb/ss; if(ar < ATL.AR0 || ar > ATL.AR1) continue; row.push([px(bb), py(ss)]); }
+      row.forEach(p => { const q = prevRow.reduce((m, r) => !m || Math.abs(r[0] - p[0]) < Math.abs(m[0] - p[0]) ? r : m, null); if(q && Math.abs(q[0] - p[0]) < 14) endSeg.push([q, p]); });
+      prevRow = row;
+    }
+    c.save(); c.beginPath(); c.rect(X0, Y0, X1 - X0, Y1 - Y0); c.clip(); c.lineCap = 'round';
+    c.lineWidth = 3.5; c.strokeStyle = 'rgba(15,23,42,.45)'; c.beginPath(); endSeg.forEach(([a, b2]) => { c.moveTo(a[0], a[1]); c.lineTo(b2[0], b2[1]); }); c.stroke();
+    c.lineWidth = 1.6; c.strokeStyle = '#fbbf24'; c.beginPath(); endSeg.forEach(([a, b2]) => { c.moveTo(a[0], a[1]); c.lineTo(b2[0], b2[1]); }); c.stroke();
+    c.restore();
+    ATL.endSeg = endSeg;
     // lignes de même allongement (AR = envergure² / surface) — chiffrées en haut
     c.setLineDash([]); c.lineWidth = 1; c.strokeStyle = 'rgba(253,230,138,.5)';   // allongement : trait fin jaune, continu
     const arLab = [];
@@ -2007,11 +2033,31 @@
     c.font = '800 10px system-ui, sans-serif'; c.fillStyle = '#fde68a'; c.textAlign = 'center';
     arLab.forEach(([x, A]) => c.fillText(A, x, Y0 - 5));
     c.font = '700 10px system-ui, sans-serif'; c.textAlign = 'left';
-    c.fillText(t('Aspect Ratio (AR) →','Aspect Ratio (AR) →'), X0, Y0 - 20);
+    // titre « Aspect Ratio (AR) → » sur la MÊME ligne que les chiffres, juste à gauche du premier (8)
+    if(arLab.length){ const x8 = Math.min(...arLab.map(l => l[0])); c.textAlign = 'right'; c.fillText(t('Aspect Ratio (AR) →','Aspect Ratio (AR) →'), x8 - 12, Y0 - 5); }
     // axes
     c.font = '600 10px system-ui, sans-serif'; c.fillStyle = '#94a3b8'; c.textAlign = 'center';
-    for(let v = 80; v <= 180; v += 20) c.fillText(v, px(v), Y1 + 13);
+    for(let v = 80; v <= ATL.B1; v += 20) c.fillText(v, px(v), Y1 + 13);   // cadré sur 70-160 cm : là où sont les ailes de surf
     c.fillText(t('envergure (cm) →','span (cm) →'), (X0 + X1)/2, Y1 + 28);
+    // 🌀 échelle de MANIABILITÉ : ses courbes sortent toutes par le bas du cadre → chiffres là où chaque tiret sort,
+    // sur une 2e rangée sous l'envergure (comme l'AR en haut) ; petit trait blanc au point de sortie
+    const exits = [];
+    manLab.forEach(([inR, m, all]) => { (all || []).forEach(([b1, s1], k) => { const nx = all[k + 1]; if(!nx) return; const [b2, s2] = nx;
+      if((s1 - ATL.S0)*(s2 - ATL.S0) <= 0 && s1 !== s2){ const bb = b1 + (b2 - b1)*(ATL.S0 - s1)/(s2 - s1), x = px(bb); if(x > X0 + 4 && x < X1 - 4) exits.push([x, m]); } }); });
+    c.strokeStyle = '#fff'; c.lineWidth = 2;
+    // le tiret blanc continue SOUS le cadre jusqu'à son chiffre (en évitant les chiffres d'envergure) → on voit que ce chiffre est le sien
+    c.save(); c.setLineDash([4, 3]); c.lineWidth = 1.6; c.strokeStyle = 'rgba(255,255,255,.85)';
+    exits.forEach(([x]) => { c.beginPath(); c.moveTo(x, Y1); c.lineTo(x, Y1 + 3); c.moveTo(x, Y1 + 17); c.lineTo(x, Y1 + 34); c.stroke(); });
+    c.restore();
+    c.font = '800 10px system-ui, sans-serif'; c.fillStyle = '#e2e8f0'; c.textAlign = 'center';
+    exits.forEach(([x, m]) => c.fillText(m, x, Y1 + 46));
+    // explication de la rangée, sur sa propre ligne en dessous (centrée)
+    c.font = '700 '+(G.narrow ? 9 : 10)+'px system-ui, sans-serif'; c.textAlign = 'center'; c.fillStyle = '#94a3b8';
+    { // un vrai bout de tiret blanc dessiné, puis « = maniabilité (← plus maniable) »
+      const txt = t(' = maniabilité (résistance au roulis : surface × envergure²)',' = maneuverability (roll resistance: area × span²)'), tw = c.measureText(txt).width, sw = 26, x0 = (X0 + X1)/2 - (sw + 6 + tw)/2, yy = Y1 + 60;
+      c.save(); c.setLineDash([6, 4]); c.lineWidth = 2; c.strokeStyle = '#fff'; c.beginPath(); c.moveTo(x0, yy); c.lineTo(x0 + sw, yy); c.stroke(); c.restore();
+      c.textAlign = 'left'; c.fillText(txt, x0 + sw + 6, Y1 + 64);
+    }
     c.textAlign = 'right';
     for(let v = 600; v <= 1800; v += 200) c.fillText(num(v), X0 - 5, py(v) + 3);
     c.save(); c.translate(12, (Y0 + Y1)/2); c.rotate(-Math.PI/2); c.textAlign = 'center'; c.fillText(t('surface (cm²) →','area (cm²) →'), 0, 0); c.restore();
@@ -2039,12 +2085,15 @@
     });
     // noms des zones posés SUR leur couleur : la place qui tient entièrement dans la zone, le plus loin possible des points
     const boxes = pts.map(p => [p.x - 6, p.y - 6, 12, 12]);
+    ATL.manTop = [];
     c.font = (G.narrow ? '900 10.5px' : '900 12px')+' system-ui, sans-serif'; c.textAlign = 'center'; c.lineWidth = 4; c.lineJoin = 'round';
-    const placed = []; ATL.placed = placed;   // noms de zones effectivement posés (contrôle)
+    const placed = []; ATL.placed = placed; ATL.leaders = [];   // noms de zones effectivement posés (contrôle)
     Object.keys(ATL_CAT).forEach(k => {
       const cells = catCells[k]; if(!cells || cells.length < 4) return;
       // nom complet ; s'il ne trouve aucune place (écran étroit), nom court
-      for(const txt of (G.narrow ? [t(ATL_CAT[k].xfr, ATL_CAT[k].xen)] : [t(ATL_CAT[k].sfr, ATL_CAT[k].sen), t(ATL_CAT[k].xfr, ATL_CAT[k].xen)])){
+      const names = G.narrow ? [t(ATL_CAT[k].xfr, ATL_CAT[k].xen)] : [t(ATL_CAT[k].sfr, ATL_CAT[k].sen), t(ATL_CAT[k].xfr, ATL_CAT[k].xen)];
+      // 1er tour : nom long puis court, mais seulement DANS la zone ; 2e tour : nom court relié par un trait (qui ne croise aucun autre trait)
+      for(const [txt, pass] of names.map(n => [n, 0]).concat([[names[names.length - 1], 1]])){
       const tw = c.measureText(txt).width;
       // score = part de l'étiquette qui tombe dans sa zone (prioritaire), puis distance aux points
       let best = null, bs = -1;
@@ -2072,16 +2121,22 @@
             if(strict && [[x0,y0],[x1,y0],[x0,y1],[x1,y1],[x,y0],[x,y1],[x0,y],[x1,y],[x,y]].some(([a, b2]) => catAt(a, b2))) return;
             if(boxes.some(q => x0 < q[0] + q[2] && x1 > q[0] && y0 < q[1] + q[3] && y1 > q[1])) return;
             const d = Math.hypot(x - ax, y - ay);
+            if(d > 70) return;                                                   // pas de renvoi qui traverse la carte
+            const cross = (ATL.leaders || []).some(([a1, b1, a2, b2]) => { const o = (p, q, r) => Math.sign((q[0]-p[0])*(r[1]-p[1]) - (q[1]-p[1])*(r[0]-p[0]));
+              const P = [ax, ay], Q = [x, y], A = [a1, b1], B = [a2, b2]; return o(P, Q, A) !== o(P, Q, B) && o(A, B, P) !== o(A, B, Q); });
+            if(cross) return;
             if(d < bd){ bd = d; best = [x, y]; anchor = [ax, ay]; }
           }));
         }
       };
+      if(!best && pass === 0) continue;
       if(!best) nearby(true);
       if(!best) nearby(false);
       if(!best) continue;
       if(anchor){
         // trait du bord de l'étiquette jusqu'à la zone
         const ex = Math.max(best[0] - tw/2, Math.min(best[0] + tw/2, anchor[0])), ey = Math.abs(anchor[0] - ex) < 1 ? best[1] + (anchor[1] > best[1] ? 7 : -7) : best[1];
+        ATL.leaders.push([ex, ey, anchor[0], anchor[1]]);
         c.save(); c.lineWidth = 1.5; c.strokeStyle = '#fff'; c.beginPath(); c.moveTo(ex, ey); c.lineTo(anchor[0], anchor[1]); c.stroke();
         c.beginPath(); c.arc(anchor[0], anchor[1], 2.5, 0, 7); c.fillStyle = '#fff'; c.fill(); c.restore();
         c.lineWidth = 4;
@@ -2109,22 +2164,20 @@
       });
     }
     ATL.pts = pts;
-    // pastilles « maniab. 45 » posées SUR les lignes, en dernier (au-dessus de tout), là où elles gênent le moins
-    c.font = '800 '+(G.narrow ? 9.5 : 11)+'px system-ui, sans-serif'; c.textAlign = 'center'; c.setLineDash([]);
-    const occ = (typeof boxes !== 'undefined' ? boxes : []).concat(pts.map(p => [p.x - 6, p.y - 6, 12, 12]));
-    manLab.forEach(([inR, m]) => {
-      const txt = (G.narrow ? '' : t('maniab. ','maneuv. '))+m, tw = c.measureText(txt).width + 12, h = G.narrow ? 15 : 17;
-      let best = null, bs = 1e9;
-      inR.forEach(([bb, ss], k) => { const x = px(bb), y = py(ss), r = [x - tw/2, y - h/2, tw, h];
-        if(r[0] < X0 || r[0] + tw > X1 || r[1] < Y0 || r[1] + h > Y1) return;
-        const hit = occ.filter(q => r[0] < q[0] + q[2] && r[0] + tw > q[0] && r[1] < q[1] + q[3] && r[1] + h > q[1]).length;
-        const sc = hit*100 + Math.abs(k/inR.length - .5)*10; if(sc < bs){ bs = sc; best = [x, y]; } });
-      if(!best) return;
-      const [x, y] = best; occ.push([x - tw/2, y - h/2, tw, h]);
-      c.fillStyle = 'rgba(15,23,42,.9)'; c.strokeStyle = 'rgba(255,255,255,.9)'; c.lineWidth = 1.2;
-      c.beginPath(); if(c.roundRect) c.roundRect(x - tw/2, y - h/2, tw, h, h/2); else c.rect(x - tw/2, y - h/2, tw, h); c.fill(); c.stroke();
-      c.fillStyle = '#fff'; c.fillText(txt, x, y + 4);
-    });
+    // ⏱️ trait ambre : on écrit DE CHAQUE CÔTÉ ce qu'il sépare (« tu t'épuises » / « tu tiens 30 min et + »)
+    if(ATL.endSeg && ATL.endSeg.length){
+      const all = ATL.endSeg.flat(), top = all.reduce((m, p) => !m || p[1] < m[1] ? p : m, null);
+      const endAt = (x, y) => { const bb = ATL.B0 + (x - X0)/(X1 - X0)*(ATL.B1 - ATL.B0), ss = ATL.S0 + (Y1 - y)/(Y1 - Y0)*(ATL.S1 - ATL.S0), a = bb*bb/ss;
+        if(a < ATL.AR0 || a > ATL.AR1) return null; const ses = waveSession(bb, ss, kg, H); return ses.unlimited || ses.min >= 30; };
+      const y = Math.max(Y0 + 30, top[1] + 30), lEnd = endAt(top[0] - 25, y), rEnd = endAt(top[0] + 25, y);
+      if(lEnd !== null && rEnd !== null && lEnd !== rEnd){
+        const tired = t('tu t\'épuises','you tire'), last = t('tu tiens 30 min +','you last 30 min+');
+        c.font = '800 '+(G.narrow ? 9.5 : 10.5)+'px system-ui, sans-serif'; c.lineJoin = 'round'; c.lineWidth = 3.5; c.strokeStyle = 'rgba(15,23,42,.92)'; c.fillStyle = '#fbbf24';
+        const lt = '← '+(lEnd ? last : tired), rt = (rEnd ? last : tired)+' →';
+        c.textAlign = 'right'; c.strokeText(lt, top[0] - 6, y); c.fillText(lt, top[0] - 6, y);
+        c.textAlign = 'left'; c.strokeText(rt, top[0] + 6, y); c.fillText(rt, top[0] + 6, y);
+      }
+    }
     const lg = $('atl-leg');
     // « poids plume » dépend de TON poids : surface sous laquelle l'aile ne te porte qu'à partir de 16,5 km/h (l'envergure trop courte s'ajoute via le pompage)
     const vwL = Math.sqrt(22*H)*3.6, thr = Math.max(16.5, vwL);   // la vague lance les ailes qui volent sous sa vitesse
@@ -2135,7 +2188,8 @@
         : t('trop petite pour toi à '+kg+' kg : sous ~'+num(sPl)+' cm² (porte dès 16,5 km/h et +), ou envergure trop courte pour démarrer en pompant (> '+Math.round(1.2*riderLvl().cp/10)*10+' W)', 'too small for you at '+kg+' kg: below ~'+num(sPl)+' cm² (carries you from 16.5 km/h+), or span too short to pump it up (> '+Math.round(1.2*riderLvl().cp/10)*10+' W)'))
       : t(C.fr, C.en);
     if(lg) lg.innerHTML = '<div class="atl-cats">'+Object.entries(ATL_CAT).map(([k, C]) => '<div><i style="background:'+C.c+'"></i><b>'+t(C.sfr, C.sen)+'</b> <span>'+catTxt(k, C)+'</span></div>').join('')+'</div>'
-      + '<span><i style="background:repeating-linear-gradient(90deg, rgba(255,255,255,.85) 0 5px, transparent 5px 8px); height:2px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même maniabilité (tirets blancs, valeur dans la pastille)','same maneuverability (white dashes, value in the tag)')+'</span>'
+      + '<span><i style="background:repeating-linear-gradient(90deg, rgba(255,255,255,.85) 0 5px, transparent 5px 8px); height:2px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même maniabilité 90 · 70 · 45 · 20 (tirets blancs, chiffre en bas sous l\'envergure)','same maneuverability 90 · 70 · 45 · 20 (white dashes, number at the bottom under the span)')+'</span>'
+      + '<span><i style="background:#fbbf24; height:2px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('trait ambre : d\'un côté tu tiens 30 min et +, de l\'autre tu t\'épuises avant (écrit sur la carte ; bouge avec ton poids, ton niveau, la vague)','⏱️ 30 min session: on one side you last, on the other you tire (moves with your weight, level, wave)')+'</span>'
       + '<span><i style="background:#fde68a; height:1px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même AR (trait jaune, chiffre en haut)','same AR (yellow line, number on top)')+'</span>'
       + '<span><i class="hatch"></i>'+t('hors gamme (AR < 6 ou > 24)','out of range (AR < 6 or > 24)')+'</span>'
       + '<span>'+kg+' kg · '+t(riderLvl().fr, riderLvl().en)+' · '+t('vague','wave')+' '+num(H, H % 1 ? 2 : 0).replace(/0$/,'')+' m</span>';
@@ -2166,9 +2220,10 @@
       tip.style.borderColor = rec ? RECO_C[rec.e] : '';
       tip.innerHTML = (rec ? '<div class="tt-rec" style="color:'+RECO_C[rec.e]+'">'+rec.e+' '+t('recommandée','recommended')+' · '+RECO_L[rec.e]+'</div>' : '')
         + (p.wing ? '<div class="tt-h">'+p.wing.n+'</div>' : '')
-        + '<div class="'+(p.wing ? 'tt-s' : 'tt-h')+'">'+p.b+' cm · '+num(p.S)+' cm² · AR '+num(ar, 1)+'</div>'
-        + t('maniabilité','maneuverability')+' <b>'+man+'</b> · '+t('glisse','glide')+' <b>'+glideScore(p.b, p.S, g.kg)+'</b><br>'
-        + t('vole dès','flies from')+' <b>~'+liftoffKmh(p.S, g.kg)+' km/h</b> · '+t('session','session')+' <b>'+sesTxt+'</b>'
+        + '<div class="'+(p.wing ? 'tt-s' : 'tt-h')+'">'+tone(p.b+' cm', grad(p.b, 145, 85))+' · '+tone(num(p.S)+' cm²', grad(p.S, 1600, 750))
+          +' · '+tone('AR '+num(ar, 1), grad(ar, 18, 7))+'</div>'
+        + t('maniabilité','maneuverability')+' <b>'+tone(man, grad(man, 0, 90))+'</b> · '+t('glisse','glide')+' <b>'+(g2 => tone(g2, grad(g2, 20, 95)))(glideScore(p.b, p.S, g.kg))+'</b><br>'
+        + t('vole dès','flies from')+' <b>'+(v => tone('~'+v+' km/h', grad(v, 19, 11)))(liftoffKmh(p.S, g.kg))+'</b> · '+t('session','session')+' <b>'+tone(sesTxt, ses.unlimited ? 1 : grad(Math.log(Math.max(1, ses.min)), Math.log(2), Math.log(60)))+'</b>'
         + (ar >= ATL.AR0 && ar <= ATL.AR1 ? '<div style="margin-top:2px; font-weight:700">'+(C => t(C.sfr, C.sen))(ATL_CAT[atlCat(p.b, p.S, g.kg, manOf(p.b, p.S) >= 45, ses.unlimited || ses.min >= 30)])+'</div>' : '')
         + (p.wing ? '<div class="tt-c">'+(inSl ? t('clic : l\'essayer dans le simulateur','click: try it in the simulator') : t('hors des curseurs du simulateur','outside the simulator sliders'))+'</div>' : '');
       tip.hidden = false;
