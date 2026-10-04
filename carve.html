@@ -240,7 +240,8 @@
   .atl-reco > div:not(.atl-for){display:flex; align-items:center; flex-wrap:wrap; gap:2px 8px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:5px 6px 5px 12px;}
   .atl-reco .rk{color:var(--muted); font-weight:700; min-width:92px;}
   .atl-reco .rn{color:var(--txt); font-weight:800;}
-  .atl-reco .rd{color:#cbd5e1; font-size:.76rem; flex:1;} .atl-reco .rd i{color:var(--muted); font-style:normal;}
+  .atl-reco .rd{color:#cbd5e1; font-size:.76rem; flex:1;}
+  @media(max-width:560px){ .atl-reco > div:not(.atl-for){display:grid; grid-template-columns:auto 1fr auto; gap:0 8px;} .atl-reco .rk{min-width:0;} .atl-reco .rd{grid-column:1 / 3; grid-row:2;} .atl-reco button{grid-row:1 / 3; grid-column:3;} } .atl-reco .rd i{color:var(--muted); font-style:normal;}
   .atl-reco button{background:transparent; border:1px solid var(--carve); color:var(--carve); border-radius:999px; width:28px; height:24px; font:inherit; font-size:.72rem; font-weight:800; cursor:pointer;}
   .atl-reco button:disabled{opacity:.35; cursor:default;}
   .atl-rng{width:100%; border-collapse:collapse; font-size:.76rem; font-variant-numeric:tabular-nums;}
@@ -249,7 +250,7 @@
   .atl-rng td i{display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; vertical-align:0;}
   .atl-rngw{overflow-x:auto; -webkit-overflow-scrolling:touch;}
   .atl-box{position:relative; max-width:900px; margin:0 auto; background:var(--panel-2); border-radius:12px; padding:8px;}
-  #atl-cv{display:block; width:100%; aspect-ratio:600/400; cursor:crosshair; touch-action:pan-y;}
+  #atl-cv{display:block; width:100%; cursor:crosshair; touch-action:pan-y;}
   .win-leg{display:flex; flex-wrap:wrap; justify-content:center; gap:3px 12px; font-size:.68rem; color:var(--muted); margin:4px 0 6px;}
   .win-leg i{display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px; vertical-align:-1px;}
   .win-leg i.hatch{background:repeating-linear-gradient(135deg, rgba(148,163,184,.35) 0 1px, transparent 1px 4px);}
@@ -552,9 +553,9 @@
     <p class="lede" data-i18n="atl-lede">🧍 <b>La carte s'adapte à toi</b> : les zones bougent avec <b>ton poids</b>, <b>ton niveau</b> et <b>la taille de la houle</b> — règle-les juste en dessous et regarde les frontières glisser. Survole un point pour ses chiffres, clique une aile pour l'essayer.</p>
     <div class="rc-row" id="atl-rider"></div>
     <div class="atl-brands" id="atl-brands"></div>
+    <div class="atl-box"><canvas id="atl-cv" aria-hidden="true"></canvas><div class="win-tip" id="atl-tip" hidden></div></div>
     <div class="atl-fam" id="atl-fam"></div>
     <div class="atl-info" id="atl-info"></div>
-    <div class="atl-box"><canvas id="atl-cv" aria-hidden="true"></canvas><div class="win-tip" id="atl-tip" hidden></div></div>
     <div class="win-leg" id="atl-leg"></div>
   </section>
 
@@ -1830,11 +1831,13 @@
       const k = bt.dataset.k; ATL.solo = !k || ATL.solo === k ? null : k; atlBrandsUI(); if(ATL.args) drawAtlas(...ATL.args); }));
   }
   // repère logique ≈ largeur réelle (380-600) : sur téléphone les textes gardent une taille lisible
-  function atlGeo(w){ const W = Math.max(380, Math.min(600, w)), H = Math.round(W*400/600); return {W, H, X0:52, X1:W - 44, Y0:34, Y1:H - 40}; }
+  // téléphone (largeur < 520 px) : repère plus haut que large → les ailes de surf respirent ; ordi : 600 × 400
+  function atlGeo(w){ const W = Math.max(340, Math.min(600, w)), narrow = w < 520, H = Math.round(W*(narrow ? .95 : 400/600));
+    return {W, H, narrow, X0: narrow ? 40 : 52, X1: W - (narrow ? 30 : 44), Y0:34, Y1:H - 40}; }
   // 🏷️ Marque seule : reco selon ton poids / niveau / vague + présentation de la gamme (familles, tailles, zone pour toi)
   function atlBrandInfo(B, kg, H, famCol, fam){
     const box = $('atl-info'); if(!box) return;
-    if(!B){ box.innerHTML = ''; return; }
+    if(!B){ box.innerHTML = ''; ATL.reco = null; return; }
     const ev = B.w.map(([n, b, S]) => {
       const ses = waveSession(b, S, kg, H), man = manOf(b, S);
       const end = ses.unlimited || ses.min >= 30, ar = b*b/S;
@@ -1857,6 +1860,7 @@
       + (note ? ' <i>'+note+'</i>' : '')+'</span>'
       + '<button type="button" data-try="'+w.b+'|'+w.S+'"'+(inSl(w) ? ' title="'+t('l\'essayer','try it')+'"' : ' disabled title="'+t('hors des curseurs du simulateur','outside the simulator sliders')+'"')+'>▶</button></div>';
     ATL.lastComp = comp ? B.k+'|'+comp.n : null;
+    ATL.reco = [[comp, '✨'], [turn !== comp ? turn : null, '🔥'], [link !== comp && link !== turn ? link : null, '🌊']].filter(r => r[0]).map(([w, e]) => ({b: w.b, S: w.S, e}));
     const lv = t(riderLvl().fr, riderLvl().en);
     let html = '<div class="atl-reco">'
       + card(t('✨ compromis','✨ compromise'), comp, (both.length ? '' : t('(aucune en carve + endurance)','(none in carve + endurance)'))
@@ -1889,7 +1893,7 @@
     if($('atl-rider')) $('atl-rider').innerHTML = riderCtl(true);   // « Toutes / All » suit la langue
     const cv = $('atl-cv'); if(!cv) return;
     const w = cv.clientWidth || 600, G = atlGeo(w), dpr = Math.min(window.devicePixelRatio || 1, 2);
-    cv.width = Math.round(w*dpr); cv.height = Math.round(w*dpr*G.H/G.W);
+    cv.width = Math.round(w*dpr); cv.height = Math.round(w*dpr*G.H/G.W); cv.style.aspectRatio = G.W+' / '+G.H;
     const c = cv.getContext('2d'), k = cv.width/G.W; c.setTransform(k,0,0,k,0,0); c.clearRect(0,0,G.W,G.H);
     const {X0, X1, Y0, Y1} = G;
     const px = v => X0 + (v - ATL.B0)/(ATL.B1 - ATL.B0)*(X1 - X0), py = v => Y1 - (v - ATL.S0)/(ATL.S1 - ATL.S0)*(Y1 - Y0);
@@ -1963,19 +1967,23 @@
       if(bb < ATL.B0 || bb > ATL.B1 || ss < ATL.S0 || ss > ATL.S1) return;
       const f = fam(n); if(few && !(f in famCol)) famCol[f] = PAL[Object.keys(famCol).length % PAL.length];
       const x = px(bb), y = py(ss); pts.push({n: B.n+' '+n, short: n, b: bb, S: ss, x, y});
-      c.beginPath(); c.arc(x, y, 5, 0, 7); c.fillStyle = few ? famCol[f] : B.c; c.fill(); c.lineWidth = 2; c.strokeStyle = '#0f172a'; c.stroke();
+      c.beginPath(); c.arc(x, y, G.narrow ? 3.4 : 5, 0, 7); c.fillStyle = few ? famCol[f] : B.c; c.fill(); c.lineWidth = G.narrow ? 1.4 : 2; c.strokeStyle = '#0f172a'; c.stroke();
     }));
     const fl = $('atl-fam');
     if(fl) fl.innerHTML = few ? Object.entries(famCol).map(([f, col]) => '<span><i style="background:'+col+'"></i>'+f+'</span>').join('') : '';
     atlBrandInfo(few ? act[0] : null, kg, H, famCol, fam);
+    if(few && ATL.reco) ATL.reco.forEach(r => {   // recos visibles sur la carte : anneau blanc + emoji
+      const x = px(r.b), y = py(r.S); c.beginPath(); c.arc(x, y, G.narrow ? 7 : 9, 0, 7); c.lineWidth = 2.5; c.strokeStyle = '#fff'; c.stroke();
+      c.font = (G.narrow ? 13 : 15)+'px system-ui, sans-serif'; c.textAlign = 'center'; c.fillText(r.e, x, y - (G.narrow ? 10 : 12));
+    });
     // noms des zones posés SUR leur couleur : la place qui tient entièrement dans la zone, le plus loin possible des points
     const boxes = pts.map(p => [p.x - 6, p.y - 6, 12, 12]);
-    c.font = '900 12px system-ui, sans-serif'; c.textAlign = 'center'; c.lineWidth = 4; c.lineJoin = 'round';
+    c.font = (G.narrow ? '900 10.5px' : '900 12px')+' system-ui, sans-serif'; c.textAlign = 'center'; c.lineWidth = 4; c.lineJoin = 'round';
     const placed = []; ATL.placed = placed;   // noms de zones effectivement posés (contrôle)
     Object.keys(ATL_CAT).forEach(k => {
       const cells = catCells[k]; if(!cells || cells.length < 4) return;
       // nom complet ; s'il ne trouve aucune place (écran étroit), nom court
-      for(const txt of [t(ATL_CAT[k].sfr, ATL_CAT[k].sen), t(ATL_CAT[k].xfr, ATL_CAT[k].xen)]){
+      for(const txt of (G.narrow ? [t(ATL_CAT[k].xfr, ATL_CAT[k].xen)] : [t(ATL_CAT[k].sfr, ATL_CAT[k].sen), t(ATL_CAT[k].xfr, ATL_CAT[k].xen)])){
       const tw = c.measureText(txt).width;
       // score = part de l'étiquette qui tombe dans sa zone (prioritaire), puis distance aux points
       let best = null, bs = -1;
