@@ -1832,8 +1832,21 @@
     box.innerHTML = '<button type="button" data-k="" class="'+(ATL.solo ? '' : 'on')+'">'+t('Toutes','All')+'</button>'
       + ATL_BRANDS.map(B => '<button type="button" data-k="'+B.k+'" class="'+(!ATL.solo || ATL.solo === B.k ? 'on' : '')+'"><i style="background:'+B.c+'"></i>'+B.n+'</button>').join('');
     box.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => {
-      const k = bt.dataset.k; ATL.solo = !k || ATL.solo === k ? null : k; atlBrandsUI(); if(ATL.args) drawAtlas(...ATL.args); }));
+      const k = bt.dataset.k; ATL.solo = !k || ATL.solo === k ? null : k; atlBrandsUI(); if(ATL.args) drawAtlas(...ATL.args); atlHash(); }));
   }
+  // 🔗 lien direct par marque : carve.html#atlas-axis, #atlas-alpine-foil… (l'adresse suit le filtre, sans recharger)
+  const brandSlug = B => B.n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  function atlHash(){
+    const B = ATL_BRANDS.find(x => x.k === ATL.solo);
+    try{ history.replaceState(null, '', location.pathname + location.search + (B ? '#atlas-'+brandSlug(B) : '#atlas')); }catch(e){}
+  }
+  function atlFromHash(){
+    const m = /^#atlas-(.+)$/.exec(location.hash); if(!m) return;
+    const B = ATL_BRANDS.find(x => brandSlug(x) === m[1]); if(!B) return;
+    ATL.solo = B.k; atlBrandsUI(); if(ATL.args) drawAtlas(...ATL.args);
+    const sec = $('atlas'); if(sec) setTimeout(() => sec.scrollIntoView(), 50);
+  }
+  addEventListener('hashchange', atlFromHash);
   // repère logique ≈ largeur réelle (380-600) : sur téléphone les textes gardent une taille lisible
   // téléphone (largeur < 520 px) : repère plus haut que large → les ailes de surf respirent ; ordi : 600 × 400
   function atlGeo(w){ const W = Math.max(340, Math.min(600, w)), narrow = w < 520, H = Math.round(W*(narrow ? .95 : 400/600));
@@ -2134,7 +2147,7 @@
     const v = bt.dataset.rc;
     RC.before = {range: WIN.lastRange, comp: ATL.lastComp};
     if(v === 'kg-' || v === 'kg+'){
-      const k = $('i-kg'); k.value = Math.max(+k.min, Math.min(+k.max, riderKg() + (v === 'kg+' ? 5 : -5)));
+      const k = $('i-kg'); k.value = Math.max(+k.min, Math.min(+k.max, riderKg() + (v === 'kg+' ? 1 : -1)));
       k.dispatchEvent(new Event('input', {bubbles:true}));
     } else if(v.startsWith('lv:')){
       const l = $('i-lvl'); l.value = v.slice(3); l.dispatchEvent(new Event('change', {bubbles:true}));
@@ -2349,6 +2362,7 @@
   document.querySelectorAll('select').forEach(el => el.addEventListener('change', onSetting(el)));   // certains navigateurs n'envoient que « change »
   try{ const kg0 = localStorage.getItem('lcw-carve-kg'); if(kg0) $('i-kg').value = kg0; }catch(e){}   // poids mémorisé
   applyPresetBtn($('wing-cur'));   // défaut : Axis Surge 890
+  atlFromHash();                   // lien direct vers une marque de la carte
   /* ---------- explications repliables (UX : compact par défaut, mémorisé) ---------- */
     function setXp(on){
     document.body.classList.toggle('noexp', !on);
