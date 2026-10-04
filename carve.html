@@ -1967,15 +1967,30 @@
     const catAt0 = (x, y) => cellCat.get(Math.round(((x - X0)/(X1 - X0)*(ATL.B1 - ATL.B0))/ATL.DB)+','+Math.round(((Y1 - y)/(Y1 - Y0)*(ATL.S1 - ATL.S0))/ATL.DS));
     const catAt = (x, y) => { const bb = ATL.B0 + (x - X0)/(X1 - X0)*(ATL.B1 - ATL.B0), ss = ATL.S0 + (Y1 - y)/(Y1 - Y0)*(ATL.S1 - ATL.S0), a = bb*bb/ss;
       return a < ATL.AR0 || a > ATL.AR1 ? undefined : catAt0(x, y); };
-    // lignes de même maniabilité
-    c.setLineDash([6, 4]); c.lineWidth = 1.4; c.strokeStyle = 'rgba(255,255,255,.7)';   // maniabilité : tirets blancs
-    const lab = [];
-    [0, 20, 45, 70].forEach(m => {
-      const K = (30 - m*0.26)*1e6; c.beginPath();
-      for(let bb = ATL.B0, f = 1; bb <= ATL.B1; bb += 1, f = 0){ const x = px(bb), y = py(K/(bb*bb)); f ? c.moveTo(x, y) : c.lineTo(x, y); }
-      c.stroke();
-      const sR = K/(ATL.B1*ATL.B1); lab.push(sR >= ATL.S0 ? [X1 + 3, py(Math.min(sR, ATL.S1)), m] : [px(Math.sqrt(K/ATL.S0)) + 3, Y1 - 4, m]);
+    // lignes de même maniabilité — calculées avec la VRAIE maniabilité (aile − pénalité aile fine + stab/dièdre/fuselage),
+    // halo sombre sous un tiret blanc (visible sur toutes les couleurs), chiffre posé SUR la ligne dans une pastille
+    const lab = [], manLab = [];
+    const rawMan = (bb, ss) => wingMan(bb, ss) - 4*Math.max(0, bb*bb/ss - 12) + rearBonus();
+    [20, 45, 70].forEach(m => {
+      // pour chaque envergure, deux passages : côté trapu (la surface fait chuter la maniabilité) et côté très fin (pénalité
+      // AR > 12). La ligne fait donc demi-tour : au-delà d'une certaine envergure, aucune aile n'atteint ce niveau.
+      const fall = [], rise = [];
+      for(let bb = ATL.B0; bb <= ATL.B1 + 30; bb += 1){
+        let prev = rawMan(bb, 150) - m, gotR = false;
+        for(let ss = 154; ss <= 3000; ss += 4){ const v = rawMan(bb, ss) - m;
+          if(prev < 0 && v >= 0 && !gotR){ rise.push([bb, ss - 4*v/(v - prev)]); gotR = true; }
+          if(prev >= 0 && v < 0){ fall.push([bb, ss - 4*v/(v - prev)]); break; } prev = v; }
+      }
+      const pts = fall.concat(rise.slice(0, fall.length).reverse());
+      if(pts.length < 2) return;
+      const path = () => { c.beginPath(); pts.forEach(([bb, ss], k) => k ? c.lineTo(px(bb), py(ss)) : c.moveTo(px(bb), py(ss))); };
+      c.setLineDash([]); c.lineWidth = 4.5; c.strokeStyle = 'rgba(15,23,42,.55)'; path(); c.stroke();
+      c.setLineDash([7, 5]); c.lineWidth = 2; c.strokeStyle = 'rgba(255,255,255,.95)'; path(); c.stroke();
+      // pastille : au milieu de la partie de la courbe qui est dans la gamme (AR 6-24) et dans le cadre
+      const inR = pts.filter(([bb, ss]) => { const a = bb*bb/ss; return a >= ATL.AR0 && a <= ATL.AR1 && ss >= ATL.S0 + 40 && ss <= ATL.S1 - 40; });
+      if(inR.length) manLab.push([inR, m]);
     });
+    c.setLineDash([]);
     // lignes de même allongement (AR = envergure² / surface) — chiffrées en haut
     c.setLineDash([]); c.lineWidth = 1; c.strokeStyle = 'rgba(253,230,138,.5)';   // allongement : trait fin jaune, continu
     const arLab = [];
@@ -2000,8 +2015,7 @@
     c.textAlign = 'right';
     for(let v = 600; v <= 1800; v += 200) c.fillText(num(v), X0 - 5, py(v) + 3);
     c.save(); c.translate(12, (Y0 + Y1)/2); c.rotate(-Math.PI/2); c.textAlign = 'center'; c.fillText(t('surface (cm²) →','area (cm²) →'), 0, 0); c.restore();
-    c.save(); c.translate(G.W - 6, (Y0 + Y1)/2); c.rotate(-Math.PI/2); c.textAlign = 'center'; c.font = '800 10px system-ui, sans-serif'; c.fillStyle = '#e2e8f0';
-    c.fillText(t('maniabilité','maneuverability'), 0, 0); c.restore();
+    ATL.manBoxes = [];
     // les ailes
     const act = ATL_BRANDS.filter(B => !ATL.solo || ATL.solo === B.k), few = !!ATL.solo, pts = [];
     // marque seule : une couleur par gamme (nom sans la taille : « RSX Carve 1100 » → « RSX Carve »)
@@ -2095,6 +2109,22 @@
       });
     }
     ATL.pts = pts;
+    // pastilles « maniab. 45 » posées SUR les lignes, en dernier (au-dessus de tout), là où elles gênent le moins
+    c.font = '800 '+(G.narrow ? 9.5 : 11)+'px system-ui, sans-serif'; c.textAlign = 'center'; c.setLineDash([]);
+    const occ = (typeof boxes !== 'undefined' ? boxes : []).concat(pts.map(p => [p.x - 6, p.y - 6, 12, 12]));
+    manLab.forEach(([inR, m]) => {
+      const txt = (G.narrow ? '' : t('maniab. ','maneuv. '))+m, tw = c.measureText(txt).width + 12, h = G.narrow ? 15 : 17;
+      let best = null, bs = 1e9;
+      inR.forEach(([bb, ss], k) => { const x = px(bb), y = py(ss), r = [x - tw/2, y - h/2, tw, h];
+        if(r[0] < X0 || r[0] + tw > X1 || r[1] < Y0 || r[1] + h > Y1) return;
+        const hit = occ.filter(q => r[0] < q[0] + q[2] && r[0] + tw > q[0] && r[1] < q[1] + q[3] && r[1] + h > q[1]).length;
+        const sc = hit*100 + Math.abs(k/inR.length - .5)*10; if(sc < bs){ bs = sc; best = [x, y]; } });
+      if(!best) return;
+      const [x, y] = best; occ.push([x - tw/2, y - h/2, tw, h]);
+      c.fillStyle = 'rgba(15,23,42,.9)'; c.strokeStyle = 'rgba(255,255,255,.9)'; c.lineWidth = 1.2;
+      c.beginPath(); if(c.roundRect) c.roundRect(x - tw/2, y - h/2, tw, h, h/2); else c.rect(x - tw/2, y - h/2, tw, h); c.fill(); c.stroke();
+      c.fillStyle = '#fff'; c.fillText(txt, x, y + 4);
+    });
     const lg = $('atl-leg');
     // « poids plume » dépend de TON poids : surface sous laquelle l'aile ne te porte qu'à partir de 16,5 km/h (l'envergure trop courte s'ajoute via le pompage)
     const vwL = Math.sqrt(22*H)*3.6, thr = Math.max(16.5, vwL);   // la vague lance les ailes qui volent sous sa vitesse
@@ -2105,7 +2135,7 @@
         : t('trop petite pour toi à '+kg+' kg : sous ~'+num(sPl)+' cm² (porte dès 16,5 km/h et +), ou envergure trop courte pour démarrer en pompant (> '+Math.round(1.2*riderLvl().cp/10)*10+' W)', 'too small for you at '+kg+' kg: below ~'+num(sPl)+' cm² (carries you from 16.5 km/h+), or span too short to pump it up (> '+Math.round(1.2*riderLvl().cp/10)*10+' W)'))
       : t(C.fr, C.en);
     if(lg) lg.innerHTML = '<div class="atl-cats">'+Object.entries(ATL_CAT).map(([k, C]) => '<div><i style="background:'+C.c+'"></i><b>'+t(C.sfr, C.sen)+'</b> <span>'+catTxt(k, C)+'</span></div>').join('')+'</div>'
-      + '<span><i style="background:repeating-linear-gradient(90deg, rgba(255,255,255,.85) 0 5px, transparent 5px 8px); height:2px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même maniabilité (tirets blancs, chiffre à droite)','same maneuverability (white dashes, number on the right)')+'</span>'
+      + '<span><i style="background:repeating-linear-gradient(90deg, rgba(255,255,255,.85) 0 5px, transparent 5px 8px); height:2px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même maniabilité (tirets blancs, valeur dans la pastille)','same maneuverability (white dashes, value in the tag)')+'</span>'
       + '<span><i style="background:#fde68a; height:1px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même AR (trait jaune, chiffre en haut)','same AR (yellow line, number on top)')+'</span>'
       + '<span><i class="hatch"></i>'+t('hors gamme (AR < 6 ou > 24)','out of range (AR < 6 or > 24)')+'</span>'
       + '<span>'+kg+' kg · '+t(riderLvl().fr, riderLvl().en)+' · '+t('vague','wave')+' '+num(H, H % 1 ? 2 : 0).replace(/0$/,'')+' m</span>';
