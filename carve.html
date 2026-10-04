@@ -696,6 +696,8 @@
   // de la vague, sinon tu pompes déjà dessus), puis ~200 m à repomper à ta vitesse de croisière pour rejoindre
   // la suivante. Au-dessus de ton seuil (selon ton niveau, riderLvl), le repompage vide ta réserve ; sur la
   // vague tu récupères un peu (modèle W'bal de Skiba). On compte les cycles jusqu'à épuisement.
+  // ⏱️ seuil « tu tiens la session » (minutes) — une seule valeur pour zones, frontière ambre, textes, recos
+  const SES_OK = 10;
   function waveSession(b_cm, S_cm2, WKG, H){
     // durée d'un ride : une vague plus grosse pousse plus longtemps (~25 s à 0,5 m · ~33 s à 1 m · ~44 s à 1,5-2 m)
     const L = riderLvl(), CP = L.cp, WP = L.wp, RIDE = 18 + 15*H, DIST = 200;
@@ -1608,7 +1610,7 @@
   });
 
   // 🗺️ La fenêtre « fun + endurant » : chaque point = une aile (envergure × surface).
-  // Ailes d'allongement 7 à 13 seulement. maniable = maniabilité ≥ 45 (surface × envergure² ≤ 18,3) · 🔋 tu tiens = session ≥ 30 min (ton poids, ton niveau,
+  // Ailes d'allongement 7 à 13 seulement. maniable = maniabilité ≥ 45 (surface × envergure² ≤ 18,3) · 🔋 tu tiens = session ≥ SES_OK (10 min) (ton poids, ton niveau,
   // ta vague, ton stab). Le calcul de la grille est mis en cache : seuls poids / niveau / vague / stab / fuselage le changent.
   const WIN = {key:'', g:null, B0:80, B1:140, S0:700, S1:1700, DB:1, DS:20, AR0:7, AR1:13};   // ailes de surf / carve réalistes
   // tout ce dont dépend la session (poids, vague, niveau, stab, fuselage) : la carte est recalculée si l'un change
@@ -1620,7 +1622,7 @@
     const g = [];
     for(let b = C.B0; b <= C.B1; b += C.DB) for(let S = C.S0; S <= C.S1; S += C.DS){
       const ar = b*b/S; if(ar < (C.ARg0 || C.AR0) || ar > (C.ARg1 || C.AR1)) continue;   // hors gamme : non calculé (hachuré) — marge ARg pour un bord lisse
-      const fun = manOf(b, S) >= 45, ses = waveSession(b, S, kg, H), end = ses.unlimited || ses.min >= 30;
+      const fun = manOf(b, S) >= 45, ses = waveSession(b, S, kg, H), end = ses.unlimited || ses.min >= SES_OK;
       g.push([b, S, fun, end]);
     }
     C.key = key; C.g = g; return g;
@@ -1732,7 +1734,7 @@
         + '<small>'+t('Plus léger, meilleur niveau ou vague plus forte → elle apparaît.','Lighter, better level or a stronger wave → it appears.')+'</small>';
     } else {
       const bs = both.map(x => x[0]), ss = both.map(x => x[1]);
-      const me = waveSession(b, S, kg, H), arMe = b*b/S, inside = arMe >= 7 && arMe <= 13 && S*b*b/1e6 <= 18.3 && (me.unlimited || me.min >= 30);
+      const me = waveSession(b, S, kg, H), arMe = b*b/S, inside = arMe >= 7 && arMe <= 13 && S*b*b/1e6 <= 18.3 && (me.unlimited || me.min >= SES_OK);
       WIN.inside = inside;
       const rng = Math.min(...bs)+'-'+Math.max(...bs)+' cm · '+num(Math.min(...ss))+'-'+num(Math.max(...ss))+' cm²';
       const was = RC.before && RC.before.range && RC.before.range !== rng ? '<span class="was">'+t('avant : ','before: ')+RC.before.range+'</span>' : '';
@@ -1781,7 +1783,7 @@
       tip.innerHTML = '<div class="tt-h">'+p.b+' cm · '+num(p.S)+' cm² · AR '+num(ar, 1)+'</div>'
         + (fits ? t('maniabilité','maneuverability')+' <b>'+viv+'</b> · '+t('glisse','glide')+' <b>'+glideScore(p.b, p.S, g.kg)+'</b><br>'
           + t('vole dès','flies from')+' <b>~'+liftoffKmh(p.S, g.kg)+' km/h</b> · '+t('session','session')+' <b>'+sesTxt+'</b>'
-          + '<div style="margin-top:2px; font-weight:700">'+(C => t(C.sfr, C.sen))(ATL_CAT[atlCat(p.b, p.S, g.kg, manOf(p.b, p.S) >= 45, ses.unlimited || ses.min >= 30)])+'</div>'
+          + '<div style="margin-top:2px; font-weight:700">'+(C => t(C.sfr, C.sen))(ATL_CAT[atlCat(p.b, p.S, g.kg, manOf(p.b, p.S) >= 45, ses.unlimited || ses.min >= SES_OK)])+'</div>'
           + '<div class="tt-c">'+t('clic : l\'essayer','click: try it')+'</div>'
           : '<span style="color:var(--muted)">'+(ar < 7 ? t('trop large pour le surf (AR < 7)','too wide for surf (AR < 7)') : t('trop fine pour le surf (AR > 13)','too slender for surf (AR > 13)'))+'</span>');
       tip.hidden = false;
@@ -1813,10 +1815,10 @@
     plume:{xfr:'🪶 plume', xen:'🪶 feather', c:'#c98500', sfr:'🪶 poids plume', sen:'🪶 featherweight', fr:'trop petite pour toi : démarrage trop rapide ou trop dur à pomper', en:'too small for you: takeoff too fast or too hard to pump'},
     rad:  {xfr:'🔥 radical', xen:'🔥 radical', c:'#d55181', sfr:'🔥 surf radical', sen:'🔥 radical surf', fr:'très maniable (≥ 70), session courte', en:'very maneuverable (≥ 70), short session'},
     carve:{xfr:'🔄 tourne', xen:'🔄 turns', c:'#9085e9', sfr:'🔄 ça tourne bien', sen:'🔄 turns well', fr:'assez maniable (45-70), session courte', en:'fairly maneuverable (45-70), short session'},
-    both: {xfr:'✨ les deux', xen:'✨ both', c:'#199e70', sfr:'✨ carve + endurance', sen:'✨ carve + endurance', fr:'maniable et tu tiens 30 min et +', en:'maneuverable and you last 30 min+'},
-    glide:{xfr:'🌊 enchaîner', xen:'🌊 linking', c:'#3987e5', sfr:'🌊 enchaîner', sen:'🌊 linking waves', fr:'un peu maniable (20-45), et tu tiens 30 min et +', en:'a bit maneuverable (20-45), and you last 30 min+'},
-    dw:   {xfr:'🧭 houle', xen:'🧭 swell', c:'#008300', sfr:'🧭 tout droit dans la houle', sen:'🧭 straight down the swell', fr:'peu maniable (< 20), mais tu tiens 30 min et + : aile élancée qui glisse', en:'barely maneuverable (< 20), but you last 30 min+: a slender wing that glides'},
-    ecole:{xfr:'⚖️ entre-deux', xen:'⚖️ in-between', c:'#475569', sfr:'⚖️ entre-deux', sen:'⚖️ in-between', fr:'peu maniable (< 45) ET tu t\'épuises (< 30 min) : trop grande pour bien tourner, mais à ton poids elle traîne trop pour tenir la relance — contrairement à 🧭 / 🌊, plus élancées, où tu tiens', en:'not very maneuverable (< 45) AND you tire (< 30 min): too big to turn well, but at your weight it drags too much to keep pumping back — unlike 🧭 / 🌊, more slender, where you last'},
+    both: {xfr:'✨ les deux', xen:'✨ both', c:'#199e70', sfr:'✨ carve + endurance', sen:'✨ carve + endurance', fr:'maniable et tu tiens 10 min et +', en:'maneuverable and you last 10 min+'},
+    glide:{xfr:'🌊 enchaîner', xen:'🌊 linking', c:'#3987e5', sfr:'🌊 enchaîner', sen:'🌊 linking waves', fr:'un peu maniable (20-45), et tu tiens 10 min et +', en:'a bit maneuverable (20-45), and you last 10 min+'},
+    dw:   {xfr:'🧭 houle', xen:'🧭 swell', c:'#008300', sfr:'🧭 tout droit dans la houle', sen:'🧭 straight down the swell', fr:'peu maniable (< 20), mais tu tiens 10 min et + : aile élancée qui glisse', en:'barely maneuverable (< 20), but you last 10 min+: a slender wing that glides'},
+    ecole:{xfr:'⚖️ entre-deux', xen:'⚖️ in-between', c:'#475569', sfr:'⚖️ entre-deux', sen:'⚖️ in-between', fr:'peu maniable (< 45) ET tu t\'épuises (< 10 min) : trop grande pour bien tourner, mais à ton poids elle traîne trop pour tenir la relance — contrairement à 🧭 / 🌊, plus élancées, où tu tiens', en:'not very maneuverable (< 45) AND you tire (< 10 min): too big to turn well, but at your weight it drags too much to keep pumping back — unlike 🧭 / 🌊, more slender, where you last'},
   };
   // « poids plume » (calé sur les retours de Paul, 75 kg : Sushi 740 / RSX 700 / DW 750 trop petites, DW 840 / Regata 850 OK) :
   // elle ne te porte qu'à partir de 16,5 km/h, OU démarrer en pompant demande > 1,2 × ton seuil (envergure trop courte)
@@ -1875,7 +1877,7 @@
     if(!B){ box.innerHTML = ''; ATL.reco = null; return; }
     const ev = B.w.map(([n, b, S]) => {
       const ses = waveSession(b, S, kg, H), man = manOf(b, S);
-      const end = ses.unlimited || ses.min >= 30, ar = b*b/S;
+      const end = ses.unlimited || ses.min >= SES_OK, ar = b*b/S;
       const k = ar < ATL.AR0 || ar > ATL.AR1 ? null : atlCat(b, S, kg, manOf(b, S) >= 45, end);
       return {n, b, S, ar, man, ses, end, k, glide: glideScore(b, S, kg), vl: liftoffKmh(S, kg)};
     });
@@ -1997,7 +1999,7 @@
       manLab.push([inR, m, pts]);
     });
     c.setLineDash([]);
-    // ⏱️ frontière ENDURANCE (30 min de session) : celle qui bouge avec ton poids / niveau / vague. Pour chaque colonne
+    // ⏱️ frontière ENDURANCE (SES_OK = 10 min de session) : celle qui bouge avec ton poids / niveau / vague. Pour chaque colonne
     // d'envergure, on repère où « tu tiens » bascule ; on relie les points voisins → trait plein ambre, distinct des tirets.
     const endSeg = [], endMap = new Map();
     winGrid(kg, H, ATL).forEach(([bb, ss, fun, end]) => endMap.set(Math.round((bb - ATL.B0)/ATL.DB)+','+Math.round((ss - ATL.S0)/ATL.DS), end));
@@ -2164,14 +2166,14 @@
       });
     }
     ATL.pts = pts;
-    // ⏱️ trait ambre : on écrit DE CHAQUE CÔTÉ ce qu'il sépare (« tu t'épuises » / « tu tiens 30 min et + »)
+    // ⏱️ trait ambre : on écrit DE CHAQUE CÔTÉ ce qu'il sépare (« tu t'épuises » / « tu tiens 10 min et + »)
     if(ATL.endSeg && ATL.endSeg.length){
       const all = ATL.endSeg.flat(), top = all.reduce((m, p) => !m || p[1] < m[1] ? p : m, null);
       const endAt = (x, y) => { const bb = ATL.B0 + (x - X0)/(X1 - X0)*(ATL.B1 - ATL.B0), ss = ATL.S0 + (Y1 - y)/(Y1 - Y0)*(ATL.S1 - ATL.S0), a = bb*bb/ss;
-        if(a < ATL.AR0 || a > ATL.AR1) return null; const ses = waveSession(bb, ss, kg, H); return ses.unlimited || ses.min >= 30; };
+        if(a < ATL.AR0 || a > ATL.AR1) return null; const ses = waveSession(bb, ss, kg, H); return ses.unlimited || ses.min >= SES_OK; };
       const y = Math.max(Y0 + 30, top[1] + 30), lEnd = endAt(top[0] - 25, y), rEnd = endAt(top[0] + 25, y);
       if(lEnd !== null && rEnd !== null && lEnd !== rEnd){
-        const tired = t('tu t\'épuises','you tire'), last = t('tu tiens 30 min +','you last 30 min+');
+        const tired = t('tu t\'épuises','you tire'), last = t('tu tiens 10 min +','you last 10 min+');
         c.font = '800 '+(G.narrow ? 9.5 : 10.5)+'px system-ui, sans-serif'; c.lineJoin = 'round'; c.lineWidth = 3.5; c.strokeStyle = 'rgba(15,23,42,.92)'; c.fillStyle = '#fbbf24';
         const lt = '← '+(lEnd ? last : tired), rt = (rEnd ? last : tired)+' →';
         c.textAlign = 'right'; c.strokeText(lt, top[0] - 6, y); c.fillText(lt, top[0] - 6, y);
@@ -2189,7 +2191,7 @@
       : t(C.fr, C.en);
     if(lg) lg.innerHTML = '<div class="atl-cats">'+Object.entries(ATL_CAT).map(([k, C]) => '<div><i style="background:'+C.c+'"></i><b>'+t(C.sfr, C.sen)+'</b> <span>'+catTxt(k, C)+'</span></div>').join('')+'</div>'
       + '<span><i style="background:repeating-linear-gradient(90deg, rgba(255,255,255,.85) 0 5px, transparent 5px 8px); height:2px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même maniabilité 90 · 70 · 45 · 20 (tirets blancs, chiffre en bas sous l\'envergure)','same maneuverability 90 · 70 · 45 · 20 (white dashes, number at the bottom under the span)')+'</span>'
-      + '<span><i style="background:#fbbf24; height:2px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('trait ambre : d\'un côté tu tiens 30 min et +, de l\'autre tu t\'épuises avant (écrit sur la carte ; bouge avec ton poids, ton niveau, la vague)','⏱️ 30 min session: on one side you last, on the other you tire (moves with your weight, level, wave)')+'</span>'
+      + '<span><i style="background:#fbbf24; height:2px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('trait ambre : d\'un côté tu tiens 10 min et +, de l\'autre tu t\'épuises avant (écrit sur la carte ; bouge avec ton poids, ton niveau, la vague)','⏱️ 30 min session: on one side you last, on the other you tire (moves with your weight, level, wave)')+'</span>'
       + '<span><i style="background:#fde68a; height:1px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même AR (trait jaune, chiffre en haut)','same AR (yellow line, number on top)')+'</span>'
       + '<span><i class="hatch"></i>'+t('hors gamme (AR < 6 ou > 24)','out of range (AR < 6 or > 24)')+'</span>'
       + '<span>'+kg+' kg · '+t(riderLvl().fr, riderLvl().en)+' · '+t('vague','wave')+' '+num(H, H % 1 ? 2 : 0).replace(/0$/,'')+' m</span>';
@@ -2224,7 +2226,7 @@
           +' · '+tone('AR '+num(ar, 1), grad(ar, 18, 7))+'</div>'
         + t('maniabilité','maneuverability')+' <b>'+tone(man, grad(man, 0, 90))+'</b> · '+t('glisse','glide')+' <b>'+(g2 => tone(g2, grad(g2, 20, 95)))(glideScore(p.b, p.S, g.kg))+'</b><br>'
         + t('vole dès','flies from')+' <b>'+(v => tone('~'+v+' km/h', grad(v, 19, 11)))(liftoffKmh(p.S, g.kg))+'</b> · '+t('session','session')+' <b>'+tone(sesTxt, ses.unlimited ? 1 : grad(Math.log(Math.max(1, ses.min)), Math.log(2), Math.log(60)))+'</b>'
-        + (ar >= ATL.AR0 && ar <= ATL.AR1 ? '<div style="margin-top:2px; font-weight:700">'+(C => t(C.sfr, C.sen))(ATL_CAT[atlCat(p.b, p.S, g.kg, manOf(p.b, p.S) >= 45, ses.unlimited || ses.min >= 30)])+'</div>' : '')
+        + (ar >= ATL.AR0 && ar <= ATL.AR1 ? '<div style="margin-top:2px; font-weight:700">'+(C => t(C.sfr, C.sen))(ATL_CAT[atlCat(p.b, p.S, g.kg, manOf(p.b, p.S) >= 45, ses.unlimited || ses.min >= SES_OK)])+'</div>' : '')
         + (p.wing ? '<div class="tt-c">'+(inSl ? t('clic : l\'essayer dans le simulateur','click: try it in the simulator') : t('hors des curseurs du simulateur','outside the simulator sliders'))+'</div>' : '');
       tip.hidden = false;
       const tw = tip.offsetWidth, th = tip.offsetHeight;
@@ -2389,7 +2391,7 @@
       + t('Estimation pour un rider '+riderLvl().fr+' (règle « ton niveau » à côté du poids).','Estimate for your level: '+riderLvl().en+' (set “your level” next to the weight).')+'</div>';
     drawWin(b, S, kg, H);
     drawAtlas(b, S, kg, H);
-    const funMe = agility >= 45, endMe = ses.unlimited || ses.min >= 30;
+    const funMe = agility >= 45, endMe = ses.unlimited || ses.min >= SES_OK;
     const ms = $('mini-score');
     if(ms) ms.innerHTML = '<span><b style="color:hsl('+Math.round(agility*1.2)+',68%,55%)">'+agility+'</b> '+t('maniabilité','maneuverability')+'</span>'
       + '<span>'+t('glisse','glide')+' <b>'+glisse+'</b></span>'
