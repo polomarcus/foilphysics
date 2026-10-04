@@ -83,7 +83,14 @@
   .wc-fold summary::-webkit-details-marker{display:none} .wc-fold summary::after{content:' ▾';} .wc-fold[open] summary::after{content:' ▴';}
   .wing-pick{display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; justify-content:center;}
   .wing-pick label{font-weight:800; font-size:.9rem; color:var(--txt);}
-  .wing-pick input{flex:1 1 260px; max-width:420px; background:var(--panel-2); border:1px solid var(--carve); color:var(--txt); border-radius:999px; padding:8px 14px; font:inherit; font-size:.9rem;}
+  .wp-box{position:relative; flex:1 1 260px; max-width:420px;}
+  .wp-list{position:absolute; left:0; right:0; top:calc(100% + 4px); z-index:40; margin:0; padding:4px; list-style:none; max-height:280px; overflow-y:auto;
+    background:#0f172a; border:1px solid var(--line); border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.5); text-align:left;}
+  .wp-list li{display:flex; justify-content:space-between; gap:10px; padding:6px 10px; border-radius:8px; font-size:.86rem; color:var(--txt); cursor:pointer;}
+  .wp-list li small{color:var(--muted); font-size:.74rem; white-space:nowrap; font-variant-numeric:tabular-nums;}
+  .wp-list li.on, .wp-list li:hover{background:rgba(192,132,252,.18);}
+  .wp-list li.none{color:var(--muted); cursor:default; background:none;}
+  .wing-pick input{width:100%; max-width:420px; background:var(--panel-2); border:1px solid var(--carve); color:var(--txt); border-radius:999px; padding:8px 14px; font:inherit; font-size:.9rem;}
   .wing-pick input:focus{outline:2px solid var(--carve); outline-offset:1px;}
   .wp-or{font-size:.75rem; color:var(--muted);}
   .split{font-size:.78rem; color:var(--muted); margin-top:8px; text-align:center; line-height:1.5;}
@@ -402,8 +409,8 @@
     <div class="panel">
       <div class="presets wing-pick">
         <label for="wing-q" data-i18n="wp-l">🪽 Choisis ton aile</label>
-        <input type="search" id="wing-q" list="wing-list" autocomplete="off" placeholder="tape une marque ou un modèle : RSX, Surge 9…" data-i18n-ph="wp-ph">
-        <datalist id="wing-list"></datalist>
+        <div class="wp-box"><input type="text" id="wing-q" role="combobox" aria-expanded="false" aria-controls="wing-list" aria-autocomplete="list" autocomplete="off" spellcheck="false" placeholder="tape une marque ou un modèle : RSX, Surge 9…">
+          <ul class="wp-list" id="wing-list" role="listbox" hidden></ul></div>
         <span class="wp-or" data-i18n="wp-or">ou règle envergure et surface à la main ↓</span>
         <button class="preset-btn" id="wing-cur" type="button" data-p="89|835" aria-label="Axis Surge 890" hidden></button>
       </div>
@@ -2273,12 +2280,30 @@
   // joue le rôle de l'ancien preset sélectionné (nom, dimensions) ; un réglage manuel des curseurs le désélectionne.
   const WING_IDX = {};
   (window.FOIL_WINGS || []).forEach(B => B.w.forEach(([n, b, S]) => { WING_IDX[B.n+' '+n] = [b, S]; }));
-  $('wing-list').innerHTML = Object.entries(WING_IDX).map(([nm, [b, S]]) => '<option value="'+nm+'" label="'+b+' cm · '+S+' cm²"></option>').join('');
-  $('wing-q').addEventListener('input', e => {
-    const hit = WING_IDX[e.target.value]; if(!hit) return;
-    const bt = $('wing-cur'); bt.dataset.p = Math.round(hit[0])+'|'+hit[1]; bt.setAttribute('aria-label', e.target.value);
-    applyPresetBtn(bt); e.target.blur();
+  // recherche maison (pas de <datalist> : Safari l'affiche mal) — tous les mots tapés doivent apparaître, accents ignorés
+  const norm = x => x.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const WP = {hits:[], on:0};
+  const wpPick = nm => { const hit = WING_IDX[nm]; if(!hit) return; const bt = $('wing-cur');
+    bt.dataset.p = Math.round(hit[0])+'|'+hit[1]; bt.setAttribute('aria-label', nm); $('wing-q').value = nm; wpClose(); applyPresetBtn(bt); $('wing-q').blur(); };
+  const wpClose = () => { $('wing-list').hidden = true; $('wing-q').setAttribute('aria-expanded', 'false'); };
+  const wpShow = () => {
+    const q = norm($('wing-q').value.trim()), words = q.split(/\s+/).filter(Boolean), ul = $('wing-list');
+    WP.hits = Object.keys(WING_IDX).filter(nm => { const n = norm(nm); return words.every(w => n.includes(w)); }).slice(0, 40); WP.on = 0;
+    ul.innerHTML = WP.hits.length ? WP.hits.map((nm, i) => '<li role="option" data-nm="'+nm+'" class="'+(i ? '' : 'on')+'">'+nm+'<small>'+WING_IDX[nm][0]+' cm · '+WING_IDX[nm][1]+' cm²</small></li>').join('')
+      : '<li class="none">'+t('Aucune aile trouvée','No wing found')+'</li>';
+    ul.hidden = false; $('wing-q').setAttribute('aria-expanded', 'true');
+  };
+  $('wing-q').addEventListener('input', wpShow);
+  $('wing-q').addEventListener('focus', () => { $('wing-q').select(); wpShow(); });
+  $('wing-q').addEventListener('keydown', e => {
+    const ul = $('wing-list'); if(ul.hidden) return;
+    if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){ e.preventDefault(); WP.on = (WP.on + (e.key === 'ArrowDown' ? 1 : -1) + WP.hits.length) % Math.max(1, WP.hits.length);
+      ul.querySelectorAll('li').forEach((li, i) => li.classList.toggle('on', i === WP.on)); const li = ul.children[WP.on]; if(li) li.scrollIntoView({block:'nearest'}); }
+    else if(e.key === 'Enter'){ e.preventDefault(); if(WP.hits[WP.on]) wpPick(WP.hits[WP.on]); }
+    else if(e.key === 'Escape') wpClose();
   });
+  $('wing-list').addEventListener('pointerdown', e => { const li = e.target.closest('li[data-nm]'); if(li){ e.preventDefault(); wpPick(li.dataset.nm); } });
+  $('wing-q').addEventListener('blur', () => setTimeout(wpClose, 150));
   function applyPresetBtn(btn){
     // Les presets règlent l'AILE seule — fuselage et stab restent tes réglages (sinon l'axe « pivot » semblait figé).
     const [b,s] = btn.dataset.p.split('|');
