@@ -1550,7 +1550,7 @@
   //    la vitesse de la vague, AR ~8,5.
   const WC_CACHE = {};
   function carveBest(kg){
-    const H = waveH(), key = kg+'|'+H; if(WC_CACHE[key]) return WC_CACHE[key];
+    const H = waveH(), key = kg+'|'+H+'|'+rearBonus(); if(WC_CACHE[key]) return WC_CACHE[key];   // la maniabilité affichée inclut le stab
     const AR = H <= 0.5 ? 9.5 : H <= 1 ? 9 : 8.5, vw = Math.sqrt(22*H);
     const ag = (b, S) => 100*(30 - S*b*b/1e6)/26;
     const to = (b, S) => 50*(22 - Math.sqrt((kg*9.81)/(0.5*1025*(S/1e4)*1.2))*3.6*1.15)/13 + 50*(400 - takeoffPower(b, S, kg))/230;
@@ -1561,7 +1561,7 @@
     if(H <= 1) S = Math.max(S, Sfor(vw)); else S = Sfor(0.75*vw);
     S = Math.max(600, Math.min(2200, S));                                    // dans les plages des curseurs
     const b = Math.max(70, Math.min(150, Math.sqrt(AR*S))), clamp = x => Math.max(0, Math.min(100, Math.round(x)));
-    return WC_CACHE[key] = {b:Math.round(b), S:Math.round(S/10)*10, ar:b*b/S, ag:clamp(ag(b,S)), to:clamp(to(b,S)),
+    return WC_CACHE[key] = {b:Math.round(b), S:Math.round(S/10)*10, ar:b*b/S, ag:manOf(b, S), to:clamp(to(b,S)),
       pumpS:Math.round(Sfor(0.9*vw)/50)*50, pumpB:Math.round(Math.sqrt(13*Sfor(0.9*vw))/5)*5};   // aile de pump qui part toute seule (houle molle)
   }
   function wcCarve(){
@@ -1572,7 +1572,7 @@
                : t('c\'est la vague qui te lance : tout pour la maniabilité','the wave launches you: everything for maneuverability');
     wcDraw(gid('wc'), {acc:'#c084fc', title:'carve · '+wl,
       sub: t('pour ','for ')+kg+' kg '+t('(curseur 🧍) · ','(🧍 slider) · ')+rule,
-      chips:[{v:c.b+' cm', l:t('envergure','span')}, {v:c.S+' cm²', l:t('surface','area')}, {v:'AR '+num(c.ar,1), l:t('allongement','aspect ratio')}, {v:c.ag+' · '+c.to, l:t('maniabilité · démarrage','maneuverability · takeoff')},
+      chips:[{v:c.b+' cm', l:t('envergure','span')}, {v:c.S+' cm²', l:t('surface','area')}, {v:'AR '+num(c.ar,1), l:''}, {v:c.ag+' · '+c.to, l:t('maniabilité · démarrage','maneuverability · takeoff')},
              (() => { const ss = waveSession(c.b, c.S, kg, H); return {v:ss.unlimited ? '∞' : '~'+ss.n+' '+t('vague'+(ss.n > 1 ? 's' : ''),'wave'+(ss.n > 1 ? 's' : '')), l:t('session (ton niveau, ton stab)','session (your level, your stab)')}; })()],
       btns:[{l:t('🎛️ Essayer ce combo','🎛️ Try this combo'), fn:()=>{ gid('i-b').value = c.b; gid('i-s').value = Math.round(c.S/5)*5; gid('i-s').dispatchEvent(new Event('input')); }}],
       head:[t('poids','weight'), t('envergure','span'), t('surface','area'), 'AR', t('maniabilité','maneuverability'), t('démarrage','takeoff')],
@@ -1718,7 +1718,7 @@
     if(lg) lg.innerHTML = '<div class="atl-cats">'+Object.entries(ATL_CAT).filter(([k]) => present.has(k))
         .map(([k, C]) => '<div><i style="background:'+C.c+'"></i><b>'+t(C.sfr, C.sen)+'</b> <span>'+t(C.fr, C.en)+'</span></div>').join('')+'</div>'
       + '<span><i style="background:repeating-linear-gradient(90deg, rgba(255,255,255,.85) 0 5px, transparent 5px 8px); height:2px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même maniabilité (chiffre à droite)','same maneuverability (number on the right)')+'</span>'
-      + '<span><i style="background:#fde68a; height:1px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même allongement AR (chiffre en haut)','same aspect ratio AR (number on top)')+'</span>'
+      + '<span><i style="background:#fde68a; height:1px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même AR (chiffre en haut)','same AR (number on top)')+'</span>'
       + '<span><i class="hatch"></i>'+t('ailes trop larges ou trop fines pour le surf','wings too wide or too slender for surf')+'</span>';
     // verdict
     const v = $('win-v'); if(!v) return;
@@ -1814,9 +1814,9 @@
     rad:  {xfr:'🔥 radical', xen:'🔥 radical', c:'#d55181', sfr:'🔥 surf radical', sen:'🔥 radical surf', fr:'très maniable (≥ 70), session courte', en:'very maneuverable (≥ 70), short session'},
     carve:{xfr:'🔄 tourne', xen:'🔄 turns', c:'#9085e9', sfr:'🔄 ça tourne bien', sen:'🔄 turns well', fr:'assez maniable (45-70), session courte', en:'fairly maneuverable (45-70), short session'},
     both: {xfr:'✨ les deux', xen:'✨ both', c:'#199e70', sfr:'✨ carve + endurance', sen:'✨ carve + endurance', fr:'maniable et tu tiens 30 min et +', en:'maneuverable and you last 30 min+'},
-    glide:{xfr:'🌊 enchaîner', xen:'🌊 linking', c:'#3987e5', sfr:'🌊 enchaîner', sen:'🌊 linking waves', fr:'endurante, encore un peu maniable (20-45)', en:'lasting, still a bit maneuverable (20-45)'},
-    dw:   {xfr:'🧭 houle', xen:'🧭 swell', c:'#008300', sfr:'🧭 tout droit dans la houle', sen:'🧭 straight down the swell', fr:'endurante, peu maniable (< 20)', en:'lasting, barely maneuverable (< 20)'},
-    ecole:{xfr:'🛟 portante', xen:'🛟 lifty', c:'#475569', sfr:'🛟 aile portante', sen:'🛟 lifty wing', fr:'porte facilement, ni maniable ni endurante', en:'easy lift, neither maneuverable nor lasting'}
+    glide:{xfr:'🌊 enchaîner', xen:'🌊 linking', c:'#3987e5', sfr:'🌊 enchaîner', sen:'🌊 linking waves', fr:'un peu maniable (20-45), et tu tiens 30 min et +', en:'a bit maneuverable (20-45), and you last 30 min+'},
+    dw:   {xfr:'🧭 houle', xen:'🧭 swell', c:'#008300', sfr:'🧭 tout droit dans la houle', sen:'🧭 straight down the swell', fr:'peu maniable (< 20), mais tu tiens 30 min et + : aile élancée qui glisse', en:'barely maneuverable (< 20), but you last 30 min+: a slender wing that glides'},
+    ecole:{xfr:'⚖️ entre-deux', xen:'⚖️ in-between', c:'#475569', sfr:'⚖️ entre-deux', sen:'⚖️ in-between', fr:'peu maniable (< 45) ET tu t\'épuises (< 30 min) : trop grande pour bien tourner, mais à ton poids elle traîne trop pour tenir la relance — contrairement à 🧭 / 🌊, plus élancées, où tu tiens', en:'not very maneuverable (< 45) AND you tire (< 30 min): too big to turn well, but at your weight it drags too much to keep pumping back — unlike 🧭 / 🌊, more slender, where you last'},
   };
   // « poids plume » (calé sur les retours de Paul, 75 kg : Sushi 740 / RSX 700 / DW 750 trop petites, DW 840 / Regata 850 OK) :
   // elle ne te porte qu'à partir de 16,5 km/h, OU démarrer en pompant demande > 1,2 × ton seuil (envergure trop courte)
@@ -1992,7 +1992,7 @@
     c.font = '800 10px system-ui, sans-serif'; c.fillStyle = '#fde68a'; c.textAlign = 'center';
     arLab.forEach(([x, A]) => c.fillText(A, x, Y0 - 5));
     c.font = '700 10px system-ui, sans-serif'; c.textAlign = 'left';
-    c.fillText(t('allongement (AR) →','aspect ratio (AR) →'), X0, Y0 - 20);
+    c.fillText(t('Aspect Ratio (AR) →','Aspect Ratio (AR) →'), X0, Y0 - 20);
     // axes
     c.font = '600 10px system-ui, sans-serif'; c.fillStyle = '#94a3b8'; c.textAlign = 'center';
     for(let v = 80; v <= 180; v += 20) c.fillText(v, px(v), Y1 + 13);
@@ -2106,7 +2106,7 @@
       : t(C.fr, C.en);
     if(lg) lg.innerHTML = '<div class="atl-cats">'+Object.entries(ATL_CAT).map(([k, C]) => '<div><i style="background:'+C.c+'"></i><b>'+t(C.sfr, C.sen)+'</b> <span>'+catTxt(k, C)+'</span></div>').join('')+'</div>'
       + '<span><i style="background:repeating-linear-gradient(90deg, rgba(255,255,255,.85) 0 5px, transparent 5px 8px); height:2px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même maniabilité (tirets blancs, chiffre à droite)','same maneuverability (white dashes, number on the right)')+'</span>'
-      + '<span><i style="background:#fde68a; height:1px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même allongement AR (trait jaune, chiffre en haut)','same aspect ratio AR (yellow line, number on top)')+'</span>'
+      + '<span><i style="background:#fde68a; height:1px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même AR (trait jaune, chiffre en haut)','same AR (yellow line, number on top)')+'</span>'
       + '<span><i class="hatch"></i>'+t('hors gamme (AR < 6 ou > 24)','out of range (AR < 6 or > 24)')+'</span>'
       + '<span>'+kg+' kg · '+t(riderLvl().fr, riderLvl().en)+' · '+t('vague','wave')+' '+num(H, H % 1 ? 2 : 0).replace(/0$/,'')+' m</span>';
   }
@@ -2265,7 +2265,7 @@
     const sLo = Math.round(b*b/10/10)*10, sHi = Math.round(b*b/8/10)*10;   // surface pour AR 10 → 8
     $('o-ar').innerHTML =
       '<div class="ar-head">'
-      + '<span class="ar-lab">'+t('Allongement','Aspect ratio')+' AR</span>'
+      + '<span class="ar-lab">'+'Aspect Ratio (AR)</span>'
       + '<span class="ar-num" style="color:'+arBand.c+'">'+ar.toFixed(1)+'</span>'
       + '<span class="ar-badge" style="color:'+arBand.c+';background:'+arBand.c+'22">'+arBand.l+'</span></div>'
       + '<div class="ar-gauge"><span class="ar-mark" style="left:'+arPos+'%"></span></div>'

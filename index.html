@@ -1512,7 +1512,7 @@
       <b style="color:var(--txt)">En clair :</b> plus l'aile est <b>longue et fine</b> et plus tu voles <b>à la bonne vitesse</b>
       (ni trop lent, ni trop vite), moins tu forces — et plus tu voles longtemps.
       <div class="f-title">⚙️ Moteur physique — d'après le modèle <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a> (vol stabilisé : portance = poids)</div>
-      <div class="frow"><span class="fk">Allongement (AR)</span><code>AR = envergure² / surface</code></div>
+      <div class="frow"><span class="fk">Aspect Ratio (AR)</span><code>AR = envergure² / surface</code></div>
       <div class="frow"><span class="fk">Portance requise</span><code>C_L = poids / (½·ρ·v²·surface)</code></div>
       <div class="frow"><span class="fk">Traînée induite <i>le prix de la portance</i></span><code>D_ind = poids² / (½·ρ·v²·π·envergure²·e)</code></div>
       <div class="frow"><span class="fk">Traînée de frottement</span><code>D_frot = ½·ρ·v² · (surface·C_D0 + mât + fuselage + stab)</code></div>
@@ -2011,7 +2011,7 @@
     const gid = id => document.getElementById(id), kg = Math.max(30, Math.min(150, +gid('rider-w').value || 75)), c = ldBest(kg);
     wcDraw(gid('wc'), {acc:'#38bdf8', title:t('endurance','endurance'),
       sub: t('pour ','for ')+kg+' kg '+t('(ton poids ci-dessus) : de la surface pour voler lentement, et l\'envergure la plus longue que tu maîtrises','(your weight above): enough area to fly slowly, and the longest span you can handle'),
-      chips:[{v:'~'+c.S+' cm²', l:t('surface','area')}, {v:c.b13+'–'+c.b16+' cm', l:t('envergure','span')}, {v:'AR 13–16', l:t('allongement','aspect ratio')}, {v:num(c.hi,0)+'–'+num(c.lo,0)+' Wh/km', l:t('à ~12 km/h','at ~12 km/h')}],
+      chips:[{v:'~'+c.S+' cm²', l:t('surface','area')}, {v:c.b13+'–'+c.b16+' cm', l:t('envergure','span')}, {v:'AR 13–16', l:''}, {v:num(c.hi,0)+'–'+num(c.lo,0)+' Wh/km', l:t('à ~12 km/h','at ~12 km/h')}],
       btns:[{l:t('🎛️ Essayer sur l\'aile 2','🎛️ Try it on wing 2'), fn:()=>{ gid('b2').value = Math.max(90, Math.min(250, c.b16)); gid('s2').value = Math.max(800, Math.min(3100, c.S)); if(!document.body.classList.contains('tune')) gid('tune-btn').click(); gid('s2').dispatchEvent(new Event('input')); gid('card-2').scrollIntoView({block:'center', behavior:'smooth'}); }}],
       head:[t('poids','weight'), t('surface','area'), t('envergure (AR 13–16)','span (AR 13–16)'), 'Wh/km'],
       rows: WC_KG.map(k => { const r = ldBest(k); return {on:Math.abs(k-kg) < 7.5, c:[k+' kg', '~'+r.S+' cm²', r.b13+'–'+r.b16+' cm', num(r.hi,0)+'–'+num(r.lo,0)]}; }),

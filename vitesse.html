@@ -842,7 +842,7 @@
     const arPos = Math.max(0, Math.min(100, (ar-6)/12*100));  // jauge 6 → 18
     $('o-ar').innerHTML =
       '<div class="ar-head">'
-      + '<span class="ar-lab">'+t('Allongement','Aspect ratio')+' AR</span>'
+      + '<span class="ar-lab">'+'Aspect Ratio (AR)</span>'
       + '<span class="ar-num" style="color:'+arBand.c+'">'+num(ar,1)+'</span>'
       + '<span class="ar-badge" style="color:'+arBand.c+';background:'+arBand.c+'22">'+arBand.l+'</span></div>'
       + '<div class="ar-gauge"><span class="ar-mark" style="left:'+arPos+'%"></span></div>'
@@ -1354,7 +1354,7 @@
     c.restore();
     c.font = '800 10px system-ui, sans-serif'; c.fillStyle = '#fde68a'; c.textAlign = 'center';
     arLab.forEach(([x, A]) => c.fillText(A, x, Y0 - 5));
-    c.font = '700 10px system-ui, sans-serif'; c.textAlign = 'left'; c.fillText(t('allongement (AR) →','aspect ratio (AR) →'), X0, Y0 - 20);
+    c.font = '700 10px system-ui, sans-serif'; c.textAlign = 'left'; c.fillText(t('Aspect Ratio (AR) →','Aspect Ratio (AR) →'), X0, Y0 - 20);
     c.font = '600 10px system-ui, sans-serif'; c.fillStyle = '#94a3b8'; c.textAlign = 'center';
     for(let v = 80; v <= 180; v += 20) c.fillText(v, px(v), Y1 + 13);
     c.fillText(t('envergure (cm) →','span (cm) →'), (X0 + X1)/2, Y1 + 28);
@@ -1436,7 +1436,7 @@
     // légende : une ligne par couleur
     const lg = $('atl-leg');
     if(lg) lg.innerHTML = '<div class="atl-cats">'+Object.entries(VA_CAT).filter(([k]) => catCells[k]).map(([k, C]) => '<div><i style="background:'+C.c+'"></i><b>'+vaT(C.s)+'</b> <span>'+vaT(C.d)+'</span></div>').join('')+'</div>'
-      + '<span><i style="background:#fde68a; height:1px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même allongement AR (chiffre en haut)','same aspect ratio AR (number on top)')+'</span>'
+      + '<span><i style="background:#fde68a; height:1px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même AR (chiffre en haut)','same AR (number on top)')+'</span>'
       + '<span><i class="hatch"></i>'+t('hors gamme (AR < 6 ou > 24)','out of range (AR < 6 or > 24)')+'</span>'
       + '<span>'+kg+' kg · '+t('meilleurs temps','best times')+' : 300 m '+vaTime(VA.best.b3)+' · 1 km '+vaTime(VA.best.b1)+'</span>';
   }
