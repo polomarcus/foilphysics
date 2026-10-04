@@ -1867,8 +1867,8 @@
   addEventListener('hashchange', atlFromHash);
   // repère logique ≈ largeur réelle (380-600) : sur téléphone les textes gardent une taille lisible
   // téléphone (largeur < 520 px) : repère plus haut que large → les ailes de surf respirent ; ordi : 600 × 400
-  function atlGeo(w){ const W = Math.max(340, Math.min(600, w)), narrow = w < 520, H = Math.round(W*(narrow ? .95 : 400/600)) + 38;   // +22 : rangée « maniabilité » sous l'axe
-    return {W, H, narrow, X0: narrow ? 40 : 52, X1: W - (narrow ? 30 : 44), Y0:34, Y1:H - 78}; }
+  function atlGeo(w){ const W = Math.max(340, Math.min(600, w)), narrow = w < 520, H = Math.round(W*(narrow ? .95 : 400/600)) + 50;   // +22 : rangée « maniabilité » sous l'axe
+    return {W, H, narrow, X0: narrow ? 40 : 52, X1: W - (narrow ? 30 : 44), Y0:34, Y1:H - 90}; }
   // 🏷️ Marque seule : reco selon ton poids / niveau / vague + présentation de la gamme (familles, tailles, zone pour toi)
   // couleur de chaque reco : même famille que sa zone, en plus lumineux pour ressortir sur la carte
   const RECO_C = {'✨':'#3ee08f', '🔥':'#ff6fa3', '🌊':'#5fb0ff'};
@@ -2055,10 +2055,14 @@
     exits.forEach(([x, m]) => c.fillText(m, x, Y1 + 46));
     // explication de la rangée, sur sa propre ligne en dessous (centrée)
     c.font = '700 '+(G.narrow ? 9 : 10)+'px system-ui, sans-serif'; c.textAlign = 'center'; c.fillStyle = '#94a3b8';
-    { // un vrai bout de tiret blanc dessiné, puis « = maniabilité (← plus maniable) »
-      const txt = t(' = maniabilité (résistance au roulis : surface × envergure²)',' = maneuverability (roll resistance: area × span²)'), tw = c.measureText(txt).width, sw = 26, x0 = (X0 + X1)/2 - (sw + 6 + tw)/2, yy = Y1 + 60;
-      c.save(); c.setLineDash([6, 4]); c.lineWidth = 2; c.strokeStyle = '#fff'; c.beginPath(); c.moveTo(x0, yy); c.lineTo(x0 + sw, yy); c.stroke(); c.restore();
-      c.textAlign = 'left'; c.fillText(txt, x0 + sw + 6, Y1 + 64);
+    { // légende sous la carte, sur 2 lignes : tiret blanc = maniabilité · trait ambre = limite des 10 min de session
+      const sw = 26, yA = Y1 + 58, yB = Y1 + 74;
+      const t1 = t(' = maniabilité (résistance au roulis : surface × envergure²)',' = maneuverability (roll resistance: area × span²)');
+      const t2 = t(' = limite des '+SES_OK+' min de session : d\'un côté tu t\'épuises, de l\'autre tu tiens '+SES_OK+' min +',' = '+SES_OK+'-min session limit: on one side you tire, on the other you last '+SES_OK+' min+');
+      const w = Math.max(c.measureText(t1).width, c.measureText(t2).width), x0 = (X0 + X1)/2 - (sw + 6 + w)/2;
+      c.save(); c.setLineDash([6, 4]); c.lineWidth = 2; c.strokeStyle = '#fff'; c.beginPath(); c.moveTo(x0, yA - 4); c.lineTo(x0 + sw, yA - 4); c.stroke();
+      c.setLineDash([]); c.lineWidth = 2; c.strokeStyle = '#fbbf24'; c.beginPath(); c.moveTo(x0, yB - 4); c.lineTo(x0 + sw, yB - 4); c.stroke(); c.restore();
+      c.textAlign = 'left'; c.fillText(t1, x0 + sw + 6, yA); c.fillText(t2, x0 + sw + 6, yB);
     }
     c.textAlign = 'right';
     for(let v = 600; v <= 1800; v += 200) c.fillText(num(v), X0 - 5, py(v) + 3);
