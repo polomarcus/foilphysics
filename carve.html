@@ -235,12 +235,15 @@
   .atl-cats b{font-weight:800;} .atl-cats span{color:var(--muted);}
   .atl-info{max-width:900px; margin:0 auto 12px;}
   .atl-info:empty{display:none;}
+  .atl-fam .rleg{display:inline-flex; flex-wrap:wrap; gap:4px 12px; padding-left:12px; border-left:1px solid var(--line);} .atl-fam .rleg i{background:none!important; border-radius:50%!important; border-width:2.5px!important; width:11px; height:11px;}
   .atl-reco{display:flex; flex-direction:column; gap:3px; margin-bottom:8px; font-size:.8rem;}
   .atl-reco .atl-for{font-size:.72rem; color:var(--muted); text-align:center; margin-bottom:2px;}
   .atl-reco > div:not(.atl-for){display:flex; align-items:center; flex-wrap:wrap; gap:2px 8px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:5px 6px 5px 12px;}
   .atl-reco .rk{color:var(--muted); font-weight:700; min-width:92px;}
   .atl-reco .rn{color:var(--txt); font-weight:800;}
   .atl-reco .rd{color:#cbd5e1; font-size:.76rem; flex:1;}
+  .tt-rec{font-weight:900; font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; margin-bottom:3px;}
+  .rring{display:inline-block; width:11px; height:11px; border-radius:50%; border:2.5px solid; margin-right:6px; vertical-align:-1px; box-shadow:0 0 0 1.5px #0f172a;}
   @media(max-width:560px){ .atl-reco > div:not(.atl-for){display:grid; grid-template-columns:auto 1fr auto; gap:0 8px;} .atl-reco .rk{min-width:0;} .atl-reco .rd{grid-column:1 / 3; grid-row:2;} .atl-reco button{grid-row:1 / 3; grid-column:3;} } .atl-reco .rd i{color:var(--muted); font-style:normal;}
   .atl-reco button{background:transparent; border:1px solid var(--carve); color:var(--carve); border-radius:999px; width:28px; height:24px; font:inherit; font-size:.72rem; font-weight:800; cursor:pointer;}
   .atl-reco button:disabled{opacity:.35; cursor:default;}
@@ -449,6 +452,18 @@
   </section>
 
 
+  <!-- 🗺️ ATLAS : toutes les ailes sur la carte maniable × endurante -->
+  <section id="atlas" class="a-in">
+    <h3 data-i18n="atl-h3"><a class="h-anchor" href="#atlas">🗺️ Toutes les ailes sur la carte</a></h3>
+    <p class="lede" data-i18n="atl-lede">🧍 <b>La carte s'adapte à toi</b> : les zones bougent avec <b>ton poids</b>, <b>ton niveau</b> et <b>la taille de la houle</b> — règle-les juste en dessous et regarde les frontières glisser. Survole un point pour ses chiffres, clique une aile pour l'essayer.</p>
+    <div class="rc-row" id="atl-rider"></div>
+    <div class="atl-brands" id="atl-brands"></div>
+    <div class="atl-box"><canvas id="atl-cv" aria-hidden="true"></canvas><div class="win-tip" id="atl-tip" hidden></div></div>
+    <div class="atl-fam" id="atl-fam"></div>
+    <div class="atl-info" id="atl-info"></div>
+    <div class="win-leg" id="atl-leg"></div>
+  </section>
+
   <!-- VERDICTS -->
   <section class="a-in">
     <h3 data-i18n="vd-h3">🧾 Ce qui fait tourner, en 6 cartes</h3>
@@ -547,17 +562,6 @@
 
   </section>
 
-  <!-- 🗺️ ATLAS : toutes les ailes sur la carte maniable × endurante -->
-  <section id="atlas" class="a-in">
-    <h3 data-i18n="atl-h3"><a class="h-anchor" href="#atlas">🗺️ Toutes les ailes sur la carte</a></h3>
-    <p class="lede" data-i18n="atl-lede">🧍 <b>La carte s'adapte à toi</b> : les zones bougent avec <b>ton poids</b>, <b>ton niveau</b> et <b>la taille de la houle</b> — règle-les juste en dessous et regarde les frontières glisser. Survole un point pour ses chiffres, clique une aile pour l'essayer.</p>
-    <div class="rc-row" id="atl-rider"></div>
-    <div class="atl-brands" id="atl-brands"></div>
-    <div class="atl-box"><canvas id="atl-cv" aria-hidden="true"></canvas><div class="win-tip" id="atl-tip" hidden></div></div>
-    <div class="atl-fam" id="atl-fam"></div>
-    <div class="atl-info" id="atl-info"></div>
-    <div class="win-leg" id="atl-leg"></div>
-  </section>
 
   <!-- TECHNIQUE -->
   <section id="tech" class="a-in">
@@ -1835,6 +1839,8 @@
   function atlGeo(w){ const W = Math.max(340, Math.min(600, w)), narrow = w < 520, H = Math.round(W*(narrow ? .95 : 400/600));
     return {W, H, narrow, X0: narrow ? 40 : 52, X1: W - (narrow ? 30 : 44), Y0:34, Y1:H - 40}; }
   // 🏷️ Marque seule : reco selon ton poids / niveau / vague + présentation de la gamme (familles, tailles, zone pour toi)
+  // couleur de chaque reco : même famille que sa zone, en plus lumineux pour ressortir sur la carte
+  const RECO_C = {'✨':'#3ee08f', '🔥':'#ff6fa3', '🌊':'#5fb0ff'};
   function atlBrandInfo(B, kg, H, famCol, fam){
     const box = $('atl-info'); if(!box) return;
     if(!B){ box.innerHTML = ''; ATL.reco = null; return; }
@@ -1855,7 +1861,7 @@
     const link = by(ev.filter(w => ok(w) && w.man >= 20), w => w.glide) || by(ev.filter(ok), w => w.glide);
     const inSl = w => w.b >= +$('i-b').min && w.b <= +$('i-b').max && w.S >= +$('i-s').min && w.S <= +$('i-s').max;
     // une ligne par reco : étiquette · aile · chiffres clés · ▶
-    const card = (lab, w, note) => !w ? '' : '<div><span class="rk">'+lab+'</span> <b class="rn">'+w.n+'</b> '
+    const card = (lab, w, note) => !w ? '' : '<div style="border-color:'+RECO_C[lab.slice(0, 2).trim()]+'"><span class="rk"><i class="rring" style="border-color:'+RECO_C[lab.slice(0, 2).trim()]+'"></i>'+lab+'</span> <b class="rn">'+w.n+'</b> '
       + '<span class="rd">'+num(w.b, w.b % 1 ? 1 : 0)+' cm · '+num(w.S)+' cm² · '+t('mania.','maneuv.')+' '+w.man+' · ⏱️ '+(w.ses.unlimited ? '∞' : '~'+Math.max(1, Math.round(w.ses.min))+' min')
       + (note ? ' <i>'+note+'</i>' : '')+'</span>'
       + '<button type="button" data-try="'+w.b+'|'+w.S+'"'+(inSl(w) ? ' title="'+t('l\'essayer','try it')+'"' : ' disabled title="'+t('hors des curseurs du simulateur','outside the simulator sliders')+'"')+'>▶</button></div>';
@@ -1970,10 +1976,13 @@
       c.beginPath(); c.arc(x, y, G.narrow ? 3.4 : 5, 0, 7); c.fillStyle = few ? famCol[f] : B.c; c.fill(); c.lineWidth = G.narrow ? 1.4 : 2; c.strokeStyle = '#0f172a'; c.stroke();
     }));
     const fl = $('atl-fam');
-    if(fl) fl.innerHTML = few ? Object.entries(famCol).map(([f, col]) => '<span><i style="background:'+col+'"></i>'+f+'</span>').join('') : '';
+    if(fl) fl.innerHTML = few ? Object.entries(famCol).map(([f, col]) => '<span><i style="background:'+col+'"></i>'+f+'</span>').join('')
+      + '<span class="rleg">'+[['✨', t('compromis','compromise')], ['🔥', t('tourner','turning')], ['🌊', t('enchaîner','linking')]].map(([e, l]) => '<span><i class="rring" style="border-color:'+RECO_C[e]+'"></i>'+e+' '+l+'</span>').join('')+'</span>' : '';
     atlBrandInfo(few ? act[0] : null, kg, H, famCol, fam);
     if(few && ATL.reco) ATL.reco.forEach(r => {   // recos visibles sur la carte : anneau blanc + emoji
-      const x = px(r.b), y = py(r.S); c.beginPath(); c.arc(x, y, G.narrow ? 7 : 9, 0, 7); c.lineWidth = 2.5; c.strokeStyle = '#fff'; c.stroke();
+      const x = px(r.b), y = py(r.S), rr = G.narrow ? 7 : 9;
+      c.beginPath(); c.arc(x, y, rr, 0, 7); c.lineWidth = 5; c.strokeStyle = '#0f172a'; c.stroke();     // liseré sombre : lisible sur toutes les zones
+      c.beginPath(); c.arc(x, y, rr, 0, 7); c.lineWidth = 3; c.strokeStyle = RECO_C[r.e]; c.stroke();
       c.font = (G.narrow ? 13 : 15)+'px system-ui, sans-serif'; c.textAlign = 'center'; c.fillText(r.e, x, y - (G.narrow ? 10 : 12));
     });
     // noms des zones posés SUR leur couleur : la place qui tient entièrement dans la zone, le plus loin possible des points
@@ -2079,7 +2088,13 @@
       const g = ATL.geo, ar = p.b*p.b/p.S, man = manOf(p.b, p.S);
       const ses = waveSession(p.b, p.S, g.kg, g.H), sesTxt = ses.unlimited ? t('sans limite','no limit') : '~'+Math.max(1, Math.round(ses.min))+' min';
       const inSl = p.b >= +$('i-b').min && p.b <= +$('i-b').max && p.S >= +$('i-s').min && p.S <= +$('i-s').max;
-      tip.innerHTML = (p.wing ? '<div class="tt-h">'+p.wing.n+'</div>' : '')
+      // aile recommandée (✨ / 🔥 / 🌊) : bulle teintée de la couleur de sa reco + bandeau en tête
+      const rec = p.wing && ATL.solo && ATL.reco ? ATL.reco.find(r => Math.abs(r.b - p.b) < .01 && r.S === p.S) : null;
+      const RECO_L = {'✨':t('compromis','compromise'), '🔥':t('tourner','turning'), '🌊':t('enchaîner','linking')};
+      tip.style.background = rec ? 'color-mix(in srgb, '+RECO_C[rec.e]+' 30%, #0a1020)' : '';
+      tip.style.borderColor = rec ? RECO_C[rec.e] : '';
+      tip.innerHTML = (rec ? '<div class="tt-rec" style="color:'+RECO_C[rec.e]+'">'+rec.e+' '+t('recommandée','recommended')+' · '+RECO_L[rec.e]+'</div>' : '')
+        + (p.wing ? '<div class="tt-h">'+p.wing.n+'</div>' : '')
         + '<div class="'+(p.wing ? 'tt-s' : 'tt-h')+'">'+p.b+' cm · '+num(p.S)+' cm² · AR '+num(ar, 1)+'</div>'
         + t('maniabilité','maneuverability')+' <b>'+man+'</b> · '+t('glisse','glide')+' <b>'+glideScore(p.b, p.S, g.kg)+'</b><br>'
         + t('vole dès','flies from')+' <b>~'+liftoffKmh(p.S, g.kg)+' km/h</b> · '+t('session','session')+' <b>'+sesTxt+'</b>'
