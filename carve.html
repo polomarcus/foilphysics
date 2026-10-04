@@ -697,7 +697,8 @@
   // la suivante. Au-dessus de ton seuil (selon ton niveau, riderLvl), le repompage vide ta réserve ; sur la
   // vague tu récupères un peu (modèle W'bal de Skiba). On compte les cycles jusqu'à épuisement.
   function waveSession(b_cm, S_cm2, WKG, H){
-    const L = riderLvl(), CP = L.cp, WP = L.wp, RIDE = 30, DIST = 200;
+    // durée d'un ride : une vague plus grosse pousse plus longtemps (~25 s à 0,5 m · ~33 s à 1 m · ~44 s à 1,5-2 m)
+    const L = riderLvl(), CP = L.cp, WP = L.wp, RIDE = 18 + 15*H, DIST = 200;
     const c = cruiseState(b_cm, S_cm2, WKG), P = c.P/L.eff, vwm = Math.sqrt(22*H), vw = vwm*3.6, vl = liftoffKmh(S_cm2, WKG), free = vl <= Math.round(vw);
     // la vague suivante vient vers toi : tu la rejoins à ta vitesse + la sienne
     const tc = DIST/(c.v + vwm);
@@ -1817,7 +1818,13 @@
   // « poids plume » (calé sur les retours de Paul, 75 kg : Sushi 740 / RSX 700 / DW 750 trop petites, DW 840 / Regata 850 OK) :
   // elle ne te porte qu'à partir de 16,5 km/h, OU démarrer en pompant demande > 1,2 × ton seuil (envergure trop courte)
   const liftExact = (S, kg) => Math.sqrt(kg*9.81/(0.5*1025*(S/1e4)*1.2))*3.6*1.15;
-  function isPlume(b, S, kg){ return liftExact(S, kg) >= 16.5 || takeoffPower(b, S, kg) >= 1.2*riderLvl().cp; }
+  // … sauf si la vague te lance : elle avance à ≈ √(22·H) ; si ton aile vole sous cette vitesse, la vague la met en vol
+  // (plus besoin de la démarrer en pompant) → en grosse houle, les petites ailes redeviennent jouables.
+  function isPlume(b, S, kg){
+    const vw = Math.sqrt(22*(typeof waveH === 'function' ? waveH() : 0.5))*3.6;
+    if(liftExact(S, kg) <= vw) return false;
+    return liftExact(S, kg) >= 16.5 || takeoffPower(b, S, kg) >= 1.2*riderLvl().cp;
+  }
   function atlCat(b, S, kg, fun, end){
     if(isPlume(b, S, kg)) return 'plume';
     const man = manOf(b, S);
@@ -2072,9 +2079,12 @@
     ATL.pts = pts;
     const lg = $('atl-leg');
     // « poids plume » dépend de TON poids : surface sous laquelle l'aile ne te porte qu'à partir de 16,5 km/h (l'envergure trop courte s'ajoute via le pompage)
-    let sPl = 300; while(sPl < 2500 && liftExact(sPl, kg) >= 16.5) sPl += 10;
+    const vwL = Math.sqrt(22*H)*3.6, thr = Math.max(16.5, vwL);   // la vague lance les ailes qui volent sous sa vitesse
+    let sPl = 300; while(sPl < 2500 && liftExact(sPl, kg) >= thr) sPl += 10;
     const catTxt = (k, C) => k === 'plume'
-      ? t('trop petite pour toi à '+kg+' kg : sous ~'+num(sPl)+' cm² (porte dès 16,5 km/h et +), ou envergure trop courte pour démarrer en pompant (> '+Math.round(1.2*riderLvl().cp/10)*10+' W)', 'too small for you at '+kg+' kg: below ~'+num(sPl)+' cm² (carries you from 16.5 km/h+), or span too short to pump it up (> '+Math.round(1.2*riderLvl().cp/10)*10+' W)')
+      ? (vwL > 16.5
+        ? t('trop petite pour toi à '+kg+' kg, même lancée par cette vague (~'+Math.round(vwL)+' km/h) : sous ~'+num(sPl)+' cm²', 'too small for you at '+kg+' kg, even launched by this wave (~'+Math.round(vwL)+' km/h): below ~'+num(sPl)+' cm²')
+        : t('trop petite pour toi à '+kg+' kg : sous ~'+num(sPl)+' cm² (porte dès 16,5 km/h et +), ou envergure trop courte pour démarrer en pompant (> '+Math.round(1.2*riderLvl().cp/10)*10+' W)', 'too small for you at '+kg+' kg: below ~'+num(sPl)+' cm² (carries you from 16.5 km/h+), or span too short to pump it up (> '+Math.round(1.2*riderLvl().cp/10)*10+' W)'))
       : t(C.fr, C.en);
     if(lg) lg.innerHTML = '<div class="atl-cats">'+Object.entries(ATL_CAT).map(([k, C]) => '<div><i style="background:'+C.c+'"></i><b>'+t(C.sfr, C.sen)+'</b> <span>'+catTxt(k, C)+'</span></div>').join('')+'</div>'
       + '<span><i style="background:repeating-linear-gradient(90deg, rgba(255,255,255,.85) 0 5px, transparent 5px 8px); height:2px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même maniabilité (tirets blancs, chiffre à droite)','same maneuverability (white dashes, number on the right)')+'</span>'
@@ -2164,7 +2174,10 @@
   }
   function rearBonus(){ const r = rearParts(); return r.stab + r.dih + r.fus; }
   const wingMan = (b, S) => 100*(30 - S*b*b/1e6)/26;
-  function manOf(b, S){ return Math.max(0, Math.min(100, Math.round(wingMan(b, S) + rearBonus()))); }
+  // aile très fine (allongement > 12) : le bout intérieur décroche dans un virage serré, la corde fine décroche net,
+  // elle est faite pour filer droit → −4 points par point d'allongement au-delà de 12 (estimation, à caler terrain)
+  const arPen = (b, S) => Math.round(4*Math.max(0, b*b/S - 12));
+  function manOf(b, S){ return Math.max(0, Math.min(100, Math.round(wingMan(b, S) - arPen(b, S) + rearBonus()))); }
 
   function render(){
     $('v-b').textContent = $('i-b').value;
@@ -2201,7 +2214,8 @@
     const ar       = b*b/S;                                     // allongement = envergure²/surface (moteur de la glisse)
     const agWing   = clamp(100*(30 - Iroll)/26);                // AILE seule : courte ET légère → agile ; bornes calées (Jam 1600 ≈ 15, repère 140 = 0, RSX 1100 ≈ 62)
     const rp       = rearParts();
-    const agility  = clamp(100*(30 - Iroll)/26 + rp.stab + rp.dih + rp.fus);   // + l'ARRIÈRE (stab, dièdre, fuselage)
+    const arP      = arPen(b, S);                                // aile très fine : pénalité au-delà d'un allongement de 12
+    const agility  = clamp(100*(30 - Iroll)/26 - arP + rp.stab + rp.dih + rp.fus);   // + l'ARRIÈRE (stab, dièdre, fuselage)
     // Glisse/relance : dérivée de la PUISSANCE DE CROISIÈRE (physique complète) → dépend de l'envergure ET de l'AR,
     // et suit exactement le texte « X min ». Corrige les inversions à AR ≈ égal (RSX 820 vs 960, DW 1180).
     const glisse   = glideScore(b, S, kg);
@@ -2244,7 +2258,7 @@
 
     $('o-agil').innerHTML = '<span style="color:hsl('+Math.round(agility*1.2)+',68%,55%)">' + agility + '</span> <small>/ 100 ' + t('maniabilité','maneuverability') + '</small>';
     const sg = v => v === 0 ? '±0' : (v > 0 ? '<span class="pos">+'+v+'</span>' : '<span class="neg">−'+(-v)+'</span>');
-    $('o-split').innerHTML = t('aile','wing')+' <b>'+agWing+'</b> · '+t('stab','stab')+' '+(+$('i-stab').value)+' cm² '+sg(rp.stab)
+    $('o-split').innerHTML = t('aile','wing')+' <b>'+agWing+'</b> · '+(arP ? t('aile fine','slender wing')+' (AR '+num(ar, 1)+') '+sg(-arP)+' · ' : '')+t('stab','stab')+' '+(+$('i-stab').value)+' cm² '+sg(rp.stab)
       + ' · '+t('dièdre','dihedral')+' '+sg(rp.dih)+' · '+t('fuselage','fuselage')+' '+sg(rp.fus)+' = <b>'+agility+'</b>';
     setAnim(agility, 'hsl('+Math.round(agility*1.2)+',68%,55%)');
     // 🌊 conditions : une vague qui déferle avance à ≈ √(g·(profondeur + hauteur)) avec profondeur ≈ 1,3 × hauteur
@@ -2268,7 +2282,7 @@
           : near ? t('≈ juste : prends-la en biais (~'+ang+'°) et donne quelques coups de pompe','≈ tight: ride it at an angle (~'+ang+'°) and add a few pumps')
           : t('✗ trop lente pour ton aile : tu pompes aussi sur la vague','✗ too slow for your wing: you keep pumping on the wave'))+'</div>'
       + (!ses.unlimited && ses.links === 0 ? '<div class="wi-v" style="color:#fca5a5">'+t('✗ repomper ~200 m te coûte ~','✗ pumping back ~200 m costs you ~')+Math.round(ses.P/10)*10+t(' W, au-dessus de ton seuil ('+riderLvl().cp+' W) : tu ne rejoins pas la suivante',' W, above your threshold ('+riderLvl().cp+' W): you don\'t reach the next one')+'</div>' : '')
-      + '<div class="wi-d xpl">'+t('Une vague = ~30 s de ride, puis ~200 m jusqu\'à la suivante, qui vient vers toi (~','One wave = ~30 s of riding, then ~200 m to the next one, which comes towards you (~')+Math.round(ses.tc)+' s · ~'+Math.round(ses.P/10)*10+' W). '
+      + '<div class="wi-d xpl">'+t('Une vague = ~'+Math.round(18 + 15*H)+' s de ride, puis ~200 m jusqu\'à la suivante, qui vient vers toi (~','One wave = ~'+Math.round(18 + 15*H)+' s of riding, then ~200 m to the next one, which comes towards you (~')+Math.round(ses.tc)+' s · ~'+Math.round(ses.P/10)*10+' W). '
       + t('Estimation pour un rider '+riderLvl().fr+' (règle « ton niveau » à côté du poids).','Estimate for your level: '+riderLvl().en+' (set “your level” next to the weight).')+'</div>';
     drawWin(b, S, kg, H);
     drawAtlas(b, S, kg, H);
