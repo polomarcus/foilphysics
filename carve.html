@@ -1926,7 +1926,7 @@
     const c = cv.getContext('2d'), k = cv.width/G.W; c.setTransform(k,0,0,k,0,0); c.clearRect(0,0,G.W,G.H);
     const {X0, X1, Y0, Y1} = G;
     const px = v => X0 + (v - ATL.B0)/(ATL.B1 - ATL.B0)*(X1 - X0), py = v => Y1 - (v - ATL.S0)/(ATL.S1 - ATL.S0)*(Y1 - Y0);
-    ATL.geo = Object.assign({px, py, kg, H}, G);
+    ATL.geo = Object.assign({}, G, {px, py, kg, Hw: H});   // Hw = hauteur de VAGUE (G.H = hauteur du dessin : ne pas confondre !)
     // fond hachuré (hors gamme), puis les zones
     c.save(); c.beginPath(); c.rect(X0, Y0, X1 - X0, Y1 - Y0); c.clip();
     c.strokeStyle = 'rgba(148,163,184,.22)'; c.lineWidth = 1;
@@ -2124,10 +2124,10 @@
       return {b, S, wing, x: e.clientX - r.left, y: e.clientY - r.top, w: r.width};
     };
     const show = e => {
-      if(ATL.args && ATL.geo && gridKey(ATL.geo.kg, ATL.geo.H) !== ATL.key) drawAtlas(...ATL.args);   // réglage changé depuis le dessin
+      if(ATL.args && ATL.geo && gridKey(ATL.geo.kg, ATL.geo.Hw) !== ATL.key) drawAtlas(...ATL.args);   // réglage changé depuis le dessin
       const p = pick(e); if(!p){ tip.hidden = true; return; }
       const g = ATL.geo, ar = p.b*p.b/p.S, man = manOf(p.b, p.S);
-      const ses = waveSession(p.b, p.S, g.kg, g.H), sesTxt = ses.unlimited ? t('sans limite','no limit') : '~'+Math.max(1, Math.round(ses.min))+' min';
+      const ses = waveSession(p.b, p.S, g.kg, g.Hw), sesTxt = ses.unlimited ? t('sans limite','no limit') : '~'+Math.max(1, Math.round(ses.min))+' min';
       const inSl = p.b >= +$('i-b').min && p.b <= +$('i-b').max && p.S >= +$('i-s').min && p.S <= +$('i-s').max;
       // aile recommandée (✨ / 🔥 / 🌊) : bulle teintée de la couleur de sa reco + bandeau en tête
       const rec = p.wing && ATL.solo && ATL.reco ? ATL.reco.find(r => Math.abs(r.b - p.b) < .01 && r.S === p.S) : null;
