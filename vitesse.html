@@ -283,21 +283,29 @@
   .atl-fam{display:flex; flex-wrap:wrap; justify-content:center; gap:4px 14px; font-size:.78rem; font-weight:700; color:var(--txt); margin:0 0 8px;}
   .atl-fam i{display:inline-block; width:10px; height:10px; border-radius:50%; border:1.5px solid #0f172a; margin-right:5px; vertical-align:-1px;}
   .atl-info{max-width:900px; margin:0 auto 12px;} .atl-info:empty{display:none;}
-  .atl-reco{display:flex; flex-direction:column; gap:3px; margin-bottom:8px; font-size:.8rem;}
-  .atl-reco > div{display:flex; align-items:center; flex-wrap:wrap; gap:2px 8px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:5px 6px 5px 12px;}
-  .atl-reco .rk{color:var(--muted); font-weight:700; min-width:92px;} .atl-reco .rn{color:var(--txt); font-weight:800;}
-  .atl-reco .rd{color:#cbd5e1; font-size:.76rem; flex:1;}
-  @media(max-width:560px){ .atl-reco > div{display:grid!important; grid-template-columns:auto 1fr auto; gap:0 8px;} .atl-reco .rk{min-width:0;} .atl-reco .rd{grid-column:1 / 3; grid-row:2;} .atl-reco button{grid-row:1 / 3; grid-column:3;} }
   .rring{display:inline-block; width:11px; height:11px; border-radius:50%; border:2.5px solid; margin-right:6px; vertical-align:-1px; box-shadow:0 0 0 1.5px #0f172a;}
   .atl-fam .rleg{display:inline-flex; flex-wrap:wrap; gap:4px 12px; padding-left:12px; border-left:1px solid var(--line);} .atl-fam .rleg i{background:none!important; border-radius:50%!important; border-width:2.5px!important; width:11px; height:11px;}
-  .tt-rec{font-weight:900; font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; margin-bottom:3px;} .atl-reco .rd i{color:var(--muted); font-style:normal;}
-  .atl-reco button{background:transparent; border:1px solid #f59e0b; color:#f59e0b; border-radius:999px; width:28px; height:24px; font:inherit; font-size:.72rem; font-weight:800; cursor:pointer;}
-  .atl-reco button:disabled{opacity:.35; cursor:default;}
-  .atl-rng{width:100%; border-collapse:collapse; font-size:.76rem; font-variant-numeric:tabular-nums;}
-  .atl-rng th{color:var(--muted); font-weight:700; text-align:left; padding:4px 8px; border-bottom:1px solid var(--line);}
-  .atl-rng td{padding:3px 8px; color:#cbd5e1; border-bottom:1px solid rgba(51,65,85,.5);}
-  .atl-rng td i{display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px;}
-  .atl-rngw{overflow-x:auto; -webkit-overflow-scrolling:touch;}
+  .tt-rec{font-weight:900; font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; margin-bottom:3px;}
+  .atl-reco{display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:10px; margin-bottom:14px;}
+  .atl-reco .atl-for{grid-column:1 / -1; font-size:1.05rem; font-weight:800; color:var(--txt); margin:2px 0 0;} .atl-reco .atl-for span{font-size:.8rem; font-weight:600; color:var(--muted);}
+  .atl-reco .rc-card{display:flex; flex-direction:column; gap:6px; background:var(--panel); border:2px solid var(--line); border-radius:14px; padding:12px 14px;}
+  .atl-reco .rk{font-size:.74rem; font-weight:900; text-transform:uppercase; letter-spacing:.05em;}
+  .atl-reco .rn{color:var(--txt); font-weight:900; font-size:1.35rem; line-height:1.15;}
+  .atl-reco .rw{color:#cbd5e1; font-size:.85rem; line-height:1.35;}
+  .atl-reco .rd{display:flex; flex-wrap:wrap; gap:4px; font-size:.76rem; color:#cbd5e1;} .atl-reco .rd > span{background:rgba(148,163,184,.12); border-radius:999px; padding:2px 8px;}
+  .atl-reco button{margin-top:auto; align-self:flex-start; background:transparent; border:1.5px solid currentColor; border-radius:999px; padding:5px 14px; font:inherit; font-size:.82rem; font-weight:800; cursor:pointer;}
+  .atl-reco button:disabled, .atl-cmp button:disabled{opacity:.35; cursor:default;}
+  .atl-bhint{flex-basis:100%; text-align:center; font-size:.76rem; color:var(--muted); margin-top:2px;}
+  .atl-cmpw{overflow-x:auto; margin-bottom:14px;}
+  .atl-cmp{width:100%; border-collapse:separate; border-spacing:6px; font-size:.82rem;}
+  .atl-cmp th{text-align:left; color:var(--txt); font-weight:900; padding:6px 8px; vertical-align:top; white-space:nowrap;} .atl-cmp th small{display:block; font-size:.7rem; font-weight:600; color:var(--muted); white-space:normal;}
+  .atl-cmp tr:first-child th{font-size:.95rem;} .atl-cmp th i{display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:6px;}
+  .atl-cmp td{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:8px 10px; vertical-align:top; min-width:130px;}
+  .atl-cmp td > b{display:block; font-size:1.05rem; font-weight:900; color:var(--txt); margin-bottom:4px;}
+  .atl-cmp .rd{display:flex; flex-wrap:wrap; gap:3px; font-size:.72rem; color:#cbd5e1; margin-bottom:6px;} .atl-cmp .rd > span{background:rgba(148,163,184,.12); border-radius:999px; padding:1px 7px;}
+  .atl-cmp button{background:transparent; border:1px solid #f59e0b; color:#f59e0b; border-radius:999px; padding:3px 10px; font:inherit; font-size:.74rem; font-weight:800; cursor:pointer;}
+  @media(max-width:560px){ .atl-cmp th:first-child{position:sticky; left:0; z-index:1; background:var(--bg); white-space:normal; min-width:84px; max-width:96px;} .atl-cmp td{min-width:118px;} }
+  td.cmp-none{color:var(--muted); text-align:center; vertical-align:middle;} td.cmp-rng{font-size:.74rem; color:#cbd5e1; line-height:1.4;}
   .atl-box{position:relative; max-width:900px; margin:0 auto; background:var(--panel-2); border-radius:12px; padding:8px;}
   #atl-cv{display:block; width:100%; cursor:crosshair; touch-action:pan-y;}
   .win-tip{position:absolute; pointer-events:none; background:rgba(15,23,42,.96); border:1px solid var(--line); border-radius:8px; padding:6px 9px; font-size:.7rem; line-height:1.45; color:#cbd5e1; text-align:left; white-space:nowrap; z-index:5; box-shadow:0 4px 14px rgba(0,0,0,.4);}
@@ -1238,7 +1246,7 @@
   const num = (x, d = 1) => x.toLocaleString(curLang() === 'fr' ? 'fr-FR' : 'en-GB', {maximumFractionDigits:d, minimumFractionDigits:d});
   /* 🗺️ ATLAS VITESSE — mêmes ailes (ailes.js) et même rendu que la carte carve ; zones = modèle « Le combo selon ton poids »
      (puissance-durée : ~3,5 W/kg tenus + réserve 280 J/kg, démarrage ≤ 17 km/h, +20 % au-dessus du décrochage en virage). */
-  const VA = {key:'', g:null, B0:70, B1:195, S0:450, S1:1800, DB:1.5, DS:20, AR0:6, AR1:24, solo:null};
+  const VA = {key:'', g:null, B0:70, B1:195, S0:450, S1:1800, DB:1.5, DS:20, AR0:6, AR1:24, sel:[]};
   const VA_BRANDS = window.FOIL_WINGS || [];
   // Couleurs : palette de référence (sombre) vérifiée au validateur dataviz, paires de zones voisines OK
   const VA_CAT = {
@@ -1281,9 +1289,12 @@
   }
   function vaBrandsUI(){
     const box = $('atl-brands'); if(!box) return;
-    box.innerHTML = '<button type="button" data-k="" class="'+(VA.solo ? '' : 'on')+'">'+t('Toutes','All')+'</button>'
-      + VA_BRANDS.map(B => '<button type="button" data-k="'+B.k+'" class="'+(!VA.solo || VA.solo === B.k ? 'on' : '')+'"><i style="background:'+B.c+'"></i>'+B.n+'</button>').join('');
-    box.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => { const k = bt.dataset.k; VA.solo = !k || VA.solo === k ? null : k; vaBrandsUI(); vaDraw(); vaHash(); }));
+    // un clic = ajoute / retire la marque (1 marque : ses recos · 2 et + : comparaison) · « Toutes » = tout réafficher
+    const sel = VA.sel;
+    box.innerHTML = '<button type="button" data-k="" class="'+(sel.length ? '' : 'on')+'">'+t('Toutes','All')+'</button>'
+      + VA_BRANDS.map(B => '<button type="button" data-k="'+B.k+'" class="'+(!sel.length || sel.includes(B.k) ? 'on' : '')+'"><i style="background:'+B.c+'"></i>'+B.n+'</button>').join('')
+      + '<div class="atl-bhint">'+(sel.length === 1 ? t('➕ clique une autre marque pour comparer','➕ click another brand to compare') : sel.length ? t('🆚 '+sel.length+' marques comparées · reclique une marque pour la retirer','🆚 '+sel.length+' brands compared · click a brand again to remove it') : t('👆 clique une marque pour voir ses recos, plusieurs pour comparer','👆 click a brand to see its picks, several to compare'))+'</div>';
+    box.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => { const k = bt.dataset.k; VA.sel = !k ? [] : sel.includes(k) ? sel.filter(x => x !== k) : sel.concat(k); vaBrandsUI(); vaDraw(); vaHash(); }));
   }
   const VA_RC = {before:null};
   function vaRider(){
@@ -1361,7 +1372,7 @@
     c.textAlign = 'right'; for(let v = 600; v <= 1800; v += 200) c.fillText(num(v, 0), X0 - 5, py(v) + 3);
     c.save(); c.translate(12, (Y0 + Y1)/2); c.rotate(-Math.PI/2); c.textAlign = 'center'; c.fillText(t('surface (cm²) →','area (cm²) →'), 0, 0); c.restore();
     // ailes
-    const act = VA_BRANDS.filter(B => !VA.solo || VA.solo === B.k), few = !!VA.solo, pts = [], famCol = {};
+    const act = VA_BRANDS.filter(B => !VA.sel.length || VA.sel.includes(B.k)), few = VA.sel.length === 1, multi = VA.sel.length > 1, pts = [], famCol = {};
     const PAL = ['#f472b6', '#b7793f', '#fde047', '#22d3ee', '#a3e635', '#f87171', '#ffffff', '#fb923c', '#818cf8', '#2dd4bf'];
     act.forEach(B => B.w.forEach(([n, bb, ss]) => {
       if(bb < VA.B0 || bb > VA.B1 || ss < VA.S0 || ss > VA.S1) return;
@@ -1370,18 +1381,18 @@
       c.beginPath(); c.arc(x, y, narrow ? 3.4 : 5, 0, 7); c.fillStyle = few ? famCol[f] : B.c; c.fill(); c.lineWidth = narrow ? 1.4 : 2; c.strokeStyle = '#0f172a'; c.stroke();
     }));
     VA.pts = pts;
-    if($('atl-fam')) $('atl-fam').innerHTML = few ? Object.entries(famCol).map(([f, col]) => '<span><i style="background:'+col+'"></i>'+f+'</span>').join('')
+    if($('atl-fam')) $('atl-fam').innerHTML = few || multi ? (few ? Object.entries(famCol).map(([f, col]) => '<span><i style="background:'+col+'"></i>'+f+'</span>') : act.map(B => '<span><i style="background:'+B.c+'"></i>'+B.n+'</span>')).join('')
       + '<span class="rleg">'+[['🏁', '300 m'], ['🛣️', '1 km'], ['🏆', t('polyvalente','all-round')]].map(([e, l]) => '<span><i class="rring" style="border-color:'+VA_RC_C[e]+'"></i>'+e+' '+l+'</span>').join('')+'</span>' : '';
     // noms de zones sur leur couleur (sinon à côté avec un trait ; nom court en dernier recours)
     const boxes = pts.map(p => [p.x - 6, p.y - 6, 12, 12]);
-    vaInfo(few ? act[0] : null, kg, famCol);
-    if(few && VA.reco) VA.reco.forEach(r => {   // recos visibles sur la carte : anneau de la couleur de la reco + emoji
+    if(multi) vaCompare(act, kg); else vaInfo(few ? act[0] : null, kg, famCol);
+    if((few || multi) && VA.reco) VA.reco.forEach(r => {   // recos visibles sur la carte : anneau de la couleur de la reco + emoji
       const x = px(r.b), y = py(r.S), rr = narrow ? 7 : 9;
       c.beginPath(); c.arc(x, y, rr, 0, 7); c.lineWidth = 5; c.strokeStyle = '#0f172a'; c.stroke();
       c.beginPath(); c.arc(x, y, rr, 0, 7); c.lineWidth = 3; c.strokeStyle = VA_RC_C[r.e]; c.stroke();
       c.font = (narrow ? 13 : 15)+'px system-ui, sans-serif'; c.textAlign = 'center'; c.fillText(r.e, x, y - rr - 3);
     });
-    const ringB = few && VA.reco ? VA.reco.map(r => { const x = px(r.b), y = py(r.S); return [x - 13, y - 32, 26, 45]; }) : [];
+    const ringB = (few || multi) && VA.reco ? VA.reco.map(r => { const x = px(r.b), y = py(r.S); return [x - 13, y - 32, 26, 45]; }) : [];
     ringB.forEach(r => boxes.push(r));   // les noms évitent les anneaux de reco
     c.font = (narrow ? '900 10.5px' : '900 12px')+' system-ui, sans-serif'; c.textAlign = 'center'; c.lineJoin = 'round';
     Object.keys(VA_CAT).forEach(k => {
@@ -1423,7 +1434,7 @@
         break;
       }
     });
-    if(few){
+    if(few || VA.sel.length === 2){
       c.font = '700 9px system-ui, sans-serif'; c.textAlign = 'left'; c.lineWidth = 3; c.lineJoin = 'round';
       const hit = (x0, y0, w0) => boxes.some(r => x0 < r[0] + r[2] && x0 + w0 > r[0] && y0 - 5 < r[1] + r[3] && y0 + 5 > r[1]);
       pts.forEach(p => {
@@ -1441,33 +1452,54 @@
       + '<span>'+kg+' kg · '+t('meilleurs temps','best times')+' : 300 m '+vaTime(VA.best.b3)+' · 1 km '+vaTime(VA.best.b1)+'</span>';
   }
   const VA_RC_C = {'🏁':'#ff6fa3', '🛣️':'#3ee08f', '🏆':'#5fb0ff'};   // mêmes familles que les zones 300 m / 1 km / les deux
-  function vaInfo(B, kg, famCol){
-    const box = $('atl-info'); if(!box) return;
-    if(!B){ box.innerHTML = ''; VA.lastReco = null; VA.reco = null; return; }
+  // les 3 recos d'une marque pour ce rider : 🏁 300 m · 🛣️ 1 km · 🏆 polyvalente
+  function vaPicks(B, kg){
     const ev = B.w.map(([n, b, S]) => Object.assign({n, b, S, ar: b*b/S}, vaEval(b, S, kg)));
     const okW = ev.filter(w => w.k !== 'start');
     const by = (arr, f) => arr.slice().sort((a, b2) => f(a) - f(b2))[0];
     const r3 = by(okW.filter(w => !w.r3.stall), w => w.r3.t), r1 = by(okW.filter(w => !w.r1.stall), w => w.r1.t), poly = by(okW, w => Math.max(w.a, w.d));
-    const inSl = w => w.b >= +$('i-b').min && w.b <= +$('i-b').max && w.S >= +$('i-s').min && w.S <= +$('i-s').max;
+    return {ev, r3, r1: r1 !== r3 ? r1 : null, poly: poly && poly !== r3 && poly !== r1 ? poly : null, r1raw: r1, polyraw: poly};
+  }
+  const vaInSl = w => w.b >= +$('i-b').min && w.b <= +$('i-b').max && w.S >= +$('i-s').min && w.S <= +$('i-s').max;
+  const vaTryBtn = (w, col) => '<button type="button"'+(col ? ' style="color:'+col+'"' : '')+' data-try="'+w.b+'|'+w.S+'"'+(vaInSl(w) ? '' : ' disabled title="'+t('hors des curseurs du simulateur','outside the simulator sliders')+'"')+'>▶ '+t('l\'essayer','try it')+'</button>';
+  const vaInfo3 = {r3: w => vaTime(w.r3.t)+' · ~'+Math.round(w.r3.v)+' km/h', r1: w => vaTime(w.r1.t)+' · ~'+Math.round(w.r1.v)+' km/h', poly: w => '+'+Math.round((Math.max(w.a, w.d) - 1)*100)+' % '+t('au pire','at worst')};
+  function vaInfo(B, kg, famCol){
+    const box = $('atl-info'); if(!box) return;
+    if(!B){ box.innerHTML = ''; VA.lastReco = null; VA.reco = null; return; }
+    const {r3, r1, poly} = vaPicks(B, kg);
     const was = (key, w) => VA_RC.before && VA_RC.before[key] && w && VA_RC.before[key] !== w.n ? ' <span class="was">'+t('avant : ','before: ')+VA_RC.before[key]+'</span>' : '';
-    const card = (key, lab, w, info) => !w ? '' : '<div style="border-color:'+VA_RC_C[lab.split(' ')[0]]+'"><span class="rk"><i class="rring" style="border-color:'+VA_RC_C[lab.split(' ')[0]]+'"></i>'+lab+'</span> <b class="rn">'+w.n+'</b> <span class="rd">'+num(w.b, w.b % 1 ? 1 : 0)+' cm · '+num(w.S, 0)+' cm² · '+info+was(key, w)+'</span>'
-      + '<button type="button" data-try="'+w.b+'|'+w.S+'"'+(inSl(w) ? '' : ' disabled title="'+t('hors des curseurs du simulateur','outside the simulator sliders')+'"')+'>▶</button></div>';
-    let html = '<div class="atl-reco">'
-      + card('r3', t('🏁 300 m','🏁 300 m'), r3, vaTime(r3 ? r3.r3.t : 0)+' · ~'+(r3 ? Math.round(r3.r3.v) : 0)+' km/h')
-      + card('r1', t('🛣️ 1 km','🛣️ 1 km'), r1, vaTime(r1 ? r1.r1.t : 0)+' · ~'+(r1 ? Math.round(r1.r1.v) : 0)+' km/h')
-      + (poly && poly !== r3 && poly !== r1 ? card('poly', t('🏆 polyvalente','🏆 all-round'), poly, '+'+Math.round((Math.max(poly.a, poly.d) - 1)*100)+' % '+t('au pire','at worst')) : '')
+    // une carte par reco : rôle · aile en gros · à quoi elle sert · chiffres clés · ▶ l'essayer
+    const card = (key, e, lab, w, why) => { if(!w) return ''; const c = VA_RC_C[e];
+      return '<div class="rc-card" style="border-color:'+c+'"><span class="rk" style="color:'+c+'"><i class="rring" style="border-color:'+c+'"></i>'+e+' '+lab+'</span>'
+        + '<b class="rn">'+w.n+'</b><span class="rw">'+why+was(key, w)+'</span>'
+        + '<span class="rd"><span>'+num(w.b, w.b % 1 ? 1 : 0)+' cm</span><span>'+num(w.S, 0)+' cm²</span><span>⏱️ '+vaInfo3[key](w)+'</span></span>'+vaTryBtn(w, c)+'</div>'; };
+    box.innerHTML = '<div class="atl-reco"><div class="atl-for">🎯 '+t('Pour toi chez ','For you at ')+B.n+' <span>· '+num(kg)+' kg</span></div>'
+      + card('r3', '🏁', t('sprint 300 m','300 m sprint'), r3, t('La plus rapide sur un sprint de 300 m.','The fastest over a 300 m sprint.'))
+      + card('r1', '🛣️', t('course 1 km','1 km race'), r1, t('La plus rapide sur 1 km : tient la vitesse sans t\'épuiser.','The fastest over 1 km: holds speed without wearing you out.'))
+      + card('poly', '🏆', t('polyvalente','all-round'), poly, t('Jamais loin des meilleures, sur 300 m comme sur 1 km.','Never far from the best, over 300 m and 1 km alike.'))
       + '</div>';
     VA.lastReco = {r3: r3 && r3.n, r1: r1 && r1.n, poly: poly && poly.n};
-    VA.reco = [[r3, '🏁'], [r1 !== r3 ? r1 : null, '🛣️'], [poly && poly !== r3 && poly !== r1 ? poly : null, '🏆']].filter(r => r[0]).map(([w, e]) => ({b: w.b, S: w.S, e}));
-    const fams = {}; ev.forEach(w => { const f = vaFam(w.n); (fams[f] = fams[f] || []).push(w); });
-    const rg = (a, d) => { const lo = Math.min(...a), hi = Math.max(...a); return Math.abs(hi - lo) < (d ? .15 : 1) ? num(lo, d) : num(lo, d)+'–'+num(hi, d); };
-    html += '<div class="atl-rngw"><table class="atl-rng"><tr><th>'+t('gamme','range')+'</th><th>'+t('envergure · surface','span · area')+'</th><th>AR</th><th>'+t('pour toi','for you')+'</th></tr>'
-      + Object.entries(fams).map(([f, ws]) => {
-          const cnt = {}; ws.forEach(w => { cnt[w.k] = (cnt[w.k] || 0) + 1; });
-          const zones = Object.keys(VA_CAT).filter(k => cnt[k]).map(k => '<span style="color:'+(VA_CAT[k].c === '#2b3647' ? '#94a3b8' : VA_CAT[k].c)+'; font-weight:700">'+vaT(VA_CAT[k].x)+'</span>').join(' · ');
-          return '<tr><td><i style="background:'+(famCol[f] || B.c)+'"></i><b>'+f+'</b> <span style="color:var(--muted)">×'+ws.length+'</span></td><td>'+rg(ws.map(w => w.b), 0)+' cm · '+rg(ws.map(w => w.S), 0)+' cm²</td><td>'+rg(ws.map(w => w.ar), 1)+'</td><td>'+zones+'</td></tr>';
-        }).join('')+'</table></div>';
-    box.innerHTML = html;
+    VA.reco = [[r3, '🏁'], [r1, '🛣️'], [poly, '🏆']].filter(r => r[0]).map(([w, e]) => ({b: w.b, S: w.S, e}));
+    box.querySelectorAll('[data-try]').forEach(bt => bt.addEventListener('click', () => vaTry(...bt.dataset.try.split('|').map(Number))));
+  }
+  // 🆚 plusieurs marques : un tableau rôle × marque (la reco de chaque marque, côte à côte)
+  function vaCompare(Bs, kg){
+    const box = $('atl-info'); if(!box) return;
+    const P = Bs.map(B => ({B, ...vaPicks(B, kg)}));
+    // en comparaison, chaque case montre la meilleure de la marque même si elle tient deux rôles
+    P.forEach(p => { p.r1 = p.r1raw; p.poly = p.polyraw; });
+    VA.reco = []; P.forEach(p => [[p.r3, '🏁'], [p.r1, '🛣️'], [p.poly, '🏆']].forEach(([w, e]) => { if(w && !VA.reco.some(r => r.b === w.b && r.S === w.S)) VA.reco.push({b: w.b, S: w.S, e}); }));   // une aile qui tient 2 rôles : un seul anneau
+    VA.lastReco = null;
+    const ROWS = [['🏁', t('sprint 300 m','300 m sprint'), t('la plus rapide sur 300 m','fastest over 300 m'), 'r3'],
+                  ['🛣️', t('course 1 km','1 km race'), t('la plus rapide sur 1 km','fastest over 1 km'), 'r1'],
+                  ['🏆', t('polyvalente','all-round'), t('jamais loin des meilleures','never far from the best'), 'poly']];
+    const cell = (w, key) => !w ? '<td class="cmp-none">—</td>' : '<td><b>'+w.n+'</b><span class="rd"><span>'+num(w.b, w.b % 1 ? 1 : 0)+' cm · '+num(w.S, 0)+' cm²</span><span>⏱️ '+vaInfo3[key](w)+'</span></span>'+vaTryBtn(w)+'</td>';
+    box.innerHTML = '<div class="atl-reco"><div class="atl-for">🆚 '+t('Comparaison pour toi','Comparison for you')+' <span>· '+num(kg)+' kg</span></div></div>'
+      + '<div class="atl-cmpw"><table class="atl-cmp"><tr><th></th>'+P.map(p => '<th><i style="background:'+p.B.c+'"></i>'+p.B.n+'</th>').join('')+'</tr>'
+      + ROWS.map(([e, l, d, key]) => '<tr><th style="color:'+VA_RC_C[e]+'; border-left:3px solid '+VA_RC_C[e]+'">'+e+' '+l+'<small>'+d+'</small></th>'+P.map(p => cell(p[key], key)).join('')+'</tr>').join('')
+      + '<tr><th>'+t('la gamme','the range')+'<small>'+t('ailes &gt; 700 cm²','wings &gt; 700 cm²')+'</small></th>'+P.map(p => { const bs = p.ev.map(w => w.b), ss = p.ev.map(w => w.S);
+          return '<td class="cmp-rng">'+p.ev.length+' '+t('ailes','wings')+'<br>'+num(Math.min(...bs), 0)+'–'+num(Math.max(...bs), 0)+' cm<br>'+num(Math.min(...ss), 0)+'–'+num(Math.max(...ss), 0)+' cm²</td>'; }).join('')+'</tr>'
+      + '</table></div>';
     box.querySelectorAll('[data-try]').forEach(bt => bt.addEventListener('click', () => vaTry(...bt.dataset.try.split('|').map(Number))));
   }
   function vaTry(b, S){
@@ -1493,7 +1525,7 @@
       const p = pick(e); if(!p){ tip.hidden = true; return; }
       const ar = p.b*p.b/p.S, ev = vaEval(p.b, p.S, VA.geo.kg), fits = ar >= VA.AR0 && ar <= VA.AR1;
       const inSl = p.b >= +$('i-b').min && p.b <= +$('i-b').max && p.S >= +$('i-s').min && p.S <= +$('i-s').max;
-      const rec = p.wing && VA.solo && VA.reco ? VA.reco.find(r => Math.abs(r.b - p.b) < .01 && r.S === p.S) : null;
+      const rec = p.wing && VA.sel.length && VA.reco ? VA.reco.find(r => Math.abs(r.b - p.b) < .01 && r.S === p.S) : null;
       const RL = {'🏁':t('meilleure sur 300 m','best over 300 m'), '🛣️':t('meilleure sur 1 km','best over 1 km'), '🏆':t('polyvalente','all-round')};
       tip.style.background = rec ? 'color-mix(in srgb, '+VA_RC_C[rec.e]+' 30%, #0a1020)' : ''; tip.style.borderColor = rec ? VA_RC_C[rec.e] : '';
       tip.innerHTML = (rec ? '<div class="tt-rec" style="color:'+VA_RC_C[rec.e]+'">'+rec.e+' '+t('recommandée','recommended')+' · '+RL[rec.e]+'</div>' : '')
@@ -1520,9 +1552,9 @@
   })();
   // 🔗 lien direct par marque : vitesse.html#atlas-axis, #atlas-alpine-foil… (même format que la page carve)
   function vaSlug(B){ return B.n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
-  function vaHash(){ const B = VA_BRANDS.find(x => x.k === VA.solo); try{ history.replaceState(null, '', location.pathname + location.search + (B ? '#atlas-'+vaSlug(B) : '#atlas')); }catch(e){} }
-  function vaFromHash(){ const m = /^#atlas-(.+)$/.exec(location.hash); if(!m) return; const B = VA_BRANDS.find(x => vaSlug(x) === m[1]); if(!B) return;
-    VA.solo = B.k; vaBrandsUI(); vaDraw(); const sec = $('atlas'); if(sec) setTimeout(() => sec.scrollIntoView(), 50); }
+  function vaHash(){ const sl = VA.sel.map(k => vaSlug(VA_BRANDS.find(x => x.k === k))); try{ history.replaceState(null, '', location.pathname + location.search + (sl.length ? '#atlas-'+sl.join('+') : '#atlas')); }catch(e){} }
+  function vaFromHash(){ const m = /^#atlas-(.+)$/.exec(location.hash); if(!m) return; const ks = m[1].split('+').map(sl => (VA_BRANDS.find(x => vaSlug(x) === sl) || {}).k).filter(Boolean); if(!ks.length) return;
+    VA.sel = ks; vaBrandsUI(); vaDraw(); const sec = $('atlas'); if(sec) setTimeout(() => sec.scrollIntoView(), 50); }
 })();
 </script>
 </body>
