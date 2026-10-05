@@ -192,6 +192,10 @@
   .rc b{min-width:46px; text-align:center;}
   .rc-seg button{color:var(--muted); font-weight:700;}
   .rc-seg button.on{background:var(--carve); color:#1e1b2e;}
+  .ses-help{max-width:560px; margin:4px auto 8px; font-size:.78rem; color:var(--muted); text-align:left; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:6px 12px;}
+  .ses-help summary{cursor:pointer; font-weight:800; color:var(--txt); list-style:none; text-align:center;} .ses-help summary::-webkit-details-marker{display:none}
+  .ses-help[open] summary{margin-bottom:6px;} .ses-help ul{margin:6px 0; padding-left:18px;} .ses-help li{margin:3px 0;} .ses-help b{color:var(--txt);}
+  .ses-help .sh-note{font-size:.72rem; color:var(--dim); margin-top:6px;}
   .rc-row{display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin:0 0 10px;}
   .was{display:inline-block; margin-left:6px; color:#fcd34d; font-weight:700; font-size:.92em; animation:wasIn .8s ease-out;}
   @keyframes wasIn{from{opacity:0; transform:translateY(-3px);} to{opacity:1; transform:none;}}
@@ -407,6 +411,12 @@
           <button type="button" class="ws-btn" data-h="1.75" data-i18n="ws-3">🌊 1,5-2 m<small>puissante</small></button>
         </div>
         <div class="wave-info" id="wave-info"></div>
+        <details class="ses-help"><summary data-i18n="sh-sum">ℹ️ Comment est calculée la « session » ?</summary>
+          <div data-i18n="sh-body"><p>🌊 tu surfes une vague, puis tu <b>repompes ~200 m</b> jusqu'à la suivante.<br>
+            ⏱️ le chiffre = le temps avant de <b>ne plus arriver à repomper</b> (selon l'aile, ton poids, ton niveau).<br>
+            ✅ <b>« longtemps »</b> = tu repompes sans t'épuiser · <b>10 min</b> = la limite des zones de la carte.</p>
+            <p class="sh-note">Estimation pour un rider type (±30 %).</p></div>
+        </details>
         <div class="anim-cap" data-i18n="anim-cap">sa ligne dans la vague : plus l'aile est vive, plus ça tourne <b>serré</b> et plus ça <b>gîte</b></div>
       </div>
     </div>
@@ -607,6 +617,8 @@
   const FRC = {};
   const EN = {
     'ws-ask':'👇 Pick the wave size:',
+    'sh-sum':'ℹ️ How is the « session » computed?',
+    'sh-body':'<p>🌊 you ride a wave, then <b>pump back ~200 m</b> to the next one.<br>⏱️ the number = the time before you <b>can no longer pump back</b> (depends on the wing, your weight, your level).<br>✅ <b>« a long time »</b> = you pump back without tiring · <b>10 min</b> = the limit between the map zones.</p><p class="sh-note">Estimate for a typical rider (±30%).</p>',
     'l-lvl':'🏄 Your level','lv-1':'progressing','lv-2':'experienced','lv-3':'expert / racer',
     'sd-a':'reverse ∩ dihedral (carve stab)','sd-0':'flat stab','sd-u':'U dihedral',
     'ws-1':'🌊 0.5 m<small>soft</small>','ws-2':'🌊 1 m<small>medium</small>','ws-3':'🌊 1.5-2 m<small>powerful</small>',
@@ -1575,7 +1587,7 @@
     wcDraw(gid('wc'), {acc:'#c084fc', title:'carve · '+wl,
       sub: t('pour ','for ')+kg+' kg '+t('(curseur 🧍) · ','(🧍 slider) · ')+rule,
       chips:[{v:c.b+' cm', l:t('envergure','span')}, {v:c.S+' cm²', l:t('surface','area')}, {v:'AR '+num(c.ar,1), l:''}, {v:c.ag+' · '+c.to, l:t('maniabilité · démarrage','maneuverability · takeoff')},
-             (() => { const ss = waveSession(c.b, c.S, kg, H); return {v:ss.unlimited ? '∞' : '~'+ss.n+' '+t('vague'+(ss.n > 1 ? 's' : ''),'wave'+(ss.n > 1 ? 's' : '')), l:t('session (ton niveau, ton stab)','session (your level, your stab)')}; })()],
+             (() => { const ss = waveSession(c.b, c.S, kg, H); return {v:ss.unlimited ? t('longtemps','long') : '~'+ss.n+' '+t('vague'+(ss.n > 1 ? 's' : ''),'wave'+(ss.n > 1 ? 's' : '')), l:t('session (ton niveau, ton stab)','session (your level, your stab)')}; })()],
       btns:[{l:t('🎛️ Essayer ce combo','🎛️ Try this combo'), fn:()=>{ gid('i-b').value = c.b; gid('i-s').value = Math.round(c.S/5)*5; gid('i-s').dispatchEvent(new Event('input')); }}],
       head:[t('poids','weight'), t('envergure','span'), t('surface','area'), 'AR', t('maniabilité','maneuverability'), t('démarrage','takeoff')],
       rows: WC_KG.map(k => { const r = carveBest(k); return {on:Math.abs(k-kg) < 7.5, c:[k+' kg', r.b+' cm', r.S+' cm²', num(r.ar,1), r.ag, r.to]}; }),
@@ -1779,7 +1791,7 @@
       const p = pick(e); if(!p){ tip.hidden = true; return; }
       const g = WIN.geo, ar = p.b*p.b/p.S, viv = Math.max(0, Math.min(100, Math.round(100*(30 - p.S*p.b*p.b/1e6)/26)));
       const fits = ar >= 7 && ar <= 13, ses = fits ? waveSession(p.b, p.S, g.kg, g.H) : null;
-      const sesTxt = !ses ? '' : ses.unlimited ? t('sans limite','no limit') : '~'+Math.max(1, Math.round(ses.min))+' min';
+      const sesTxt = !ses ? '' : ses.unlimited ? t('longtemps','a long time') : '~'+Math.max(1, Math.round(ses.min))+' min';
       tip.innerHTML = '<div class="tt-h">'+p.b+' cm · '+num(p.S)+' cm² · AR '+num(ar, 1)+'</div>'
         + (fits ? t('maniabilité','maneuverability')+' <b>'+viv+'</b> · '+t('glisse','glide')+' <b>'+glideScore(p.b, p.S, g.kg)+'</b><br>'
           + t('vole dès','flies from')+' <b>~'+liftoffKmh(p.S, g.kg)+' km/h</b> · '+t('session','session')+' <b>'+sesTxt+'</b>'
@@ -1881,7 +1893,7 @@
       const k = ar < ATL.AR0 || ar > ATL.AR1 ? null : atlCat(b, S, kg, manOf(b, S) >= 45, end);
       return {n, b, S, ar, man, ses, end, k, glide: glideScore(b, S, kg), vl: liftoffKmh(S, kg)};
     });
-    const sesTxt = w => w.ses.unlimited ? t('session sans limite','no-limit session') : t('session ~','session ~')+Math.max(1, Math.round(w.ses.min))+' min';
+    const sesTxt = w => w.ses.unlimited ? t('session : longtemps','session: a long time') : t('session ~','session ~')+Math.max(1, Math.round(w.ses.min))+' min';
     const ok = w => w.k && w.k !== 'plume';
     const by = (arr, f) => arr.slice().sort((a, b2) => f(b2) - f(a))[0];
     const both = ev.filter(w => w.k === 'both');
@@ -1893,7 +1905,7 @@
     const inSl = w => w.b >= +$('i-b').min && w.b <= +$('i-b').max && w.S >= +$('i-s').min && w.S <= +$('i-s').max;
     // une ligne par reco : étiquette · aile · chiffres clés · ▶
     const card = (lab, w, note) => !w ? '' : '<div style="border-color:'+RECO_C[lab.slice(0, 2).trim()]+'"><span class="rk"><i class="rring" style="border-color:'+RECO_C[lab.slice(0, 2).trim()]+'"></i>'+lab+'</span> <b class="rn">'+w.n+'</b> '
-      + '<span class="rd">'+num(w.b, w.b % 1 ? 1 : 0)+' cm · '+num(w.S)+' cm² · '+t('mania.','maneuv.')+' '+w.man+' · ⏱️ '+(w.ses.unlimited ? '∞' : '~'+Math.max(1, Math.round(w.ses.min))+' min')
+      + '<span class="rd">'+num(w.b, w.b % 1 ? 1 : 0)+' cm · '+num(w.S)+' cm² · '+t('mania.','maneuv.')+' '+w.man+' · ⏱️ '+(w.ses.unlimited ? t('longtemps','long') : '~'+Math.max(1, Math.round(w.ses.min))+' min')
       + (note ? ' <i>'+note+'</i>' : '')+'</span>'
       + '<button type="button" data-try="'+w.b+'|'+w.S+'"'+(inSl(w) ? ' title="'+t('l\'essayer','try it')+'"' : ' disabled title="'+t('hors des curseurs du simulateur','outside the simulator sliders')+'"')+'>▶</button></div>';
     ATL.lastComp = comp ? B.k+'|'+comp.n : null;
@@ -2217,7 +2229,7 @@
       if(ATL.args && ATL.geo && gridKey(ATL.geo.kg, ATL.geo.Hw) !== ATL.key) drawAtlas(...ATL.args);   // réglage changé depuis le dessin
       const p = pick(e); if(!p){ tip.hidden = true; return; }
       const g = ATL.geo, ar = p.b*p.b/p.S, man = manOf(p.b, p.S);
-      const ses = waveSession(p.b, p.S, g.kg, g.Hw), sesTxt = ses.unlimited ? t('sans limite','no limit') : '~'+Math.max(1, Math.round(ses.min))+' min';
+      const ses = waveSession(p.b, p.S, g.kg, g.Hw), sesTxt = ses.unlimited ? t('longtemps','a long time') : '~'+Math.max(1, Math.round(ses.min))+' min';
       const inSl = p.b >= +$('i-b').min && p.b <= +$('i-b').max && p.S >= +$('i-s').min && p.S <= +$('i-s').max;
       // aile recommandée (✨ / 🔥 / 🌊) : bulle teintée de la couleur de sa reco + bandeau en tête
       const rec = p.wing && ATL.solo && ATL.reco ? ATL.reco.find(r => Math.abs(r.b - p.b) < .01 && r.S === p.S) : null;
@@ -2258,6 +2270,7 @@
     const kg = riderKg(), lv = $('i-lvl').value;
     const seg = (pre, items, cur) => '<span class="rc rc-seg">'+items.map(([v, l]) => '<button type="button" data-rc="'+pre+v+'" class="'+(String(cur) === String(v) ? 'on' : '')+'">'+l+'</button>').join('')+'</span>';
     return '<span class="rc"><button type="button" data-rc="kg-" aria-label="'+t('moins lourd','lighter')+'">−</button><b>🧍 '+kg+' kg</b><button type="button" data-rc="kg+" aria-label="'+t('plus lourd','heavier')+'">+</button></span>'
+      + (withWave ? '<span class="rc"><button type="button" data-rc="st-" aria-label="'+t('stab plus petit','smaller stab')+'">−</button><b>🪶 stab '+$('i-stab').value+' cm²</b><button type="button" data-rc="st+" aria-label="'+t('stab plus grand','bigger stab')+'">+</button></span>' : '')
       + seg('lv:', [['1', t('progression','learning')], ['2', t('confirmé','experienced')], ['3', 'expert']], lv)
       + (withWave ? seg('h:', [['0.5', '0,5 m'], ['1', '1 m'], ['1.75', '1,5-2 m']], waveH()) : '');
   }
@@ -2265,7 +2278,10 @@
     const bt = e.target.closest('[data-rc]'); if(!bt) return;
     const v = bt.dataset.rc;
     RC.before = {range: WIN.lastRange, comp: ATL.lastComp};
-    if(v === 'kg-' || v === 'kg+'){
+    if(v === 'st-' || v === 'st+'){
+      const st = $('i-stab'); st.value = Math.max(+st.min, Math.min(+st.max, +st.value + (v === 'st+' ? 10 : -10)));
+      st.dispatchEvent(new Event('input', {bubbles:true}));
+    } else if(v === 'kg-' || v === 'kg+'){
       const k = $('i-kg'); k.value = Math.max(+k.min, Math.min(+k.max, riderKg() + (v === 'kg+' ? 1 : -1)));
       k.dispatchEvent(new Event('input', {bubbles:true}));
     } else if(v.startsWith('lv:')){
@@ -2287,6 +2303,7 @@
   // elle est faite pour filer droit → −4 points par point d'allongement au-delà de 12 (estimation, à caler terrain)
   const arPen = (b, S) => Math.round(4*Math.max(0, b*b/S - 12));
   function manOf(b, S){ return Math.max(0, Math.min(100, Math.round(wingMan(b, S) - arPen(b, S) + rearBonus()))); }
+
 
   function render(){
     $('v-b').textContent = $('i-b').value;
@@ -2385,8 +2402,8 @@
     $('wave-info').innerHTML = '<div class="wi-tiles">'
       + '<div class="wi-t"><span>'+t('🌊 la vague','🌊 the wave')+'</span><b>~'+vw+' km/h</b><i>'+t('sa vitesse','its speed')+'</i></div>'
       + '<div class="wi-t"><span>'+t('🪽 ton aile','🪽 your wing')+'</span><b style="color:'+vcol+'">~'+vl+' km/h</b><i>'+t('vole dès','flies from')+'</i></div>'
-      + '<div class="wi-t"><span>'+t('⏱️ session','⏱️ session')+'</span><b>'+(ses.unlimited ? '∞' : '~'+ses.n+' '+t('vague'+(ses.n > 1 ? 's' : ''),'wave'+(ses.n > 1 ? 's' : '')))+'</b><i>'
-      + (ses.unlimited ? t('sans limite','no limit') : ses.links === 0 ? t('puis tu tombes','then you drop') : '~'+Math.max(1, Math.round(ses.min))+' min '+t('de vol','of flight'))+'</i></div></div>'
+      + '<div class="wi-t"><span>'+t('⏱️ session','⏱️ session')+'</span><b>'+(ses.unlimited ? t('longtemps','long') : '~'+ses.n+' '+t('vague'+(ses.n > 1 ? 's' : ''),'wave'+(ses.n > 1 ? 's' : '')))+'</b><i>'
+      + (ses.unlimited ? t('tu enchaînes sans t\'épuiser','you keep going without tiring') : ses.links === 0 ? t('puis tu tombes','then you drop') : '~'+Math.max(1, Math.round(ses.min))+' min '+t('de vol','of flight'))+'</i></div></div>'
       + '<div class="wi-v" style="color:'+vcol+'">'+(ok ? t('✓ la vague te porte toute seule','✓ the wave carries you by itself')
           : near ? t('≈ juste : prends-la en biais (~'+ang+'°) et donne quelques coups de pompe','≈ tight: ride it at an angle (~'+ang+'°) and add a few pumps')
           : t('✗ trop lente pour ton aile : tu pompes aussi sur la vague','✗ too slow for your wing: you keep pumping on the wave'))+'</div>'
@@ -2399,7 +2416,7 @@
     const ms = $('mini-score');
     if(ms) ms.innerHTML = '<span><b style="color:hsl('+Math.round(agility*1.2)+',68%,55%)">'+agility+'</b> '+t('maniabilité','maneuverability')+'</span>'
       + '<span>'+t('glisse','glide')+' <b>'+glisse+'</b></span>'
-      + '<span>⏱️ <b>'+(ses.unlimited ? '∞' : '~'+Math.max(1, Math.round(ses.min))+' min')+'</b></span>'
+      + '<span>⏱️ <b>'+(ses.unlimited ? t('longtemps','long') : '~'+Math.max(1, Math.round(ses.min))+' min')+'</b></span>'
       + '<span>'+(funMe && endMe ? '✨ <b style="color:#34d399">'+t('maniable + endurante','maneuverable + lasting')+'</b>'
           : funMe ? '🎉 '+t('maniable, mais tu t\'épuises','maneuverable, but you tire')
           : endMe ? '🔋 '+t('endurante, mais peu maniable','lasting, but not very maneuverable')
@@ -2523,6 +2540,7 @@
 
   let startLang = 'fr';
   if(/[?&]lang=en/i.test(location.search)) startLang = 'en';
+  else if(/[?&]lang=fr/i.test(location.search)) startLang = 'fr';   // ?lang=fr force aussi le français (même si l'anglais est mémorisé)
   else { try{ if(localStorage.getItem('lcw-lang') === 'en') startLang = 'en'; }catch(e){} }
   if(startLang === 'en') applyLang('en'); else render();
 })();
