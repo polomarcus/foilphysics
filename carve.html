@@ -240,22 +240,30 @@
   .atl-info{max-width:900px; margin:0 auto 12px;}
   .atl-info:empty{display:none;}
   .atl-fam .rleg{display:inline-flex; flex-wrap:wrap; gap:4px 12px; padding-left:12px; border-left:1px solid var(--line);} .atl-fam .rleg i{background:none!important; border-radius:50%!important; border-width:2.5px!important; width:11px; height:11px;}
-  .atl-reco{display:flex; flex-direction:column; gap:3px; margin-bottom:8px; font-size:.8rem;}
-  .atl-reco .atl-for{font-size:.72rem; color:var(--muted); text-align:center; margin-bottom:2px;}
-  .atl-reco > div:not(.atl-for){display:flex; align-items:center; flex-wrap:wrap; gap:2px 8px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:5px 6px 5px 12px;}
-  .atl-reco .rk{color:var(--muted); font-weight:700; min-width:92px;}
-  .atl-reco .rn{color:var(--txt); font-weight:800;}
-  .atl-reco .rd{color:#cbd5e1; font-size:.76rem; flex:1;}
+  .atl-reco{display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:10px; margin-bottom:14px;}
+  .atl-reco .atl-for{grid-column:1 / -1; font-size:1.05rem; font-weight:800; color:var(--txt); margin:2px 0 0;} .atl-reco .atl-for span{font-size:.8rem; font-weight:600; color:var(--muted);}
+  .atl-reco .rc-card{display:flex; flex-direction:column; gap:6px; background:var(--panel); border:2px solid var(--line); border-radius:14px; padding:12px 14px; position:relative;}
+  .atl-reco .rk{font-size:.74rem; font-weight:900; text-transform:uppercase; letter-spacing:.05em;}
+  .atl-reco .rn{color:var(--txt); font-weight:900; font-size:1.35rem; line-height:1.15;}
+  .atl-reco .rw{color:#cbd5e1; font-size:.85rem; line-height:1.35;}
+  .atl-reco .rd{display:flex; flex-wrap:wrap; gap:4px; font-size:.76rem; color:#cbd5e1;} .atl-reco .rd > span{background:rgba(148,163,184,.12); border-radius:999px; padding:2px 8px;}
   .tt-rec{font-weight:900; font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; margin-bottom:3px;}
   .rring{display:inline-block; width:11px; height:11px; border-radius:50%; border:2.5px solid; margin-right:6px; vertical-align:-1px; box-shadow:0 0 0 1.5px #0f172a;}
-  @media(max-width:560px){ .atl-reco > div:not(.atl-for){display:grid; grid-template-columns:auto 1fr auto; gap:0 8px;} .atl-reco .rk{min-width:0;} .atl-reco .rd{grid-column:1 / 3; grid-row:2;} .atl-reco button{grid-row:1 / 3; grid-column:3;} } .atl-reco .rd i{color:var(--muted); font-style:normal;}
-  .atl-reco button{background:transparent; border:1px solid var(--carve); color:var(--carve); border-radius:999px; width:28px; height:24px; font:inherit; font-size:.72rem; font-weight:800; cursor:pointer;}
-  .atl-reco button:disabled{opacity:.35; cursor:default;}
-  .atl-rng{width:100%; border-collapse:collapse; font-size:.76rem; font-variant-numeric:tabular-nums;}
-  .atl-rng th{color:var(--muted); font-weight:700; text-align:left; padding:4px 8px; border-bottom:1px solid var(--line);}
-  .atl-rng td{padding:3px 8px; color:#cbd5e1; border-bottom:1px solid rgba(51,65,85,.5);}
-  .atl-rng td i{display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; vertical-align:0;}
-  .atl-rngw{overflow-x:auto; -webkit-overflow-scrolling:touch;}
+  .atl-reco .rw i{color:var(--muted); font-style:normal;}
+  .atl-reco button{margin-top:auto; align-self:flex-start; background:transparent; border:1.5px solid currentColor; border-radius:999px; padding:5px 14px; font:inherit; font-size:.82rem; font-weight:800; cursor:pointer;}
+  .atl-reco button:not(:disabled):hover{background:rgba(255,255,255,.06);}
+  .atl-reco button:disabled, .atl-cmp button:disabled{opacity:.35; cursor:default;}
+  .atl-bhint{flex-basis:100%; text-align:center; font-size:.76rem; color:var(--muted); margin-top:2px;}
+  .atl-cmpw{overflow-x:auto; margin-bottom:14px;}
+  .atl-cmp{width:100%; border-collapse:separate; border-spacing:6px; font-size:.82rem;}
+  .atl-cmp th{text-align:left; color:var(--txt); font-weight:900; padding:6px 8px; vertical-align:top; white-space:nowrap;} .atl-cmp th small{display:block; font-size:.7rem; font-weight:600; color:var(--muted); white-space:normal;}
+  .atl-cmp tr:first-child th{font-size:.95rem;} .atl-cmp th i{display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:6px;}
+  .atl-cmp td{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:8px 10px; vertical-align:top; min-width:130px;}
+  .atl-cmp td > b{display:block; font-size:1.05rem; font-weight:900; color:var(--txt); margin-bottom:4px;}
+  .atl-cmp .rd{display:flex; flex-wrap:wrap; gap:3px; font-size:.72rem; color:#cbd5e1; margin-bottom:6px;} .atl-cmp .rd > span{background:rgba(148,163,184,.12); border-radius:999px; padding:1px 7px;}
+  .atl-cmp button{background:transparent; border:1px solid var(--carve); color:var(--carve); border-radius:999px; padding:3px 10px; font:inherit; font-size:.74rem; font-weight:800; cursor:pointer;}
+  @media(max-width:560px){ .atl-cmp th:first-child{position:sticky; left:0; z-index:1; background:var(--bg); white-space:normal; min-width:84px; max-width:96px;} .atl-cmp td{min-width:118px;} }
+  td.cmp-none{color:var(--muted); text-align:center; vertical-align:middle;} td.cmp-rng{font-size:.74rem; color:#cbd5e1; line-height:1.4;}
   .atl-box{position:relative; max-width:900px; margin:0 auto; background:var(--panel-2); border-radius:12px; padding:8px;}
   #atl-cv{display:block; width:100%; cursor:crosshair; touch-action:pan-y;}
   .win-leg{display:flex; flex-wrap:wrap; justify-content:center; gap:3px 12px; font-size:.68rem; color:var(--muted); margin:4px 0 6px;}
@@ -1818,7 +1826,7 @@
   addEventListener('resize', () => { placeWin(); if(WIN.args) drawWin(...WIN.args); });
 
   // 🗺️ ATLAS — la même carte en grand, avec les vraies ailes (filtre par marque). Plage large : du carve au planeur.
-  const ATL = {key:'', g:null, B0:70, B1:160, S0:450, S1:1800, DB:1.5, DS:20, AR0:6, AR1:24, ARg0:5, ARg1:28, solo:null};   // > 1 800 cm² retirées : plus de place pour les ailes de surf
+  const ATL = {key:'', g:null, B0:70, B1:160, S0:450, S1:1800, DB:1.5, DS:20, AR0:6, AR1:24, ARg0:5, ARg1:28, sel:[]};   // > 1 800 cm² retirées : plus de place pour les ailes de surf
   const ATL_BRANDS = window.FOIL_WINGS || [];   // base partagée : ailes.js
   // 8 familles d'ailes pour TON poids / niveau / vague. Ordre de priorité : trop petite → puis maniable × endurante.
   // Couleurs : palette de référence (thème sombre) vérifiée au validateur — chaque paire de zones VOISINES passe
@@ -1858,22 +1866,26 @@
   const grad = (x, bad, good) => (x - bad)/(good - bad);
   function atlBrandsUI(){
     const box = $('atl-brands'); if(!box) return;
-    // un clic = cette marque seule (avec les noms des ailes) · « Toutes » = tout réafficher
-    box.innerHTML = '<button type="button" data-k="" class="'+(ATL.solo ? '' : 'on')+'">'+t('Toutes','All')+'</button>'
-      + ATL_BRANDS.map(B => '<button type="button" data-k="'+B.k+'" class="'+(!ATL.solo || ATL.solo === B.k ? 'on' : '')+'"><i style="background:'+B.c+'"></i>'+B.n+'</button>').join('');
+    // un clic = ajoute / retire la marque (1 marque : sa gamme en détail · 2 et + : comparaison) · « Toutes » = tout réafficher
+    const sel = ATL.sel;
+    box.innerHTML = '<button type="button" data-k="" class="'+(sel.length ? '' : 'on')+'">'+t('Toutes','All')+'</button>'
+      + ATL_BRANDS.map(B => '<button type="button" data-k="'+B.k+'" class="'+(!sel.length || sel.includes(B.k) ? 'on' : '')+'"><i style="background:'+B.c+'"></i>'+B.n+'</button>').join('')
+      + '<div class="atl-bhint">'+(sel.length === 1 ? t('➕ clique une autre marque pour comparer','➕ click another brand to compare') : sel.length ? t('🆚 '+sel.length+' marques comparées · reclique une marque pour la retirer','🆚 '+sel.length+' brands compared · click a brand again to remove it') : t('👆 clique une marque pour voir sa gamme, plusieurs pour comparer','👆 click a brand to see its range, several to compare'))+'</div>';
     box.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => {
-      const k = bt.dataset.k; ATL.solo = !k || ATL.solo === k ? null : k; atlBrandsUI(); if(ATL.args) drawAtlas(...ATL.args); atlHash(); }));
+      const k = bt.dataset.k;
+      ATL.sel = !k ? [] : sel.includes(k) ? sel.filter(x => x !== k) : sel.concat(k);
+      atlBrandsUI(); if(ATL.args) drawAtlas(...ATL.args); atlHash(); }));
   }
   // 🔗 lien direct par marque : carve.html#atlas-axis, #atlas-alpine-foil… (l'adresse suit le filtre, sans recharger)
   const brandSlug = B => B.n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   function atlHash(){
-    const B = ATL_BRANDS.find(x => x.k === ATL.solo);
-    try{ history.replaceState(null, '', location.pathname + location.search + (B ? '#atlas-'+brandSlug(B) : '#atlas')); }catch(e){}
+    const sl = ATL.sel.map(k => brandSlug(ATL_BRANDS.find(x => x.k === k)));
+    try{ history.replaceState(null, '', location.pathname + location.search + (sl.length ? '#atlas-'+sl.join('+') : '#atlas')); }catch(e){}
   }
   function atlFromHash(){
     const m = /^#atlas-(.+)$/.exec(location.hash); if(!m) return;
-    const B = ATL_BRANDS.find(x => brandSlug(x) === m[1]); if(!B) return;
-    ATL.solo = B.k; atlBrandsUI(); if(ATL.args) drawAtlas(...ATL.args);
+    const ks = m[1].split('+').map(sl => (ATL_BRANDS.find(x => brandSlug(x) === sl) || {}).k).filter(Boolean); if(!ks.length) return;
+    ATL.sel = ks; atlBrandsUI(); if(ATL.args) drawAtlas(...ATL.args);
     const sec = $('atlas'); if(sec) setTimeout(() => sec.scrollIntoView(), 50);
   }
   addEventListener('hashchange', atlFromHash);
@@ -1884,16 +1896,14 @@
   // 🏷️ Marque seule : reco selon ton poids / niveau / vague + présentation de la gamme (familles, tailles, zone pour toi)
   // couleur de chaque reco : même famille que sa zone, en plus lumineux pour ressortir sur la carte
   const RECO_C = {'✨':'#3ee08f', '🔥':'#ff6fa3', '🌊':'#5fb0ff'};
-  function atlBrandInfo(B, kg, H, famCol, fam){
-    const box = $('atl-info'); if(!box) return;
-    if(!B){ box.innerHTML = ''; ATL.reco = null; return; }
+  // les 3 recos d'une marque pour ce rider : ✨ compromis · 🔥 tourner · 🌊 enchaîner
+  function brandPicks(B, kg, H){
     const ev = B.w.map(([n, b, S]) => {
       const ses = waveSession(b, S, kg, H), man = manOf(b, S);
       const end = ses.unlimited || ses.min >= SES_OK, ar = b*b/S;
       const k = ar < ATL.AR0 || ar > ATL.AR1 ? null : atlCat(b, S, kg, manOf(b, S) >= 45, end);
       return {n, b, S, ar, man, ses, end, k, glide: glideScore(b, S, kg), vl: liftoffKmh(S, kg)};
     });
-    const sesTxt = w => w.ses.unlimited ? t('session : longtemps','session: a long time') : t('session ~','session ~')+Math.max(1, Math.round(w.ses.min))+' min';
     const ok = w => w.k && w.k !== 'plume';
     const by = (arr, f) => arr.slice().sort((a, b2) => f(b2) - f(a))[0];
     const both = ev.filter(w => w.k === 'both');
@@ -1902,32 +1912,33 @@
       : by(ev.filter(w => ok(w) && w.man >= 45), w => (w.ses.unlimited ? 999 : w.ses.min)) || null;
     const turn = by(ev.filter(ok), w => w.man);
     const link = by(ev.filter(w => ok(w) && w.man >= 20), w => w.glide) || by(ev.filter(ok), w => w.glide);
+    return {ev, both, comp, turn: turn !== comp ? turn : null, link: link !== comp && link !== turn ? link : null};
+  }
+  function atlBrandInfo(B, kg, H, famCol, fam){
+    const box = $('atl-info'); if(!box) return;
+    if(!B){ box.innerHTML = ''; ATL.reco = null; return; }
+    const {ev, both, comp, turn, link} = brandPicks(B, kg, H);
     const inSl = w => w.b >= +$('i-b').min && w.b <= +$('i-b').max && w.S >= +$('i-s').min && w.S <= +$('i-s').max;
     // une ligne par reco : étiquette · aile · chiffres clés · ▶
-    const card = (lab, w, note) => !w ? '' : '<div style="border-color:'+RECO_C[lab.slice(0, 2).trim()]+'"><span class="rk"><i class="rring" style="border-color:'+RECO_C[lab.slice(0, 2).trim()]+'"></i>'+lab+'</span> <b class="rn">'+w.n+'</b> '
-      + '<span class="rd">'+num(w.b, w.b % 1 ? 1 : 0)+' cm · '+num(w.S)+' cm² · '+t('mania.','maneuv.')+' '+w.man+' · ⏱️ '+(w.ses.unlimited ? t('longtemps','long') : '~'+Math.max(1, Math.round(w.ses.min))+' min')
-      + (note ? ' <i>'+note+'</i>' : '')+'</span>'
-      + '<button type="button" data-try="'+w.b+'|'+w.S+'"'+(inSl(w) ? ' title="'+t('l\'essayer','try it')+'"' : ' disabled title="'+t('hors des curseurs du simulateur','outside the simulator sliders')+'"')+'>▶</button></div>';
+    // une carte par reco : rôle · aile en gros · à quoi elle sert · chiffres clés · ▶ l'essayer
+    const card = (lab, w, why, note) => { if(!w) return ''; const c = RECO_C[lab.slice(0, 2).trim()];
+      return '<div class="rc-card" style="border-color:'+c+'"><span class="rk" style="color:'+c+'"><i class="rring" style="border-color:'+c+'"></i>'+lab+'</span>'
+      + '<b class="rn">'+w.n+'</b><span class="rw">'+why+(note ? ' <i>'+note+'</i>' : '')+'</span>'
+      + '<span class="rd"><span>'+num(w.b, w.b % 1 ? 1 : 0)+' cm</span><span>'+num(w.S)+' cm²</span><span>'+t('maniab.','maneuv.')+' '+w.man+'</span><span>⏱️ '+(w.ses.unlimited ? t('longtemps','a long time') : '~'+Math.max(1, Math.round(w.ses.min))+' min')+'</span></span>'
+      + '<button type="button" style="color:'+c+'" data-try="'+w.b+'|'+w.S+'"'+(inSl(w) ? '' : ' disabled title="'+t('hors des curseurs du simulateur','outside the simulator sliders')+'"')+'>▶ '+t('l\'essayer','try it')+'</button></div>'; };
     ATL.lastComp = comp ? B.k+'|'+comp.n : null;
-    ATL.reco = [[comp, '✨'], [turn !== comp ? turn : null, '🔥'], [link !== comp && link !== turn ? link : null, '🌊']].filter(r => r[0]).map(([w, e]) => ({b: w.b, S: w.S, e}));
+    ATL.reco = [[comp, '✨'], [turn, '🔥'], [link, '🌊']].filter(r => r[0]).map(([w, e]) => ({b: w.b, S: w.S, e}));
     const lv = t(riderLvl().fr, riderLvl().en);
-    let html = '<div class="atl-reco">'
-      + card(t('✨ compromis','✨ compromise'), comp, (both.length ? '' : t('(aucune en carve + endurance)','(none in carve + endurance)'))
+    let html = '<div class="atl-reco"><div class="atl-for">🎯 '+t('Pour toi chez ','For you at ')+(B.n || B.k)+' <span>· '+num(kg)+' kg · '+lv+(H > 0 ? ' · '+t('vague ','wave ')+num(H, 1)+' m' : '')+'</span></div>'
+      + card(t('✨ compromis','✨ compromise'), comp, t('Tourne bien et tu tiens la session.','Turns well and you last the session.'), (both.length ? '' : t('(aucune ne fait les deux : la plus endurante des maniables)','(none does both: the most enduring of the agile ones)'))
           + (RC.before && RC.before.comp && comp && RC.before.comp !== B.k+'|'+comp.n ? ' <span class="was">'+t('avant : ','before: ')+RC.before.comp.split('|')[1]+'</span>' : ''))
-      + (turn && turn !== comp ? card(t('🔥 tourner','🔥 turning'), turn, '') : '')
-      + (link && link !== comp && link !== turn ? card(t('🌊 enchaîner','🌊 linking'), link, '') : '')
+      + (turn ? card(t('🔥 tourner','🔥 turning'), turn, t('La plus vive dans les virages, mais tu t\'épuises plus vite.','The liveliest in turns, but you tire sooner.'), '') : '')
+      + (link ? card(t('🌊 enchaîner','🌊 linking'), link, t('Glisse le plus : pour enchaîner les vagues sans t\'épuiser.','Glides the most: to link waves without tiring.'), '') : '')
       + '</div>';
-    // la gamme : une ligne par famille
-    const fams = {};
-    ev.forEach(w => { const f = fam(w.n); (fams[f] = fams[f] || []).push(w); });
-    const rg = (a, d) => { const lo = Math.min(...a), hi = Math.max(...a); return Math.abs(hi - lo) < (d ? .15 : 1) ? num(lo, d) : num(lo, d)+'–'+num(hi, d); };
-    html += '<div class="atl-rngw"><table class="atl-rng"><tr><th>'+t('gamme','range')+'</th><th>'+t('envergure · surface','span · area')+'</th><th>AR</th><th>'+t('pour toi','for you')+'</th></tr>'
-      + Object.entries(fams).map(([f, ws]) => {
-          const cnt = {}; ws.forEach(w => { if(w.k) cnt[w.k] = (cnt[w.k] || 0) + 1; });
-          const zones = Object.entries(cnt).sort((a, b2) => b2[1] - a[1]).map(([k]) => '<span style="color:'+ATL_CAT[k].c+'; font-weight:700">'+t(ATL_CAT[k].xfr, ATL_CAT[k].xen)+'</span>').join(' · ');
-          return '<tr><td><i style="background:'+(famCol[f] || B.c)+'"></i><b>'+f+'</b> <span style="color:var(--muted)">×'+ws.length+'</span></td><td>'+rg(ws.map(w => w.b), 0)+' cm · '+rg(ws.map(w => w.S), 0)+' cm²</td><td>'+rg(ws.map(w => w.ar), 1)+'</td><td>'+(zones || '—')+'</td></tr>';
-        }).join('')+'</table></div>';
     box.innerHTML = html;
+    atlTryBtns(box);
+  }
+  function atlTryBtns(box){
     box.querySelectorAll('[data-try]').forEach(bt => bt.addEventListener('click', () => {
       const [bb, ss] = bt.dataset.try.split('|').map(Number), ib = $('i-b'), is = $('i-s');
       ib.value = Math.round(bb); is.value = ss;
@@ -1935,6 +1946,26 @@
       ib.dispatchEvent(new Event('input', {bubbles:true})); is.dispatchEvent(new Event('input', {bubbles:true}));
       const sc = document.querySelector('.showcase'); window.scrollTo({top: sc.getBoundingClientRect().top + scrollY - 70, behavior:'smooth'});
     }));
+  }
+  // 🆚 plusieurs marques : un tableau rôle × marque (la reco de chaque marque, côte à côte)
+  function atlCompare(Bs, kg, H){
+    const box = $('atl-info'); if(!box) return;
+    const P = Bs.map(B => ({B, ...brandPicks(B, kg, H)}));
+    const inSl = w => w.b >= +$('i-b').min && w.b <= +$('i-b').max && w.S >= +$('i-s').min && w.S <= +$('i-s').max;
+    ATL.reco = []; P.forEach(p => [[p.comp, '✨'], [p.turn, '🔥'], [p.link, '🌊']].forEach(([w, e]) => { if(w) ATL.reco.push({b: w.b, S: w.S, e}); }));
+    const lv = t(riderLvl().fr, riderLvl().en);
+    const ROWS = [['✨', t('compromis','compromise'), t('tourne bien + tient la session','turns well + lasts the session'), 'comp'],
+                  ['🔥', t('tourner','turning'), t('la plus vive en virage','liveliest in turns'), 'turn'],
+                  ['🌊', t('enchaîner','linking'), t('glisse le plus','glides the most'), 'link']];
+    const cell = w => !w ? '<td class="cmp-none">—</td>' : '<td><b>'+w.n+'</b><span class="rd"><span>'+num(w.b, w.b % 1 ? 1 : 0)+' cm · '+num(w.S)+' cm²</span><span>'+t('maniab.','maneuv.')+' '+w.man+'</span><span>⏱️ '+(w.ses.unlimited ? t('longtemps','a long time') : '~'+Math.max(1, Math.round(w.ses.min))+' min')+'</span></span>'
+      + '<button type="button" data-try="'+w.b+'|'+w.S+'"'+(inSl(w) ? '' : ' disabled title="'+t('hors des curseurs du simulateur','outside the simulator sliders')+'"')+'>▶ '+t('l\'essayer','try it')+'</button></td>';
+    box.innerHTML = '<div class="atl-reco"><div class="atl-for">🆚 '+t('Comparaison pour toi','Comparison for you')+' <span>· '+num(kg)+' kg · '+lv+(H > 0 ? ' · '+t('vague ','wave ')+num(H, 1)+' m' : '')+'</span></div></div>'
+      + '<div class="atl-cmpw"><table class="atl-cmp"><tr><th></th>'+P.map(p => '<th><i style="background:'+p.B.c+'"></i>'+p.B.n+'</th>').join('')+'</tr>'
+      + ROWS.map(([e, l, d, key]) => '<tr><th style="color:'+RECO_C[e]+'; border-left:3px solid '+RECO_C[e]+'">'+e+' '+l+'<small>'+d+'</small></th>'+P.map(p => cell(p[key])).join('')+'</tr>').join('')
+      + '<tr><th>'+t('la gamme','the range')+'<small>'+t('ailes &gt; 700 cm²','wings &gt; 700 cm²')+'</small></th>'+P.map(p => { const bs = p.ev.map(w => w.b), ss = p.ev.map(w => w.S);
+          return '<td class="cmp-rng">'+p.ev.length+' '+t('ailes','wings')+'<br>'+num(Math.min(...bs))+'–'+num(Math.max(...bs))+' cm<br>'+num(Math.min(...ss))+'–'+num(Math.max(...ss))+' cm²</td>'; }).join('')+'</tr>'
+      + '</table></div>';
+    atlTryBtns(box);
   }
   function drawAtlas(b, S, kg, H){
     ATL.args = [b, S, kg, H];
@@ -2081,7 +2112,7 @@
     c.save(); c.translate(12, (Y0 + Y1)/2); c.rotate(-Math.PI/2); c.textAlign = 'center'; c.fillText(t('surface (cm²) →','area (cm²) →'), 0, 0); c.restore();
     ATL.manBoxes = [];
     // les ailes
-    const act = ATL_BRANDS.filter(B => !ATL.solo || ATL.solo === B.k), few = !!ATL.solo, pts = [];
+    const act = ATL_BRANDS.filter(B => !ATL.sel.length || ATL.sel.includes(B.k)), few = ATL.sel.length === 1, multi = ATL.sel.length > 1, pts = [];
     // marque seule : une couleur par gamme (nom sans la taille : « RSX Carve 1100 » → « RSX Carve »)
     const fam = n => n.replace(/\s+(\d[\d.]*|X{0,2}[SML]\+?|\dXL)(\s+[GV]\d)?$/, ''), famCol = {};
     const PAL = ['#f472b6', '#b7793f', '#fde047', '#22d3ee', '#a3e635', '#f87171', '#ffffff', '#fb923c', '#818cf8', '#2dd4bf'];
@@ -2092,10 +2123,10 @@
       c.beginPath(); c.arc(x, y, G.narrow ? 3.4 : 5, 0, 7); c.fillStyle = few ? famCol[f] : B.c; c.fill(); c.lineWidth = G.narrow ? 1.4 : 2; c.strokeStyle = '#0f172a'; c.stroke();
     }));
     const fl = $('atl-fam');
-    if(fl) fl.innerHTML = few ? Object.entries(famCol).map(([f, col]) => '<span><i style="background:'+col+'"></i>'+f+'</span>').join('')
+    if(fl) fl.innerHTML = few || multi ? (few ? Object.entries(famCol).map(([f, col]) => '<span><i style="background:'+col+'"></i>'+f+'</span>') : act.map(B => '<span><i style="background:'+B.c+'"></i>'+B.n+'</span>')).join('')
       + '<span class="rleg">'+[['✨', t('compromis','compromise')], ['🔥', t('tourner','turning')], ['🌊', t('enchaîner','linking')]].map(([e, l]) => '<span><i class="rring" style="border-color:'+RECO_C[e]+'"></i>'+e+' '+l+'</span>').join('')+'</span>' : '';
-    atlBrandInfo(few ? act[0] : null, kg, H, famCol, fam);
-    if(few && ATL.reco) ATL.reco.forEach(r => {   // recos visibles sur la carte : anneau blanc + emoji
+    if(multi) atlCompare(act, kg, H); else atlBrandInfo(few ? act[0] : null, kg, H, famCol, fam);
+    if((few || multi) && ATL.reco) ATL.reco.forEach(r => {   // recos visibles sur la carte : anneau blanc + emoji
       const x = px(r.b), y = py(r.S), rr = G.narrow ? 7 : 9;
       c.beginPath(); c.arc(x, y, rr, 0, 7); c.lineWidth = 5; c.strokeStyle = '#0f172a'; c.stroke();     // liseré sombre : lisible sur toutes les zones
       c.beginPath(); c.arc(x, y, rr, 0, 7); c.lineWidth = 3; c.strokeStyle = RECO_C[r.e]; c.stroke();
@@ -2167,7 +2198,7 @@
       }
     });
     // noms (marque seule) : à droite du point, sinon à gauche ; s'il chevauche un nom ou un point, il reste visible au survol
-    if(few){
+    if(few || ATL.sel.length === 2){
       c.font = '700 9px system-ui, sans-serif'; c.textAlign = 'left'; c.lineWidth = 3; c.lineJoin = 'round';
       const hit = (x0, y0, w0) => boxes.some(r => x0 < r[0] + r[2] && x0 + w0 > r[0] && y0 - 5 < r[1] + r[3] && y0 + 5 > r[1]);
       pts.forEach(p => {
@@ -2232,7 +2263,7 @@
       const ses = waveSession(p.b, p.S, g.kg, g.Hw), sesTxt = ses.unlimited ? t('longtemps','a long time') : '~'+Math.max(1, Math.round(ses.min))+' min';
       const inSl = p.b >= +$('i-b').min && p.b <= +$('i-b').max && p.S >= +$('i-s').min && p.S <= +$('i-s').max;
       // aile recommandée (✨ / 🔥 / 🌊) : bulle teintée de la couleur de sa reco + bandeau en tête
-      const rec = p.wing && ATL.solo && ATL.reco ? ATL.reco.find(r => Math.abs(r.b - p.b) < .01 && r.S === p.S) : null;
+      const rec = p.wing && ATL.sel.length && ATL.reco ? ATL.reco.find(r => Math.abs(r.b - p.b) < .01 && r.S === p.S) : null;
       const RECO_L = {'✨':t('compromis','compromise'), '🔥':t('tourner','turning'), '🌊':t('enchaîner','linking')};
       tip.style.background = rec ? 'color-mix(in srgb, '+RECO_C[rec.e]+' 30%, #0a1020)' : '';
       tip.style.borderColor = rec ? RECO_C[rec.e] : '';
