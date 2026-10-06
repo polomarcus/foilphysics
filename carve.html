@@ -206,6 +206,7 @@
   .ses-help summary{cursor:pointer; font-weight:800; color:var(--txt); list-style:none; text-align:center;} .ses-help summary::-webkit-details-marker{display:none}
   .ses-help[open] summary{margin-bottom:6px;} .ses-help ul{margin:6px 0; padding-left:18px;} .ses-help li{margin:3px 0;} .ses-help b{color:var(--txt);}
   .ses-help .sh-note{font-size:.72rem; color:var(--dim); margin-top:6px;}
+  .lvl-x{flex-basis:100%; text-align:center; font-size:.74rem; color:var(--muted); line-height:1.45; margin-top:-2px;} .lvl-x b{color:var(--txt);}
   .surf-x{flex-basis:100%; text-align:center; font-size:.74rem; color:var(--muted); line-height:1.45; margin-top:2px;} .surf-x b{color:var(--txt);}
   .rc-row{display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin:0 0 10px;}
   .was{display:inline-block; margin-left:6px; color:#fcd34d; font-weight:700; font-size:.92em; animation:wasIn .8s ease-out;}
@@ -472,9 +473,9 @@
           <input type="range" autocomplete="off" id="i-kg" min="55" max="110" step="1" value="80"></div>
         <div class="field fld-lvl"><label for="i-lvl" data-i18n="l-lvl">🏄 Ton niveau</label>
           <select autocomplete="off" id="i-lvl" class="stabd" style="margin-top:4px">
-            <option value="1" data-i18n="lv-1">en progression</option>
-            <option value="2" selected data-i18n="lv-2">confirmé</option>
-            <option value="3" data-i18n="lv-3">expert / compétiteur</option>
+            <option value="1" data-i18n="lv-1">en progression (moins d'1 min de pompage)</option>
+            <option value="2" selected data-i18n="lv-2">confirmé (2 à 5 min de pompage)</option>
+            <option value="3" data-i18n="lv-3">expert (10 min de pompage et +)</option>
           </select></div>
       </div>
       <div class="hero">
@@ -644,7 +645,7 @@
     'ws-ask':'👇 Pick the wave size:',
     'sh-sum':'ℹ️ How is the « session » computed?',
     'sh-body':'<p>🌊 you ride <b>~300 m</b> down a wave, then <b>↩️ pump the ~300 m</b> back.<br>↗️ carried by the wave, you <b>recover</b> · 🔥 if you carve, every turn costs speed you must pump back: you barely recover.<br>⏱️ the number = the time before you <b>can no longer pump back</b> (depends on the wing, your weight, your level).<br>✅ <b>« a long time »</b> = you pump back without tiring · <b>10 min</b> = the limit between the map zones.</p><p class="sh-note">Estimate for a typical rider (±30%).</p>',
-    'l-lvl':'🏄 Your level','lv-1':'progressing','lv-2':'experienced','lv-3':'expert / racer',
+    'l-lvl':'🏄 Your level','lv-1':'progressing (under 1 min of pumping)','lv-2':'experienced (2 to 5 min of pumping)','lv-3':'expert (10+ min of pumping)',
     'sd-a':'reverse ∩ dihedral (carve stab)','sd-0':'flat stab','sd-u':'U dihedral',
     'ws-1':'🌊 0.5 m<small>soft</small>','ws-2':'🌊 1 m<small>medium</small>','ws-3':'🌊 1.5-2 m<small>powerful</small>',
     'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve',
@@ -776,7 +777,9 @@
   // de référence du calage terrain (250 W, 12,3 kJ, technique ×1) ; expert : 330 W, ×1,2.
   function riderLvl(){
     const v = $('i-lvl') ? $('i-lvl').value : '2';
-    return v === '1' ? {cp:220, wp:11000, eff:0.92, fr:'en progression', en:'progressing'}
+    // progression recalée (retour Paul, oct. 2026) : la plupart ne tiennent pas 2 min, même sur une aile ~1 900 cm² →
+    // pompage encore peu efficace (×0,7) : ~1 min sur une 1 900 · ~35 s sur une 1 100 à 80 kg
+    return v === '1' ? {cp:200, wp:9000, eff:0.7, fr:'en progression', en:'progressing'}
          : v === '3' ? {cp:330, wp:17000, eff:1.2, fr:'expert', en:'expert'}
          :             {cp:250, wp:12300, eff:1.0, fr:'confirmé', en:'experienced'};   // = calage terrain (RSX 1100 ≈ 2 min @85 kg)
   }
@@ -2339,7 +2342,15 @@
     return '<span class="rc"><button type="button" data-rc="kg-" aria-label="'+t('moins lourd','lighter')+'">−</button><b>🧍 '+kg+' kg</b><button type="button" data-rc="kg+" aria-label="'+t('plus lourd','heavier')+'">+</button></span>'
       + (withWave ? '<span class="rc"><button type="button" data-rc="st-" aria-label="'+t('stab plus petit','smaller stab')+'">−</button><b>🪶 stab '+$('i-stab').value+' cm²</b><button type="button" data-rc="st+" aria-label="'+t('stab plus grand','bigger stab')+'">+</button></span>' : '')
       + seg('lv:', [['1', t('progression','learning')], ['2', t('confirmé','experienced')], ['3', 'expert']], lv)
+      + '<div class="lvl-x">'+lvlDesc(lv)+'</div>'
       + (withWave ? seg('h:', [['0.5', '0,5 m'], ['1', '1 m'], ['1.75', '1,5-2 m']], waveH()) + surfCtl(false) : '');
+  }
+  // à quoi correspond chaque niveau : un test simple et honnête (pompage continu sur le plat, aile ~1100 cm²)
+  // repères du modèle à ~80 kg : progression ~1 min sur une 1 900 · confirmé ~3 min sur une RSX Carve 1100 · expert sans limite
+  function lvlDesc(lv){
+    return lv === '1' ? t('🌱 <b>progression</b> = sur le plat, tu pompes <b>moins d\'1 min</b> sans t\'arrêter, même avec une grande aile (~1 800 cm²)','🌱 <b>learning</b> = on flat water, you pump <b>under 1 min</b> without stopping, even on a big wing (~1,800 cm²)')
+      : lv === '3' ? t('🏆 <b>expert</b> = sur le plat, avec une aile ~1 100 cm², tu pompes <b>10 min et plus</b> sans t\'arrêter (rare : la plupart tiennent 2 min 😉)','🏆 <b>expert</b> = on flat water, on a ~1,100 cm² wing, you pump <b>10 min or more</b> without stopping (rare: most riders last 2 min 😉)')
+      : t('💪 <b>confirmé</b> = sur le plat, avec une aile ~1 100 cm², tu pompes <b>2 à 5 min</b> sans t\'arrêter','💪 <b>experienced</b> = on flat water, on a ~1,100 cm² wing, you pump <b>2 to 5 min</b> without stopping');
   }
   function surfCtl(expl){
     const seg = (pre, items, cur) => '<span class="rc rc-seg">'+items.map(([v, l]) => '<button type="button" data-rc="'+pre+v+'" class="'+(String(cur) === String(v) ? 'on' : '')+'">'+l+'</button>').join('')+'</span>';
