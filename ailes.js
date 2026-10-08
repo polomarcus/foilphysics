@@ -43,5 +43,9 @@ window.FOIL_WINGS = [{k:'alp', n:'Alpine Foil', c:'#f472b6', w:[['RSX Carve 820'
       ['Eagle X 800',98,800],['Eagle X 900',104,900],['Eagle X 1000',109.5,1000],
       ['SK8 750',77.5,750],['SK8 850',82.5,850],['SK8 950',87,950],['SK8 1050',91.5,1050],['SK8 1150',96,1150],
       ['Seven Seas 1100',94,1100],['Seven Seas 1200',98,1200],['Seven Seas 1300',102,1300],['Seven Seas 1400',105.5,1400],['Seven Seas 1500',109.5,1500],['Seven Seas 1600',113,1600],
-      ['Momentum 816',115,816],['Momentum 916',122,916],['Jam 1400',120,1400],['Jam 1600',128,1600],['Jam 1900',140,1900]]}
+      ['Momentum 816',115,816],['Momentum 916',122,916],['Jam 1400',120,1400],['Jam 1600',128,1600],['Jam 1900',140,1900]]},
+  {k:'duo', n:'Duotone', c:'#e879f9', w:[['Crest SLS 800',85,800],['Crest SLS 925',90,925],['Crest SLS 1050',96,1050],['Crest SLS 1200',102,1200],   // Crest D/LAB : mêmes envergure et surface → même entrée
+      ['Glide 3.0 SLS 825',100,825],['Glide 3.0 SLS 950',105,950],['Glide 3.0 SLS 1100',112,1100],['Glide 3.0 SLS 1250',118,1250],['Glide 3.0 SLS 1400',124,1400],
+      ['AMP 2.0 SLS 1550',143,1550],['AMP 2.0 SLS 1800',148,1800],['AMP 2.0 SLS 2100',143,2100],
+      ['Hyperglide D/LAB 880',113,880]]}   // Glide 3.0 D/LAB : mêmes envergure et surface que la SLS → une seule entrée
   ];
