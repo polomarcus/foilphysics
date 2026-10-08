@@ -208,6 +208,7 @@
   .ses-help .sh-note{font-size:.72rem; color:var(--dim); margin-top:6px;}
   .lvl-x{flex-basis:100%; text-align:center; font-size:.74rem; color:var(--muted); line-height:1.45; margin-top:-2px;} .lvl-x b{color:var(--txt);}
   .surf-x{flex-basis:100%; text-align:center; font-size:.74rem; color:var(--muted); line-height:1.45; margin-top:2px;} .surf-x b{color:var(--txt);}
+  .lim{background:rgba(251,191,36,.08); border-left:3px solid #fbbf24; border-radius:6px; padding:6px 10px; font-size:.85em;}
   .rc-row{display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin:0 0 10px;}
   .was{display:inline-block; margin-left:6px; color:#fcd34d; font-weight:700; font-size:.92em; animation:wasIn .8s ease-out;}
   @keyframes wasIn{from{opacity:0; transform:translateY(-3px);} to{opacity:1; transform:none;}}
@@ -524,6 +525,7 @@
         <p style="margin-top:8px">Le piège : une aile <b>courte mais très large</b> (grosse corde) garde une grosse surface → elle reste
           lente (en bas à gauche). La plus vive, c'est <b>courte ET petite</b>.
           <span class="xpl">On parle souvent d'« inertie de roulis » : dans l'eau, c'est surtout cette résistance qui domine, et elle suit la même loi.</span></p>
+        <div class="lim" style="margin-top:10px">⚠️ <b>Limite du calcul</b> : il suppose la <b>même forme</b> pour toutes les ailes. Toutes les ailes ont des bouts affinés, mais <b>plus ils le sont</b>, plus l'aile bascule vite par rapport à son score (jusqu'à ~30 %). Et un score bas veut dire <b>« lente à basculer »</b>, pas « ne tourne pas » : une grande aile vole plus lentement, donc une fois penchée elle tourne <b>aussi serré</b>.</div>
       </div>
       <div class="card" data-i18n="vd2">
         <div class="k">🎯 La petite surface — le « drive »</div>
@@ -621,7 +623,8 @@
 
   <footer data-i18n="foot"><b style="color:var(--txt)">Modèle</b> — indice de maniabilité, pas un banc d'essai.
     Résistance au roulis ∝ <b>surface × envergure²</b>, maniabilité = son inverse ; le <b>caractère</b> (tourne facilement / va droit)
-    vient surtout du stab (taille et dièdre), un peu du fuselage.
+    vient surtout du stab (taille et dièdre), un peu du fuselage. Limite : toutes les ailes sont supposées avoir la <b>même forme</b> vue de dessus
+    (des bouts très affinés basculent plus vite que le score) ; un score bas = <b>lente à basculer</b>, pas « ne tourne pas ».
     Le carve réel dépend surtout de la <b>technique</b>, de la vague et du réglage — ce sont des <b>ordres de
     grandeur pédagogiques</b>. Specs ailes : <a href="https://www.realwatersports.com/products/axis-surge-front-wing" target="_blank" rel="noopener">Axis Surge</a> (surf, AR ~9,5 — table officielle : 740→1010 mm) · Alpine RSX Carve (gamme AR 11 : 700→1100, soit 89→112 cm).<br>
     ⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> ·
@@ -667,7 +670,7 @@
     'anim-cap':'its line in the wave: the livelier the wing, the <b>tighter</b> it turns and the harder it <b>banks</b>',
     'xp-lbl':'Explanations',
     'vd-h3':'🧾 What makes it turn, in 6 cards',
-    'vd1':'<div class="k">📐 Span — the #1 lever</div><div class="big">roll resistance ≈ area × span²</div><p>Switching rails means <b>rolling</b> the wing: one tip <b>rises</b>, the other <b>dives</b> — through the water. Each tip has to <b>push water</b> out of the way: that resistance is what your feet must overcome.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><canvas class="fig-cv" data-fig="span"></canvas><div class="nf-caps"><span>① tip further out → it sweeps <b>more water, faster</b> (× span)</span><span>② further from the axis → that resistance has <b>more leverage</b> against your feet (× span)</span></div></div><p style="margin-top:8px">① × ② = <b>span × span</b>, hence the « squared ». A wing 20% shorter: 0.8 × 0.8 = <b>0.64</b> of the resistance → for the same foot effort, it rolls <b>1 / 0.64 ≈ 1.5× faster</b>.</p><p style="margin-top:8px"><b>And area?</b> It sets <b>how much water</b> each tip pushes (and the wing\'s weight). It doesn\'t add to the span, it <b>multiplies</b> with it: gains stack up… and so do handicaps.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><canvas class="fig-cv" data-fig="mix"></canvas><div class="nf-caps"><span>🦶 same foot rhythm for all 4</span><span>long <b>and</b> big: 1.56 × 1.44 ≈ <b>×2.2</b> the resistance</span></div></div><p style="margin-top:8px">The trap: a <b>short but very wide</b> wing (big chord) keeps a big area → it stays slow (bottom left). The liveliest is <b>short AND small</b>. <span class="xpl">People often say « roll inertia »: in the water it\'s mostly this resistance that dominates, and it follows the same law.</span></p>',
+    'vd1':'<div class="k">📐 Span — the #1 lever</div><div class="big">roll resistance ≈ area × span²</div><p>Switching rails means <b>rolling</b> the wing: one tip <b>rises</b>, the other <b>dives</b> — through the water. Each tip has to <b>push water</b> out of the way: that resistance is what your feet must overcome.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><canvas class="fig-cv" data-fig="span"></canvas><div class="nf-caps"><span>① tip further out → it sweeps <b>more water, faster</b> (× span)</span><span>② further from the axis → that resistance has <b>more leverage</b> against your feet (× span)</span></div></div><p style="margin-top:8px">① × ② = <b>span × span</b>, hence the « squared ». A wing 20% shorter: 0.8 × 0.8 = <b>0.64</b> of the resistance → for the same foot effort, it rolls <b>1 / 0.64 ≈ 1.5× faster</b>.</p><p style="margin-top:8px"><b>And area?</b> It sets <b>how much water</b> each tip pushes (and the wing\'s weight). It doesn\'t add to the span, it <b>multiplies</b> with it: gains stack up… and so do handicaps.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><canvas class="fig-cv" data-fig="mix"></canvas><div class="nf-caps"><span>🦶 same foot rhythm for all 4</span><span>long <b>and</b> big: 1.56 × 1.44 ≈ <b>×2.2</b> the resistance</span></div></div><p style="margin-top:8px">The trap: a <b>short but very wide</b> wing (big chord) keeps a big area → it stays slow (bottom left). The liveliest is <b>short AND small</b>. <span class="xpl">People often say « roll inertia »: in the water it\'s mostly this resistance that dominates, and it follows the same law.</span></p><div class="lim" style="margin-top:10px">⚠️ <b>Limit of the model</b>: it assumes the <b>same shape</b> for every wing. Every wing has tapered tips, but <b>the more tapered</b>, the faster it rolls compared with its score (up to ~30%). And a low score means <b>« slow to roll »</b>, not « doesn\'t turn »: a big wing flies slower, so once banked it turns <b>just as tight</b>.</div>',
     'vd2':'<div class="k">🎯 Small area — «drive»</div><div class="big">load the back foot and turn</div><p><b>Drive</b> is <b>pressing the back foot</b> to bury the rail and turn. But when the wave speeds you up, lift climbs with <b>speed²</b>. A <b>big</b> wing then lifts <b>too much</b>: it wants to breach, you have to <b>push the front foot</b> to hold it down… no way to load the back foot. A <b>small</b> one stays <b>planted</b>: you load it, it bites.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><canvas class="fig-cv" data-fig="drive"></canvas></div><p class="xpl" style="margin-top:8px">Shapers call it <b>wing loading</b>: the weight each cm² of wing carries — the smaller the wing, the higher it is.</p>',
     'vd3':'<div class="k">🔩 The fuselage — the tube between wing and stab</div><div class="big">short: barely livelier, but less stable and worse at pumping</div><p>It\'s the bar between the front wing and the stab; its length is the lever arm that stabilises pitch (∝ length²). Shortening it makes the foil <b>a little</b> livelier to pivot — but the agility gain is <b>small</b>: rolling depends mostly on the front wing.</p><p style="margin-top:8px">The price comes fast: <b>less pitch stability</b> (the foil dives and stalls up more easily) and <b>less efficient pumping</b>. A medium fuselage (~65 cm) is the right starting point: look for agility in the wing and the stab before going shorter.</p>',
     'vd4':'<div class="k">🪶 The stab: a setting as strong as the wing</div><div class="big">big: more grip, but it caps speed and glide · smaller: you rediscover your wing</div><p>We often look for the agility limit of our front wing… when the stab changes everything. A <b>big stab</b> (~200 cm², like the “carve” stab supplied with the F-One Jam 1400) gives <b>grip</b> and stability, but it <b>drags</b>: speed and glide hit a ceiling — even on a small wing (seen on an SK8 750).</p><p style="margin-top:8px">Switch to a smaller stab and you <b>rediscover the wing</b>: looser in turns, faster, it pumps back better. The Stab slider acts on the <b>Glide / pump-back</b> bar. <span class="xpl">(Field feedback from a rider testing the Jam 1400 with several stabs.)</span></p>',
@@ -690,7 +693,7 @@
     't5':'<span class="ti">💨</span><p><b>Keep speed into the turn.</b> The foil needs flow: entering too slow = stalling mid-carve. Come in <b>fast</b>, even if you slow on exit.</p>',
     't6':'<span class="ti">🌊</span><p><b>Turn in the pocket.</b> Where the wave pushes, you have the energy to carve tight — with <b>progressive</b> inputs: a brutal stomp makes the wing ventilate/break out.</p>',
     't7':'<span class="ti">🦶</span><p><b>Stance width: control vs pump.</b> Feet <b>wide</b> = a big area to shift your center of gravity → more <b>control</b> to set and hold the carve. Feet <b>close</b> = more <b>vertical</b> force → a more efficient pump, but less stable. And tune your <b>fore-aft</b> position to balance your legs: if the <b>back foot cramps</b>, move back a touch.</p>',
-    'foot':'<b style="color:var(--txt)">Model</b> — a maneuverability index, not a test bench. Roll resistance ∝ <b>area × span²</b>, maneuverability = its inverse; the <b>character</b> (turns easily / goes straight) comes mostly from the stab (size and dihedral), a little from the fuselage. Real carving depends mostly on <b>technique</b>, the wave and tuning — these are <b>educational orders of magnitude</b>. Wing specs: <a href="https://www.realwatersports.com/products/axis-surge-front-wing" target="_blank" rel="noopener">Axis Surge</a> (surf, AR ~9.5 — official size table: 740→1010 mm) · Alpine RSX Carve (AR 11 range: 700→1100, i.e. 89→112 cm).<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
+    'foot':'<b style="color:var(--txt)">Model</b> — a maneuverability index, not a test bench. Roll resistance ∝ <b>area × span²</b>, maneuverability = its inverse; the <b>character</b> (turns easily / goes straight) comes mostly from the stab (size and dihedral), a little from the fuselage. Limit: every wing is assumed to have the <b>same planform</b> (very tapered tips roll faster than the score); a low score = <b>slow to roll</b>, not « doesn\'t turn ». Real carving depends mostly on <b>technique</b>, the wave and tuning — these are <b>educational orders of magnitude</b>. Wing specs: <a href="https://www.realwatersports.com/products/axis-surge-front-wing" target="_blank" rel="noopener">Axis Surge</a> (surf, AR ~9.5 — official size table: 740→1010 mm) · Alpine RSX Carve (AR 11 range: 700→1100, i.e. 89→112 cm).<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
   };
   function applyLang(l){
     LANG = l;
@@ -743,7 +746,7 @@
   // si je carve dans la vague c'est fatigant, si je me laisse porter je récupère »)
   //   ride  : 'porte' = la vague te porte, tu récupères · 'carve' = chaque virage te coûte de la vitesse, que tu repompes
   //   après la vague : tu remontes au départ (~300 m) — c'est le cas réel (choix Paul, oct. 2026)
-  const SURF = {ride:'porte', after:'back'};
+  const SURF = {ride:'carve', after:'back'};   // à l'arrivée : 🔥 je carve (c'est la page carve)
   const RIDE_BACK = 300;   // m descendus quand tu remontes ensuite au spot (houle 0,5-0,8 m, terrain)
   const CARVE_COST = 1;    // carver sur la vague ≈ l'effort de pompage : à 45° de gîte la traînée induite double (estimation)
   function waveSession(b_cm, S_cm2, WKG, H){
@@ -849,7 +852,7 @@
   // périodique (y revient à sa valeur, x avance de Dx) → on la répète à l'infini.
   function buildPath(a){
     // ↗️ « je me laisse porter » : tout droit en biais sur la face (longs bords droits à ~12°, demi-tours très doux)
-    const straight = SURF.ride === 'porte';
+    const straight = SURF.ride === 'porte' && !/[?&]video=1/.test(location.search);   // vidéo : le rider carve toujours
     const thMax = straight ? 12*Math.PI/180 : (32 + 0.43*a) * Math.PI/180;      // 32° (mou) → 75° (snap quasi vertical)
     const n     = straight ? 720 : Math.round(325 - 1.63*a);         // période en longueur d'arc : 325 → 162 px
     const pts = [];
@@ -1253,7 +1256,14 @@
   if(cv){
     addEventListener('resize', fitCanvas);
     fitCanvas();
-    if(!RM){
+    // vidéo : la page est cachée hors écran (le navigateur y gèle les animations) → c'est la vidéo qui fait avancer le rider
+    if(/[?&]video=1/.test(location.search)) window.animTick = now => {
+      const P = ANIM.path; if(!P || !cx) return;
+      const t = now/1000, dt = ANIM.last ? Math.min(t - ANIM.last, .05) : 0; ANIM.last = t; ANIM.t = t;
+      ANIM.d += SPEED*dt; if(ANIM.d > P.len*40) ANIM.d -= P.len*40;
+      const p = at(P, ANIM.d); stepFx(dt, t, p, p.x - camX(P, ANIM.d), P); drawFrame(t);
+    };
+    else if(!RM){
       // on n'anime que quand c'est visible : inutile de brûler la batterie hors écran
       const io = new IntersectionObserver(es => { for(const e of es){
         if(e.isIntersecting && !ANIM.run){ ANIM.run = true; ANIM.last = 0; requestAnimationFrame(frame); }
@@ -1644,9 +1654,8 @@
   let WAVE_H = 1; try{ const v = parseFloat(localStorage.getItem('lcw-carve-wave')); if([0.5,1,1.75].includes(v)) WAVE_H = v; }catch(e){}
   const waveH = () => WAVE_H;
   const waveK = H => H <= 0.5 ? 0.5 : H <= 1 ? 0.75 : 1;
-  // façon de surfer par défaut selon la vague : houle puissante (1,5-2 m) → 🔥 tu carves · sinon ↗️ porté (modifiable ensuite)
-  const surfDefault = H => { SURF.ride = H >= 1.5 ? 'carve' : 'porte'; };
-  surfDefault(WAVE_H);
+  // houle puissante (1,5-2 m) → on repasse en 🔥 je carve ; sinon on garde le choix du rider
+  const surfDefault = H => { if(H >= 1.5) SURF.ride = 'carve'; };
   setWave(waveK(WAVE_H));
   document.querySelectorAll('.ws-btn').forEach(b => b.addEventListener('click', () => {
     WAVE_H = +b.dataset.h; try{ localStorage.setItem('lcw-carve-wave', String(WAVE_H)); }catch(e){}
@@ -1929,7 +1938,17 @@
   addEventListener('hashchange', atlFromHash);
   // repère logique ≈ largeur réelle (380-600) : sur téléphone les textes gardent une taille lisible
   // téléphone (largeur < 520 px) : repère plus haut que large → les ailes de surf respirent ; ordi : 600 × 400
-  function atlGeo(w){ const W = Math.max(340, Math.min(600, w)), narrow = w < 520, H = Math.round(W*(narrow ? .95 : 400/600)) + 50;   // +22 : rangée « maniabilité » sous l'axe
+  // 🎬 ?video=1 (vidéo Insta) : repère plus petit → textes ~1,5× plus gros une fois agrandis ; pas de noms posés sur la carte
+  // (ils sautaient d'un kilo à l'autre) ni de légende en bas : la vidéo les dessine fixes, à part
+  const VIDEO = /[?&]video=1/.test(location.search);
+  window.ATL_CAT = ATL_CAT;
+  // 🎯 mise en avant d'UNE zone (vidéo) : les autres s'assombrissent, les ailes hors zone s'effacent, celles dedans sont nommées
+  window.atlFocus = k => { ATL.focus = k || null; ATL.key = ''; if(ATL.args) drawAtlas(...ATL.args); };
+  // positions des ailes (repère logique de la carte) : la vidéo pose ses étiquettes dessus
+  window.atlPts = () => ({W: ATL.geo.W, H: ATL.geo.H, pts: (ATL.pts || []).map(p => ({n: p.n, x: p.x, y: p.y}))});
+  window.atlFocusPts = () => (ATL.pts || []).filter(p => p.focus).map(p => ({n: p.n, b: p.b, S: p.S}));
+  function atlGeo(w){ if(VIDEO){ const W = 300, H = Math.round(W*.86) + 50; return {W, H, narrow:false, X0:48, X1:W - 26, Y0:34, Y1:H - 62}; }
+    const W = Math.max(340, Math.min(600, w)), narrow = w < 520, H = Math.round(W*(narrow ? .95 : 400/600)) + 50;   // +22 : rangée « maniabilité » sous l'axe
     return {W, H, narrow, X0: narrow ? 40 : 52, X1: W - (narrow ? 30 : 44), Y0:34, Y1:H - 90}; }
   // 🏷️ Marque seule : reco selon ton poids / niveau / vague + présentation de la gamme (familles, tailles, zone pour toi)
   // couleur de chaque reco : même famille que sa zone, en plus lumineux pour ressortir sur la carte
@@ -2043,7 +2062,7 @@
     const img = document.createElement('canvas'); img.width = nI; img.height = nJ;
     const ix = img.getContext('2d'), id = ix.createImageData(nI, nJ);
     cellCat.forEach((kc, key) => { const [i, j] = key.split(',').map(Number); if(i < 0 || i >= nI || j < 0 || j >= nJ) return;
-      const o = ((nJ - 1 - j)*nI + i)*4, q = rgb[kc]; id.data[o] = q[0]; id.data[o + 1] = q[1]; id.data[o + 2] = q[2]; id.data[o + 3] = 255; });
+      const o = ((nJ - 1 - j)*nI + i)*4, q0 = rgb[kc], q = ATL.focus && kc !== ATL.focus ? q0.map((v, n) => Math.round(v*.22 + [15, 23, 42][n]*.78)) : q0; id.data[o] = q[0]; id.data[o + 1] = q[1]; id.data[o + 2] = q[2]; id.data[o + 3] = 255; });
     ix.putImageData(id, 0, 0);
     const xA = px(ATL.B0) - (X1 - X0)/(nI - 1)/2, yA = py(ATL.S1) - (Y1 - Y0)/(nJ - 1)/2, wA = (X1 - X0)*nI/(nI - 1), hA = (Y1 - Y0)*nJ/(nJ - 1);
     c.imageSmoothingEnabled = true; c.imageSmoothingQuality = 'high';
@@ -2137,7 +2156,7 @@
     exits.forEach(([x, m]) => c.fillText(m, x, Y1 + 46));
     // explication de la rangée, sur sa propre ligne en dessous (centrée)
     c.font = '700 '+(G.narrow ? 9 : 10)+'px system-ui, sans-serif'; c.textAlign = 'center'; c.fillStyle = '#94a3b8';
-    { // légende sous la carte, sur 2 lignes : tiret blanc = maniabilité · trait ambre = limite des 10 min de session
+    if(!VIDEO){ // légende sous la carte, sur 2 lignes : tiret blanc = maniabilité · trait ambre = limite des 10 min de session
       const sw = 26, yA = Y1 + 58, yB = Y1 + 74;
       const t1 = t(' = maniabilité (résistance au roulis : surface × envergure²)',' = maneuverability (roll resistance: area × span²)');
       const t2 = t(' = limite des '+SES_OK+' min de session : d\'un côté tu t\'épuises, de l\'autre tu tiens '+SES_OK+' min +',' = '+SES_OK+'-min session limit: on one side you tire, on the other you last '+SES_OK+' min+');
@@ -2159,7 +2178,13 @@
       if(bb < ATL.B0 || bb > ATL.B1 || ss < ATL.S0 || ss > ATL.S1) return;
       const f = fam(n); if(few && !(f in famCol)) famCol[f] = PAL[Object.keys(famCol).length % PAL.length];
       const x = px(bb), y = py(ss); pts.push({n: B.n+' '+n, short: n, b: bb, S: ss, x, y});
-      c.beginPath(); c.arc(x, y, G.narrow ? 3.4 : 5, 0, 7); c.fillStyle = few ? famCol[f] : B.c; c.fill(); c.lineWidth = G.narrow ? 1.4 : 2; c.strokeStyle = '#0f172a'; c.stroke();
+      let fIn = true;
+      if(ATL.focus && ATL.focus !== 'none'){ const ar = bb*bb/ss, ses = waveSession(bb, ss, kg, H);
+        fIn = ar >= ATL.AR0 && ar <= ATL.AR1 && atlCat(bb, ss, kg, manOf(bb, ss) >= 45, ses.unlimited || ses.min >= SES_OK) === ATL.focus;
+        pts[pts.length - 1].focus = fIn; }
+      c.globalAlpha = fIn ? 1 : .18;
+      c.beginPath(); c.arc(x, y, G.narrow ? 3.4 : VIDEO ? (ATL.focus && fIn ? 4.6 : 3.8) : 5, 0, 7); c.fillStyle = few ? famCol[f] : B.c; c.fill(); c.lineWidth = G.narrow ? 1.4 : 2; c.strokeStyle = '#0f172a'; c.stroke();
+      c.globalAlpha = 1;
     }));
     const fl = $('atl-fam');
     if(fl) fl.innerHTML = few || multi ? (few ? Object.entries(famCol).map(([f, col]) => '<span><i style="background:'+col+'"></i>'+f+'</span>') : act.map(B => '<span><i style="background:'+B.c+'"></i>'+B.n+'</span>')).join('')
@@ -2174,6 +2199,7 @@
     // noms des zones posés SUR leur couleur : la place qui tient entièrement dans la zone, le plus loin possible des points
     const boxes = pts.map(p => [p.x - 6, p.y - 6, 12, 12]);
     ATL.manTop = [];
+    if(VIDEO){ ATL.placed = []; ATL.leaders = []; } else {
     c.font = (G.narrow ? '900 10.5px' : '900 12px')+' system-ui, sans-serif'; c.textAlign = 'center'; c.lineWidth = 4; c.lineJoin = 'round';
     const placed = []; ATL.placed = placed; ATL.leaders = [];   // noms de zones effectivement posés (contrôle)
     Object.keys(ATL_CAT).forEach(k => {
@@ -2236,8 +2262,19 @@
       break;
       }
     });
+    }
     // noms (marque seule) : à droite du point, sinon à gauche ; s'il chevauche un nom ou un point, il reste visible au survol
-    if(few || ATL.sel.length === 2){
+    if(ATL.focus && !VIDEO){   // zone mise en avant : on nomme ses ailes (marque + modèle), sans chevauchement
+      c.font = '800 8.5px system-ui, sans-serif'; c.textAlign = 'left'; c.lineWidth = 3; c.lineJoin = 'round';
+      const hit = (x0, y0, w0) => boxes.some(r => x0 < r[0] + r[2] && x0 + w0 > r[0] && y0 - 5 < r[1] + r[3] && y0 + 5 > r[1]);
+      pts.filter(p => p.focus).forEach(p => {
+        const nm = p.n.replace(' Foils', '').replace(' Foil', ''), tw = c.measureText(nm).width;
+        const spots = [[p.x + 7, p.y], [p.x - 7 - tw, p.y], [p.x - tw/2, p.y - 11], [p.x - tw/2, p.y + 12]];
+        const ok = spots.find(([lx, ly]) => lx >= X0 - 4 && lx + tw <= X1 + 4 && !hit(lx, ly, tw)); if(!ok) return;
+        const [lx, ly] = ok; boxes.push([lx, ly - 5, tw, 10]);
+        c.strokeStyle = 'rgba(15,23,42,.92)'; c.strokeText(nm, lx, ly + 3); c.fillStyle = '#f1f5f9'; c.fillText(nm, lx, ly + 3);
+      });
+    } else if(few || ATL.sel.length === 2){
       c.font = '700 9px system-ui, sans-serif'; c.textAlign = 'left'; c.lineWidth = 3; c.lineJoin = 'round';
       const hit = (x0, y0, w0) => boxes.some(r => x0 < r[0] + r[2] && x0 + w0 > r[0] && y0 - 5 < r[1] + r[3] && y0 + 5 > r[1]);
       pts.forEach(p => {
@@ -2253,7 +2290,7 @@
     }
     ATL.pts = pts;
     // ⏱️ trait ambre : on écrit DE CHAQUE CÔTÉ ce qu'il sépare (« tu t'épuises » / « tu tiens 10 min et + »)
-    if(ATL.endSeg && ATL.endSeg.length){
+    if(!VIDEO && ATL.endSeg && ATL.endSeg.length){
       const all = ATL.endSeg.flat(), top = all.reduce((m, p) => !m || p[1] < m[1] ? p : m, null);
       const endAt = (x, y) => { const bb = ATL.B0 + (x - X0)/(X1 - X0)*(ATL.B1 - ATL.B0), ss = ATL.S0 + (Y1 - y)/(Y1 - Y0)*(ATL.S1 - ATL.S0), a = bb*bb/ss;
         if(a < ATL.AR0 || a > ATL.AR1) return null; const ses = waveSession(bb, ss, kg, H); return ses.unlimited || ses.min >= SES_OK; };
@@ -2511,7 +2548,7 @@
     $('o-why').innerHTML =
       (agility >= 70 ? t('<b>Très maniable</b> — elle s\'enroule au quart de tour. ','<b>Very maneuverable</b> — it rolls in a snap. ')
        : agility >= 45 ? t('<b>Équilibrée</b>. ','<b>Balanced</b>. ')
-       : t('<b>Posée</b> — elle va droit plus qu\'elle ne tourne. ','<b>Steady</b> — it goes straight more than it turns. '))
+       : t('<b>Posée</b> — lente à basculer d\'un bord à l\'autre ; une fois penchée, elle tourne quand même. ','<b>Steady</b> — slow to roll from rail to rail; once banked it still turns. '))
       + '<span class="xpl">' + t('La résistance au roulis ≈ <b>surface × envergure²</b> : plus l\'aile est <b>courte ET petite</b>, plus elle bascule vite.',
           'Roll resistance ≈ <b>area × span²</b>: the <b>shorter AND smaller</b> the wing, the faster it flips.') + '</span>';
 
