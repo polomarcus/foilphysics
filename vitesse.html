@@ -1272,14 +1272,17 @@
   }
   function vaRace(b, S, kg, D){
     const RHO_ = 1025, WN = kg*9.81, CP_ = 3.5*kg, WP = 280*kg;
-    const A = WN*WN/(0.5*RHO_*Math.PI*(b/100)*(b/100)*0.91), Kp = S/1e4*0.013 + 0.065*0.55*0.008 + 0.028*0.010 + 0.020*0.020;
+    const A = WN*WN/(0.5*RHO_*Math.PI*(b/100)*(b/100)*0.91), Kp = S/1e4*0.013 + 0.065*0.55*0.008 + 0.028*0.010 + 0.020*0.020 + (vaStab() - 0.020)*0.012;   // stab : défaut 50 (calage inchangé) ; au-delà, même coût que le simulateur (CDS 0,012)
     const vAt = P => { let a = 1, c = 18; for(let i = 0; i < 40; i++){ const v = (a+c)/2; ((A/v + 0.5*RHO_*Kp*v*v*v)/0.7 < P) ? a = v : c = v; } return (a+c)/2; };
     let tt = D/7, vs = 5; for(let i = 0; i < 24; i++){ vs = vAt(CP_ + WP/tt); tt = 50/(vs*0.8) + Math.max(0, D-50)/vs; }
     const vst = Math.sqrt(WN/(0.5*RHO_*S/1e4*0.9));
     return {t:tt, v:vs*3.6, stall: vs*0.8 < 1.2*vst, lo: Math.sqrt(WN/(0.5*RHO_*S/1e4*1.2))*3.6*1.15};
   }
+  // stab choisi (menu « Stab » du simulateur) : un gros stab traîne → tout ralentit, surtout les petites ailes rapides
+  const vaStab = () => { const e = $('i-stab'); return e ? parseFloat(e.value) : 0.020; };
+  const vaKey = kg => kg+'|'+vaStab();
   function vaGrid(kg){
-    if(VA.key === String(kg)) return VA.g;
+    if(VA.key === vaKey(kg)) return VA.g;
     const g = []; let b3 = 1e9, b1 = 1e9;
     for(let b = VA.B0; b <= VA.B1; b += VA.DB) for(let S = VA.S0; S <= VA.S1; S += VA.DS){
       const ar = b*b/S; if(ar < VA.AR0 - 1 || ar > VA.AR1 + 4) continue;   // un peu au-delà : bord lisse après découpe
@@ -1293,7 +1296,7 @@
       if(!r3.stall && r3.lo <= 17) b3 = Math.min(b3, r3.t);
       if(!r1.stall && r1.lo <= 17) b1 = Math.min(b1, r1.t);
     }
-    VA.best = {b3, b1}; VA.key = String(kg); VA.g = g; return g;
+    VA.best = {b3, b1}; VA.key = vaKey(kg); VA.g = g; return g;
   }
   function vaEval(b, S, kg){
     vaGrid(kg);
@@ -1314,11 +1317,16 @@
   const VA_RC = {before:null};
   function vaRider(){
     const kg = +$('i-w').value;
-    if($('atl-rider')) $('atl-rider').innerHTML = '<span class="rc"><button type="button" data-va="-">−</button><b>🧍 '+kg+' kg</b><button type="button" data-va="+">+</button></span>';
+    const st = $('i-stab'), sl = st ? st.options[st.selectedIndex].text : '';
+    if($('atl-rider')) $('atl-rider').innerHTML = '<span class="rc"><button type="button" data-va="-">−</button><b>🧍 '+kg+' kg</b><button type="button" data-va="+">+</button></span>'
+      + '<span class="rc"><button type="button" data-va="s-" aria-label="'+t('stab plus petit','smaller stab')+'">−</button><b>🪶 '+sl+'</b><button type="button" data-va="s+" aria-label="'+t('stab plus grand','bigger stab')+'">+</button></span>';
   }
   document.addEventListener('click', e => {
     const bt = e.target.closest('[data-va]'); if(!bt) return;
     VA_RC.before = VA.lastReco;
+    if(bt.dataset.va === 's-' || bt.dataset.va === 's+'){   // stab : option précédente / suivante du menu
+      const st = $('i-stab'); st.selectedIndex = Math.max(0, Math.min(st.options.length - 1, st.selectedIndex + (bt.dataset.va === 's+' ? 1 : -1)));
+      st.dispatchEvent(new Event('change', {bubbles:true})); VA_RC.before = null; return; }
     const w = $('i-w'); w.value = Math.max(+w.min, Math.min(+w.max, +w.value + (bt.dataset.va === '+' ? 1 : -1)));
     w.dispatchEvent(new Event('input', {bubbles:true}));
     VA_RC.before = null;
@@ -1540,7 +1548,7 @@
       return {b, S, wing, x: e.clientX - r.left, y: e.clientY - r.top, w: r.width};
     };
     const show = e => {
-      if(VA.geo && String(+$('i-w').value) !== VA.key) vaDraw();
+      if(VA.geo && vaKey(+$('i-w').value) !== VA.key) vaDraw();
       const p = pick(e); if(!p){ tip.hidden = true; return; }
       const ar = p.b*p.b/p.S, ev = vaEval(p.b, p.S, VA.geo.kg), fits = ar >= VA.AR0 && ar <= VA.AR1;
       const inSl = p.b >= +$('i-b').min && p.b <= +$('i-b').max && p.S >= +$('i-s').min && p.S <= +$('i-s').max;
@@ -1564,6 +1572,7 @@
     cv.addEventListener('pointerleave', () => { tip.hidden = true; });
     cv.addEventListener('click', e => { const p = pick(e); if(!p || !p.wing) return; if(p.b < +$('i-b').min || p.b > +$('i-b').max || p.S < +$('i-s').min || p.S > +$('i-s').max) return; vaTry(p.b, p.S); });
     $('i-w').addEventListener('input', vaDraw);
+    $('i-stab').addEventListener('change', vaDraw);
     addEventListener('resize', vaDraw);
     new MutationObserver(vaDraw).observe(document.documentElement, {attributes:true, attributeFilter:['lang']});
     vaDraw();
