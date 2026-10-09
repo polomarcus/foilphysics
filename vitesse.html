@@ -274,7 +274,8 @@
   .rc button{background:transparent; border:0; color:#f59e0b; font:inherit; font-weight:900; min-width:24px; height:24px; border-radius:999px; cursor:pointer; padding:0 6px;}
   .rc button:hover{background:rgba(245,158,11,.15);} .rc b{min-width:46px; text-align:center;}
   .rc-row{display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin:0 0 10px;}
-  .rc-seg button{color:var(--muted); font-weight:700; white-space:nowrap;} .rc-seg button.on{background:#f59e0b; color:#1e1b0b;}
+  .rc-seg button{color:var(--muted); font-weight:700; white-space:nowrap;} .rc-seg button small{display:block; font-size:.66rem; font-weight:700; opacity:.85; line-height:1; margin-top:-1px;} .rc-seg button:has(small){height:auto; padding:3px 9px;} .rc-seg button.on{background:#f59e0b; color:#1e1b0b;}
+  .pw-bars{margin:2px 0 4px;} .pw-bars div{display:grid; grid-template-columns:44px 1fr 74px; gap:6px; align-items:center; font-size:.74rem;} .pw-bars span{color:var(--muted);} .pw-bars i{height:7px; background:rgba(148,163,184,.18); border-radius:4px; overflow:hidden;} .pw-bars u{display:block; height:100%; border-radius:4px;} .pw-bars b{text-align:right;}
   .lvl-x{flex-basis:100%; order:9; text-align:center; font-size:.74rem; color:var(--muted); line-height:1.45;} .lvl-x b{color:var(--txt);}
   .was{display:inline-block; margin-left:6px; color:#fcd34d; font-weight:700; font-size:.92em; animation:wasIn .8s ease-out;}
   @keyframes wasIn{from{opacity:0; transform:translateY(-3px);} to{opacity:1; transform:none;}}
@@ -282,6 +283,7 @@
   .atl-brands button{display:inline-flex; align-items:center; gap:6px; background:var(--panel-2); border:1px solid var(--line); color:var(--muted); border-radius:999px; padding:5px 12px; font:inherit; font-size:.8rem; font-weight:700; cursor:pointer;}
   .atl-brands button i{width:10px; height:10px; border-radius:50%; border:1.5px solid #0f172a; opacity:.35;}
   .atl-brands button.on{color:var(--txt); border-color:#64748b;} .atl-brands button.on i{opacity:1;}
+  .fhint{display:block; margin-top:4px; font-size:.72rem; line-height:1.4; color:var(--muted);}
   .atl-fam{display:flex; flex-wrap:wrap; justify-content:center; gap:4px 14px; font-size:.78rem; font-weight:700; color:var(--txt); margin:0 0 8px;}
   .atl-fam i{display:inline-block; width:10px; height:10px; border-radius:50%; border:1.5px solid #0f172a; margin-right:5px; vertical-align:-1px;}
   .atl-info{max-width:900px; margin:0 auto 12px;} .atl-info:empty{display:none;}
@@ -309,7 +311,20 @@
   @media(max-width:560px){ .atl-cmp th:first-child{position:sticky; left:0; z-index:1; background:var(--bg); white-space:normal; min-width:84px; max-width:96px;} .atl-cmp td{min-width:118px;} }
   td.cmp-none{color:var(--muted); text-align:center; vertical-align:middle;} td.cmp-rng{font-size:.74rem; color:#cbd5e1; line-height:1.4;}
   .atl-box{position:relative; max-width:900px; margin:0 auto; background:var(--panel-2); border-radius:12px; padding:8px;}
+  .pw-box{max-width:900px; margin:12px auto 4px;} .pw-box:empty{display:none;} .pw-box h4{font-size:.95rem; font-weight:900; text-align:center;} .pw-box h4 small{display:block; font-size:.76rem; font-weight:600; color:var(--muted);}
+  .pw-box svg{display:block; width:100%; height:auto;} .pw-box .tl{fill:var(--muted); font-size:11px;} .pw-box .tt{fill:var(--txt); font-size:11.5px; font-weight:700;}
+  .eco-box{max-width:900px; margin:10px auto 6px;} .eco-box:empty{display:none;}
+  .eco-box h4{font-size:.95rem; font-weight:900; text-align:center; margin-bottom:6px;} .eco-box h4 small{display:block; font-size:.76rem; font-weight:600; color:var(--muted);}
+  .eco-g{display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:8px;}
+  .eco-g div{background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--c); border-radius:10px; padding:8px 10px; font-size:.8rem; color:#cbd5e1;}
+  .eco-g b{color:var(--txt); font-size:.9rem;} .eco-g i{font-style:normal; color:var(--muted);}
   #atl-cv{display:block; width:100%; cursor:crosshair; touch-action:pan-y;}
+  /* grand écran : réglages + carte ENTIÈRE dans une seule fenêtre (retour Paul) — la carte (3:2) prend la hauteur restante,
+     ~250 px pour les réglages, les marques et l'astuce */
+  @media (min-width:700px){
+    .atl-box{max-width:min(900px, calc((100vh - 250px)*1.5 + 16px));}
+    #atlas .rc-row{margin-bottom:4px;} #atlas .atl-brands{margin:2px 0 6px; gap:5px;} #atlas .atl-brands button{padding:3px 10px;}
+  }
   .win-tip{position:absolute; pointer-events:none; background:rgba(15,23,42,.96); border:1px solid var(--line); border-radius:8px; padding:6px 9px; font-size:.7rem; line-height:1.45; color:#cbd5e1; text-align:left; white-space:nowrap; z-index:5; box-shadow:0 4px 14px rgba(0,0,0,.4);}
   .win-tip b{color:var(--txt);} .win-tip .tt-h{font-weight:800; color:var(--txt); margin-bottom:2px;} .win-tip .tt-c{color:var(--muted); font-size:.64rem; margin-top:2px;}
   .win-leg{display:flex; flex-wrap:wrap; justify-content:center; gap:3px 12px; font-size:.68rem; color:var(--muted); margin:4px 0 6px;}
@@ -370,11 +385,12 @@
           <input type="range" id="i-b" min="55" max="130" step="1" value="100"></div>
         <div class="field"><label for="i-prof" data-i18n="l-prof">Profil de l'aile</label>
           <select id="i-prof">
-            <option value="0.008|0.62" data-i18n="o-p1">Fin (~8-10 %) — lame de vitesse</option>
-            <option value="0.0095|0.80" selected data-i18n="o-p4">Affûté (~11 %) — lame de course réelle (type Flow)</option>
-            <option value="0.013|1.10" data-i18n="o-p2">Moyen (~13-15 %)</option>
-            <option value="0.018|1.50" data-i18n="o-p3">Épais (~17 %) — aile d'école</option>
-          </select></div>
+            <option value="0.008|0.62" data-i18n="o-p1">Très fin — décolle tard, que pour la vitesse</option>
+            <option value="0.0095|0.80" selected data-i18n="o-p4">Fin — pump rapide (par défaut)</option>
+            <option value="0.013|1.10" data-i18n="o-p2">Moyen — polyvalente, carve, vague</option>
+            <option value="0.018|1.50" data-i18n="o-p3">Épais — décolle très tôt, aile de débutant</option>
+          </select>
+          <small class="fhint" data-i18n="h-prof">Les marques donnent rarement l'épaisseur de leurs ailes. Pas sûr ? Garde « Fin » : c'est le réglage vérifié avec de vraies ailes.</small></div>
         <div class="field"><label for="i-mast" data-i18n="l-mast">Mât</label>
           <select id="i-mast">
             <option value="0.050" selected data-i18n="o-m1">13 mm — fin (perf)</option>
@@ -413,12 +429,26 @@
             <button type="button" class="wp-chip" data-w="1300"><span data-i18n="wp3">🏆 pointe élite · 1 300</span></button>
           </div></div>
       </div>
-      <div class="wcombo" id="wc"></div>
 
       <div class="ar-read" id="o-ar"></div>
 
       <div class="bk" id="o-bk"></div>
     </div>
+  </section>
+
+  <!-- 🗺️ ATLAS VITESSE : toutes les ailes sur la carte envergure × surface, zones course 300 m / 1 km -->
+  <section id="atlas" class="a-in">
+    <h3 data-i18n="atl-h3"><a class="h-anchor" href="#atlas">🗺️ Toutes les ailes sur la carte</a></h3>
+    <p class="lede" data-i18n="atl-lede">🏁 <b>À ta puissance, la vitesse de chaque aile</b> en sprint (300 m), calculée pour <b>ton poids</b>, <b>ta puissance</b> et ton <b>stab</b> — comme la maniabilité sur la page carve : les couleurs disent si l'aile est rapide, les tirets blancs donnent les km/h. Survole un point pour ses chiffres, clique une aile pour l'essayer.</p>
+    <div class="rc-row" id="atl-rider"></div>
+    <div class="atl-brands" id="atl-brands"></div>
+    <div class="atl-box"><canvas id="atl-cv" aria-hidden="true"></canvas><div class="win-tip" id="atl-tip" hidden></div></div>
+    <div class="atl-fam" id="atl-fam"></div>
+    <div class="atl-info" id="atl-info"></div>
+    <div class="wcombo" id="atl-combo"></div>
+    <div class="pw-box" id="pw-box"></div>
+    <div class="eco-box" id="eco-box"></div>
+    <div class="win-leg" id="atl-leg"></div>
   </section>
 
   <section class="race-full">
@@ -443,16 +473,6 @@
       <div class="rf-dist-title" data-i18n="rf-dt">🏁 Et le gagnant selon la distance ? (2 virages, même effort)</div>
       <div id="rf-dist" class="rf-dist"></div>
       <div class="rf-dist-note" id="rf-dist-note"></div>
-    </div>
-    <div class="rf-combo" data-i18n="rf-combo">
-      <div class="rf-combo-t">🏆 Le combo idéal (théorique) — course courte ≈ 300 m, 2 virages</div>
-      <div class="rf-combo-grid">
-        <div><span>🪽 Aile</span><b>~675 cm² · ~104 cm · allongement ~16 · profil fin</b><p>pour <b>75 kg</b> — ton poids : « 🎯 Le combo selon ton poids » dans le simulateur. <b>petite surface</b> = faible résistance au roulis = tourne quand même serré ; <b>profil fin</b> = rapide sur les droites ; <b>allongement élevé</b> = relance et tient la vitesse. Sur <b>1 km</b> : plutôt ~1 100 cm² · ~133 cm (King of the Lake).</p></div>
-        <div><span>🚀 Vitesse de pointe</span><b>surtout tes watts</b><p>33-37 km/h = <b>gros sprint</b> (1 300 W+) + profil fin. L'allongement ne monte <b>pas</b> la pointe : à profil égal, les Vmax se tiennent à 1-2 km/h près.</p></div>
-        <div><span>🪶 Stab</span><b>moyen (~90-110 cm²)</b><p>assez de <b>grip</b> pour tenir les 2 carves sans déraper, sans plomber la relance.</p></div>
-        <div><span>🔩 Fuselage + 🦶 straps</span><b>court/moyen · straps oui</b><p>fuselage court = <b>pivot vif</b> ; straps = <b>relance</b> au pompage et tu tiens le rail en virage.</p></div>
-      </div>
-      <div class="rf-combo-note">⚠️ <b>La règle qui prime sur tout</b> : prends l'aile que tu <b>démarres à coup sûr</b>. Ce combo démarre vers <b>~17 km/h</b> — si tes départs ne sont pas <b>automatiques</b>, monte d'un cran en <b>envergure/surface</b> (démarrage plus facile) : tu perds ~1 km/h de pointe mais tu <b>finis la course</b>. Un départ manqué coûte bien plus que ça. Et sur 300 m, tout se joue au <b>départ</b> et en <b>sortie de virage</b> — aux pieds.</div>
     </div>
   </section>
 
@@ -490,7 +510,7 @@
 
   <!-- VERDICTS -->
   <section class="a-in">
-    <h3 data-i18n="vd-h3">🧾 Le verdict, en 9 cartes</h3>
+    <h3 data-i18n="vd-h3">🧾 Le verdict, en 7 cartes</h3>
     <p class="lede" data-i18n="vd-lede">Chiffres des cartes calculés pour une référence <b>800 W · 75 kg</b> — le tornado ci-dessus, lui, suit <b>ta</b> config.</p>
     <div class="cards">
       <div class="card ok" data-i18n="vd1">
@@ -557,7 +577,7 @@
       </div>
       <div class="card you" data-i18n="vd4">
         <div class="k">🫀 Le vrai plafond : ton sprint</div>
-        <div class="big">Vmax ∝ ∛watts</div>
+        <div class="big">2× les watts = +26 % de Vmax</div>
         <p class="xpl">Ta Vmax, c'est là où la courbe de puissance croise ton sprint. Doubler ton sprint ne donne que <b>+26 %</b> de Vmax. La vitesse pure est
           d'abord un exercice de <b>sprinteur</b> — puis de matos.</p>
         <div class="note-fig" aria-hidden="true">
@@ -590,42 +610,6 @@
           <div class="nf-caps"><span>🔵 <b>P(v)</b> — puissance requise, grimpe au cube</span><span>🟠 l'intersection avec <b>ton sprint</b> = ta Vmax</span></div>
         </div>
       </div>
-      <div class="card meh" data-i18n="vd6">
-        <div class="k">🌡️ L'eau froide ≠ plus dense</div>
-        <div class="big">c'est la viscosité</div>
-        <p class="xpl">Fausse croyance : « l'eau froide est plus dense, donc ça change tout ». En fait la <b>densité</b> ne
-          bouge que <b>~0,3 %</b> sur 20 °C. Ce qui change vraiment, c'est la <b>viscosité</b> — à quel point
-          l'écoulement <b>reste collé au profil</b> (nombre de Reynolds). Résultat : une
-          même aile <b>décroche et glisse différemment</b> en hiver et en été — sa <b>plage de fonctionnement se
-          déplace</b>. (La viscosité, c'est le « collant » : huile froide gluante, huile chaude fluide.)</p>
-        <div class="note-fig" aria-hidden="true">
-          <svg viewBox="0 0 360 90" role="img">
-            <defs><marker id="vf-ar2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#64748b"/></marker></defs>
-            <rect x="2" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.3"/>
-            <text x="40" y="20" text-anchor="middle" font-size="10" fill="#38bdf8" font-weight="700">eau froide</text>
-            <text x="40" y="32" text-anchor="middle" font-size="10" fill="#38bdf8">5 °C</text>
-            <line x1="80" y1="22" x2="90" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/>
-            <rect x="92" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="1.3"/>
-            <text x="130" y="20" text-anchor="middle" font-size="10" fill="#cbd5e1" font-weight="700">viscosité</text>
-            <text x="130" y="32" text-anchor="middle" font-size="10" fill="#cbd5e1">+70 %</text>
-            <line x1="170" y1="22" x2="180" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/>
-            <rect x="182" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="1.3"/>
-            <text x="220" y="20" text-anchor="middle" font-size="10" fill="#cbd5e1" font-weight="700">Reynolds</text>
-            <text x="220" y="32" text-anchor="middle" font-size="10" fill="#cbd5e1">−40 %</text>
-            <line x1="260" y1="22" x2="270" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/>
-            <rect x="272" y="6" width="86" height="32" rx="8" fill="#1e293b" stroke="#f87171" stroke-width="1.3"/>
-            <text x="315" y="20" text-anchor="middle" font-size="10" fill="#f87171" font-weight="700">marge</text>
-            <text x="315" y="32" text-anchor="middle" font-size="10" fill="#f87171">décrochage ↓</text>
-            <rect x="95" y="56" width="170" height="26" rx="13" fill="none" stroke="#34d399" stroke-width="1.3"/>
-            <text x="180" y="73" text-anchor="middle" font-size="10.5" fill="#34d399" font-weight="700">Vmax : ~−1 % seulement</text>
-          </svg>
-          <div class="nf-caps"><span>l'eau froide déplace la <b>plage d'utilisation</b> — pas ta vitesse max</span></div>
-        </div>
-        <p class="xpl" style="margin-top:8px; font-size:.92em; color:var(--dim)"><b>Sens &amp; ampleur :</b> froid = plus visqueux
-          = Reynolds plus bas = un peu <b>plus de traînée</b> → légèrement plus lent, mais <b>~1 % sur la Vmax</b> (dans
-          le bruit). Ce que tu sens vraiment : <b>moins de marge au décrochage</b> et une glisse basse vitesse en retrait
-          — pas « tu perds 5 km/h ».</p>
-      </div>
       <div class="card you" data-i18n="vd7">
         <div class="k">⚖️ Le poids : à double tranchant</div>
         <div class="big">plus lourd = plus de watts bruts → plus vite en ligne droite</div>
@@ -649,17 +633,6 @@
 
 
 
-  <!-- 🗺️ ATLAS VITESSE : toutes les ailes sur la carte envergure × surface, zones course 300 m / 1 km -->
-  <section id="atlas" class="a-in">
-    <h3 data-i18n="atl-h3"><a class="h-anchor" href="#atlas">🗺️ Toutes les ailes sur la carte</a></h3>
-    <p class="lede" data-i18n="atl-lede">🏁 <b>À ta puissance, la vitesse de chaque aile</b> en sprint (300 m), calculée pour <b>ton poids</b>, <b>ta puissance</b> et ton <b>stab</b> — comme la maniabilité sur la page carve : les couleurs disent si l'aile est rapide, les tirets blancs donnent les km/h. Survole un point pour ses chiffres, clique une aile pour l'essayer.</p>
-    <div class="rc-row" id="atl-rider"></div>
-    <div class="atl-brands" id="atl-brands"></div>
-    <div class="atl-box"><canvas id="atl-cv" aria-hidden="true"></canvas><div class="win-tip" id="atl-tip" hidden></div></div>
-    <div class="atl-fam" id="atl-fam"></div>
-    <div class="atl-info" id="atl-info"></div>
-    <div class="win-leg" id="atl-leg"></div>
-  </section>
 
   <footer data-i18n="foot">
     <b style="color:var(--txt)">Modèle</b> — vol stabilisé (portance = poids), d'après
@@ -693,7 +666,6 @@
     'rf-h2':'🏁 The race: fast AND agile is possible','rf-sub':'Two <b>twin courses</b> (they never cross — safety), 2 turns each, same effort. Surprise: the <b>speed blade turns almost as tight</b> as the carve — its roll resistance (<b>area × span²</b>) is nearly the same. It loses a hair at the buoys… and takes it all back on the straights.',
     'rf-c-name':'Carve wing','rf-c-tag':'<b>88 cm · 900 cm² · AR 8.6</b> — area × span² ≈ 7.0 → <b>turns tight</b>','rf-l-name':'Speed blade','rf-l-tag':'<b>100 cm · 750 cm² · AR 13.3</b> — area × span² ≈ 7.5 → <b>turns almost the same</b> (even better strapped); small area + thin profile = <b>faster in a straight line</b>','rf-btn':'↻ Replay the race',
     'rf-dt':'🏁 And who wins by distance? (2 turns, same effort)',
-    'rf-combo':'<div class="rf-combo-t">🏆 The ideal (theoretical) combo — short course ≈300 m, 2 turns</div><div class="rf-combo-grid"><div><span>🪽 Wing</span><b>~675 cm² · ~104 cm · aspect ratio ~16 · thin profile</b><p>for <b>75 kg</b> — your weight: «🎯 The combo for your weight» in the simulator. <b>small area</b> = low roll resistance = still turns tight; <b>thin profile</b> = fast on the straights; <b>high aspect ratio</b> = re-accelerates and holds speed. Over <b>1 km</b>: rather ~1,100 cm² · ~133 cm (King of the Lake).</p></div><div><span>🚀 Top speed</span><b>mostly your watts</b><p>33-37 km/h = a <b>big sprint</b> (1,300 W+) + thin profile. Aspect ratio does <b>not</b> raise top speed: at equal profile, Vmax stays within 1-2 km/h.</p></div><div><span>🪶 Stab</span><b>medium (~90-110 cm²)</b><p>enough <b>grip</b> to hold the 2 carves without sliding, without killing the rebound.</p></div><div><span>🔩 Fuselage + 🦶 straps</span><b>short/medium · straps yes</b><p>short fuselage = <b>lively pivot</b>; straps = <b>rebound</b> on the pump and rail hold in turns.</p></div></div><div class="rf-combo-note">⚠️ <b>The rule that beats everything</b>: ride the wing you can <b>take off every time</b>. This combo takes off around <b>~17 km/h</b> — if your starts aren\'t <b>automatic</b>, go one step up in <b>span/area</b> (easier takeoff): you lose ~1 km/h of top end but you <b>finish the race</b>. A blown start costs far more. And on 300 m, it\'s all won at the <b>start</b> and out of the <b>turns</b> — with your feet.</div>',
     'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve','tb-more':'Links ▾','tb-model':'💻 Physics model',
     'h1a':'The Race for <span class="hi">km/h</span> in pump foil',
     'h1b':'🚀 what makes a foil fast?',
@@ -703,7 +675,7 @@
     'l-s':'Wing area','l-b':'Span','l-prof':'Wing profile','l-mast':'Mast','l-stab':'Stab',
     'l-w':'Weight (you + gear)','l-p':'Your watts (sprint or burst)',
     'wp1':'🚴 sporty · 600','wp2':'💪 sprinter · 800','wp3':'🏆 elite burst · 1,300',
-    'o-p1':'Thin (~8-10%) — speed blade','o-p4':'Sharp (~11%) — real race blade (Flow-like)','o-p2':'Medium (~13-15%)','o-p3':'Thick (~17%) — school wing',
+    'o-p1':'Very thin — late takeoff, speed only','o-p4':'Thin — fast pumping (default)','o-p2':'Medium — all-round, carving, waves','o-p3':'Thick — very early takeoff, beginner wing','h-prof':'Brands rarely give their wing thickness. Not sure? Keep “Thin”: it\'s the setting checked against real wings.',
     'o-m1':'13 mm — thin (perf)','o-m2':'16 mm — standard','o-m3':'19 mm — big (Fatty)',
     'tor-h3':'🔬 What gains (or loses) you km/h?',
     'tor-lede':'Effect of each change on <b>your</b> Vmax, at equal sprint. <span style="color:#86efac">Green = faster</span>, <span style="color:#fca5a5">red = slower</span>.',
@@ -716,10 +688,9 @@
     'cb2-k':'Sprint ~800 W — top sprinter',
     'cb2-p':'Thin profile, stab 50, 13 mm mast → <b>~30 km/h</b>, flight window 26-30 km/h. The small blade of your intuition — but it <b>demands</b> that engine (and straps to aim higher).',
     'cb-btn':'⚙️ Apply this combo',
-    'vd-h3':'🧾 The verdict, in 9 cards',
+    'vd-h3':'🧾 The verdict, in 7 cards',
     'xp-lbl':'Explanations',
     'vd-lede':'Card figures computed for a <b>800 W · 75 kg</b> reference — the tornado above follows <b>your</b> config.',
-    'vd6':'<div class="k">🌡️ Cold water ≠ denser</div><div class="big">it\'s the viscosity</div><p class="xpl">Common myth: «cold water is denser, so it changes everything». Actually <b>density</b> shifts only <b>~0.3%</b> over 20 °C. What really changes is the <b>viscosity</b> — how well the flow <b>stays attached to the profile</b> (Reynolds number). So the same wing <b>stalls and glides differently</b> in winter vs summer — its <b>working range moves</b>. (Viscosity = «stickiness»: cold oil gloopy, hot oil runny.)</p><div class="note-fig" aria-hidden="true"><svg viewBox="0 0 360 90" role="img"><defs><marker id="vf-ar2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#64748b"/></marker></defs><rect x="2" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.3"/><text x="40" y="20" text-anchor="middle" font-size="10" fill="#38bdf8" font-weight="700">cold water</text><text x="40" y="32" text-anchor="middle" font-size="10" fill="#38bdf8">5 °C</text><line x1="80" y1="22" x2="90" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/><rect x="92" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="1.3"/><text x="130" y="20" text-anchor="middle" font-size="10" fill="#cbd5e1" font-weight="700">viscosity</text><text x="130" y="32" text-anchor="middle" font-size="10" fill="#cbd5e1">+70%</text><line x1="170" y1="22" x2="180" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/><rect x="182" y="6" width="76" height="32" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="1.3"/><text x="220" y="20" text-anchor="middle" font-size="10" fill="#cbd5e1" font-weight="700">Reynolds</text><text x="220" y="32" text-anchor="middle" font-size="10" fill="#cbd5e1">−40%</text><line x1="260" y1="22" x2="270" y2="22" stroke="#64748b" stroke-width="1.5" marker-end="url(#vf-ar2)"/><rect x="272" y="6" width="86" height="32" rx="8" fill="#1e293b" stroke="#f87171" stroke-width="1.3"/><text x="315" y="20" text-anchor="middle" font-size="10" fill="#f87171" font-weight="700">stall</text><text x="315" y="32" text-anchor="middle" font-size="10" fill="#f87171">margin ↓</text><rect x="95" y="56" width="170" height="26" rx="13" fill="none" stroke="#34d399" stroke-width="1.3"/><text x="180" y="73" text-anchor="middle" font-size="10.5" fill="#34d399" font-weight="700">Vmax: only ~−1%</text></svg><div class="nf-caps"><span>cold water shifts the <b>working range</b> — not your top speed</span></div></div><p class="xpl" style="margin-top:8px; font-size:.92em; color:var(--dim)"><b>Direction &amp; size:</b> cold = more viscous = lower Reynolds = a bit <b>more drag</b> → slightly slower, but <b>~1% on Vmax</b> (in the noise). What you actually feel: <b>less stall margin</b> and slightly worse low-speed glide — not «you lose 5 km/h».</p>',
     'vd8':'<div class="k">📐 The shim (rake): neutral for speed</div><div class="big">0°, even slightly negative: less drag → higher Vmax</div><p class="xpl">The <a href="long-distance.html?lang=en">long-distance page</a> shims its stab <b>positive</b> to fly slowly. Speed is the opposite: tilting the wing is <b>the hand out the car window</b> — more lift but <b>more brake</b>. At 30 km/h you already have all the lift you need → <b>neutral shim</b> (even slightly negative for racers) = less drag = <b>higher Vmax</b>. The price: it <b>stalls higher</b> — the flight window closes from below.</p>',
     'vd7':'<div class="k">⚖️ Weight: double-edged</div><div class="big">heavier = more raw watts → faster in a straight line</div><p class="xpl">For endurance, weight <b>hurts</b> (drag ∝ lift²) — hence «light = distance». But in <b>pure speed</b>, heavier = <b>more absolute power</b>: at comparable watts/kg, the heavier rider can go <b>faster in a straight line</b> and <b>launch a small wing</b> harder (drop start). In races, the big strong riders often beat the small light ones. <b>Efficiency vs raw power</b> — depends what you\'re after.</p>',
     'fig-pr-l1':'thick profile (~17%)','fig-pr-l2':'thin blade (~11%)','fig-pr-s1':'big brake (drag)','fig-pr-s2':'slices the water ✓','fig-pr-s3':'same speed — friction in v³: every mm of thickness is paid for',
@@ -729,7 +700,7 @@
     'vd3':'<div class="k">🔄 The surprise: span still helps</div><div class="big">+15 cm ≈ +1.4 km/h</div><p class="xpl">Even at 25 km/h, staying airborne costs ~10 N if the span is short. At equal area, lengthening the wing cuts that bill <b>without adding friction</b>. The limit lies elsewhere: stiffness, control, turns — not hydrodynamics.</p>',
     'l-straps':'🦶 Straps — you also pull on the upstroke, like clipless pedals (+~20% efficiency)',
     'vd5':'<div class="k">🦶 The game changer: straps</div><div class="big">+20% efficiency ≈ +2 km/h</div><p class="xpl">Strapless, you can only <b>push</b> — half the cycle is wasted. Strapped in, you <b>also pull on the upstroke</b>: ~+20% efficiency ≈ <b>+2 km/h</b> at equal watts — the biggest «free» gain on the page.</p>',
-    'vd4':'<div class="k">🫀 The real ceiling: your sprint</div><div class="big">Vmax ∝ ∛watts</div><p class="xpl">Your Vmax is where the power curve crosses your sprint. Doubling your sprint only gives <b>+26%</b> Vmax. Pure speed is first a <b>sprinter\'s</b> exercise — then a gear one.</p><div class="note-fig" aria-hidden="true"><svg viewBox="0 0 360 170" role="img"><defs><pattern id="vf-h1" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="7" stroke="#94a3b8" stroke-width="1" opacity=".35"/></pattern></defs><rect x="40" y="12" width="46" height="128" fill="#94a3b8" opacity=".08"/><rect x="40" y="12" width="46" height="128" fill="url(#vf-h1)"/><text x="66" y="78" transform="rotate(-90 66 78)" text-anchor="middle" font-size="11" fill="#94a3b8">stall</text><line x1="40" y1="12" x2="40" y2="140" stroke="#64748b"/><line x1="40" y1="140" x2="345" y2="140" stroke="#64748b"/><text x="40" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">15</text><text x="116" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">20</text><text x="192" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">25</text><text x="268" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">30</text><text x="344" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">35</text><text x="192" y="167" text-anchor="middle" font-size="10" fill="#64748b">speed (km/h)</text><text x="35" y="143" text-anchor="end" font-size="10" fill="#94a3b8">0</text><text x="35" y="100" text-anchor="end" font-size="10" fill="#94a3b8">400</text><text x="35" y="58" text-anchor="end" font-size="10" fill="#94a3b8">800</text><text x="35" y="16" text-anchor="end" font-size="10" fill="#94a3b8">1200</text><text x="10" y="80" transform="rotate(-90 10 80)" text-anchor="middle" font-size="10" fill="#64748b">watts</text><line x1="40" y1="55" x2="345" y2="55" stroke="#f59e0b" stroke-width="1.6" stroke-dasharray="6 5"/><text x="92" y="48" font-size="11" fill="#f59e0b" font-weight="700">your sprint (800 W)</text><path d="M40,130 C110,118 180,100 235,76 C285,54 320,36 345,13" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/><text x="160" y="84" text-anchor="middle" font-size="11" fill="#38bdf8">×2 speed = ×8 watts</text><line x1="279" y1="61" x2="279" y2="140" stroke="#f59e0b" stroke-dasharray="3 4" opacity=".55"/><circle cx="279" cy="55" r="5" fill="#f59e0b" stroke="#0f172a" stroke-width="1.5"/><text x="286" y="94" font-size="12" fill="#f59e0b" font-weight="800">Vmax</text></svg><div class="nf-caps"><span>🔵 <b>P(v)</b> — required power, rises as the cube</span><span>🟠 where it crosses <b>your sprint</b> = your Vmax</span></div></div>',
+    'vd4':'<div class="k">🫀 The real ceiling: your sprint</div><div class="big">2× the watts = +26% Vmax</div><p class="xpl">Your Vmax is where the power curve crosses your sprint. Doubling your sprint only gives <b>+26%</b> Vmax. Pure speed is first a <b>sprinter\'s</b> exercise — then a gear one.</p><div class="note-fig" aria-hidden="true"><svg viewBox="0 0 360 170" role="img"><defs><pattern id="vf-h1" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="7" stroke="#94a3b8" stroke-width="1" opacity=".35"/></pattern></defs><rect x="40" y="12" width="46" height="128" fill="#94a3b8" opacity=".08"/><rect x="40" y="12" width="46" height="128" fill="url(#vf-h1)"/><text x="66" y="78" transform="rotate(-90 66 78)" text-anchor="middle" font-size="11" fill="#94a3b8">stall</text><line x1="40" y1="12" x2="40" y2="140" stroke="#64748b"/><line x1="40" y1="140" x2="345" y2="140" stroke="#64748b"/><text x="40" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">15</text><text x="116" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">20</text><text x="192" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">25</text><text x="268" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">30</text><text x="344" y="154" text-anchor="middle" font-size="10" fill="#94a3b8">35</text><text x="192" y="167" text-anchor="middle" font-size="10" fill="#64748b">speed (km/h)</text><text x="35" y="143" text-anchor="end" font-size="10" fill="#94a3b8">0</text><text x="35" y="100" text-anchor="end" font-size="10" fill="#94a3b8">400</text><text x="35" y="58" text-anchor="end" font-size="10" fill="#94a3b8">800</text><text x="35" y="16" text-anchor="end" font-size="10" fill="#94a3b8">1200</text><text x="10" y="80" transform="rotate(-90 10 80)" text-anchor="middle" font-size="10" fill="#64748b">watts</text><line x1="40" y1="55" x2="345" y2="55" stroke="#f59e0b" stroke-width="1.6" stroke-dasharray="6 5"/><text x="92" y="48" font-size="11" fill="#f59e0b" font-weight="700">your sprint (800 W)</text><path d="M40,130 C110,118 180,100 235,76 C285,54 320,36 345,13" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/><text x="160" y="84" text-anchor="middle" font-size="11" fill="#38bdf8">×2 speed = ×8 watts</text><line x1="279" y1="61" x2="279" y2="140" stroke="#f59e0b" stroke-dasharray="3 4" opacity=".55"/><circle cx="279" cy="55" r="5" fill="#f59e0b" stroke="#0f172a" stroke-width="1.5"/><text x="286" y="94" font-size="12" fill="#f59e0b" font-weight="800">Vmax</text></svg><div class="nf-caps"><span>🔵 <b>P(v)</b> — required power, rises as the cube</span><span>🟠 where it crosses <b>your sprint</b> = your Vmax</span></div></div>',
     'foot':'<b style="color:var(--txt)">Model</b> — steady flight (lift = weight), based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>: <code>P(v) = [weight²/(½ρv²·π·span²) + ½ρv²·(area·C_D0 + mast + fuselage + stab)] · v / η</code>; Vmax solves P(v) = your sprint, <b>rider air drag included</b> (CdA ≈ 0.45 tucked — ~90 W at 25 km/h!). ρ = 1025 · span efficiency e=0.91 + trim drag (consistent with the index) · estimated η (grows with aspect ratio) · short fuselage fixed · mast counted ~55% immersed (at Vmax you fly high) · stab & fuselage C_D mid-range, <b>calibrated on real race speeds</b> (observed 30-38 km/h, Takoon Flow / GONG Veloce H specs — anchor points: strapped on a 600, 30 km/h ≈ 750 W · 33 ≈ 1,000 W · the champion\'s ~37 km/h ≈ 1,300 W burst) · cavitation ignored (negligible below ~45 km/h: the champion\'s 37 km/h stays under the threshold) · no swell, no take-off · straps = +20% efficiency (upstroke pull, cf. the original model\'s «unstrapped» clamp). Educational estimates, not a test bench.<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
   };
   function applyLang(l){
@@ -812,42 +783,6 @@
     el.querySelectorAll('[data-wc]').forEach(b => b.addEventListener('click', () => o.btns[+b.dataset.wc].fn()));
   }
   const WC_KG = [60, 75, 90, 105];
-
-  // Vitesse : combo le plus rapide sur 300 m et 1 km pour ce poids (modèle puissance-durée de « La course »),
-  // sous deux contraintes terrain : démarrer à coup sûr (≤ 17 km/h) et garder +20 % de marge au-dessus du
-  // décrochage dans les virages. Calé sur King of the Lake (1 km sur ~1100 cm² à ~75 kg).
-  const WC_CACHE = {};
-  function vitBest(kg, D){
-    const key = kg+'|'+D; if(WC_CACHE[key]) return WC_CACHE[key];
-    const RHO_ = 1025, WN = kg*9.81, CP = 3.5*kg, WP = 280*kg;
-    const lo = S => Math.round(Math.sqrt(WN/(0.5*RHO_*S/1e4*1.2))*3.6*1.15);
-    let best = null;
-    for(let S=450; S<=1800; S+=25) for(let ar=10; ar<=16; ar++){
-      const b = Math.sqrt(ar*S); if(b > 150) continue;
-      const A = WN*WN/(0.5*RHO_*Math.PI*(b/100)*(b/100)*0.91), Kp = S/1e4*0.013 + 0.065*0.55*0.008 + 0.028*0.010 + 0.020*0.020;
-      const vAt = P => { let a = 1, c = 18; for(let i=0; i<40; i++){ const v = (a+c)/2; ((A/v + 0.5*RHO_*Kp*v*v*v)/0.7 < P) ? a = v : c = v; } return (a+c)/2; };
-      let tt = D/7, vs = 5; for(let i=0; i<24; i++){ vs = vAt(CP + WP/tt); tt = 50/(vs*0.8) + Math.max(0, D-50)/vs; }
-      const vst = Math.sqrt(WN/(0.5*RHO_*S/1e4*0.9));
-      if(vs*0.8 < 1.2*vst || lo(S) > 17) continue;
-      if(!best || tt < best.t) best = {S, b:Math.round(b), ar, t:tt, v:vs*3.6, to:lo(S)};
-    }
-    return WC_CACHE[key] = best;
-  }
-  function wcVit(){
-    const gid = id => document.getElementById(id), kg = +gid('i-w').value, a = vitBest(kg, 300), c = vitBest(kg, 1000);
-    const tryIt = r => () => { gid('i-s').value = Math.max(450, Math.min(1800, Math.round(r.S/10)*10)); gid('i-b').value = Math.max(55, Math.min(130, r.b)); gid('i-b').dispatchEvent(new Event('input')); gid('i-s').scrollIntoView({block:'center', behavior:'smooth'}); };
-    wcDraw(gid('wc'), {acc:'#f59e0b', title:t('vitesse','speed'),
-      sub: t('pour ','for ')+kg+' kg '+t('(toi + matos, curseur ci-dessus) · allongement ~16, profil fin, stab ~90-110 cm², straps','(you + gear, slider above) · aspect ratio ~16, thin profile, ~90-110 cm² stab, straps'),
-      chips:[{v:a.S+' cm² · '+a.b+' cm', l:t('course 300 m','300 m race')}, {v:c.S+' cm² · '+c.b+' cm', l:t('course 1 km','1 km race')}, {v:'≤ '+Math.max(a.to, c.to)+' km/h', l:t('démarre à coup sûr','reliable takeoff')}],
-      btns:[{l:t('🎛️ Essayer (300 m)','🎛️ Try (300 m)'), fn:tryIt(a)}, {l:t('🎛️ Essayer (1 km)','🎛️ Try (1 km)'), fn:tryIt(c)}],
-      head:[t('poids','weight'), '300 m', '1 km'],
-      rows: WC_KG.map(k => { const p = vitBest(k, 300), q = vitBest(k, 1000); return {on:Math.abs(k-kg) < 7.5, c:[k+' kg', p.S+' cm² · '+p.b+' cm', q.S+' cm² · '+q.b+' cm']}; }),
-      note: t('Hypothèses : rider entraîné (~3,5 W/kg tenus), départ à coup sûr et +20 % de marge au-dessus du décrochage dans les virages (fatigue, bouées, eau agitée). Calé sur <b>King of the Lake</b> : 1 km sur des ailes de ~1100 cm². Plus la course est longue, plus l\'aile grandit.',
-               'Assumptions: trained rider (~3.5 W/kg sustained), reliable takeoff and +20% margin above stall in the turns (fatigue, buoys, choppy water). Calibrated on <b>King of the Lake</b>: 1 km on ~1100 cm² wings. The longer the race, the bigger the wing.')});
-  }
-  document.getElementById('i-w').addEventListener('input', wcVit);
-  new MutationObserver(wcVit).observe(document.documentElement, {attributes:true, attributeFilter:['lang']});
-  setTimeout(wcVit, 0);
 
   function render(){
     ['s','b','w','p'].forEach(k => $('v-'+k).textContent = $('i-'+k).value);
@@ -1265,13 +1200,17 @@
   // Couleurs : palette de référence (sombre) vérifiée au validateur dataviz, paires de zones voisines OK
   const VA_CAT = {
     start:{c:'#c98500', s:['🪶 ne démarre pas','🪶 won\'t take off'], x:['🪶 démarrage','🪶 takeoff'], d:['trop petite pour toi : il faut plus de 17 km/h pour décoller','too small for you: needs over 17 km/h to take off']},
-    // zones = TA VITESSE EN SPRINT (300 m), comme la maniabilité de la page carve : frontières en tirets blancs chiffrées en km/h
-    s300: {c:'#d55181', s:['🏁 fusée','🏁 rocket'], x:['🏁 fusée','🏁 rocket'], d:['la plus rapide : à moins de 3 % du meilleur temps sur 300 m','the fastest: within 3% of the best 300 m time']},
-    ok:   {c:'#9085e9', s:['👍 rapide','👍 fast'], x:['👍 rapide','👍 fast'], d:['à 3-6 % du meilleur temps','3-6% off the best time']},
-    slow: {c:'#475569', s:['🐢 un peu lente','🐢 a bit slow'], x:['🐢 lente','🐢 slow'], d:['à 6-12 % du meilleur temps','6-12% off the best time']},
-    drag: {c:'#2b3647', s:['🧱 trop de traînée','🧱 too much drag'], x:['🧱 traînée','🧱 drag'], d:['plus de 12 % derrière : trop grande pour sprinter','over 12% behind: too big to sprint']}
+    // zones = VITESSE EN SPRINT (300 m) × CONSOMMATION : dans les zones rapides, l'aile économe (meilleur rendement que
+    // la moitié des ailes de même vitesse : plus d'envergure) est en couleur foncée, la consommatrice en couleur claire
+    s3e:  {c:'#c0392b', s:['🏁 les plus rapides pour toi','🏁 fastest for you'], x:['🏁 les plus rapides','🏁 fastest'], d:['à moins de 2 % du meilleur temps sur 300 m (~0,5 km/h) : dans ce modèle, elles se valent','within 2% of the best 300 m time (~0.5 km/h): in this model, they are equal']},
+    oke:  {c:'#6c3fc4', s:['👍 rapide','👍 fast'], x:['👍 rapide','👍 fast'], d:['à 2-5 % du meilleur temps','2-5% off the best time']},
+    slow: {c:'#199e70', s:['✅ correcte','✅ decent'], x:['✅ correcte','✅ decent'], d:['à 5-10 % du meilleur temps : encore bien rapide','5-10% off the best time: still quite fast']},
+    drag: {c:'#3987e5', s:['🌊 plutôt pour pomper loin','🌊 more for pumping far'], x:['🌊 pompe loin','🌊 pump far'], d:['plus de 10 % derrière en sprint : grande aile, faite pour durer plutôt que sprinter','over 10% behind in a sprint: big wing, made to last rather than sprint']},
   };
   const vaT = a => t(a[0], a[1]);
+  // seul le rouge (la réponse) est vif : les autres zones sont mises en sourdine (mélangées au fond)
+  const vaZC = k => { const C = VA_CAT[k].c; if(k === 's3e') return C;
+    return '#'+[1, 3, 5].map(i => Math.round(parseInt(C.slice(i, i + 2), 16)*.38 + [30, 41, 59][(i - 1)/2]*.62).toString(16).padStart(2, '0')).join(''); };
   // 🎬 ?video=1 (vidéo Insta) : repère plus petit → textes ~1,5× plus gros une fois agrandis ; pas de noms de zones posés
   // sur la carte (ils sautaient d'un kilo à l'autre) : la vidéo dessine sa légende fixe, à part
   const VIDEO = /[?&]video=1/.test(location.search);
@@ -1281,6 +1220,8 @@
     window.vaFocus = k => { VA.focus = k || null; vaDraw(); };
     // positions des ailes (repère logique de la carte) : la vidéo pose ses étiquettes dessus
     window.vaPts = () => ({W: VA.geo.W, H: VA.geo.H, pts: (VA.pts || []).map(p => ({n: p.n, x: p.x, y: p.y}))});
+    window.vaZC = vaZC; window.vaStarOn = on => { if(VA.noStar !== !on){ VA.noStar = !on; vaDraw(); } }; window.vaSetP = P => { VA.P = P; vaDraw(); };
+    window.vaTop = () => VA.top || []; window.vaStarPt = () => VA.starXY ? {W: VA.geo.W, H: VA.geo.H, x: VA.starXY[0], y: VA.starXY[1]} : null;
     window.vaFocusPts = () => (VA.pts || []).filter(p => p.focus).map(p => ({n: p.n, b: p.b, S: p.S}));
   }
   // watts qu'il faut pour TENIR la vitesse v (km/h) avec cette aile (même modèle que la course, sans la phase de départ)
@@ -1293,12 +1234,26 @@
   // (900 W → 0 · 500 W → 100) + la consommation en Wh/km, comme une voiture
   const VA_VR = 25;
   const vaEff = (b, S, kg) => { const W = vaPow(b, S, kg, VA_VR); return {W, whkm:W/VA_VR, score:Math.max(0, Math.min(100, Math.round((900 - W)/4)))}; };
+  // ⚡ MEILLEURE CONSO de l'aile : le minimum de Wh/km, et la vitesse où il tombe (au-dessus de 1,2 × la vitesse de décrochage).
+  // Ça ne dit pas la même chose que la vitesse : les grandes envergures y gagnent (c'est leur « glisse »)
+  const vaBest = (b, S, kg) => { const vst = Math.sqrt(kg*9.81/(0.5*1025*S/1e4*0.9))*3.6*1.2; let m = {whkm:1e9, v:0};
+    for(let v = Math.max(10, vst); v <= 35; v += .25){ const w = vaPow(b, S, kg, v)/v; if(w < m.whkm) m = {whkm:w, v}; } return m; };
+  // puissance de sprint selon le niveau, sur la durée d'un 300 m (~40 s) : seuil + réserve / 40 s — la même que la carte
+  const vaP30 = (l, kg) => Math.round((VA_LV[l].cp*kg + VA_LV[l].wp*kg/40)/10)*10;
+  // vitesse tenue (km/h, une fois lancé, en ligne droite) en donnant P watts avec cette aile
+  const vaVAt = (b, S, kg, P) => { let a = 5, c = 60; for(let i = 0; i < 40; i++){ const v = (a + c)/2; vaPow(b, S, kg, v) < P ? a = v : c = v; } return (a + c)/2; };
+  const VA_PW = [300, 600, 900];
+  // mini-barres « 300 / 600 / 900 W → km/h » (bulle) — longueur ∝ vitesse sur une échelle commune 15-32 km/h
+  const vaBars = (b, S, kg) => { const lo = Math.sqrt(kg*9.81/(0.5*1025*S/1e4*1.2))*3.6*1.15;
+    return '<div class="pw-bars">'+VA_PW.map((P, i) => { const v = vaVAt(b, S, kg, P), ok = v >= lo, w = Math.max(4, Math.min(100, (v - 15)/(32 - 15)*100));
+      return '<div><span>'+P+' W</span><i><u style="width:'+w.toFixed(0)+'%; background:'+['#3987e5', '#6c3fc4', '#c0392b'][i]+(ok ? '' : '; opacity:.35')+'"></u></i><b>'+(ok ? num(v, 1)+' km/h' : t('ne décolle pas','no takeoff'))+'</b></div>'; }).join('')+'</div>'; };
   function vaRace(b, S, kg, D){
     const RHO_ = 1025, WN = kg*9.81, LV = VA_LV[VA.lv], CP_ = LV.cp*kg, WP = LV.wp*kg;   // ta puissance : selon ton niveau (seuil en W/kg, réserve en J/kg)
     const A = WN*WN/(0.5*RHO_*Math.PI*(b/100)*(b/100)*0.91), Kp = S/1e4*0.013 + 0.065*0.55*0.008 + 0.028*0.010 + 0.020*0.020 + (vaStab() - 0.020)*0.012;   // stab : défaut 50 (calage inchangé) ; au-delà, même coût que le simulateur (CDS 0,012)
     const ETA = 0.7*vaStraps();   // straps : tu tires aussi à la remontée → ~+20 % de rendement (comme le simulateur)
     const vAt = P => { let a = 1, c = 18; for(let i = 0; i < 40; i++){ const v = (a+c)/2; ((A/v + 0.5*RHO_*Kp*v*v*v)/ETA < P) ? a = v : c = v; } return (a+c)/2; };
-    let tt = D/7, vs = 5; for(let i = 0; i < 24; i++){ vs = vAt(CP_ + WP/tt); tt = 50/(vs*0.8) + Math.max(0, D-50)/vs; }
+    // puissance de sprint choisie (600-900 W, tenue sur les 300 m) ; sinon ton niveau (seuil + réserve)
+    let tt = D/7, vs = 5; for(let i = 0; i < 24; i++){ vs = vAt(VA.P && D <= 300 ? VA.P*(kg/75)**0 : CP_ + WP/tt); tt = 50/(vs*0.8) + Math.max(0, D-50)/vs; }
     const vst = Math.sqrt(WN/(0.5*RHO_*S/1e4*0.9));
     return {t:tt, v:vs*3.6, stall: vs*0.8 < 1.2*vst, lo: Math.sqrt(WN/(0.5*RHO_*S/1e4*1.2))*3.6*1.15};
   }
@@ -1306,12 +1261,16 @@
   const vaStab = () => { const e = $('i-stab'); return e ? parseFloat(e.value) : 0.020; };
   // ⚡ ta puissance (niveau) : seuil tenu ~1 h en W/kg + réserve pour les efforts courts (J/kg). « régulier » = calage d'origine
   const VA_LV = {1:{cp:2.8, wp:220, fr:'loisir', en:'leisure'}, 2:{cp:3.5, wp:280, fr:'régulier', en:'regular'}, 3:{cp:4.5, wp:350, fr:'compétiteur', en:'racer'}};
-  VA.lv = 2;
+  VA.lv = 2; VA.P = 800;   // puissance de sprint choisie (W)
   const vaStraps = () => { const e = $('i-straps'); return e && e.checked ? 1.20 : 1.00; };
-  const vaKey = kg => kg+'|'+vaStab()+'|'+VA.lv+'|'+vaStraps();
+  const vaKey = kg => kg+'|'+vaStab()+'|'+VA.lv+'|'+vaStraps()+'|'+VA.P;
+  // bas de l'axe des surfaces : ~100 cm² sous la limite de décollage (17 km/h) de CE rider — la zone utile prend la place,
+  // on garde une bande « ne démarre pas » pour voir la limite (retour Paul). Vidéo : fixe (l'axe ne doit pas sauter à chaque kilo)
+  const vaS0 = kg => { if(VIDEO) return 450; const v = 17/3.6/1.15, Sl = kg*9.81/(0.5*1025*1.2*v*v)*1e4; return Math.max(400, Math.floor((Sl - 100)/50)*50); };
   function vaGrid(kg){
+    VA.S0 = vaS0(kg);
     if(VA.key === vaKey(kg)) return VA.g;
-    const g = []; let b3 = 1e9, b1 = 1e9;
+    const g = []; let b3 = 1e9, b1 = 1e9, bc = null;
     for(let b = VA.B0; b <= VA.B1; b += VA.DB) for(let S = VA.S0; S <= VA.S1; S += VA.DS){
       const ar = b*b/S; if(ar < VA.AR0 - 1 || ar > VA.AR1 + 4) continue;   // un peu au-delà : bord lisse après découpe
       const r3 = vaRace(b, S, kg, 300), r1 = vaRace(b, S, kg, 1000);
@@ -1321,16 +1280,27 @@
       // du marché) : sinon le modèle file vers des ailes à AR 24 qui n'existent pas, et la zone 1 km reste vide
       // (retour Paul, oct. 2026). Repère terrain King of the Lake : 1 km sur ~1 100 cm², AR ~16-17.
       if(ar > VA.ARB) continue;
-      if(!r3.stall && r3.lo <= 17) b3 = Math.min(b3, r3.t);
+      if(!r3.stall && r3.lo <= 17 && r3.t < b3){ b3 = r3.t; bc = {b, S}; }
       if(!r1.stall && r1.lo <= 17) b1 = Math.min(b1, r1.t);
     }
-    VA.best = {b3, b1}; VA.key = vaKey(kg); VA.g = g; return g;
+    VA.best = {b3, b1, bc};
+    // seuil « économe » : rendement médian des cases de chaque zone de vitesse (fusée, rapide)
+    const sc = {f:[], r:[]}; g.forEach(q => { const ar = q.b*q.b/q.S; if(ar < VA.AR0 || ar > VA.AR1 || q.r1.lo > 17 || q.r3.stall) return;
+      const a = q.r3.t/b3, e = vaEff(q.b, q.S, kg).score; if(a <= 1.03) sc.f.push(e); else if(a <= 1.06) sc.r.push(e); });
+    const med = v => { if(!v.length) return 0; v.sort((x, y) => x - y); return v[Math.floor(v.length/2)]; };
+    VA.emed = {f:med(sc.f), r:med(sc.r)};
+    VA.key = vaKey(kg); VA.g = g; return g;
+  }
+  const VA_ZV = [27.5, 26.5, 25.5];   // frontières fixes des zones (km/h de moyenne sur 300 m)
+  const vaZone = (lo, stall, a, b, S, kg) => { if(lo > 17) return 'start'; if(stall) a = 9;
+    // ÉCHELLE FIXE en km/h (moyenne sur 300 m) : quand tu changes de niveau, les zones bougent — on voit que tu vas plus ou moins vite
+    return a <= 1.02 ? 's3e' : a <= 1.05 ? 'oke' : a <= 1.10 ? 'slow' : 'drag';   // relatif au meilleur temps À CETTE PUISSANCE : le rouge = l'aile qu'il te faut
   }
   function vaEval(b, S, kg){
     vaGrid(kg);
     const r3 = vaRace(b, S, kg, 300), r1 = vaRace(b, S, kg, 1000);
     const a = r3.stall ? 9 : r3.t/VA.best.b3, d = r1.stall ? 9 : r1.t/VA.best.b1, m = Math.min(a, d);
-    const k = r1.lo > 17 ? 'start' : a <= 1.03 ? 's300' : a <= 1.06 ? 'ok' : a <= 1.12 ? 'slow' : 'drag';
+    const k = vaZone(r1.lo, r3.stall, a, b, S, kg);
     return {r3, r1, a, d, k};
   }
   function vaBrandsUI(){
@@ -1347,8 +1317,8 @@
     const kg = +$('i-w').value;
     const st = $('i-stab'), sl = st ? st.options[st.selectedIndex].text : '';
     if($('atl-rider')) $('atl-rider').innerHTML = '<span class="rc"><button type="button" data-va="-">−</button><b>🧍 '+kg+' kg</b><button type="button" data-va="+">+</button></span>'
-      + '<span class="rc rc-seg">'+[1, 2, 3].map(l => '<button type="button" data-va="lv'+l+'" class="'+(VA.lv === l ? 'on' : '')+'">'+(l === 1 ? '' : l === 2 ? '' : '')+t(VA_LV[l].fr, VA_LV[l].en)+'</button>').join('')+'</span>'
-      + '<div class="lvl-x">'+t('⚡ ta puissance : ','⚡ your power: ')+'<b>'+num(Math.round(VA_LV[VA.lv].cp*kg/10)*10, 0)+' W</b> '+t('tenus ~1 h (','held ~1 h (')+num(VA_LV[VA.lv].cp, 1)+' W/kg)'+(VA.lv === 1 ? t(' — pompe pour le plaisir',' — pumps for fun') : VA.lv === 2 ? t(' — roule plusieurs fois par semaine',' — rides several times a week') : t(' — s\'entraîne pour les courses',' — trains for races'))+'</div>'
+      + '<span class="rc rc-seg">'+[600, 700, 800, 900].map(P => '<button type="button" data-va="pw'+P+'" class="'+(VA.P === P ? 'on' : '')+'">⚡ '+P+' W</button>').join('')+'</span>'
+      + '<div class="lvl-x">'+t('⚡ ta puissance de sprint (tenue sur les ~40 s d\'un 300 m) — repères à '+kg+' kg : loisir ~'+num(vaP30(1, kg), 0)+' W · régulier ~'+num(vaP30(2, kg), 0)+' W · compétiteur ~'+num(vaP30(3, kg), 0)+' W','⚡ your sprint power (held over the ~40 s of a 300 m) — guide at '+kg+' kg: leisure ~'+num(vaP30(1, kg), 0)+' W · regular ~'+num(vaP30(2, kg), 0)+' W · racer ~'+num(vaP30(3, kg), 0)+' W')+'</div>'
       + '<span class="rc rc-seg"><button type="button" data-va="st" class="'+(vaStraps() > 1 ? 'on' : '')+'">'+(vaStraps() > 1 ? '✓ ' : '')+t('🦶 straps','🦶 straps')+'</button></span>'
       + '<span class="rc"><button type="button" data-va="s-" aria-label="'+t('stab plus petit','smaller stab')+'">−</button><b>🪶 '+sl+'</b><button type="button" data-va="s+" aria-label="'+t('stab plus grand','bigger stab')+'">+</button></span>';
   }
@@ -1357,6 +1327,7 @@
     VA_RC.before = VA.lastReco;
     if(bt.dataset.va === 'st'){ const ck = $('i-straps'); ck.checked = !ck.checked; ck.dispatchEvent(new Event('change', {bubbles:true})); VA_RC.before = null; vaDraw(); return; }
     if(/^lv\d$/.test(bt.dataset.va)){ VA.lv = +bt.dataset.va.slice(2); VA_RC.before = null; vaDraw(); return; }
+    if(/^pw\d+$/.test(bt.dataset.va)){ VA.P = +bt.dataset.va.slice(2); VA_RC.before = null; vaDraw(); return; }
     if(bt.dataset.va === 's-' || bt.dataset.va === 's+'){   // stab : option précédente / suivante du menu
       const st = $('i-stab'); st.selectedIndex = Math.max(0, Math.min(st.options.length - 1, st.selectedIndex + (bt.dataset.va === 's+' ? 1 : -1)));
       st.dispatchEvent(new Event('change', {bubbles:true})); VA_RC.before = null; return; }
@@ -1368,7 +1339,7 @@
   const vaTime = s => { s = Math.round(s); return s >= 60 ? Math.floor(s/60)+' min '+String(s % 60).padStart(2, '0') : s+' s'; };
   function vaDraw(){
     const cv = $('atl-cv'); if(!cv) return;
-    const kg = +$('i-w').value;
+    const kg = +$('i-w').value; VA.S0 = vaS0(kg);
     if(VA.lang !== curLang()){ VA.lang = curLang(); vaBrandsUI(); }
     vaRider();
     // téléphone (< 520 px) : repère presque carré, points plus petits, noms courts
@@ -1385,7 +1356,7 @@
     const g = vaGrid(kg), cellCat = new Map(), catCells = {};
     g.forEach(q => {
       const a = q.r3.stall ? 9 : q.r3.t/VA.best.b3, d = q.r1.stall ? 9 : q.r1.t/VA.best.b1, m = Math.min(a, d);
-      const k = q.r1.lo > 17 ? 'start' : a <= 1.03 ? 's300' : a <= 1.06 ? 'ok' : a <= 1.12 ? 'slow' : 'drag';
+      const k = vaZone(q.r1.lo, q.r3.stall, a, q.b, q.S, kg);
       cellCat.set(Math.round((q.b - VA.B0)/VA.DB)+','+Math.round((q.S - VA.S0)/VA.DS), k);
       const ar = q.b*q.b/q.S; if(ar >= VA.AR0 && ar <= VA.AR1) (catCells[k] = catCells[k] || []).push([px(q.b), py(q.S)]);
     });
@@ -1395,7 +1366,7 @@
     const img = document.createElement('canvas'); img.width = nI; img.height = nJ;
     const ix = img.getContext('2d'), id = ix.createImageData(nI, nJ);
     cellCat.forEach((kc, key) => { const [i, j] = key.split(',').map(Number); if(i < 0 || i >= nI || j < 0 || j >= nJ) return;
-      const o = ((nJ - 1 - j)*nI + i)*4, q0 = hex(VA_CAT[kc].c), q = VA.focus && kc !== VA.focus ? q0.map((v, n) => Math.round(v*.22 + [15, 23, 42][n]*.78)) : q0; id.data[o] = q[0]; id.data[o + 1] = q[1]; id.data[o + 2] = q[2]; id.data[o + 3] = 255; });
+      const o = ((nJ - 1 - j)*nI + i)*4, q0 = hex(VA.focus === kc ? VA_CAT[kc].c : vaZC(kc)), q = VA.focus && kc !== VA.focus ? q0.map((v, n) => Math.round(v*.22 + [15, 23, 42][n]*.78)) : q0; id.data[o] = q[0]; id.data[o + 1] = q[1]; id.data[o + 2] = q[2]; id.data[o + 3] = 255; });
     ix.putImageData(id, 0, 0);
     c.save(); c.beginPath();
     for(let bb = VA.B0; bb <= VA.B1; bb += 1) c[bb === VA.B0 ? 'moveTo' : 'lineTo'](px(bb), py(Math.min(VA.S1 + 400, bb*bb/VA.AR0)));
@@ -1404,7 +1375,7 @@
     const xA = px(VA.B0) - (X1 - X0)/(nI - 1)/2, yA = py(VA.S1) - (Y1 - Y0)/(nJ - 1)/2, wA = (X1 - X0)*nI/(nI - 1), hA = (Y1 - Y0)*nJ/(nJ - 1);
     c.imageSmoothingEnabled = true; c.imageSmoothingQuality = 'high';
     c.drawImage(img, xA, yA, wA, hA);
-    if('filter' in c){ c.filter = 'blur('+(narrow ? 7 : 11)+'px)'; c.drawImage(img, xA, yA, wA, hA); c.filter = 'none'; }
+    if('filter' in c){ c.filter = 'blur('+(narrow ? 3 : 4)+'px)'; c.drawImage(img, xA, yA, wA, hA); c.filter = 'none'; }
     c.restore();
     c.save(); c.beginPath(); c.rect(X0, Y0, X1 - X0, Y1 - Y0); c.clip(); c.strokeStyle = 'rgba(148,163,184,.55)'; c.lineWidth = 1;
     [VA.AR0, VA.AR1].forEach(A => { c.beginPath(); for(let bb = VA.B0; bb <= VA.B1; bb += 1) c[bb === VA.B0 ? 'moveTo' : 'lineTo'](px(bb), py(bb*bb/A)); c.stroke(); });
@@ -1469,12 +1440,24 @@
       let lo = 1e9, hi = 0; VS.forEach(v => { if(v === v){ lo = Math.min(lo, v); hi = Math.max(hi, v); } });
       // les tirets SONT les frontières des zones (comme la maniabilité 90/70/45/20 de la carve) : vitesse = meilleure ÷ 1,03 / 1,06 / 1,12
       const vB = 300/VA.best.b3*3.6;
-      for(const L of [vB/1.03, vB/1.06, vB/1.12]){ const segs = contour(VS, L); if(!segs.length) continue;
+      for(let L = Math.ceil(lo); L <= hi; L += 1){ const segs = contour(VS, L); if(!segs.length) continue;   // repères FIXES en km/h : ils glissent quand tu changes de puissance
         strokeSegs(segs, '#ffffff', 1.5, [6, 4]);
         let best = null; segs.forEach(sg => sg.forEach(p => { const bb = VA.B0 + (p[0] - X0)/(X1 - X0)*(VA.B1 - VA.B0), ss = VA.S0 + (Y1 - p[1])/(Y1 - Y0)*(VA.S1 - VA.S0);
           if(bb*bb/ss <= VA.AR1 && (!best || p[0] > best[0])) best = p; }));
         if(best && best[1] > Y0 + 12) vLab.push([best[0], best[1], Math.round(L*2)/2, false, true, null, 300]); } }   // pas d'étiquette collée au bord haut (chiffres d'AR)
     VA.k1Segs = [];   // plus de trait jaune : la zone verte dit déjà où est le semi-fond
+    // ⚡ 3 ÉCHELLES À DROITE : vitesse tenue à 300 W (vert), 600 W (bleu), 900 W (rouge) — une colonne chacune, chiffrée là où
+    // la ligne de même vitesse sort de la carte (pointillé fin de la couleur jusqu'à la colonne)
+    VA.eLab = [];
+    const PWC = ['#22c55e', '#3b82f6', '#ef4444'];
+    if(false) VA_PW.forEach((P, k) => { const ES = new Float32Array(vI*vJ).fill(NaN);   // (3 colonnes retirées : la vitesse à puissance fixe dépend aussi de l'envergure → illisible en colonne ; voir le graphique sous la carte)
+      g.forEach(q => { const i = Math.round((q.b - VA.B0)/VA.DB), j = Math.round((q.S - VA.S0)/VA.DS); if(i < 0 || i >= vI || j < 0 || j >= vJ) return; const v = vaVAt(q.b, q.S, kg, P); if(v >= q.r1.lo) ES[j*vI + i] = v; });   // sous le décollage : rien
+      let lo = 1e9, hi = 0; ES.forEach(v => { if(v === v){ lo = Math.min(lo, v); hi = Math.max(hi, v); } });
+      for(let L = Math.ceil(lo); L <= hi; L += 1){ const segs = contour(ES, L); if(!segs.length) continue;
+        let best = null; segs.forEach(sg => sg.forEach(p => { const bb = VA.B0 + (p[0] - X0)/(X1 - X0)*(VA.B1 - VA.B0), ss = VA.S0 + (Y1 - p[1])/(Y1 - Y0)*(VA.S1 - VA.S0);
+          if(bb*bb/ss <= VA.AR1 && (!best || p[0] > best[0])) best = p; }));
+        if(best && best[1] > Y0 + 4 && best[1] < Y1 - 4) VA.eLab.push([best[0], best[1], L, k]); } });
+    VA.PWC = PWC;
     // ⚡ SOUS-ZONES du sprint : watts qu'il faut pour tenir la vitesse de croisière de la meilleure aile (lignes fines, tous les 50 W)
     { let vRef = 0; g.forEach(q => { if(!q.r3.stall && q.r1.lo <= 17 && q.r3.t <= VA.best.b3*1.0001) vRef = q.r3.v; });
       vRef = Math.round(vRef); VA.vRef = vRef;
@@ -1488,10 +1471,10 @@
     VA.zs = {};
     g.forEach(q => { const a = q.r3.stall ? 9 : q.r3.t/VA.best.b3, d = q.r1.stall ? 9 : q.r1.t/VA.best.b1, ar = q.b*q.b/q.S;
       if(ar < VA.AR0 || ar > VA.AR1 || q.r1.lo > 17) return;
-      const k = a <= 1.03 ? 's300' : a <= 1.06 ? 'ok' : a <= 1.12 ? 'slow' : null; if(!k) return;
-      const v = 300/q.r3.t*3.6, z = VA.zs[k] = VA.zs[k] || {lo:1e9, hi:0, elo:100, ehi:0}, e = vaEff(q.b, q.S, kg).score; z.lo = Math.min(z.lo, v); z.hi = Math.max(z.hi, v); z.elo = Math.min(z.elo, e); z.ehi = Math.max(z.ehi, e); });
+      const k = vaZone(q.r1.lo, q.r3.stall, a, q.b, q.S, kg); if(k === 'start' || k === 'drag') return;
+      const v = 300/q.r3.t*3.6, z = VA.zs[k] = VA.zs[k] || {lo:1e9, hi:0, elo:1e9, ehi:0}, e = vaEff(q.b, q.S, kg).whkm; z.lo = Math.min(z.lo, v); z.hi = Math.max(z.hi, v); z.elo = Math.min(z.elo, e); z.ehi = Math.max(z.ehi, e); });
     Object.values(VA.zs).forEach(z => z.W = Pw(VA.best.b3));
-    VA.zTxt = k => { const z = VA.zs[k]; return z ? (k === 's300' ? t('plus de ','over ')+num(Math.round(z.lo*2)/2, 1) : num(Math.round(z.lo*2)/2, 1)+'-'+num(Math.round(z.hi*2)/2, 1))+' km/h · ⚡ '+(z.elo === z.ehi ? z.ehi : z.elo+'-'+z.ehi)+'/100' : ''; };
+    VA.zTxt = k => { const z = VA.zs[k]; return z ? (z.lo === 1e9 ? '' : num(Math.round(z.lo*2)/2, 1)+'-'+num(Math.round(z.hi*2)/2, 1))+' km/h · ⚡ '+num(Math.floor(z.elo), 0)+'-'+num(Math.ceil(z.ehi), 0)+' Wh/km' : ''; };
     VA.k1Kmh = 1000/(1.06*VA.best.b1)*3.6; VA.s3Kmh = 300/(1.06*VA.best.b3)*3.6; VA.k1W = Pw(1.06*VA.best.b1); VA.s3W = Pw(1.06*VA.best.b3);
     c.restore();
     VA.vBoxes = []; const vDraw = [];
@@ -1508,7 +1491,7 @@
     c.font = '600 10px system-ui, sans-serif'; c.fillStyle = '#94a3b8'; c.textAlign = 'center';
     for(let v = 80; v <= 180; v += 20) c.fillText(v, px(v), Y1 + 13);
     c.fillText(t('envergure (cm) →','span (cm) →'), (X0 + X1)/2, Y1 + 28);
-    c.textAlign = 'right'; for(let v = 600; v <= 1800; v += 200) c.fillText(num(v, 0), X0 - 5, py(v) + 3);
+    c.textAlign = 'right'; for(let v = Math.ceil(VA.S0/200)*200; v <= 1800; v += 200) c.fillText(num(v, 0), X0 - 5, py(v) + 3);
     c.save(); c.translate(12, (Y0 + Y1)/2); c.rotate(-Math.PI/2); c.textAlign = 'center'; c.fillText(t('surface (cm²) →','area (cm²) →'), 0, 0); c.restore();
     // ailes
     const act = VA_BRANDS.filter(B => !VA.sel.length || VA.sel.includes(B.k)), few = VA.sel.length === 1, multi = VA.sel.length > 1, pts = [], famCol = {};
@@ -1525,12 +1508,25 @@
     }));
     VA.pts = pts;
     drawVLab();
+    vaStar(c, px, py, kg, narrow, act);
+    vaCombo(kg);
+    vaEcoGroups(act, kg);
+    vaPowChart(act, VA.sel.length > 0, kg);   // lié au filtre de marque : 1 ou plusieurs marques → toutes leurs ailes
+    if(VA.eLab.length){   // 3 colonnes à droite : 300 W · 600 W · 900 W
+      c.save(); const cw = narrow ? 21 : 29, cx0 = X1 + 4; c.font = '800 '+(narrow ? 8 : 9.5)+'px system-ui, sans-serif'; c.textAlign = 'center';
+      [0, 1, 2].forEach(k => { const col = VA.PWC[k], xc = cx0 + cw*(k + .5), used = [];
+        VA.eLab.filter(e => e[3] === k).sort((a, b) => a[1] - b[1]).forEach(([x, y, L]) => { if(used.some(u => Math.abs(u - y) < 11)) return; used.push(y);
+          c.strokeStyle = col; c.globalAlpha = .35; c.setLineDash([1.5, 3]); c.lineWidth = 1; c.beginPath(); c.moveTo(x, y); c.lineTo(xc - 7, y); c.stroke(); c.setLineDash([]); c.globalAlpha = 1;
+          c.lineWidth = 3; c.strokeStyle = 'rgba(15,23,42,.9)'; c.strokeText(String(L), xc, y + 3.5); c.fillStyle = col; c.fillText(String(L), xc, y + 3.5); });
+        c.save(); c.translate(xc, Y0 - 6); c.font = '800 '+(narrow ? 8 : 9.5)+'px system-ui, sans-serif'; c.fillStyle = col; c.fillText(String(VA_PW[k]), 0, 0); c.restore(); });
+      c.textAlign = 'right'; c.fillStyle = '#cbd5e1'; c.font = '800 '+(narrow ? 8.5 : 10)+'px system-ui, sans-serif'; c.fillText(t('km/h si tu donnes … W','km/h if you put out … W'), W - 3, Y0 - 20);
+      c.restore(); }
     (VA.wLab || []).forEach(([x, y, L]) => { const tx = num(L, 0)+' W'; c.font = '800 '+(narrow ? 8.5 : 9.5)+'px system-ui, sans-serif'; const tw = c.measureText(tx).width + 8;
       const lx = Math.min(X1 - tw - 2, x - tw - 4);   // collée au bout droit de la ligne, à l'intérieur de la zone
       c.fillStyle = '#9d2d57'; c.strokeStyle = '#fff'; c.lineWidth = 1; c.beginPath(); if(c.roundRect) c.roundRect(lx, y - 7, tw, 13, 6); else c.rect(lx, y - 7, tw, 13); c.fill(); c.stroke();
       c.fillStyle = '#fff'; c.textAlign = 'left'; c.fillText(tx, lx + 4, y + 3); });
     if($('atl-fam')) $('atl-fam').innerHTML = few || multi ? (few ? Object.entries(famCol).map(([f, col]) => '<span><i style="background:'+col+'"></i>'+f+'</span>') : act.map(B => '<span><i style="background:'+B.c+'"></i>'+B.n+'</span>')).join('')
-      + '<span class="rleg">'+[['🏁', '300 m'], ['🛣️', '1 km'], ['🏆', t('polyvalente','all-round')]].map(([e, l]) => '<span><i class="rring" style="border-color:'+VA_RC_C[e]+'"></i>'+e+' '+l+'</span>').join('')+'</span>' : '';
+      + '<span class="rleg">'+[['🏁', t('la plus rapide','fastest')], ['⚡', t('rapide, petite conso','fast, low energy')]].map(([e, l]) => '<span><i class="rring" style="border-color:'+VA_RC_C[e]+'"></i>'+e+' '+l+'</span>').join('')+'</span>' : '';
     // noms de zones sur leur couleur (sinon à côté avec un trait ; nom court en dernier recours)
     const boxes = pts.map(p => [p.x - 6, p.y - 6, 12, 12]).concat(VA.vBoxes || []);   // les noms de zones évitent aussi les étiquettes km/h
     if(multi) vaCompare(act, kg); else vaInfo(few ? act[0] : null, kg, famCol);
@@ -1544,9 +1540,10 @@
     ringB.forEach(r => boxes.push(r));   // les noms évitent les anneaux de reco
     c.font = (narrow ? '900 10.5px' : '900 12px')+' system-ui, sans-serif'; c.textAlign = 'center'; c.lineJoin = 'round';
     if(!VIDEO) Object.keys(VA_CAT).forEach(k => {
-      const cells = catCells[k]; if(!cells || cells.length < 4) return;
+      const cells = catCells[k]; if(!cells || cells.length < 4 ) return;
       const zt = VA.zTxt ? VA.zTxt(k) : '';
-      for(const txt of (narrow ? [vaT(VA_CAT[k].x)] : [vaT(VA_CAT[k].s), vaT(VA_CAT[k].x)])){
+      const txts = narrow ? [vaT(VA_CAT[k].x)] : [vaT(VA_CAT[k].s), vaT(VA_CAT[k].x)];
+      for(const txt of txts){
         const tw = c.measureText(txt).width; let best = null, bs = -1, anchor = null;
         for(let i = 0; i < cells.length; i += 2){
           const [x, y] = cells[i], x0 = x - tw/2 - 3, x1 = x + tw/2 + 3, y0 = y - 7, y1 = y + 7;
@@ -1559,6 +1556,7 @@
           if(boxes.some(r => x0 < r[0] + r[2] && x1 > r[0] && y0 < r[1] + r[3] && y1 > r[1])) d -= 50;
           if(inside*100 + d > bs){ bs = inside*100 + d; best = [x, y]; }
         }
+        if(!best && txt !== txts[txts.length - 1]) continue;   // nom long dehors ? essaie d'abord le nom court DANS la zone
         if(!best){
           let bd = 1e9;
           for(let i = 0; i < cells.length; i += Math.max(1, Math.floor(cells.length/60))){
@@ -1579,7 +1577,7 @@
           c.beginPath(); c.arc(anchor[0], anchor[1], 2.5, 0, 7); c.fillStyle = '#fff'; c.fill(); c.restore();
         }
         boxes.push([best[0] - tw/2 - 3, best[1] - 8, tw + 6, 16]);
-        c.lineWidth = 4; c.strokeStyle = '#fff'; c.strokeText(txt, best[0], best[1] + 4); c.fillStyle = VA_CAT[k].c; c.fillText(txt, best[0], best[1] + 4);
+        c.lineWidth = 4; c.strokeStyle = '#fff'; c.strokeText(txt, best[0], best[1] + 4); c.fillStyle = vaZC(k); c.fillText(txt, best[0], best[1] + 4);
         if(false && zt && !anchor){   // (fourchette retirée de la carte : les km/h sont sur les tirets, la fourchette est dans la légende)   // 2e ligne, plus petite : vitesse atteinte + watts que tu donnes dans cette zone
           const f0 = c.font; c.font = (narrow ? '800 9px' : '800 10.5px')+' system-ui, sans-serif'; const sw = c.measureText(zt).width, sx = Math.max(X0 + sw/2 + 2, Math.min(X1 - sw/2 - 2, best[0]));
           c.lineWidth = 3.5; c.strokeStyle = 'rgba(15,23,42,.92)'; c.strokeText(zt, sx, best[1] + 17); c.fillStyle = '#fff'; c.fillText(zt, sx, best[1] + 17); c.font = f0;
@@ -1591,7 +1589,7 @@
       c.font = '700 9px system-ui, sans-serif'; c.textAlign = 'left'; c.lineWidth = 3; c.lineJoin = 'round';
       const hit = (x0, y0, w0) => boxes.some(r => x0 < r[0] + r[2] && x0 + w0 > r[0] && y0 - 5 < r[1] + r[3] && y0 + 5 > r[1]);
       pts.forEach(p => {
-        const lab = p.short+' · ⚡'+vaEff(p.b, p.S, kg).score;   // nom + rendement /100
+        const lab = p.short;
         const tw = c.measureText(lab).width;
         const ok = [[p.x + 7, p.y], [p.x - 7 - tw, p.y], [p.x - tw/2, p.y - 11], [p.x - tw/2, p.y + 12]].find(([lx, ly]) => lx >= X0 - 4 && lx + tw <= X1 + 4 && !hit(lx, ly, tw));
         if(!ok) return; const [lx, ly] = ok; boxes.push([lx, ly - 5, tw, 10]);
@@ -1600,25 +1598,63 @@
     }
     // légende : une ligne par couleur
     const lg = $('atl-leg');
-    if(lg) lg.innerHTML = '<div class="atl-cats">'+Object.entries(VA_CAT).filter(([k]) => catCells[k]).map(([k, C]) => '<div><i style="background:'+C.c+'"></i><b>'+vaT(C.s)+(VA.zTxt && VA.zTxt(k) ? ' · '+VA.zTxt(k) : '')+'</b> <span>'+vaT(C.d)+'</span></div>').join('')+'</div>'
+    if(lg) lg.innerHTML = '<div class="atl-cats">'+Object.entries(VA_CAT).filter(([k]) => catCells[k]).map(([k, C]) => '<div><i style="background:'+vaZC(k)+'"></i><b>'+vaT(C.s)+(VA.zTxt && VA.zTxt(k) ? ' · '+VA.zTxt(k) : '')+'</b> <span>'+vaT(C.d)+'</span></div>').join('')+'</div>'
       + '<span><i style="background:#fde68a; height:1px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même AR (chiffre en haut)','same AR (number on top)')+'</span>'
-      + '<span><i style="background:repeating-linear-gradient(90deg,#fff 0 6px,transparent 6px 10px); height:2px; width:22px; border-radius:0; vertical-align:3px"></i>'+t('tirets = frontières des zones, en vitesse moyenne sur 300 m (km/h), à ~'+num(VA.s3W, 0)+' W','average speed over 300 m (km/h): your sprint speed, at ~'+num(VA.s3W, 0)+' W')+'</span>'
-      + '<span>⚡ '+t('rendement /100 (dans la bulle) = watts qu\'il faut pour tenir '+VA_VR+' km/h : 100 = très économe, 0 = gourmande. Comme le score « glisse » de la page carve.','efficiency /100 (in the tooltip) = watts needed to hold '+VA_VR+' km/h: 100 = very thrifty, 0 = power-hungry. Like the « glide » score on the carve page.')+'</span>'
+      + '<span><i style="background:repeating-linear-gradient(90deg,#fff 0 6px,transparent 6px 10px); height:2px; width:22px; border-radius:0; vertical-align:3px"></i>'+t('tirets = vitesse moyenne sur 300 m (km/h) — ils glissent quand tu changes de puissance, à ~'+num(VA.s3W, 0)+' W','average speed over 300 m (km/h): your sprint speed, at ~'+num(VA.s3W, 0)+' W')+'</span>'
+      + '<span>🌿 '+t('Dans la bulle : la vitesse à 300 / 600 / 900 W et la meilleure conso (le moins d\'énergie par km, à la vitesse idéale de l\'aile). Sous la carte : la vitesse de chaque aile à puissance égale.','In the tooltip: speed at 300 / 600 / 900 W and best energy use (least energy per km, at the wing\'s ideal speed). Below the map: each wing\'s speed at equal power.')+'</span>'
       + '<span><i class="hatch"></i>'+t('hors gamme (AR < 6 ou > 24)','out of range (AR < 6 or > 24)')+'</span>'
       + '<span>'+kg+' kg · '+t('meilleur temps sur 300 m : ','best 300 m time: ')+vaTime(VA.best.b3)+t(' · tu donnes ~',' · you put out ~')+num(VA.s3W, 0)+' W '+t('pendant la course','during the race')+'</span>';
   }
-  const VA_RC_C = {'🏁':'#ff6fa3', '🛣️':'#3ee08f', '🏆':'#5fb0ff'};   // mêmes familles que les zones 300 m / 1 km / les deux
+  // ★ LA RÉPONSE : l'aile idéale à ta puissance (la plus petite qui décolle, avec le plus d'envergure fabricable, AR ~17)
+  // + flèche « moins de surface ↓ · plus d'envergure → » + phrase au-dessus de la carte avec les vraies ailes les plus proches
+  function vaStar(c, px, py, kg, narrow, act){
+    const bc = VA.noStar ? null : VA.best.bc, ans = $('atl-ans'); if(!bc){ if(ans) ans.innerHTML = ''; return; }
+    const v = 300/VA.best.b3*3.6, x = px(bc.b), y = py(bc.S); VA.starXY = [x, y];
+    // (flèche « moins de surface / plus d'envergure » retirée : elle ressemblait à un nom de zone — retour Paul ; l'idée est dans la phrase au-dessus)
+    // (pas d'étiquette posée : la zone rouge porte son nom comme les autres, la plage est dans la phrase au-dessus)
+    // phrase-réponse : les 3 vraies ailes les plus rapides (marques affichées)
+    const ws = []; act.forEach(B => B.w.forEach(([n, b, S]) => { const r = vaRace(b, S, kg, 300); if(r.stall || r.lo > 17) return; ws.push({n: B.n.replace(/ Foils?$/, '')+' '+n, t: r.t}); }));
+    ws.sort((a, b) => a.t - b.t);
+    const inZ = ws.filter(w => w.t <= VA.best.b3*1.02), exW = (inZ.length ? inZ : ws.slice(0, 3)).slice(0, 6); VA.top = exW.map(w => ({n: w.n})); VA.topIn = inZ.length > 0;
+    // (phrase-réponse au-dessus de la carte retirée — retour Paul ; VA.top sert encore à la vidéo)
+  }
+  // 🎯 LE COMBO SELON TON POIDS (fusion avec l'ancien bloc du simulateur) : réglé par la carte (poids, watts, stab, straps).
+  // L'aile la plus rapide = la plus petite qui démarre à coup sûr (≤ 17 km/h) avec l'allongement max fabricable (~17).
+  // Pas UN point : toute la zone rouge se vaut (< 2 %) → on donne la plage, + le tableau par poids.
+  const vaFast = kg => { const v = 17/3.6/1.15, S = Math.ceil(kg*9.81/(0.5*1025*1.2*v*v)*1e4/10)*10, b = Math.min(150, Math.round(Math.sqrt(VA.ARB*S))), r = vaRace(b, S, kg, 300); return {S, b, v: 300/r.t*3.6}; };
+  function vaCombo(kg){
+    const box = $('atl-combo'); if(!box) return;
+    const Z = {s0:1e9, s1:0, b0:1e9, b1:0}; VA.g.forEach(q => { const ar = q.b*q.b/q.S; if(q.r3.stall || q.r1.lo > 17 || ar < VA.AR0 || ar > VA.ARB || q.r3.t > VA.best.b3*1.02) return;
+      Z.s0 = Math.min(Z.s0, q.S); Z.s1 = Math.max(Z.s1, q.S); Z.b0 = Math.min(Z.b0, q.b); Z.b1 = Math.max(Z.b1, q.b); });
+    if(Z.s1 === 0){ box.innerHTML = ''; return; }
+    const r10 = v => num(Math.round(v/10)*10, 0), r5 = v => Math.round(v/5)*5, f = vaFast(kg), st = $('i-stab'), sl = st ? st.options[st.selectedIndex].text : '';
+    const chip = (v, l) => '<div class="wc-chip"><b>'+v+'</b><span>'+l+'</span></div>';
+    box.style.setProperty('--wc-acc', '#c0392b');
+    box.innerHTML = '<h4>🎯 '+t('Le combo selon ton poids','The combo for your weight')+' — sprint 300 m</h4>'
+      + '<div class="wc-sub">'+kg+' kg · '+num(VA.P, 0)+' W · '+sl+(vaStraps() > 1 ? ' · straps' : '')+' '+t('(réglages de la carte)','(map settings)')+'</div>'
+      + '<div class="wc-main">'+chip(r10(Z.s0)+'-'+r10(Z.s1)+' cm²', t('surface (zone rouge)','area (red zone)'))+chip(t('jusqu\'à ~','up to ~')+r5(Z.b1)+' cm', t('envergure : le plus possible','span: as long as possible'))
+        + chip('~'+num(300/VA.best.b3*3.6, 1)+' km/h', t('de moyenne sur 300 m','average over 300 m'))+chip('≤ 17 km/h', t('démarre à coup sûr','reliable takeoff'))+'</div>'
+      + '<div class="wc-btns"><button type="button" data-try="'+f.b+'|'+f.S+'">🎛️ '+t('l\'essayer dans le simulateur','try it in the simulator')+'</button></div>'
+      + '<div class="wc-tblw"><table class="wc-tbl"><tr><th>'+t('poids','weight')+'</th><th>'+t('aile la plus rapide','fastest wing')+'</th><th>300 m</th></tr>'
+      + [60, 75, 90, 105].map(k => { const q = vaFast(k); return '<tr'+(Math.abs(k - kg) < 7.5 ? ' class="on"' : '')+'><td>'+k+' kg</td><td>~'+num(q.S, 0)+' cm² · ~'+q.b+' cm</td><td>'+num(q.v, 1)+' km/h</td></tr>'; }).join('')+'</table></div>'
+      + '<div class="wc-note">'+t('À '+num(VA.P, 0)+' W. Entre les ailes de la zone rouge, moins de 2 % d\'écart (~0,5 km/h) : dans ce modèle, elles se valent. ⚠️ La règle qui prime : prends l\'aile que tu <b>démarres à coup sûr</b> — sinon monte d\'un cran.',
+        'At '+num(VA.P, 0)+' W. Between the red-zone wings, less than 2% (~0.5 km/h): in this model, they are equal. ⚠️ The rule above all: pick the wing you <b>start every time</b> — otherwise go one size up.')+'</div>';
+    box.querySelectorAll('[data-try]').forEach(bt => bt.addEventListener('click', () => vaTry(...bt.dataset.try.split('|').map(Number))));
+  }
+  const VA_RC_C = {'🏁':'#ff6fa3', '⚡':'#3ee08f', '🛣️':'#3ee08f', '🏆':'#5fb0ff'};   // mêmes familles que les zones 300 m / 1 km / les deux
   // les 3 recos d'une marque pour ce rider : 🏁 300 m · 🛣️ 1 km · 🏆 polyvalente
   function vaPicks(B, kg){
     const ev = B.w.map(([n, b, S]) => Object.assign({n, b, S, ar: b*b/S}, vaEval(b, S, kg)));
     const okW = ev.filter(w => w.k !== 'start');
     const by = (arr, f) => arr.slice().sort((a, b2) => f(a) - f(b2))[0];
-    const r3 = by(okW.filter(w => !w.r3.stall), w => w.r3.t), r1 = by(okW.filter(w => !w.r1.stall), w => w.r1.t), poly = by(okW, w => Math.max(w.a, w.d));
-    return {ev, r3, r1: r1 !== r3 ? r1 : null, poly: poly && poly !== r3 && poly !== r1 ? poly : null, r1raw: r1, polyraw: poly};
+    // 🏁 la plus rapide en sprint · ⚡ la plus économe parmi les rapides (à moins de 6 % du meilleur temps) — plus de 1 km (choix Paul)
+    const r3 = by(okW.filter(w => !w.r3.stall), w => w.r3.t);
+    const eco = by(okW.filter(w => !w.r3.stall && w.a <= 1.06), w => -vaEff(w.b, w.S, kg).score);
+    return {ev, r3, r1: eco !== r3 ? eco : null, poly: null, r1raw: eco, polyraw: null};
   }
   const vaInSl = w => w.b >= +$('i-b').min && w.b <= +$('i-b').max && w.S >= +$('i-s').min && w.S <= +$('i-s').max;
   const vaTryBtn = (w, col) => '<button type="button"'+(col ? ' style="color:'+col+'"' : '')+' data-try="'+w.b+'|'+w.S+'"'+(vaInSl(w) ? '' : ' disabled title="'+t('hors des curseurs du simulateur','outside the simulator sliders')+'"')+'>▶ '+t('l\'essayer','try it')+'</button>';
-  const vaInfo3 = {r3: w => vaTime(w.r3.t)+' · ~'+Math.round(w.r3.v)+' km/h', r1: w => vaTime(w.r1.t)+' · ~'+Math.round(w.r1.v)+' km/h', poly: w => '+'+Math.round((Math.max(w.a, w.d) - 1)*100)+' % '+t('au pire','at worst')};
+  const vaInfo3 = {r3: w => vaTime(w.r3.t)+' · '+num(300/w.r3.t*3.6, 1)+' km/h', r1: w => vaTime(w.r3.t)+' · '+num(300/w.r3.t*3.6, 1)+' km/h', poly: w => ''};
   function vaInfo(B, kg, famCol){
     const box = $('atl-info'); if(!box) return;
     if(!B){ box.innerHTML = ''; VA.lastReco = null; VA.reco = null; return; }
@@ -1628,14 +1664,13 @@
     const card = (key, e, lab, w, why) => { if(!w) return ''; const c = VA_RC_C[e];
       return '<div class="rc-card" style="border-color:'+c+'"><span class="rk" style="color:'+c+'"><i class="rring" style="border-color:'+c+'"></i>'+e+' '+lab+'</span>'
         + '<b class="rn">'+w.n+'</b><span class="rw">'+why+was(key, w)+'</span>'
-        + '<span class="rd"><span>'+num(w.b, w.b % 1 ? 1 : 0)+' cm</span><span>'+num(w.S, 0)+' cm²</span><span>⏱️ '+vaInfo3[key](w)+'</span><span>⚡ '+t('rendement ','efficiency ')+vaEff(w.b, w.S, kg).score+'/100</span></span>'+vaTryBtn(w, c)+'</div>'; };
+        + '<span class="rd"><span>'+num(w.b, w.b % 1 ? 1 : 0)+' cm</span><span>'+num(w.S, 0)+' cm²</span><span>⏱️ '+vaInfo3[key](w)+'</span><span>🌿 '+(m => num(m.whkm, 0)+' Wh/km '+t('à','at')+' '+num(m.v, 0)+' km/h')(vaBest(w.b, w.S, kg))+'</span></span>'+vaTryBtn(w, c)+'</div>'; };
     box.innerHTML = '<div class="atl-reco"><div class="atl-for">🎯 '+t('Pour toi chez ','For you at ')+B.n+' <span>· '+num(kg)+' kg</span></div>'
       + card('r3', '🏁', t('sprint 300 m','300 m sprint'), r3, t('La plus rapide sur un sprint de 300 m.','The fastest over a 300 m sprint.'))
-      + card('r1', '🛣️', t('course 1 km','1 km race'), r1, t('La plus rapide sur 1 km : tient la vitesse sans t\'épuiser.','The fastest over 1 km: holds speed without wearing you out.'))
-      + card('poly', '🏆', t('polyvalente','all-round'), poly, t('Jamais loin des meilleures, sur 300 m comme sur 1 km.','Never far from the best, over 300 m and 1 km alike.'))
+      + card('r1', '⚡', t('rapide, petite conso','fast, low energy'), r1, t('Presque aussi rapide, avec la plus petite conso de la gamme.','Almost as fast, with the lowest energy use in the range.'))
       + '</div>';
     VA.lastReco = {r3: r3 && r3.n, r1: r1 && r1.n, poly: poly && poly.n};
-    VA.reco = [[r3, '🏁'], [r1, '🛣️'], [poly, '🏆']].filter(r => r[0]).map(([w, e]) => ({b: w.b, S: w.S, e}));
+    VA.reco = [[r3, '🏁'], [r1, '⚡']].filter(r => r[0]).map(([w, e]) => ({b: w.b, S: w.S, e}));
     box.querySelectorAll('[data-try]').forEach(bt => bt.addEventListener('click', () => vaTry(...bt.dataset.try.split('|').map(Number))));
   }
   // 🆚 plusieurs marques : un tableau rôle × marque (la reco de chaque marque, côte à côte)
@@ -1644,12 +1679,11 @@
     const P = Bs.map(B => ({B, ...vaPicks(B, kg)}));
     // en comparaison, chaque case montre la meilleure de la marque même si elle tient deux rôles
     P.forEach(p => { p.r1 = p.r1raw; p.poly = p.polyraw; });
-    VA.reco = []; P.forEach(p => [[p.r3, '🏁'], [p.r1, '🛣️'], [p.poly, '🏆']].forEach(([w, e]) => { if(w && !VA.reco.some(r => r.b === w.b && r.S === w.S)) VA.reco.push({b: w.b, S: w.S, e}); }));   // une aile qui tient 2 rôles : un seul anneau
+    VA.reco = []; P.forEach(p => [[p.r3, '🏁'], [p.r1, '⚡']].forEach(([w, e]) => { if(w && !VA.reco.some(r => r.b === w.b && r.S === w.S)) VA.reco.push({b: w.b, S: w.S, e}); }));   // une aile qui tient 2 rôles : un seul anneau
     VA.lastReco = null;
     const ROWS = [['🏁', t('sprint 300 m','300 m sprint'), t('la plus rapide sur 300 m','fastest over 300 m'), 'r3'],
-                  ['🛣️', t('course 1 km','1 km race'), t('la plus rapide sur 1 km','fastest over 1 km'), 'r1'],
-                  ['🏆', t('polyvalente','all-round'), t('jamais loin des meilleures','never far from the best'), 'poly']];
-    const cell = (w, key) => !w ? '<td class="cmp-none">—</td>' : '<td><b>'+w.n+'</b><span class="rd"><span>'+num(w.b, w.b % 1 ? 1 : 0)+' cm · '+num(w.S, 0)+' cm²</span><span>⏱️ '+vaInfo3[key](w)+'</span><span>⚡ '+t('rendement ','efficiency ')+vaEff(w.b, w.S, kg).score+'/100</span></span>'+vaTryBtn(w)+'</td>';
+                  ['⚡', t('rapide, petite conso','fast, low energy'), t('la plus petite conso parmi les rapides','lowest energy use among the fast ones'), 'r1']];
+    const cell = (w, key) => !w ? '<td class="cmp-none">—</td>' : '<td><b>'+w.n+'</b><span class="rd"><span>'+num(w.b, w.b % 1 ? 1 : 0)+' cm · '+num(w.S, 0)+' cm²</span><span>⏱️ '+vaInfo3[key](w)+'</span><span>🌿 '+(m => num(m.whkm, 0)+' Wh/km '+t('à','at')+' '+num(m.v, 0)+' km/h')(vaBest(w.b, w.S, kg))+'</span></span>'+vaTryBtn(w)+'</td>';
     box.innerHTML = '<div class="atl-reco"><div class="atl-for">🆚 '+t('Comparaison pour toi','Comparison for you')+' <span>· '+num(kg)+' kg</span></div></div>'
       + '<div class="atl-cmpw"><table class="atl-cmp"><tr><th></th>'+P.map(p => '<th><i style="background:'+p.B.c+'"></i>'+p.B.n+'</th>').join('')+'</tr>'
       + ROWS.map(([e, l, d, key]) => '<tr><th style="color:'+VA_RC_C[e]+'; border-left:3px solid '+VA_RC_C[e]+'">'+e+' '+l+'<small>'+d+'</small></th>'+P.map(p => cell(p[key], key)).join('')+'</tr>').join('')
@@ -1657,6 +1691,56 @@
           return '<td class="cmp-rng">'+p.ev.length+' '+t('ailes','wings')+'<br>'+num(Math.min(...bs), 0)+'–'+num(Math.max(...bs), 0)+' cm<br>'+num(Math.min(...ss), 0)+'–'+num(Math.max(...ss), 0)+' cm²</td>'; }).join('')+'</tr>'
       + '</table></div>';
     box.querySelectorAll('[data-try]').forEach(bt => bt.addEventListener('click', () => vaTry(...bt.dataset.try.split('|').map(Number))));
+  }
+  // ⚡ GROUPES « vite ET économe » : les gammes dont au moins une taille tombe en fusée économe ou rapide économe
+  function vaEcoGroups(Bs, kg){
+    const box = $('eco-box'); if(!box) return;
+    if(!VA.sel.length){ box.innerHTML = ''; return; }   // toutes les marques : liste trop longue → seulement quand on filtre (choix Paul)
+    const G = {};
+    Bs.forEach(B => B.w.forEach(([n, b, S]) => { if(S > VA.S1) return; const ev = vaEval(b, S, kg); if(ev.k !== 's3e' && ev.k !== 'oke') return;   // fusée ou rapide
+      const f = B.n.replace(' Foils', '').replace(' Foil', '')+' '+vaFam(n), g = G[f] = G[f] || {f, c:B.c, w:[], best:0, top:false};
+      const e = vaEff(b, S, kg).score; g.w.push({n, b, S, e, v:300/ev.r3.t*3.6, z:ev.k}); g.best = Math.max(g.best, e); if(ev.k === 's3e') g.top = true; }));
+    const L = Object.values(G).sort((a, b) => (b.top - a.top) || (b.best - a.best));
+    if(!L.length){ box.innerHTML = ''; return; }
+    box.innerHTML = '<h4>⚡ '+t('Les gammes les plus rapides pour toi','The fastest ranges for you')+' <small>'+t('au moins une taille en zone 🏁 fusée (rouge) ou 👍 rapide (violet), pour ton poids et ta puissance','at least one size in 🏁 rocket (red) or 👍 fast (purple), for your weight and power')+'</small></h4>'
+      + '<div class="eco-g">'+L.slice(0, 12).map(g => '<div style="--c:'+(g.top ? VA_CAT.s3e.c : VA_CAT.oke.c)+'"><b>'+(g.top ? '🏁 ' : '👍 ')+g.f+'</b><br>'
+        + g.w.sort((a, b) => a.S - b.S).map(w => w.n.replace(vaFam(w.n), '').trim()+' <i>('+num(w.S, 0)+' cm² · '+num(w.v, 1)+' km/h)</i>').join(' · ')+'</div>').join('')+'</div>';
+  }
+  // ⚡ « TA PUISSANCE → TA VITESSE » : x = watts que tu donnes, y = km/h tenus. Une courbe par aile ; l'aile survolée sur la carte
+  // (ou choisie) est mise en avant avec ses 3 points (300 / 600 / 900 W) et ta puissance (ton niveau) en repère
+  window.VA_DBG = () => VA;   // (contrôle : captures d'écran)
+  function vaPowChart(Bs, few, kg){
+    const box = $('pw-box'); if(!box) return; VA.pwArgs = [Bs, few, kg];
+    if(!VA.sel.length){ box.innerHTML = ''; return; }   // toutes les marques : trop de courbes → seulement quand on choisit une ou plusieurs marques (choix Paul)
+    let W = [];
+    const mk = (B, n, b, S) => ({n:(VA.sel.length === 1 ? '' : (B.n || '').replace(' Foils', '').replace(' Foil', '')+' ')+n, b, S, c:VA.sel.length > 1 && B.c ? B.c : VA_CAT[vaEval(b, S, kg).k].c, lo:Math.sqrt(kg*9.81/(0.5*1025*S/1e4*1.2))*3.6*1.15});
+    Bs.forEach(B => B.w.forEach(([n, b, S]) => { if(S > VA.S1) return; const ev = vaEval(b, S, kg); if(ev.k === 'start') return; W.push(mk(B, n, b, S)); }));
+    if(!few){ const pick = []; ['s3e', 'oke', 'slow', 'drag'].forEach(k => { const z = W.filter(w => VA_CAT[k].c === w.c).sort((a, b) => a.S - b.S); if(z.length){ pick.push(z[0]); if(z.length > 1) pick.push(z[z.length - 1]); } }); W = pick; }
+    const hw = VA.hoverWing; let F = hw ? W.find(w => Math.abs(w.b - hw.b) < .01 && w.S === hw.S) : null;
+    if(hw && !F){ F = Object.assign(mk({n:''}, hw.n, hw.b, hw.S), {n:hw.n}); W.push(F); }
+    if(!F) F = W[0];
+    const X0 = 56, X1 = 640, Y0 = 18, Y1 = 330, pa = 200, pb = 1100, va = 12, vb = 34;
+    const px = P => X0 + (P - pa)/(pb - pa)*(X1 - X0), py = v => Y1 - (Math.max(va, Math.min(vb, v)) - va)/(vb - va)*(Y1 - Y0);
+    const curve = w => { let d = ''; for(let P = pa; P <= pb; P += 25){ const v = vaVAt(w.b, w.S, kg, P); if(v < w.lo) continue; d += (d ? 'L' : 'M')+px(P).toFixed(1)+','+py(v).toFixed(1); } return d; };
+    let h = '<svg viewBox="0 0 900 370" role="img">';
+    for(let v = va; v <= vb; v += 2) h += '<line x1="'+X0+'" x2="'+X1+'" y1="'+py(v)+'" y2="'+py(v)+'" stroke="rgba(148,163,184,.13)"/><text class="tl" x="'+(X0 - 8)+'" y="'+(py(v) + 4)+'" text-anchor="end">'+v+'</text>';
+    for(let P = 300; P <= 1000; P += 100) h += '<text class="tl" x="'+px(P)+'" y="'+(Y1 + 17)+'" text-anchor="middle">'+P+'</text>';
+    h += '<text class="tt" x="'+((X0 + X1)/2)+'" y="'+(Y1 + 36)+'" text-anchor="middle">'+t('watts que tu donnes →','watts you put out →')+'</text>';
+    h += '<text class="tt" x="14" y="'+((Y0 + Y1)/2)+'" text-anchor="middle" transform="rotate(-90 14 '+((Y0 + Y1)/2)+')">'+t('vitesse tenue (km/h) →','speed held (km/h) →')+'</text>';
+    // repère : ta puissance (niveau)
+    const Pme = VA.P || vaP30(VA.lv, kg); h += '<line x1="'+px(Pme)+'" x2="'+px(Pme)+'" y1="'+Y0+'" y2="'+Y1+'" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="5 4"/><text class="tt" x="'+(px(Pme) + 5)+'" y="'+(Y0 + 12)+'" fill="#fbbf24" style="fill:#fbbf24">'+t('toi ~','you ~')+num(Pme, 0)+' W</text>';
+    W.filter(w => w !== F).forEach(w => { h += '<path d="'+curve(w)+'" fill="none" stroke="'+w.c+'" stroke-width="1.6" opacity=".45"/>'; const v = vaVAt(w.b, w.S, kg, 1000);
+      w.ly = py(v); });
+    { const L = W.filter(w => w !== F).sort((a, b) => a.ly - b.ly); let last = -99; L.forEach(w => { if(w.ly - last < 12) return; last = w.ly;   // noms sans chevauchement
+        h += '<text class="tl" x="'+(px(1000) + 6)+'" y="'+(w.ly + 4)+'" style="fill:'+w.c+'">'+w.n+'</text>'; }); }
+    // l'aile mise en avant : courbe épaisse + 3 points étiquetés + sa vitesse à TA puissance
+    h += '<path d="'+curve(F)+'" fill="none" stroke="#0f172a" stroke-width="7"/><path d="'+curve(F)+'" fill="none" stroke="'+F.c+'" stroke-width="4"/>';
+    [...VA_PW, Pme].forEach((P, i) => { const v = vaVAt(F.b, F.S, kg, P), ok = v >= F.lo, me = i === 3;
+      h += '<circle cx="'+px(P)+'" cy="'+py(v)+'" r="'+(me ? 6 : 8)+'" fill="'+(ok ? (me ? '#fbbf24' : F.c) : '#0f172a')+'" stroke="#fff" stroke-width="2.5"/>';
+      h += '<text class="tt" x="'+px(P)+'" y="'+(py(v) - 14)+'" text-anchor="middle" style="font-size:'+(me ? 12 : 14)+'px; font-weight:900; paint-order:stroke; stroke:#0f172a; stroke-width:4px">'+(ok ? num(v, 1)+' km/h' : t('ne décolle pas','no takeoff'))+'</text>'; });
+    h += '<text class="tt" x="'+(px(1000) + 6)+'" y="'+(py(vaVAt(F.b, F.S, kg, 1000)) + 5)+'" style="font-size:14px; font-weight:900; fill:'+F.c+'; paint-order:stroke; stroke:#0f172a; stroke-width:4px">'+F.n+'</text>';
+    const who = VA.sel.length ? VA.sel.map(k => (VA_BRANDS.find(B => B.k === k) || {}).n).join(' + ') : t('toutes marques (2 ailes par zone) — choisis une marque au-dessus de la carte pour voir ses ailes','all brands (2 wings per zone) — pick a brand above the map to see its wings');
+    box.innerHTML = '<h4>⚡ '+t('Ta puissance → ta vitesse','Your power → your speed')+' · '+who+' <small>'+(VA.sel.length > 1 ? t('une couleur par marque · ','one colour per brand · ') : '')+t('survole une aile sur la carte : elle s\'affiche ici avec sa vitesse à 300, 600 et 900 W (et à ta puissance, en jaune). Plus la courbe est haute, plus l\'aile va vite pour les mêmes watts.','hover a wing on the map: it shows here with its speed at 300, 600 and 900 W (and at your power, in yellow). The higher the curve, the faster the wing for the same watts.')+'</small></h4>'+h+'</svg>';
   }
   function vaTry(b, S){
     const ib = $('i-b'), is = $('i-s');
@@ -1678,18 +1762,20 @@
     };
     const show = e => {
       if(VA.geo && vaKey(+$('i-w').value) !== VA.key) vaDraw();
-      const p = pick(e); if(!p){ tip.hidden = true; return; }
+      const p = pick(e); if(!p || (!p.wing && (p.b*p.b/p.S < VA.AR0 || p.b*p.b/p.S > VA.AR1))){ tip.hidden = true; return; }
+      if(p.wing && (!VA.hoverWing || VA.hoverWing.b !== p.b || VA.hoverWing.S !== p.S)){ VA.hoverWing = {n:p.wing.n.replace(' Foils', '').replace(' Foil', ''), b:p.b, S:p.S}; if(VA.pwArgs) vaPowChart(...VA.pwArgs); }
       const ar = p.b*p.b/p.S, ev = vaEval(p.b, p.S, VA.geo.kg), fits = ar >= VA.AR0 && ar <= VA.AR1;
       const inSl = p.b >= +$('i-b').min && p.b <= +$('i-b').max && p.S >= +$('i-s').min && p.S <= +$('i-s').max;
       const rec = p.wing && VA.sel.length && VA.reco ? VA.reco.find(r => Math.abs(r.b - p.b) < .01 && r.S === p.S) : null;
-      const RL = {'🏁':t('meilleure sur 300 m','best over 300 m'), '🛣️':t('meilleure sur 1 km','best over 1 km'), '🏆':t('polyvalente','all-round')};
+      const RL = {'🏁':t('meilleure sur 300 m','best over 300 m'), '⚡':t('rapide, petite conso','fast, low energy'), '🏆':t('polyvalente','all-round')};
       tip.style.background = rec ? 'color-mix(in srgb, '+VA_RC_C[rec.e]+' 30%, #0a1020)' : ''; tip.style.borderColor = rec ? VA_RC_C[rec.e] : '';
       tip.innerHTML = (rec ? '<div class="tt-rec" style="color:'+VA_RC_C[rec.e]+'">'+rec.e+' '+t('recommandée','recommended')+' · '+RL[rec.e]+'</div>' : '')
         + (p.wing ? '<div class="tt-h">'+p.wing.n+'</div>' : '')
         + '<div class="'+(p.wing ? '' : 'tt-h')+'">'+p.b+' cm · '+num(p.S, 0)+' cm² · AR '+num(ar, 1)+'</div>'
         + '300 m <b>'+(ev.r3.stall ? t('décroche en virage','stalls in turns') : vaTime(ev.r3.t)+' · '+num(300/ev.r3.t*3.6, 1)+t(' km/h de moyenne',' km/h average'))+'</b><br>'
         + t('décolle dès','takes off from')+' <b>~'+Math.round(ev.r1.lo)+' km/h</b>'
-        + (fits ? (e => '<div>⚡ '+t('rendement','efficiency')+' <b>'+e.score+'/100</b> · '+num(e.whkm, 0)+' Wh/km '+t('à','at')+' '+VA_VR+' km/h (~'+num(Math.round(e.W/10)*10, 0)+' W)</div>')(vaEff(p.b, p.S, VA.geo.kg)) : '')
+        + (fits ? '<div style="margin-top:4px; font-weight:800">'+t('À puissance égale :','At equal power:')+'</div>'+vaBars(p.b, p.S, VA.geo.kg)
+          + (m => '<div>🌿 '+t('meilleure conso','best energy use')+' <b>'+num(m.whkm, 0)+' Wh/km</b> '+t('à','at')+' ~'+num(m.v, 0)+' km/h</div>')(vaBest(p.b, p.S, VA.geo.kg)) : '')
         + (fits ? '<div style="margin-top:2px; font-weight:700">'+vaT(VA_CAT[ev.k].s)+'</div>' : '')
         + (p.wing ? '<div class="tt-c">'+(inSl ? t('clic : l\'essayer dans le simulateur','click: try it in the simulator') : t('hors des curseurs du simulateur','outside the simulator sliders'))+'</div>' : '');
       tip.hidden = false;
