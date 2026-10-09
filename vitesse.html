@@ -445,7 +445,6 @@
     <div class="atl-box"><canvas id="atl-cv" aria-hidden="true"></canvas><div class="win-tip" id="atl-tip" hidden></div></div>
     <div class="atl-fam" id="atl-fam"></div>
     <div class="atl-info" id="atl-info"></div>
-    <div class="wcombo" id="atl-combo"></div>
     <div class="pw-box" id="pw-box"></div>
     <div class="eco-box" id="eco-box"></div>
     <div class="win-leg" id="atl-leg"></div>
@@ -1509,7 +1508,6 @@
     VA.pts = pts;
     drawVLab();
     vaStar(c, px, py, kg, narrow, act);
-    vaCombo(kg);
     vaEcoGroups(act, kg);
     vaPowChart(act, VA.sel.length > 0, kg);   // lié au filtre de marque : 1 ou plusieurs marques → toutes leurs ailes
     if(VA.eLab.length){   // 3 colonnes à droite : 300 W · 600 W · 900 W
@@ -1617,29 +1615,6 @@
     ws.sort((a, b) => a.t - b.t);
     const inZ = ws.filter(w => w.t <= VA.best.b3*1.02), exW = (inZ.length ? inZ : ws.slice(0, 3)).slice(0, 6); VA.top = exW.map(w => ({n: w.n})); VA.topIn = inZ.length > 0;
     // (phrase-réponse au-dessus de la carte retirée — retour Paul ; VA.top sert encore à la vidéo)
-  }
-  // 🎯 LE COMBO SELON TON POIDS (fusion avec l'ancien bloc du simulateur) : réglé par la carte (poids, watts, stab, straps).
-  // L'aile la plus rapide = la plus petite qui démarre à coup sûr (≤ 17 km/h) avec l'allongement max fabricable (~17).
-  // Pas UN point : toute la zone rouge se vaut (< 2 %) → on donne la plage, + le tableau par poids.
-  const vaFast = kg => { const v = 17/3.6/1.15, S = Math.ceil(kg*9.81/(0.5*1025*1.2*v*v)*1e4/10)*10, b = Math.min(150, Math.round(Math.sqrt(VA.ARB*S))), r = vaRace(b, S, kg, 300); return {S, b, v: 300/r.t*3.6}; };
-  function vaCombo(kg){
-    const box = $('atl-combo'); if(!box) return;
-    const Z = {s0:1e9, s1:0, b0:1e9, b1:0}; VA.g.forEach(q => { const ar = q.b*q.b/q.S; if(q.r3.stall || q.r1.lo > 17 || ar < VA.AR0 || ar > VA.ARB || q.r3.t > VA.best.b3*1.02) return;
-      Z.s0 = Math.min(Z.s0, q.S); Z.s1 = Math.max(Z.s1, q.S); Z.b0 = Math.min(Z.b0, q.b); Z.b1 = Math.max(Z.b1, q.b); });
-    if(Z.s1 === 0){ box.innerHTML = ''; return; }
-    const r10 = v => num(Math.round(v/10)*10, 0), r5 = v => Math.round(v/5)*5, f = vaFast(kg), st = $('i-stab'), sl = st ? st.options[st.selectedIndex].text : '';
-    const chip = (v, l) => '<div class="wc-chip"><b>'+v+'</b><span>'+l+'</span></div>';
-    box.style.setProperty('--wc-acc', '#c0392b');
-    box.innerHTML = '<h4>🎯 '+t('Le combo selon ton poids','The combo for your weight')+' — sprint 300 m</h4>'
-      + '<div class="wc-sub">'+kg+' kg · '+num(VA.P, 0)+' W · '+sl+(vaStraps() > 1 ? ' · straps' : '')+' '+t('(réglages de la carte)','(map settings)')+'</div>'
-      + '<div class="wc-main">'+chip(r10(Z.s0)+'-'+r10(Z.s1)+' cm²', t('surface (zone rouge)','area (red zone)'))+chip(t('jusqu\'à ~','up to ~')+r5(Z.b1)+' cm', t('envergure : le plus possible','span: as long as possible'))
-        + chip('~'+num(300/VA.best.b3*3.6, 1)+' km/h', t('de moyenne sur 300 m','average over 300 m'))+chip('≤ 17 km/h', t('démarre à coup sûr','reliable takeoff'))+'</div>'
-      + '<div class="wc-btns"><button type="button" data-try="'+f.b+'|'+f.S+'">🎛️ '+t('l\'essayer dans le simulateur','try it in the simulator')+'</button></div>'
-      + '<div class="wc-tblw"><table class="wc-tbl"><tr><th>'+t('poids','weight')+'</th><th>'+t('aile la plus rapide','fastest wing')+'</th><th>300 m</th></tr>'
-      + [60, 75, 90, 105].map(k => { const q = vaFast(k); return '<tr'+(Math.abs(k - kg) < 7.5 ? ' class="on"' : '')+'><td>'+k+' kg</td><td>~'+num(q.S, 0)+' cm² · ~'+q.b+' cm</td><td>'+num(q.v, 1)+' km/h</td></tr>'; }).join('')+'</table></div>'
-      + '<div class="wc-note">'+t('À '+num(VA.P, 0)+' W. Entre les ailes de la zone rouge, moins de 2 % d\'écart (~0,5 km/h) : dans ce modèle, elles se valent. ⚠️ La règle qui prime : prends l\'aile que tu <b>démarres à coup sûr</b> — sinon monte d\'un cran.',
-        'At '+num(VA.P, 0)+' W. Between the red-zone wings, less than 2% (~0.5 km/h): in this model, they are equal. ⚠️ The rule above all: pick the wing you <b>start every time</b> — otherwise go one size up.')+'</div>';
-    box.querySelectorAll('[data-try]').forEach(bt => bt.addEventListener('click', () => vaTry(...bt.dataset.try.split('|').map(Number))));
   }
   const VA_RC_C = {'🏁':'#ff6fa3', '⚡':'#3ee08f', '🛣️':'#3ee08f', '🏆':'#5fb0ff'};   // mêmes familles que les zones 300 m / 1 km / les deux
   // les 3 recos d'une marque pour ce rider : 🏁 300 m · 🛣️ 1 km · 🏆 polyvalente
