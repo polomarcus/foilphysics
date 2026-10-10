@@ -74,6 +74,16 @@
   .tldr .t{font-size:1.45rem; font-weight:800; letter-spacing:-.015em; line-height:1.3;}
   .tldr .t b{color:#f59e0b;}
   .tldr .s{color:var(--muted); font-size:.9rem; margin-top:8px;}
+  .tl-cards{display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px; max-width:860px; margin:18px auto 0; text-align:left;}
+  .tl-c{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:12px 14px;}
+  .tl-c > b{display:block; font-size:1rem; font-weight:900; color:var(--txt); margin:2px 0 4px;}
+  .tl-e{font-size:1.4rem;}
+  .tl-c p{margin:0; font-size:.86rem; color:#cbd5e1; line-height:1.45;} .tl-c p b{color:#f59e0b;}
+  .tl-c small{display:block; margin-top:6px; font-size:.72rem; color:var(--dim);}
+  .tl-go{display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-top:18px;}
+  .tl-go a{text-decoration:none; font-weight:800; font-size:.9rem; padding:9px 18px; border-radius:999px; border:1.5px solid #f59e0b; color:#f59e0b;}
+  .tl-go a:first-child{background:#f59e0b; color:#0f172a;}
+  .tl-go a:hover{filter:brightness(1.1);}
 
   .disclaimer{color:#fcd34d; text-align:center; font-size:.78rem; margin:0 auto 34px; max-width:680px;}
 
@@ -366,6 +376,12 @@
 
   <div class="tldr">
     <div class="t" data-i18n="tldr-t">Pour la vitesse pure : <b>petite aile fine</b> + <b>petit stab</b><br>+ tes <b>watts de sprint</b>.</div>
+    <div class="tl-cards">
+      <div class="tl-c"><span class="tl-e">🪽</span><b data-i18n="tl1-h">L'aile</b><p data-i18n="tl1-p">La <b>plus petite</b> qui décolle, avec le <b>plus d'envergure</b> possible : moins de surface = moins de frottement.</p><small data-i18n="tl1-s">frottement ≈ surface × vitesse³</small></div>
+      <div class="tl-c"><span class="tl-e">🦶</span><b data-i18n="tl2-h">Straps + stab</b><p data-i18n="tl2-p">Les <b>straps</b> : +2 km/h minimum (tu tires aussi en remontant). Un <b>gros stab</b> freine : −1,7 km/h de 50 à 130 cm².</p></div>
+      <div class="tl-c"><span class="tl-e">⚡</span><b data-i18n="tl3-h">Tes watts</b><p data-i18n="tl3-p"><b>2× les watts</b> = seulement <b>+26 %</b> de vitesse : la vitesse pure, c'est d'abord un <b>sprint</b>.</p></div>
+    </div>
+    <div class="tl-go"><a href="#sim" data-i18n="tl-go1">🎛️ Ta vitesse max</a><a href="#atlas" data-i18n="tl-go2">🗺️ Voir toutes les ailes</a></div>
   </div>
 
   <!-- SIMULATEUR : résultat d'abord, réglages dessous -->
@@ -669,6 +685,15 @@
     'h1a':'The Race for <span class="hi">km/h</span> in pump foil',
     'h1b':'🚀 what makes a foil fast?',
         'tldr-t':'For pure speed: <b>small thin wing</b> + <b>small stab</b><br>+ your <b>sprint watts</b>.',
+    'tl1-h':'The wing',
+    'tl1-p':'The <b>smallest</b> one that takes off, with <b>as much span</b> as possible: less area = less friction.',
+    'tl1-s':'friction ≈ area × speed³',
+    'tl2-h':'Straps + stab',
+    'tl2-p':'<b>Straps</b>: +2 km/h minimum (you pull on the way up too). A <b>big stab</b> brakes: −1.7 km/h from 50 to 130 cm².',
+    'tl3-h':'Your watts',
+    'tl3-p':'<b>2× the watts</b> = only <b>+26%</b> speed: pure speed is first a <b>sprint</b>.',
+    'tl-go1':'🎛️ Your top speed',
+    'tl-go2':'🗺️ See all the wings',
     'sim-h3':'🎛️ Your top speed',
     'sim-learn':'💡 <b>But top speed is only one piece</b>: a real race is won on <b>acceleration</b> and in the <b>turns</b> (handling), and over distance you <b>can\'t hold sprint watts</b> — speed drops. See “The race” just below ↓',
     'l-s':'Wing area','l-b':'Span','l-prof':'Wing profile','l-mast':'Mast','l-stab':'Stab',

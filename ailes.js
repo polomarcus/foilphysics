@@ -30,7 +30,8 @@ window.FOIL_WINGS = [{k:'alp', n:'Alpine Foil', c:'#f472b6', w:[['RSX Carve 820'
     {k:'ind', n:'Indiana', c:'#2dd4bf', w:[['Dolphin S',82.7,720],['Dolphin M',92.5,900],['Dolphin L',101.3,1080],['Dolphin XL',109.4,1260],
       ['Marlin S',79.5,840],['Marlin M',86,990],['Marlin L',92.5,1140],['Marlin XL',102,1390],
       ['Barracuda M',95,850],['Barracuda L',105,1050],['Barracuda L+',116.6,1252],['Barracuda XL',132,1600],
-      ['Condor S',110,1362],['Condor M',126,1737],['Condor XL',169.6,2274],['Manta XL',139.6,2047]]},
+      ['Condor S',110,1362],['Condor M',126,1737],['Condor XL',169.6,2274],['Manta XL',139.6,2047],
+      ['Albatross L',149.6,1298]]},
     {k:'arm', n:'Armstrong', c:'#a78bfa', w:[['APF 1350',120.2,1350],['APF 1675',120.2,1675],['APF 1880',130.2,1880],   // APF : la gamme pump d'Armstrong (vérif. oct. 2026)
       ['UHA 770',98.5,770],['UHA 870',104.7,870],['UHA 970',110.6,970],['UHA 1070',116.1,1070],['UHA 1270',126.5,1270],
       ['HA 780',87.7,780],['HA 880',92.3,880],['HA 980',97.4,980],['HA 1080',102,1080],['HA 1180',106.6,1180],

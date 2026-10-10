@@ -456,8 +456,7 @@
   .note-fig canvas.fig-cv, .scale-note canvas.fig-cv, .kid-law canvas.fig-cv{display:block; width:100%; max-width:440px; margin:0 auto;}
   canvas[data-fig="kid"]{aspect-ratio:360/224;} .hiar3{display:grid; gap:6px; margin:8px 0 10px; color:#cbd5e1;} .hiar3 b{color:var(--txt);}
   .hiar-cap{font-size:.8rem; color:#cbd5e1; text-align:center; margin-top:8px;} .hiar-cap b{color:var(--txt);}
-  canvas[data-fig="ar"]{aspect-ratio:360/184;}
-  canvas[data-fig="law"]{aspect-ratio:360/150; margin:10px auto 4px !important;} canvas[data-fig="ucurve"]{aspect-ratio:360/214;} canvas[data-fig="rake"]{aspect-ratio:360/206;}
+  canvas[data-fig="law"]{aspect-ratio:360/150; margin:10px auto 4px !important;} canvas[data-fig="rake"]{aspect-ratio:360/206;}
   .nf-caps{display:flex; justify-content:center; gap:10px 22px; margin-top:8px; font-size:.78rem;
     color:#cbd5e1; text-align:center; flex-wrap:wrap;}
   .nf-caps b{color:var(--txt);}
@@ -582,6 +581,16 @@
   .tldr .t{font-size:1.45rem; font-weight:800; letter-spacing:-.015em; line-height:1.3;}
   .tldr .t b{color:var(--sky);}
   .tldr .s{color:var(--muted); font-size:.9rem; margin-top:8px;}
+  .tl-cards{display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px; max-width:860px; margin:18px auto 0; text-align:left;}
+  .tl-c{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:12px 14px;}
+  .tl-c > b{display:block; font-size:1rem; font-weight:900; color:var(--txt); margin:2px 0 4px;}
+  .tl-e{font-size:1.4rem;}
+  .tl-c p{margin:0; font-size:.86rem; color:#cbd5e1; line-height:1.45;} .tl-c p b{color:var(--sky);}
+  .tl-c small{display:block; margin-top:6px; font-size:.72rem; color:var(--dim);}
+  .tl-go{display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-top:18px;}
+  .tl-go a{text-decoration:none; font-weight:800; font-size:.9rem; padding:9px 18px; border-radius:999px; border:1.5px solid var(--sky); color:var(--sky);}
+  .tl-go a:first-child{background:var(--sky); color:#0f172a;}
+  .tl-go a:hover{filter:brightness(1.1);}
 
   /* ---------- Animations d'entrée au scroll (désactivées si reduced-motion) ---------- */
   @media (prefers-reduced-motion: no-preference){
@@ -682,13 +691,18 @@
   <header>
     <h1 data-i18n="h1"><span class="h1a">Le Choc des <span class="hi">Watts</span></span><span class="h1b">🌊 en pump foil</span></h1>
     <svg class="h1deco" viewBox="0 0 130 12" aria-hidden="true"><path d="M4 7 q10 -7 21 0 t21 0 t21 0 t21 0 t21 0" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/></svg>
-    <p class="hsub" data-i18n="hsub">Pourquoi une aile de <b>longue distance</b> te fait voler bien plus longtemps à effort réduit, là où une aile classique te met dans le rouge en quelques minutes.</p>
+    <p class="hsub" data-i18n="hsub">Pourquoi une aile à <b>longue envergure</b> te fait voler bien plus longtemps à effort réduit, là où une aile classique te met dans le rouge en quelques minutes.</p>
   </header>
 
   <!-- TL;DR -->
   <div class="tldr">
     <div class="t" data-i18n="tldr-t">Le secret pour voler longtemps :<br><b>grande envergure</b> + <b>poids léger</b>.</div>
-    <div class="s" data-i18n="tldr-s">Le reste (profil, mât, stab…) se joue à quelques % — et c'est ton cardio qui fait la durée.</div>
+    <div class="tl-cards">
+      <div class="tl-c"><span class="tl-e">📏</span><b data-i18n="tl1-h">L'envergure</b><p data-i18n="tl1-p">Au bout de l'aile, l'eau <b>tourbillonne</b> et te freine : une aile <b>longue</b> freine moins.</p><small data-i18n="tl1-s">traînée des tourbillons ∝ 1 / envergure²</small></div>
+      <div class="tl-c"><span class="tl-e">🧍</span><b data-i18n="tl2-h">Le poids</b><p data-i18n="tl2-p">Chaque kilo se paie : <b>+10 kg ≈ +20 %</b> d'effort, avec la même aile.</p></div>
+      <div class="tl-c"><span class="tl-e">🫀</span><b data-i18n="tl3-h">Ton cardio</b><p data-i18n="tl3-p">Le reste (profil, mât, stab…) se joue à <b>quelques %</b> : c'est ton <b>seuil</b> qui fait la durée.</p></div>
+    </div>
+    <div class="tl-go"><a href="#duel" data-i18n="tl-go1">⚔️ Comparer deux ailes</a><a href="#watts" data-i18n="tl-go2">📊 Où partent tes watts</a></div>
   </div>
   <p style="text-align:center;margin:20px 0 0"><a href="debutant.html" data-i18n="deb-cta"
     style="display:inline-block;background:rgba(52,211,153,.10);border:1px solid rgba(52,211,153,.45);color:#6ee7b7;border-radius:999px;padding:10px 18px;font-weight:700;text-decoration:none;font-size:.92rem">🎓
@@ -1160,12 +1174,7 @@
         <div><b>② La surface</b> te laisse voler <b>lentement</b>, là où le frottement est faible.</div>
         <div><b>③ L'allongement</b> (envergure² / surface) aide… mais <b>pas à l'extrême</b> :</div>
       </div>
-      <canvas class="fig-cv" data-fig="ar"></canvas>
-      <div class="hiar-cap">À envergure égale : d'AR 10 à 15 ≈ <b>−20 % de watts</b>, de 15 à 22 à peine <b>−6 %</b>… pendant que le <b>décrochage monte</b>. <b>L'envergure d'abord, l'AR ensuite.</b></div>
-    </div>
-    <div class="note-fig" aria-hidden="true" style="margin-bottom:16px">
-      <canvas class="fig-cv" data-fig="ucurve"></canvas>
-      <div class="nf-caps" data-i18n="fig-u-cap"><span>🔴 <b>portance</b> : chère quand tu vas lentement, fond avec l'envergure</span><span>⚪ <b>frottement</b> : explose quand tu accélères</span><span>➕ les deux s'additionnent → un <b>creux</b> = ta croisière éco</span></div>
+      <div class="hiar-cap">À envergure égale : d'AR 10 à 15 ≈ <b>−20 % de watts</b>, de 15 à 22 à peine <b>−6 %</b>… pendant qu'elle <b>vole de plus en plus tard</b> (il faut aller plus vite pour qu'elle te porte). <b>L'envergure d'abord, l'AR ensuite.</b></div>
     </div>
     <div class="legend">
       <span data-i18n="leg-ind"><i class="i-ind"></i><b>🔴 Freinage « portance »</b> — le prix à payer juste pour rester en l'air. Explose si tu voles lentement ou avec une aile courte.</span>
@@ -1531,6 +1540,7 @@
   // Trim drag : Cm0 lié à la cambrure du profil — Cm0(cd0)=6·cd0+0,012 → fin ~−0,06, épais ~−0,12 (chaque aile diffère). Bras stab ~0,65 m. Terme dominant = surcroît d'induite de l'aile (~1-2,5 %).
   const V_FLOOR = 11/3.6;    // plancher de croisière : sous ~11 km/h, le pump réel ne glisse plus (le modèle stationnaire sous-estime)
   const rho = () => 1025;   // eau de mer (le choix mer/lac ne changeait presque rien : ±2,5 %)
+  const VIDEO = /[?&]video=1/.test(location.search);   // 🎬 ?video=1 : la page sert de moteur à la vidéo Insta (insta-longue.html) — sans ce paramètre, rien ne change
 
   let LANG = 'fr';
   const t = (fr, en) => LANG === 'fr' ? fr : en;   // helper i18n pour le texte généré en JS
@@ -1803,19 +1813,22 @@
 
   function drawPowerCurve(m1, m2, prog=1){
     const cv = document.getElementById('pvGraph'); if(!cv || !m1 || !m2) return;
-    const cssW = cv.clientWidth || 600, cssH = 270, dpr = window.devicePixelRatio || 1;
+    // 🎬 vidéo : repère fixe, plus haut, pixels ×2 et textes/traits ×1,7 (lisibles une fois posés en 1080 de large)
+    const VZ = VIDEO ? 1.7 : 1;
+    const cssW = VIDEO ? 540 : (cv.clientWidth || 600), cssH = VIDEO ? 500 : 270, dpr = VIDEO ? 2 : (window.devicePixelRatio || 1);
     cv.width = cssW*dpr; cv.height = cssH*dpr;
     const ctx = cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
     ctx.clearRect(0,0,cssW,cssH);
     const css = getComputedStyle(document.documentElement);
     const cLine = (css.getPropertyValue('--line')||'#1e293b').trim();
     const cTxt  = (css.getPropertyValue('--txt')||'#e2e8f0').trim();
-    const padL=80, padR=18, padT=16, padB=52;
+    const padL=VIDEO?96:80, padR=VIDEO?22:18, padT=VIDEO?40:16, padB=VIDEO?78:52;
     const gx0=padL, gx1=cssW-padR, gy0=cssH-padB, gy1=padT;
     const vmin=8, vmax=26;
     let ymax = Math.min(500, Math.max(m1.Psweet, m2.Psweet)*1.85);
     ymax = Math.max(200, Math.ceil(ymax/50)*50);            // arrondi à 50 W (peu de marge → écart plus lisible)
     ymax = Math.max(ymax, Math.ceil((riderCP()+35)/50)*50); // le seuil 🫀 reste toujours dans le cadre
+    if(VIDEO && drawPowerCurve.fixY) ymax = drawPowerCurve.fixY;   // vidéo : échelle figée pendant un balayage (sinon l'axe saute)
     const X = vk => gx0 + (vk-vmin)/(vmax-vmin)*(gx1-gx0);
     const Y = p  => gy0 - Math.min(p,ymax)/ymax*(gy0-gy1);
 
@@ -1828,35 +1841,36 @@
     ctx.globalAlpha=1;
 
     // graduations (grosses, contrastées)
-    ctx.fillStyle = cTxt; ctx.font = '13px system-ui,sans-serif';
+    ctx.fillStyle = cTxt; ctx.font = (13*VZ)+'px system-ui,sans-serif';
     ctx.textAlign='center'; ctx.textBaseline='top';
-    [10,15,20,25].forEach(vk=> ctx.fillText(vk+'', X(vk), gy0+8));
+    [10,15,20,25].forEach(vk=> ctx.fillText(vk+'', X(vk), gy0+8*VZ));
     ctx.textAlign='right'; ctx.textBaseline='middle';
-    for(let p=0;p<=ymax+1;p+=50) ctx.fillText(p+'', gx0-12, Y(p));
+    for(let p=0;p<=ymax+1;p+=VIDEO&&ymax>400?100:50) ctx.fillText(p+'', gx0-12, Y(p));
 
     // titres d'axes avec unité
-    ctx.font = '600 13px system-ui,sans-serif'; ctx.fillStyle = cTxt;
+    ctx.font = '600 '+(13*VZ)+'px system-ui,sans-serif'; ctx.fillStyle = cTxt;
     ctx.textAlign='center'; ctx.textBaseline='bottom';
     ctx.fillText(t('Vitesse (km/h)','Speed (km/h)'), (gx0+gx1)/2, cssH-4);
-    ctx.save(); ctx.translate(16, (gy0+gy1)/2); ctx.rotate(-Math.PI/2);
+    ctx.save(); ctx.translate(16*VZ, (gy0+gy1)/2); ctx.rotate(-Math.PI/2);
     ctx.textAlign='center'; ctx.textBaseline='middle';
     ctx.fillText(t('Puissance (W)','Power (W)'), 0, 0); ctx.restore();
 
     // 🫀 seuil du rider (forme physique) : sous la ligne = tenable des heures — suit le select #rider-cp
     const cpY = Y(riderCP());
     ctx.save();
-    ctx.strokeStyle = '#f8fafc'; ctx.lineWidth = 1.5; ctx.setLineDash([6,5]); ctx.globalAlpha = .8;
+    ctx.strokeStyle = '#f8fafc'; ctx.lineWidth = 1.5*VZ; ctx.setLineDash([6*VZ,5*VZ]); ctx.globalAlpha = .8;
     ctx.beginPath(); ctx.moveTo(gx0, cpY); ctx.lineTo(gx1, cpY); ctx.stroke();
     ctx.restore();
-    const cpLab = '🫀 ' + t('ton seuil','your threshold');
-    ctx.font = '700 12px system-ui,sans-serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
-    ctx.lineWidth = 3.5; ctx.strokeStyle = '#0f172a'; ctx.strokeText(cpLab, gx0+6, cpY-3);   // halo
-    ctx.fillStyle = '#f8fafc'; ctx.fillText(cpLab, gx0+6, cpY-3);
+    const cpLab = (VIDEO ? '' : '🫀 ') + t('ton seuil','your threshold');   // vidéo : pas d'emoji
+    const cpX = VIDEO ? gx1-6 : gx0+6;   // vidéo : étiquette à droite (à gauche, le point de l'aile classique la recouvre)
+    ctx.font = '700 '+(12*VZ)+'px system-ui,sans-serif'; ctx.textAlign = VIDEO ? 'right' : 'left'; ctx.textBaseline = 'bottom';
+    ctx.lineWidth = 3.5*VZ; ctx.strokeStyle = '#0f172a'; ctx.strokeText(cpLab, cpX, cpY-3);   // halo
+    ctx.fillStyle = '#f8fafc'; ctx.fillText(cpLab, cpX, cpY-3);
 
     drawPowerCurve.geo = {X, Y, vmin, vmax, ymax, gx0, gx1, gy0, gy1};   // pour le survol
     const vEnd = vmin + (vmax-vmin)*prog;   // tracé progressif gauche → droite
     const curve = (m,col)=>{
-      ctx.strokeStyle=col; ctx.lineWidth=2.6; ctx.beginPath();
+      ctx.strokeStyle=col; ctx.lineWidth=2.6*VZ; ctx.beginPath();
       let started=false;
       for(let vk=Math.max(vmin, m.vStall*3.6); vk<=vEnd; vk+=0.25){
         const p=m.P(vk/3.6);
@@ -1868,12 +1882,12 @@
       if(prog < 1) return;
       // point croisière conseillée + valeur en W directement sur le point
       const xs=X(m.vSweet*3.6), ys=Y(m.Psweet);
-      ctx.fillStyle=col; ctx.beginPath(); ctx.arc(xs,ys,5,0,7); ctx.fill();
-      ctx.strokeStyle='#0f172a'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(xs,ys,5,0,7); ctx.stroke();
+      ctx.fillStyle=col; ctx.beginPath(); ctx.arc(xs,ys,5*VZ,0,7); ctx.fill();
+      ctx.strokeStyle='#0f172a'; ctx.lineWidth=2*VZ; ctx.beginPath(); ctx.arc(xs,ys,5*VZ,0,7); ctx.stroke();
       const lab = Math.round(m.Psweet)+' W';
-      ctx.font='700 13px system-ui,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='bottom';
-      ctx.lineWidth=3.5; ctx.strokeStyle='#0f172a'; ctx.strokeText(lab, xs, ys-9);   // halo pour la lisibilité
-      ctx.fillStyle=col; ctx.fillText(lab, xs, ys-9);
+      ctx.font='700 '+(13*VZ)+'px system-ui,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='bottom';
+      ctx.lineWidth=3.5*VZ; ctx.strokeStyle='#0f172a'; ctx.strokeText(lab, xs, ys-9*VZ);   // halo pour la lisibilité
+      ctx.fillStyle=col; ctx.fillText(lab, xs, ys-9*VZ);
     };
     curve(m1, PV1); curve(m2, PV2);
   }
@@ -2398,12 +2412,11 @@
     'deep-h3':'🔬 Going further',
     'deep-lede':'The model in detail, section by section — click to unfold.',
     'kid-anim-cap':'<span>🌀 below the wing it pushes, above it sucks → water <b>curls around the tips</b>: those vortices carry your energy away, they are <b>the brake</b></span><span>🟧 same weight on <b>less span</b> → stronger vortices → <b>2.5× more brake</b> to pump against</span>',
-    'fig-u-cap':'<span>🔴 <b>lift</b>: expensive when you go slow, melts with span</span><span>⚪ <b>friction</b>: explodes when you speed up</span><span>➕ both add up → a <b>dip</b> = your eco cruise</span>',
     'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve','tb-more':'Links ▾','tb-model':'💻 Physics model',
     'xp-lbl':'Explanations',
     'deb-cta':'🎓 Never flown yet? Start here — the learning setup',
     'h1':'<span class="h1a">The <span class="hi">Watts</span> Showdown</span><span class="h1b">🌊 in pump foil</span>',
-    'hsub':'Why a <b>High Aspect</b> wing lets you fly far longer for less effort, where a classic pump wing puts you in the red within minutes.',
+    'hsub':'Why a <b>long-span</b> wing lets you fly far longer for less effort, where a classic pump wing puts you in the red within minutes.',
     'disclaimer':'⚠️ <b>Estimated figures, not real measurements.</b> Wing profiles are often kept secret by brands: this comparator gives <b>educational orders of magnitude</b> (trends), not manufacturer values. Treat it as a tool to <b>understand</b> — not a test bench.',
     'story-sum':'📖 Understand in 2 min: why a long wing saves energy (and why it\'s recent)',
     'story-body':`
@@ -2449,7 +2462,15 @@
       It's not a revolution of <b>ideas</b>, it's a revolution of <b>manufacturing</b>.`,
     'pick':'👇 <b>Pick two real wings</b> to compare — speed snaps automatically to each one\'s recommended cruise.',
     'tldr-t':'The secret to flying long:<br><b>wide span</b> + <b>light weight</b>.',
-    'tldr-s':'Everything else (profile, mast, stab…) plays out in single digits — and your cardio sets the duration.',
+    'tl1-h':'The span',
+    'tl1-p':'At the wingtips the water <b>swirls</b> and brakes you: a <b>long</b> wing brakes less.',
+    'tl1-s':'vortex drag ∝ 1 / span²',
+    'tl2-h':'Your weight',
+    'tl2-p':'Every kilo costs you: <b>+10 kg ≈ +20%</b> effort, on the same wing.',
+    'tl3-h':'Your fitness',
+    'tl3-p':'The rest (profile, mast, stab…) plays out in <b>single digits</b>: your <b>threshold</b> sets the duration.',
+    'tl-go1':'⚔️ Compare two wings',
+    'tl-go2':'📊 Where your watts go',
     'velo-h':'🚴 Cycling vs foiling: same engine, two bills',
     'velo-txt':'<b>The engine is you — and it\'s the same one.</b> The watts you put out pumping are the ones you\'d put out cycling: 150 W cruising, 220 W as a regular athlete. Only the bill changes — that\'s the drawing above: the road carries you for free, the water doesn\'t.<br><br><b>Weird consequence #1:</b> on a bike, slowing down = always easier. On a foil, <b>too slow = harder</b> — the «staying airborne» bill explodes at low speed. Hence the U-shaped curve in the chart above, and the eco cruise at the bottom of the U.<br><br><b>Weird consequence #2:</b> no freewheel. Stop pumping, the foil settles down. Your «freewheel» is the <b>wing\'s glide</b> — exactly what a wide span buys.<br><br><b>Bottom line:</b> a good wing brings you to ~15 Wh/km — walking level. The bike stays unbeatable — ~6 Wh/km, 2.5× less — but it <b>never paid to fly</b>.',
     'fig-velo-l1':'the road carries you for free',
@@ -2515,7 +2536,7 @@
     'note-visco':'<div class="note-title">🌡️ Cold vs warm water — viscosity, not density</div>Common myth: «cold water is denser». In fact <b>density</b> shifts only <b>~0.3%</b> over 20 °C. What really changes is the <b>viscosity</b>: between <b>winter (~5 °C)</b> and <b>summer (~25 °C)</b> it <b>drops ~40%</b> → the <b>Reynolds number rises ~70%</b> → which changes how well the flow <b>stays attached to the profile</b>. In <b>cold water</b> (more viscous, lower Reynolds): a bit <b>more drag</b>, and above all <b>less stall margin</b> — your wing <b>can\'t fly quite as slowly</b> and glides a touch less. On <b>power</b> the effect stays <b>modest (~1%)</b>, but it <b>shifts the working range</b>: the same wing doesn\'t handle the same in January and July.',
     'note-fus':'<div class="note-title">🔧 Fuselage — it\'s a lever arm</div>The stab acts at a distance <b>L</b> behind the wing (= the fuselage length). The <b>restoring moment</b> in pitch is proportional to this arm (<b>∝ L</b>), and <b>damping</b> (what slows rotation) rises even faster (<b>∝ L²</b>):<br>• <b>Long (70 cm)</b> → long arm → strong restoring + strong damping: the foil <b>self-corrects</b>, pitch is slow and smooth (stable, reassuring) — but you must <b>force</b> to pitch it, so pumping is softer, and more surface in the water = more drag.<br>• <b>Short (60 cm) / ultra short (52 cm)</b> → short arm → little restoring and damping: pitch <b>reacts instantly</b>, you trigger the pump with less effort and carve tighter — but the foil <b>no longer self-corrects</b> → twitchy, active piloting required.',
     'note-stab':'<div class="note-title">🔧 Stab — the rear lifting surface that balances the foil</div>Its (negative) lift counters the wing\'s nose-down moment. <b>Big (100)</b> = large stabilising force + big damping → forgiving, but more surface in the water = more drag. <b>Small (50)</b> = less drag and a livelier wing, but the balance is finer to hold (reduced error margin). Since the foil is <b>lightly damped</b>, you pump it at <b>higher cadence but with less force</b> each stroke; a big stab forces the opposite — bigger, harder strokes, less often.<br><span style="color:var(--muted)">In the item-by-item detail, fuselage and stab weigh on "friction" — efficiency is paid in stability, and vice versa.</span>',
-    'why-hiar':'<div class="note-title">🪽 Why does a big thin wing save energy?</div><div class="hiar3"><div><b>① Span makes the savings</b>: wingtip vortices cost <b>1/span²</b> (see 🧒 above).</div><div><b>② Area</b> lets you fly <b>slow</b>, where friction is low.</div><div><b>③ Aspect ratio</b> (span² / area) helps… but <b>not at the extreme</b>:</div></div><canvas class="fig-cv" data-fig="ar"></canvas><div class="hiar-cap">At equal span: from AR 10 to 15 ≈ <b>−20% watts</b>, from 15 to 22 barely <b>−6%</b>… while the <b>stall speed climbs</b>. <b>Span first, AR second.</b></div>',
+    'why-hiar':'<div class="note-title">🪽 Why does a big thin wing save energy?</div><div class="hiar3"><div><b>① Span makes the savings</b>: wingtip vortices cost <b>1/span²</b> (see 🧒 above).</div><div><b>② Area</b> lets you fly <b>slow</b>, where friction is low.</div><div><b>③ Aspect ratio</b> (span² / area) helps… but <b>not at the extreme</b>:</div></div><div class="hiar-cap">At equal span: from AR 10 to 15 ≈ <b>−20% watts</b>, from 15 to 22 barely <b>−6%</b>… while it <b>flies later and later</b> (you need more speed for it to carry you). <b>Span first, AR second.</b></div>',
     'fig-mast-t1':'flying high ✓',
     'fig-mast-t2':'flying low',
     'fig-mast-l1':'~15-20 cm immersed ✓',
@@ -2575,12 +2596,11 @@
   const FRC = {};
   /* ---------- figures animées pédagogiques (canvas[data-fig]) ----------
      kid    : pourquoi une grande envergure fatigue moins (l'eau poussée vers le bas, vue de derrière)
-     ucurve : les deux freinages qui s'additionnent → la courbe en U, aile classique vs longue distance
      rake   : pourquoi une cale positive aide (même vitesse → porte plus → on peut ralentir)
      Les canvas sont retrouvés à chaque image : la bascule FR/EN remplace le HTML qui les contient. */
   (() => {
     const RMF = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const FW = 360, FH = {ar:184, law:150, kid:224, ucurve:214, rake:206};
+    const FW = 360, FH = {law:150, kid:224, rake:206};
     const ssf = u => u <= 0 ? 0 : u >= 1 ? 1 : u*u*(3-2*u);
     const FONT = 'system-ui,-apple-system,sans-serif';
     function ctxFor(c){
@@ -2602,44 +2622,6 @@
       g.lineTo(x+dx-ux*h+uy*h*.6, y+dy-uy*h-ux*h*.6); g.closePath(); g.fill();
     }
     const rnd = (() => { let s = 7; return () => (s = (s*16807) % 2147483647) / 2147483647; })();
-
-    /* 🪽 l'allongement, à envergure égale (150 cm) : 3 ailes AR 10 / 15 / 22.
-       Watts relatifs = 74,6 + 552·e^(−AR/3,25) (calé sur le texte : −20 % d'AR 10 à 15, −6 % de 15 à 22) ;
-       décrochage ∝ √(1/surface) ∝ √AR à envergure fixée (9,5 km/h à AR 10). */
-    const ARS = [10, 15, 22].map(a => ({a, S:Math.round(22500/a/10)*10, w:(74.6 + 552*Math.exp(-a/3.25))/(74.6 + 552*Math.exp(-10/3.25)), v:9.5*Math.sqrt(a/10)}));
-    function drawAR(g, now){
-      g.clearRect(0,0,FW,FH.ar);
-      const XS = [88, 198, 308], hi = Math.floor((now % 9)/3);              // la colonne mise en avant
-      label(g, t('même envergure (150 cm) · de plus en plus fine','same span (150 cm) · thinner and thinner'), FW/2, 12, '#94a3b8', 9, 600);
-      g.fillStyle = 'rgba(52,211,153,.12)'; g.beginPath(); g.roundRect(XS[1] - 50, 20, 100, 160, 8); g.fill();
-      label(g, t('✓ le bon compromis','✓ the sweet spot'), XS[1], 174, '#6ee7b7', 9.5, 800);
-      ARS.forEach((A, i) => {
-        const x = XS[i], on = i === hi, col = i === 1 ? '#34d399' : '#38bdf8';
-        g.globalAlpha = on ? 1 : .8;
-        label(g, 'AR ' + A.a, x, 32, on ? '#f8fafc' : '#cbd5e1', 12.5, 800);
-        label(g, A.S + ' cm²', x, 45, '#94a3b8', 9, 600);
-        const half = 42, ch = A.S/150*0.95;                                  // corde (cm) → px
-        g.fillStyle = col; g.beginPath(); g.moveTo(x - half, 60); g.quadraticCurveTo(x, 60 - ch*1.1, x + half, 60); g.quadraticCurveTo(x, 60 + ch*.5, x - half, 60); g.fill();
-        // watts à fournir
-        const bw = 78;
-        g.fillStyle = 'rgba(148,163,184,.18)'; g.beginPath(); g.roundRect(x - bw/2, 84, bw, 11, 5.5); g.fill();
-        g.fillStyle = '#38bdf8'; g.beginPath(); g.roundRect(x - bw/2, 84, bw*A.w, 11, 5.5); g.fill();
-        label(g, Math.round(A.w*100) + ' %', x, 110, '#7dd3fc', 12, 800);
-        // décrochage
-        g.fillStyle = 'rgba(148,163,184,.18)'; g.beginPath(); g.roundRect(x - bw/2, 128, bw, 11, 5.5); g.fill();
-        g.fillStyle = '#f87171'; g.beginPath(); g.roundRect(x - bw/2, 128, bw*A.v/15, 11, 5.5); g.fill();
-        label(g, num(A.v,1) + ' km/h', x, 154, '#fca5a5', 12, 800);
-        g.globalAlpha = 1;
-      });
-      label(g, t('watts à fournir','watts needed'), 4, 80, '#7dd3fc', 8.5, 800, 'left');
-      label(g, t('décroche à','stalls at'), 4, 124, '#fca5a5', 8.5, 800, 'left');
-      // les écarts, entre les colonnes
-      const d = (x, y, s, c) => label(g, s, x, y, c, 10, 800);
-      d(143, 110, '−' + Math.round(100*(1 - ARS[1].w/ARS[0].w)) + ' %', '#6ee7b7');
-      d(253, 110, '−' + Math.round(100*(1 - ARS[2].w/ARS[1].w)) + ' %', '#94a3b8');
-      d(143, 154, '+' + num(ARS[1].v - ARS[0].v, 1), '#fca5a5');
-      d(253, 154, '+' + num(ARS[2].v - ARS[1].v, 1), '#fca5a5');
-    }
 
     /* 📐 la loi du foil : l'envergure passe de ×1 à ×2, l'effort gaspillé (aire du carré) suit 1/envergure² */
     function drawLaw(g, now){
@@ -2727,60 +2709,6 @@
       label(g, t('même surface · même portance (ton poids)','same area · same lift (your weight)'), FW/2, 219, '#94a3b8', 8.8, 600);
     }
 
-    /* ② ce qui te freine : freinage « portance » (∝ 1/(envergure²·v)) + « frottement » (∝ v³) = courbe en U */
-    const WINGS = [
-      {n:() => t('🪽 aile classique · 95 cm','🪽 classic wing · 95 cm'), b:.95, c:.9, col:'#f59e0b'},
-      {n:() => t('🌊 aile longue distance · 150 cm','🌊 long-distance wing · 150 cm'), b:1.5, c:1.0, col:'#38bdf8'}
-    ];
-    const pInd = (W,v) => 700/(v*W.b*W.b)/0.75, pFr = (W,v) => W.c*v*v*v/0.75;
-    function drawU(g, now){
-      g.clearRect(0,0,FW,FH.ucurve);
-      const X0 = 40, X1 = 286, Y0 = 176, Y1 = 30, V0 = 9, V1 = 30, PMAX = 840;
-      const X = kmh => X0 + (kmh-V0)/(V1-V0)*(X1-X0), Y = p => Y0 - Math.min(p, PMAX)/PMAX*(Y0-Y1);
-      const CYC = 14, cyc = Math.floor(now/CYC), u = now % CYC, A = WINGS[cyc % 2], B = WINGS[1 - cyc % 2];
-      const kmh = 19.5 - 9*Math.cos(2*Math.PI*u/7), v = kmh/3.6;
-      // axes
-      g.strokeStyle = '#475569'; g.lineWidth = 1;
-      g.beginPath(); g.moveTo(X0, Y1-6); g.lineTo(X0, Y0); g.lineTo(X1+4, Y0); g.stroke();
-      for(const k of [10,15,20,25,30]){ label(g, String(k), X(k), Y0+12, '#94a3b8', 9, 600); }
-      label(g, t('vitesse (km/h)','speed (km/h)'), (X0+X1)/2, Y0+24, '#64748b', 9, 600);
-      for(const p of [0,200,400,600,800]){ label(g, String(p), X0-5, Y(p)+3, '#94a3b8', 9, 600, 'right'); }
-      label(g, 'W', X0-5, Y1-8, '#64748b', 9, 700, 'right');
-      const curve = (f, col, w, dash) => {
-        g.beginPath();
-        for(let k=V0; k<=V1+.01; k+=.25){ const p = f(k/3.6); k === V0 ? g.moveTo(X(k), Y(p)) : g.lineTo(X(k), Y(p)); }
-        g.strokeStyle = col; g.lineWidth = w; g.setLineDash(dash || []); g.stroke(); g.setLineDash([]);
-      };
-      curve(vv => pInd(A,vv), '#f43f5e', 1.6, [5,4]);
-      curve(vv => pFr(A,vv), '#94a3b8', 1.6, [5,4]);
-      curve(vv => pInd(A,vv) + pFr(A,vv), A.col, 3);
-      // le creux : la croisière éco
-      let vm = 3, pm = 1e9; for(let k=V0; k<=V1; k+=.1){ const p = pInd(A,k/3.6)+pFr(A,k/3.6); if(p < pm){ pm = p; vm = k; } }
-      g.fillStyle = A.col; g.beginPath(); g.arc(X(vm), Y(pm), 2.6, 0, 6.2832); g.fill();
-      label(g, t('croisière éco ▼','eco cruise ▼'), Math.max(X0 + 44, X(vm)), Y(pm) - 16, A.col, 9.5, 800);
-      // légende (plutôt que des étiquettes posées sur les courbes, qui se chevauchent)
-      const lg = [[A.col, [], t('total à fournir','total you pay'), 3], ['#f43f5e', [5,4], t('portance','lift'), 1.6], ['#94a3b8', [5,4], t('frottement','friction'), 1.6]];
-      lg.forEach((L, i) => { const lx = X0 + 10, ly = Y1 + 4 + i*12;
-        g.strokeStyle = L[0]; g.lineWidth = L[3]; g.setLineDash(L[1]); g.beginPath(); g.moveTo(lx, ly); g.lineTo(lx + 16, ly); g.stroke(); g.setLineDash([]);
-        label(g, L[2], lx + 20, ly + 3, '#cbd5e1', 8.5, 700, 'left'); });
-      // le rider qui balaie les vitesses
-      const pi = pInd(A,v), pf = pFr(A,v), pt = pi + pf;
-      g.strokeStyle = 'rgba(248,250,252,.25)'; g.beginPath(); g.moveTo(X(kmh), Y0); g.lineTo(X(kmh), Y(pt)); g.stroke();
-      g.fillStyle = '#f8fafc'; g.beginPath(); g.arc(X(kmh), Y(pt), 5, 0, 6.2832); g.fill();
-      g.strokeStyle = A.col; g.lineWidth = 2; g.stroke();
-      // la barre empilée : ce que tu paies, maintenant
-      const bx = 306, bw = 26, hb = p => Math.min(p, PMAX)/PMAX*(Y0-Y1);
-      g.fillStyle = '#94a3b8'; g.fillRect(bx, Y0 - hb(pf), bw, hb(pf));
-      g.fillStyle = '#f43f5e'; g.fillRect(bx, Y0 - hb(pf) - hb(pi), bw, hb(pi));
-      label(g, Math.round(pt) + ' W', bx + bw/2, Math.max(Y1, Y0 - hb(pt)) - 5, '#f8fafc', 10.5, 800);
-      if(hb(pi) > 11) label(g, Math.round(pi), bx + bw/2, Y0 - hb(pf) - hb(pi)/2 + 3, '#fff1f2', 8.5, 800);
-      if(hb(pf) > 11) label(g, Math.round(pf), bx + bw/2, Y0 - hb(pf)/2 + 3, '#0f172a', 8.5, 800);
-      label(g, Math.round(kmh) + ' km/h', bx + bw/2, Y0 + 12, '#cbd5e1', 9, 700);
-      label(g, A.n(), (X0+X1)/2, 13, A.col, 11, 800);
-      label(g, kmh < 15 ? t('lent : la portance coûte cher','slow: lift is expensive') : kmh > 24 ? t('vite : le frottement explose','fast: friction explodes') : t('entre les deux : le moins cher','in between: cheapest'),
-            (X0+X1)/2, 26, '#cbd5e1', 9.5, 600);
-    }
-
     /* ③ la cale positive : ① même vitesse, l'aile inclinée pousse plus d'eau vers le bas → porte plus ;
        ② donc on peut ralentir jusqu'à ce que la portance retombe à ton poids → plus près du creux du U. */
     const A0 = 2.5, AF = 2;                          // incidence « à portance nulle » (cambrure) · incidence de vol
@@ -2839,7 +2767,8 @@
       label(g, t('← ralentir = moins de watts','← slower = fewer watts'), ux0+uw/2, uy0+9, '#cbd5e1', 8, 700);
     }
 
-    const DRAW = {ar:drawAR, law:drawLaw, kid:drawKid, ucurve:drawU, rake:drawRake};
+    const DRAW = {law:drawLaw, kid:drawKid, rake:drawRake};   // (figures AR 10/15/22 et courbe en U retirées — retour Paul : doublons)
+    if(VIDEO) window.ldFig = (k, g, now) => { DRAW[k](g, now); return {w:FW, h:FH[k]}; };   // 🎬 la vidéo dessine la figure elle-même, en grand
     let start = 0;
     function tick(ts){
       if(!start) start = ts;
@@ -2852,7 +2781,7 @@
       requestAnimationFrame(tick);
     }
     if(RMF){
-      const STILL = {ar:2.6, law:3.6, kid:1, ucurve:5.2, rake:10.5};
+      const STILL = {law:3.6, kid:1, rake:10.5};
       const still = () => { for(const c of document.querySelectorAll('canvas[data-fig]')){ const f = c.dataset.fig, g = DRAW[f] && ctxFor(c); if(g) DRAW[f](g, STILL[f]); } };
       addEventListener('resize', still); setInterval(still, 800); still();
     } else requestAnimationFrame(tick);
@@ -3011,8 +2940,21 @@
       if(e.target === pvEl)  sweep('pv',  a => drawPowerCurve(a[0], a[1], ANIM.pv.p));
       io2.unobserve(e.target);
     }), {threshold:.35});
-    if(pvEl) io2.observe(pvEl);
+    if(pvEl && !VIDEO) io2.observe(pvEl);   // vidéo : la courbe est tracée à la demande (pas d'animation d'entrée parasite)
   }
+
+  /* ---------- 🎬 ?video=1 : petite API pour insta-longue.html (lit les vrais calculs, trace la courbe à la demande) ---------- */
+  if(VIDEO) window.LDV = {
+    render,
+    cp: riderCP,
+    model: i => powerModel(CFG[i]),
+    time: P => P > riderCP() ? W_ANAER/(P - riderCP()) : Infinity,   // même modèle que fmtTime (réserve puisée au-dessus du seuil)
+    name: i => { const o = document.getElementById('preset'+i).selectedOptions[0]; if(!o) return '';
+      const br = (o.parentNode.label || '').split(' ')[0]; return (br && !o.text.startsWith(br) ? br+' ' : '')+o.text; },
+    wing: i => ({b:val('b'+i), s:val('s'+i)}),
+    pv: (prog, fixY) => { drawPowerCurve.fixY = fixY || 0; const m1 = powerModel(CFG[1]), m2 = powerModel(CFG[2]);
+      drawPowerCurve(m1, m2, prog == null ? 1 : prog); return {cv:document.getElementById('pvGraph'), geo:drawPowerCurve.geo, m1, m2, k:2}; }
+  };
 })();
 </script>
 </body>
