@@ -275,7 +275,7 @@
   .rc button:hover{background:rgba(245,158,11,.15);} .rc b{min-width:46px; text-align:center;}
   .rc-row{display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin:0 0 10px;}
   .rc-seg button{color:var(--muted); font-weight:700; white-space:nowrap;} .rc-seg button small{display:block; font-size:.66rem; font-weight:700; opacity:.85; line-height:1; margin-top:-1px;} .rc-seg button:has(small){height:auto; padding:3px 9px;} .rc-seg button.on{background:#f59e0b; color:#1e1b0b;}
-  .pw-bars{margin:2px 0 4px;} .pw-bars div{display:grid; grid-template-columns:44px 1fr 74px; gap:6px; align-items:center; font-size:.74rem;} .pw-bars span{color:var(--muted);} .pw-bars i{height:7px; background:rgba(148,163,184,.18); border-radius:4px; overflow:hidden;} .pw-bars u{display:block; height:100%; border-radius:4px;} .pw-bars b{text-align:right;}
+  .pw-bars{margin:2px 0 4px;} .pw-bars .me span, .pw-bars .me b{color:#fff; font-weight:900;} .pw-bars div:not(.me) b{color:var(--muted); font-weight:700;} .pw-bars div{display:grid; grid-template-columns:44px 1fr 74px; gap:6px; align-items:center; font-size:.74rem;} .pw-bars span{color:var(--muted);} .pw-bars i{height:7px; background:rgba(148,163,184,.18); border-radius:4px; overflow:hidden;} .pw-bars u{display:block; height:100%; border-radius:4px;} .pw-bars b{text-align:right;}
   .lvl-x{flex-basis:100%; order:9; text-align:center; font-size:.74rem; color:var(--muted); line-height:1.45;} .lvl-x b{color:var(--txt);}
   .was{display:inline-block; margin-left:6px; color:#fcd34d; font-weight:700; font-size:.92em; animation:wasIn .8s ease-out;}
   @keyframes wasIn{from{opacity:0; transform:translateY(-3px);} to{opacity:1; transform:none;}}
@@ -1204,7 +1204,7 @@
     s3e:  {c:'#c0392b', s:['🏁 les plus rapides pour toi','🏁 fastest for you'], x:['🏁 les plus rapides','🏁 fastest'], d:['à moins de 2 % du meilleur temps sur 300 m (~0,5 km/h) : dans ce modèle, elles se valent','within 2% of the best 300 m time (~0.5 km/h): in this model, they are equal']},
     oke:  {c:'#6c3fc4', s:['👍 rapide','👍 fast'], x:['👍 rapide','👍 fast'], d:['à 2-5 % du meilleur temps','2-5% off the best time']},
     slow: {c:'#199e70', s:['✅ correcte','✅ decent'], x:['✅ correcte','✅ decent'], d:['à 5-10 % du meilleur temps : encore bien rapide','5-10% off the best time: still quite fast']},
-    drag: {c:'#3987e5', s:['🌊 plutôt pour pomper loin','🌊 more for pumping far'], x:['🌊 pompe loin','🌊 pump far'], d:['plus de 10 % derrière en sprint : grande aile, faite pour durer plutôt que sprinter','over 10% behind in a sprint: big wing, made to last rather than sprint']},
+    drag: {c:'#3987e5', s:['🐢 plus lente en sprint','🐢 slower in a sprint'], x:['🐢 plus lente','🐢 slower'], d:['plus de 10 % derrière en sprint (grande ou trapue). Pour savoir si elle pompe loin : regarde « pomper loin » dans la bulle','over 10% behind in a sprint (big or stubby). To know if it pumps far: check “pumping far” in the tooltip']},
   };
   const vaT = a => t(a[0], a[1]);
   // seul le rouge (la réponse) est vif : les autres zones sont mises en sourdine (mélangées au fond)
@@ -1237,12 +1237,25 @@
   // Ça ne dit pas la même chose que la vitesse : les grandes envergures y gagnent (c'est leur « glisse »)
   const vaBest = (b, S, kg) => { const vst = Math.sqrt(kg*9.81/(0.5*1025*S/1e4*0.9))*3.6*1.2; let m = {whkm:1e9, v:0};
     for(let v = Math.max(10, vst); v <= 35; v += .25){ const w = vaPow(b, S, kg, v)/v; if(w < m.whkm) m = {whkm:w, v}; } return m; };
+  // 🌊 GLISSE /100 — même calcul que la page carve (cruiseState + glideScore), stab = celui choisi ici, fuselage 65 :
+  // c'est elle qui dit si une aile « pompe loin » (pas la vitesse en sprint) — retour Paul (Fireball 1500)
+  const vaGlide = (b_cm, S_cm2, WKG) => {
+    const RHO = 1025, E = 0.91, cd0 = 0.014, S = S_cm2/1e4, b = b_cm/100, W = WKG*9.81, AR = b*b/S, stabA = vaStab()/0.0004/1e4;
+    const Kpar = S*cd0 + 0.065*0.55*0.008 + 0.028*0.010 + stabA*0.044, Aind = W*W/(0.5*RHO*Math.PI*b*b*E);
+    const Dt = 2*W*(6*cd0 + 0.012)*(S/b)*S/(0.65*Math.PI*b*b*E), vOpt = Math.pow(Aind/(3*0.5*RHO*Kpar), 0.25);
+    const cl = Math.min((2*Math.PI/(1 + 2/AR))*(13*Math.PI/180), 1.15), v = Math.max(vOpt, Math.sqrt(W/(0.5*RHO*S*cl))*1.30, 11/3.6);
+    const eta = Math.min(0.80, 0.44 + 0.015*AR), P = ((Aind/(v*v) + 0.5*RHO*v*v*Kpar + Dt)*v)/eta;
+    return {P, v: v*3.6};   // watts de croisière à la vitesse idéale (pas de note /100 : elle plafonnait à 100 pour toutes les grandes ailes longues)
+  };
   // puissance de sprint selon le niveau, sur la durée d'un 300 m (~40 s) : seuil + réserve / 40 s — la même que la carte
   const vaP30 = (l, kg) => Math.round((VA_LV[l].cp*kg + VA_LV[l].wp*kg/40)/10)*10;
   // vitesse tenue (km/h, une fois lancé, en ligne droite) en donnant P watts avec cette aile
   const vaVAt = (b, S, kg, P) => { let a = 5, c = 60; for(let i = 0; i < 40; i++){ const v = (a + c)/2; vaPow(b, S, kg, v) < P ? a = v : c = v; } return (a + c)/2; };
   const VA_PW = [300, 600, 900];
   // mini-barres « 300 / 600 / 900 W → km/h » (bulle) — longueur ∝ vitesse sur une échelle commune 15-32 km/h
+  const vaBars3 = (b, S, kg) => { const P0 = VA.P, out = [600, 700, 800, 900].map(P => { VA.P = P; const r = vaRace(b, S, kg, 300); return {P, v: r.stall ? 0 : 300/r.t*3.6}; }); VA.P = P0;
+    return '<div class="pw-bars">'+out.map(o => { const me = o.P === P0, w = Math.max(4, Math.min(100, (o.v - 18)/(32 - 18)*100));
+      return '<div class="'+(me ? 'me' : '')+'"><span>'+o.P+' W</span><i><u style="width:'+w.toFixed(0)+'%; background:'+(me ? '#e2e8f0' : '#64748b')+'"></u></i><b>'+(o.v ? num(o.v, 1)+' km/h' : t('décroche','stalls'))+'</b></div>'; }).join('')+'</div>'; };
   const vaBars = (b, S, kg) => { const lo = Math.sqrt(kg*9.81/(0.5*1025*S/1e4*1.2))*3.6*1.15;
     return '<div class="pw-bars">'+VA_PW.map((P, i) => { const v = vaVAt(b, S, kg, P), ok = v >= lo, w = Math.max(4, Math.min(100, (v - 15)/(32 - 15)*100));
       return '<div><span>'+P+' W</span><i><u style="width:'+w.toFixed(0)+'%; background:'+['#3987e5', '#6c3fc4', '#c0392b'][i]+(ok ? '' : '; opacity:.35')+'"></u></i><b>'+(ok ? num(v, 1)+' km/h' : t('ne décolle pas','no takeoff'))+'</b></div>'; }).join('')+'</div>'; };
@@ -1599,7 +1612,7 @@
     if(lg) lg.innerHTML = '<div class="atl-cats">'+Object.entries(VA_CAT).filter(([k]) => catCells[k]).map(([k, C]) => '<div><i style="background:'+vaZC(k)+'"></i><b>'+vaT(C.s)+(VA.zTxt && VA.zTxt(k) ? ' · '+VA.zTxt(k) : '')+'</b> <span>'+vaT(C.d)+'</span></div>').join('')+'</div>'
       + '<span><i style="background:#fde68a; height:1px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même AR (chiffre en haut)','same AR (number on top)')+'</span>'
       + '<span><i style="background:repeating-linear-gradient(90deg,#fff 0 6px,transparent 6px 10px); height:2px; width:22px; border-radius:0; vertical-align:3px"></i>'+t('tirets = vitesse moyenne sur 300 m (km/h) — ils glissent quand tu changes de puissance, à ~'+num(VA.s3W, 0)+' W','average speed over 300 m (km/h): your sprint speed, at ~'+num(VA.s3W, 0)+' W')+'</span>'
-      + '<span>🌿 '+t('Dans la bulle : la vitesse à 300 / 600 / 900 W et la meilleure conso (le moins d\'énergie par km, à la vitesse idéale de l\'aile). Sous la carte : la vitesse de chaque aile à puissance égale.','In the tooltip: speed at 300 / 600 / 900 W and best energy use (least energy per km, at the wing\'s ideal speed). Below the map: each wing\'s speed at equal power.')+'</span>'
+      + '<span>🌿 '+t('Dans la bulle : la vitesse à 300 / 600 / 900 W, et pour pomper loin les watts qu\'il faut à la vitesse idéale de l\'aile (moins = elle glisse mieux, même calcul que la « glisse » de la page carve). Sous la carte : la vitesse de chaque aile à puissance égale.','In the tooltip: speed at 300 / 600 / 900 W, and for pumping far the watts needed at the wing\'s ideal speed (lower = it glides better, same maths as the carve page « glide »). Below the map: each wing\'s speed at equal power.')+'</span>'
       + '<span><i class="hatch"></i>'+t('hors gamme (AR < 6 ou > 24)','out of range (AR < 6 or > 24)')+'</span>'
       + '<span>'+kg+' kg · '+t('meilleur temps sur 300 m : ','best 300 m time: ')+vaTime(VA.best.b3)+t(' · tu donnes ~',' · you put out ~')+num(VA.s3W, 0)+' W '+t('pendant la course','during the race')+'</span>';
   }
@@ -1747,11 +1760,14 @@
       tip.innerHTML = (rec ? '<div class="tt-rec" style="color:'+VA_RC_C[rec.e]+'">'+rec.e+' '+t('recommandée','recommended')+' · '+RL[rec.e]+'</div>' : '')
         + (p.wing ? '<div class="tt-h">'+p.wing.n+'</div>' : '')
         + '<div class="'+(p.wing ? '' : 'tt-h')+'">'+p.b+' cm · '+num(p.S, 0)+' cm² · AR '+num(ar, 1)+'</div>'
-        + '300 m <b>'+(ev.r3.stall ? t('décroche en virage','stalls in turns') : vaTime(ev.r3.t)+' · '+num(300/ev.r3.t*3.6, 1)+t(' km/h de moyenne',' km/h average'))+'</b><br>'
-        + t('décolle dès','takes off from')+' <b>~'+Math.round(ev.r1.lo)+' km/h</b>'
-        + (fits ? '<div style="margin-top:4px; font-weight:800">'+t('À puissance égale :','At equal power:')+'</div>'+vaBars(p.b, p.S, VA.geo.kg)
-          + (m => '<div>🌿 '+t('meilleure conso','best energy use')+' <b>'+num(m.whkm, 0)+' Wh/km</b> '+t('à','at')+' ~'+num(m.v, 0)+' km/h</div>')(vaBest(p.b, p.S, VA.geo.kg)) : '')
-        + (fits ? '<div style="margin-top:2px; font-weight:700">'+vaT(VA_CAT[ev.k].s)+'</div>' : '')
+        // 1) le verdict d'abord, dans la couleur de la zone, avec l'écart aux plus rapides (à ta puissance)
+        + (fits ? (gap => '<div style="margin-top:3px; font-weight:800; color:'+(ev.k === 's3e' ? '#ff8a7a' : '#f1f5f9')+'">'+vaT(VA_CAT[ev.k].s)
+            + (ev.k === 'start' ? '' : ev.r3.stall ? ' — '+t('décroche en virage','stalls in turns') : gap < 0.25 ? '' : ' <span style="font-weight:600; color:#cbd5e1">— '+t('à ','')+num(gap, 1)+t(' km/h des plus rapides',' km/h behind the fastest')+'</span>')+'</div>')(300/VA.best.b3*3.6 - 300/ev.r3.t*3.6) : '')
+        // 2) la vitesse en sprint, MÊME mesure que la carte (moyenne sur 300 m), selon tes watts
+        + (fits && !ev.r3.stall && ev.k !== 'start' ? '<div style="margin-top:5px; font-weight:800">'+t('Sprint 300 m (vitesse moyenne) :','300 m sprint (average speed):')+'</div>'+vaBars3(p.b, p.S, VA.geo.kg) : '')
+        // 3) démarrage et « pomper loin »
+        + '<div>🛫 '+t('décolle dès','takes off from')+' <b>~'+Math.round(ev.r1.lo)+' km/h</b></div>'
+        + (fits ? (g => '<div>🌊 '+t('pomper loin : ','pumping far: ')+'<b>~'+num(Math.round(g.P/5)*5, 0)+' W</b> '+t('à','at')+' ~'+num(g.v, 0)+' km/h · '+num(g.P/g.v, 0)+' Wh/km</div>')(vaGlide(p.b, p.S, VA.geo.kg)) : '')
         + (p.wing ? '<div class="tt-c">'+(inSl ? t('clic : l\'essayer dans le simulateur','click: try it in the simulator') : t('hors des curseurs du simulateur','outside the simulator sliders'))+'</div>' : '');
       tip.hidden = false;
       const tw = tip.offsetWidth, th = tip.offsetHeight;
