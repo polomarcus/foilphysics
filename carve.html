@@ -471,7 +471,7 @@
         <div class="field fld-fus"><label for="i-fus"><span data-i18n="l-fus">Fuselage</span> : <span class="fval" id="v-fus">65</span> cm <span id="v-fusq" style="color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0"></span></label>
           <input type="range" autocomplete="off" id="i-fus" min="58" max="72" step="1" value="65"></div>
         <div class="field field-kg"><label for="i-kg"><span data-i18n="l-kg">🧍 Ton poids</span> : <span class="fval" id="v-kg">80</span> kg <span id="v-kgq" style="color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0" data-i18n="l-kg-note">· pèse sur glisse, endurance &amp; démarrage</span></label>
-          <input type="range" autocomplete="off" id="i-kg" min="55" max="110" step="1" value="80"></div>
+          <input type="range" autocomplete="off" id="i-kg" min="55" max="140" step="1" value="80"></div>
         <div class="field fld-lvl"><label for="i-lvl" data-i18n="l-lvl">🏄 Ton niveau</label>
           <select autocomplete="off" id="i-lvl" class="stabd" style="margin-top:4px">
             <option value="1" data-i18n="lv-1">en progression (moins d'1 min de pompage)</option>
@@ -1885,7 +1885,7 @@
     both: {xfr:'✨ les deux', xen:'✨ both', c:'#199e70', sfr:'✨ carve + endurance', sen:'✨ carve + endurance', fr:'maniable et tu tiens 10 min et +', en:'maneuverable and you last 10 min+'},
     glide:{xfr:'🌊 enchaîner', xen:'🌊 linking', c:'#3987e5', sfr:'🌊 enchaîner', sen:'🌊 linking waves', fr:'un peu maniable (20-45), et tu tiens 10 min et +', en:'a bit maneuverable (20-45), and you last 10 min+'},
     dw:   {xfr:'🧭 houle', xen:'🧭 swell', c:'#008300', sfr:'🧭 tout droit dans la houle', sen:'🧭 straight down the swell', fr:'peu maniable (< 20), mais tu tiens 10 min et + : aile élancée qui glisse', en:'barely maneuverable (< 20), but you last 10 min+: a slender wing that glides'},
-    ecole:{xfr:'⚖️ entre-deux', xen:'⚖️ in-between', c:'#475569', sfr:'⚖️ entre-deux', sen:'⚖️ in-between', fr:'peu maniable (< 45) ET tu t\'épuises (< 10 min) : trop grande pour bien tourner, mais à ton poids elle traîne trop pour tenir la relance — contrairement à 🧭 / 🌊, plus élancées, où tu tiens', en:'not very maneuverable (< 45) AND you tire (< 10 min): too big to turn well, but at your weight it drags too much to keep pumping back — unlike 🧭 / 🌊, more slender, where you last'},
+    ecole:{xfr:'⚖️ entre-deux', xen:'⚖️ in-between', c:'#475569', sfr:'⚖️ entre-deux', sen:'⚖️ in-between', fr:'un peu maniable (< 45) mais tu t\'épuises (< 10 min) : ni une aile de carve serré, ni une aile qui tient la relance à ton poids — plus longues, 🧭 / 🌊 tiennent', en:'a bit maneuverable (< 45) but you tire (< 10 min): neither a tight-carving wing nor one that keeps pumping back at your weight — longer, 🧭 / 🌊 last'},
   };
   // « poids plume » (calé sur les retours de Paul, 75 kg : Sushi 740 / RSX 700 / DW 750 trop petites, DW 840 / Regata 850 OK) :
   // elle ne te porte qu'à partir de 16,5 km/h, OU démarrer en pompant demande > 1,2 × ton seuil (envergure trop courte)
@@ -2026,6 +2026,8 @@
   }
   function drawAtlas(b, S, kg, H){
     ATL.args = [b, S, kg, H];
+    // rider lourd (> 95 kg) : le cadre s'agrandit (jusqu'à ~2 600 cm² et 190 cm) — sinon tout est « plume » et ses ailes sont hors carte (retour Stefan, 128 kg)
+    ATL.S1 = kg > 95 ? Math.min(2600, Math.ceil(1800*kg/95/100)*100) : 1800; ATL.B1 = kg > 95 ? 190 : 160;
     if(ATL.lang !== LANG){ ATL.lang = LANG; atlBrandsUI(); }
     if($('atl-rider')) $('atl-rider').innerHTML = riderCtl(true);
     if($('surf-ctl')) $('surf-ctl').innerHTML = surfCtl();   // « Toutes / All » suit la langue
@@ -2166,7 +2168,7 @@
       c.textAlign = 'left'; c.fillText(t1, x0 + sw + 6, yA); c.fillText(t2, x0 + sw + 6, yB);
     }
     c.textAlign = 'right';
-    for(let v = 600; v <= 1800; v += 200) c.fillText(num(v), X0 - 5, py(v) + 3);
+    for(let v = 600; v <= ATL.S1; v += 200) c.fillText(num(v), X0 - 5, py(v) + 3);
     c.save(); c.translate(12, (Y0 + Y1)/2); c.rotate(-Math.PI/2); c.textAlign = 'center'; c.fillText(t('surface (cm²) →','area (cm²) →'), 0, 0); c.restore();
     ATL.manBoxes = [];
     // les ailes
