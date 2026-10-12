@@ -238,6 +238,8 @@
   .kid .kid-src a:hover{border-bottom-color:#38bdf8;}
   /* Comment progresser (Simple + Expert — même habillage « slide » partout) */
   .improve{background:transparent; border:none; padding:0; margin-bottom:0;}
+  .first-min{max-width:860px; margin:16px auto 0; padding:12px 16px; border:1.5px solid rgba(251,191,36,.55); border-radius:14px; background:rgba(251,191,36,.08); font-size:.92rem; line-height:1.5; color:#e2e8f0; text-align:left;} .first-min b{color:#fde68a;} .first-min a{color:#fbbf24; font-weight:800; white-space:nowrap;}
+  .pv-tech{font-size:.82rem; margin-top:-8px;} .pv-tech b{color:var(--txt);}
   .improve h3{font-size:1.4rem; font-weight:800; text-align:center; letter-spacing:-.015em; margin-bottom:8px;}
   .improve .imp-lede{color:var(--muted); font-size:1rem; text-align:center; margin-bottom:20px;}
   .imp-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
@@ -743,6 +745,7 @@
           <b>beaucoup de durée</b> <i>(réf. médecine du sport)</i>. Le levier le plus lent : des mois, pas des jours.</div>
       </div>
     </div>
+    <div class="first-min" data-i18n="first-min">⏱️ <b>Tu tiens ~1 minute ? Ne change rien tout de suite.</b> Au début, ~30 % de tes watts partent dans un pompage maladroit : la <b>technique</b> (3) et le <b>cardio</b> (4) te rapportent bien plus qu'une nouvelle aile. Même aile, même spot, beaucoup de sessions. Le matos (1) paie quand tu tiens <b>plusieurs minutes</b>. <a href="debutant.html">🎓 Bien débuter →</a></div>
   </div>
 
   <details class="story">
@@ -891,13 +894,13 @@
       Le <b>Wh/km</b> = l'énergie dépensée pour parcourir 1 km. Plus c'est bas, plus tu vas loin pour le même effort :
       <div class="whbars">
         <div class="whrow"><span class="whlab">🚴 Vélo tranquille</span><span class="whtrack"><span class="whfill" style="width:20%;background:#22c55e"></span></span><span class="whval">~6</span></div>
-        <div class="whrow"><span class="whlab">🚴 Vélo à 25 km/h</span><span class="whtrack"><span class="whfill" style="width:40%;background:#84cc16"></span></span><span class="whval">~12</span></div>
-        <div class="whrow"><span class="whlab">🚶 Marche</span><span class="whtrack"><span class="whfill" style="width:50%;background:#f59e0b"></span></span><span class="whval">~15</span></div>
+        <div class="whrow"><span class="whlab">🚵 VTT à 25 km/h</span><span class="whtrack"><span class="whfill" style="width:40%;background:#84cc16"></span></span><span class="whval">~12</span></div>
+        <div class="whrow"><span class="whlab">🚶 Marche à plat</span><span class="whtrack"><span class="whfill" style="width:33%;background:#f59e0b"></span></span><span class="whval">~10</span></div>
         <div class="whrow"><span class="whlab">🏄 Foil, aile fine</span><span class="whtrack"><span class="whfill" style="width:50%;background:#0ea5e9"></span></span><span class="whval">~15</span></div>
         <div class="whrow"><span class="whlab">🏄 Foil, aile courte</span><span class="whtrack"><span class="whfill" style="width:83%;background:#0ea5e9"></span></span><span class="whval">~25</span></div>
       </div>
       🚗 <b>Voiture électrique ≈ 150 Wh/km</b> — soit <b>~10× une aile fine</b> (et là, c'est la batterie qui bosse, pas toi).<br>
-      En pump foil, une aile fine te met au niveau de la <b>marche</b>… mais tu glisses sur l'eau. <b>Diviser ton Wh/km par deux = deux fois moins de fatigue.</b>
+      En pump foil, une aile fine coûte <b>~1,5× la marche par km</b>… et tu fais ce km <b>2 à 3× plus vite</b> : sur le moment, c'est l'effort de <b>rouler à ~25 km/h sur un vélo de route, sur le plat</b> (~150 W). <b>Diviser ton Wh/km par deux = deux fois moins de fatigue.</b>
     </div>
   </div>
 
@@ -1076,6 +1079,7 @@
   <div class="pvpanel" id="pvpanel">
     <h3 data-i18n="pv-h3">Puissance à fournir selon la vitesse</h3>
     <div class="pvsub" data-i18n="pv-sub">Effort estimé pour maintenir le vol, à chaque vitesse. Le point marque la croisière conseillée de chaque aile.</div>
+    <div class="pvsub pv-tech" data-i18n="pv-tech">⚠️ Ces watts supposent un <b>pompage fluide</b>, haut sur le mât, à vitesse régulière : en vrai, compte <b>+10 à 40 %</b> selon ta technique. Ils servent à <b>comparer les ailes</b>, pas d'objectif à atteindre.</div>
     <div class="pvlegend">
       <span><i id="pvc1"></i><b id="pvl1">Foil A</b></span>
       <span><i id="pvc2"></i><b id="pvl2">Foil B</b></span>
@@ -1153,7 +1157,7 @@
       et la croisière éco au creux.<br><br>
       <b>Conséquence bizarre n° 2 :</b> pas de roue libre. Tu arrêtes de pomper, le foil se pose. Ta « roue
       libre », c'est la <b>glisse de l'aile</b> — exactement ce qu'une grande envergure achète.<br><br>
-      <b>Au final :</b> une bonne aile te ramène à ~15 Wh/km — le niveau de la marche. Le vélo reste imbattable — ~6 Wh/km,
+      <b>Au final :</b> une bonne aile te ramène à ~15 Wh/km — ~1,5× la marche à plat par km, et 2 à 3× plus vite : l'effort de rouler à ~25 km/h sur un vélo de route, sur le plat. Le vélo reste imbattable — ~6 Wh/km,
       soit 2,5× moins — mais lui n'a <b>jamais payé pour voler</b>.
     </div>
   </div>
@@ -2211,9 +2215,11 @@
     ]},
     {g:'GONG Ultra Trail — profil épais (~17%)', prof:'profil épais', cat:'ha', items:[
       {n:'Ultra Trail L (1000)',   b:133, s:1000, cd0:0.016, clMax:1.5},
+      {n:'Ultra Trail XL (1250)',  b:148, s:1250, cd0:0.016, clMax:1.5},
       {n:'Ultra Trail XXL (1500)', b:162, s:1500, cd0:0.016, clMax:1.5},
       {n:'Ultra Trail 3XL (1750)', b:175, s:1750, cd0:0.016, clMax:1.5},
-      {n:'Ultra Trail 4XL (2000)', b:188, s:2000, cd0:0.016, clMax:1.5}
+      {n:'Ultra Trail 4XL (2000)', b:188, s:2000, cd0:0.016, clMax:1.5},
+      {n:'Ultra Trail 5XL (2250)', b:200, s:2250, cd0:0.016, clMax:1.5}
     ]},
     {g:'LR — planeur haut allongement (~13% t/c, carbone UHM)', prof:'profil moyen', cat:'ha', items:[
       {n:'LR 155', b:155, s:1740, cd0:0.011, clMax:1.45},
@@ -2472,7 +2478,7 @@
     'tl-go1':'⚔️ Compare two wings',
     'tl-go2':'📊 Where your watts go',
     'velo-h':'🚴 Cycling vs foiling: same engine, two bills',
-    'velo-txt':'<b>The engine is you — and it\'s the same one.</b> The watts you put out pumping are the ones you\'d put out cycling: 150 W cruising, 220 W as a regular athlete. Only the bill changes — that\'s the drawing above: the road carries you for free, the water doesn\'t.<br><br><b>Weird consequence #1:</b> on a bike, slowing down = always easier. On a foil, <b>too slow = harder</b> — the «staying airborne» bill explodes at low speed. Hence the U-shaped curve in the chart above, and the eco cruise at the bottom of the U.<br><br><b>Weird consequence #2:</b> no freewheel. Stop pumping, the foil settles down. Your «freewheel» is the <b>wing\'s glide</b> — exactly what a wide span buys.<br><br><b>Bottom line:</b> a good wing brings you to ~15 Wh/km — walking level. The bike stays unbeatable — ~6 Wh/km, 2.5× less — but it <b>never paid to fly</b>.',
+    'velo-txt':'<b>The engine is you — and it\'s the same one.</b> The watts you put out pumping are the ones you\'d put out cycling: 150 W cruising, 220 W as a regular athlete. Only the bill changes — that\'s the drawing above: the road carries you for free, the water doesn\'t.<br><br><b>Weird consequence #1:</b> on a bike, slowing down = always easier. On a foil, <b>too slow = harder</b> — the «staying airborne» bill explodes at low speed. Hence the U-shaped curve in the chart above, and the eco cruise at the bottom of the U.<br><br><b>Weird consequence #2:</b> no freewheel. Stop pumping, the foil settles down. Your «freewheel» is the <b>wing\'s glide</b> — exactly what a wide span buys.<br><br><b>Bottom line:</b> a good wing brings you to ~15 Wh/km — ~1.5× flat walking per km, and 2-3× faster: the effort of riding a road bike at ~25 km/h on the flat. The bike stays unbeatable — ~6 Wh/km, 2.5× less — but it <b>never paid to fly</b>.',
     'fig-velo-l1':'the road carries you for free',
     'fig-velo-l2':'you build your own lift',
     'fig-velo-cap':'<span>🚴 the road carries you — you only pay <b>friction</b></span><span>🏄 the foil <b>also</b> pays for lift, continuously</span>',
@@ -2481,6 +2487,7 @@
     'fig-stab-cap':'<span>🔵 stabilising force</span><span>🟠 drag</span><span>— the big stab does more of both</span>',
     'sens-h3':'🔬 Sensitivity: what moves the needle most?',
     'sens-lede':'Effect on your power <b>at your recommended cruise</b> (each change assumes you re-tune your speed). Induced drag rises as <b>weight²</b> <i>at fixed speed</i> — but since a heavier rider flies faster (v ∝ √weight), your <b>power only rises as weight^1.5</b>; span acts as 1/span². <span style="color:#86efac">Green = you gain</span>, <span style="color:#fca5a5">red = you pay</span>.',
+    'first-min':'⏱️ <b>Holding ~1 minute? Don\'t change anything yet.</b> Early on, ~30% of your watts go into clumsy pumping: <b>technique</b> (3) and <b>cardio</b> (4) pay off far more than a new wing. Same wing, same spot, lots of sessions. Gear (1) pays off once you hold <b>several minutes</b>. <a href="debutant.html">🎓 Starting right →</a>',
     'imp-h3':'🎯 How to fly longer?',
     'imp-lede':'It\'s all about energy. Four levers — and only one you can buy.',
     'imp-poids':'<div class="imp-h">⚖️ 2. Your weight (you + gear)</div><div class="imp-big">+10 kg ≈ +20%</div><div class="imp-s">more effort: drag rises with the <b>square of weight</b>. The lever everyone forgets — shedding weight pays as much as a major upgrade — and it\'s immediate.</div>',
@@ -2493,6 +2500,7 @@
     'kid-src':'📚 <b>And how does the wing actually make lift?</b> It tilts by a <b>tiny angle</b> in the water and deflects the flow: the bigger the angle, the more it lifts (but the more it drags too). That\'s the ABC of <b>thin airfoil theory</b> — the century-old physics that makes <i>every</i> foil (and aircraft) fly. <a href="https://en.wikipedia.org/wiki/Thin_airfoil_theory" target="_blank" rel="noopener">Read on Wikipedia →</a>',
     'expert-btn':'🎛️ Fine-tune both wings →','tune-btn':'🎛️ Fine-tune (span, area, profile, speed, mast, stab…)',
     'pv-h3':'Power required vs speed',
+    'pv-tech':'⚠️ These watts assume <b>smooth pumping</b>, flying high on the mast at a steady speed: in reality, count <b>+10 to 40%</b> depending on your technique. They are for <b>comparing wings</b>, not a target to hit.',
     'pv-sub':'Estimated effort to stay flying, at each speed. The dot marks each wing\'s recommended cruise.',
     'pv-method-sum':'Method & assumptions',
     'pv-method':'A <b>steady-flight</b> model: at constant speed, the power you supply exactly replaces the energy lost to <b>drag</b> (induced drag, which dominates at low speed, + profile/mast/fuselage/stab, which dominates at high speed). An <b>estimated pumping efficiency</b> (rising with aspect ratio and mast stiffness) converts that drag into body effort. Since wing profiles are confidential, these are <b>orders of magnitude</b>: expect <b>± ~15 %</b>. The curve stops on the left where the wing <b>stalls</b> (it can no longer fly slowly enough). Two acknowledged simplifications: lift distribution <b>e = 0.91</b> (realistic for a pump foil: high CL + thick section; sourced from <a href="https://en.wikipedia.org/wiki/Oswald_efficiency_number" target="_blank" rel="noopener">taper/AR + lifting-line</a>) and <b>steady flight</b> — real pumping is unsteady motion, somewhat costlier than the model. The recommended cruise is also <b>floored at ≥ 11 km/h</b>: below that, real pumping no longer glides between strokes, and the model would underestimate very large wings. The <b>minimum flying speed</b> is taken at <b>stall +30%</b>: you don\'t pump at the edge of stall (field feedback — a 1600 doesn\'t fly at 12 km/h, more like 14).<br><br><b>For the aerodynamicists:</b> <b>trim drag</b> is now <b>included and broken out</b> in the breakdown: the stab pushes down to balance the cambered wing\'s pitching moment. Cm0 <b>scales with camber</b> — from ~−0.06 (thin blade) to ~−0.12 (thick wing), <b>each wing differs</b> — from real XFOIL polars (<a href="http://airfoiltools.com/polar/details?polar=xf-e817-il-200000" target="_blank" rel="noopener">E817</a> / <a href="http://airfoiltools.com/airfoil/details?airfoil=naca4412-il" target="_blank" rel="noopener">NACA 4412</a> / <a href="http://airfoiltools.com/airfoil/details?airfoil=naca6412-il" target="_blank" rel="noopener">6412</a>), costing <b>~1 to 2.5%</b> of drag depending on the wing (computed, not estimated). The more cambered the foil (i.e. the more «pump» it is), the more it pays — but it stays modest. And all the pumping <b>unsteadiness</b> is folded into η, not resolved: at Paul\'s measured cadence (~100 pumps/min ≈ 1.7 Hz), ~0.12 m chord, 5 m/s, the reduced frequency <b>k = πfc/U ≈ 0.13</b> (~25 convective times per cycle) stays quasi-steady to ~20% (Theodorsen C(k) ≈ 0.80), but pumping is also <b>unsteady propulsion</b> (flapping lift, added mass) — hence an empirical η rather than a resolved balance. <b>Direct consequence</b> (thanks to a wing designer for the point): the model is <b>blind to cadence</b> — η doesn\'t depend on pumping frequency — whereas unsteady thrust grows with it (wake jet ∝ <b>f²·A²</b>, dynamic lift overshoot that lets you fly below static stall). A skilled pumper raising cadence toward the <b>useful</b> Strouhal regime (~0.3; the efficiency peak at ~0.15 doesn\'t count — it makes almost no thrust) <b>beats the model</b>. With the field amplitude (~20 cm peak-to-peak) we sit at St ≈ 0.04-0.10, well below it — hence raising cadence almost always helps. The chosen η matches a «typical» cadence. <span style="color:var(--dim)">Refs <a href="https://www.cambridge.org/core/journals/journal-of-fluid-mechanics/article/abs/oscillating-foils-of-high-propulsive-efficiency/22E5CD028D92318AFC88ED104E55786B" target="_blank" rel="noopener">Anderson 1998</a> · <a href="https://www.nature.com/articles/nature02000" target="_blank" rel="noopener">Taylor 2003</a>.</span>',
@@ -2583,13 +2591,13 @@
       <b>Wh/km</b> = the energy spent to travel 1 km. Lower = you go further for the same effort:
       <div class="whbars">
         <div class="whrow"><span class="whlab">🚴 Easy cycling</span><span class="whtrack"><span class="whfill" style="width:20%;background:#22c55e"></span></span><span class="whval">~6</span></div>
-        <div class="whrow"><span class="whlab">🚴 Cycling at 25 km/h</span><span class="whtrack"><span class="whfill" style="width:40%;background:#84cc16"></span></span><span class="whval">~12</span></div>
-        <div class="whrow"><span class="whlab">🚶 Walking</span><span class="whtrack"><span class="whfill" style="width:50%;background:#f59e0b"></span></span><span class="whval">~15</span></div>
+        <div class="whrow"><span class="whlab">🚵 MTB at 25 km/h</span><span class="whtrack"><span class="whfill" style="width:40%;background:#84cc16"></span></span><span class="whval">~12</span></div>
+        <div class="whrow"><span class="whlab">🚶 Walking (flat)</span><span class="whtrack"><span class="whfill" style="width:33%;background:#f59e0b"></span></span><span class="whval">~10</span></div>
         <div class="whrow"><span class="whlab">🏄 Foil, thin wing</span><span class="whtrack"><span class="whfill" style="width:50%;background:#0ea5e9"></span></span><span class="whval">~15</span></div>
         <div class="whrow"><span class="whlab">🏄 Foil, short wing</span><span class="whtrack"><span class="whfill" style="width:83%;background:#0ea5e9"></span></span><span class="whval">~25</span></div>
       </div>
       🚗 <b>Electric car ≈ 150 Wh/km</b> — about <b>10× a thin wing</b> (and there it's the battery working, not you).<br>
-      On a thin wing you're at <b>walking</b> level… but you glide on water. <b>Halve your Wh/km = half the fatigue.</b>`,
+      On a thin wing, each km costs <b>~1.5× walking</b>… and you cover it <b>2-3× faster</b>: in the moment, it's the effort of <b>riding a road bike at ~25 km/h on the flat</b> (~150 W). <b>Halve your Wh/km = half the fatigue.</b>`,
     'foot-formulas':'<b style="color:var(--txt)">In plain words:</b> the longer and thinner the wing, and the closer you fly to the <b>right speed</b> (neither too slow nor too fast), the less you force — and the longer you fly.<div class="f-title">⚙️ Physics engine — based on the <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a> model (steady flight: lift = weight)</div><div class="frow"><span class="fk">Aspect ratio (AR)</span><code>AR = span² / area</code></div><div class="frow"><span class="fk">Required lift</span><code>C_L = weight / (½·ρ·v²·area)</code></div><div class="frow"><span class="fk">Induced drag <i>the price of lift</i></span><code>D_ind = weight² / (½·ρ·v²·π·span²·e)</code></div><div class="frow"><span class="fk">Friction drag</span><code>D_fric = ½·ρ·v² · (area·C_D0 + mast + fuselage + stab)</code></div><div class="frow"><span class="fk">Your power</span><code>P = (D_ind + D_fric) · v / η_pump</code></div>',
     'foot-note':'ρ = 1025 (sea water) · induced drag = C<sub>L</sub>²/(π·AR) · stall at 13° — like foilphysics; thin profiles are capped earlier (real ventilation) · η_pump (<b>estimated</b> pumping efficiency) grows with AR and mast stiffness. Watts and flight time are illustrative estimates (critical-power model, adjustable to your fitness) — not a real effort measurement.'
   };
