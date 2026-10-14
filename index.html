@@ -322,6 +322,8 @@
   .rider-item{display:flex; flex-direction:column; gap:5px;}
   .rider-item.weight{width:150px;}
   .rider-item.form{flex:1; min-width:190px;}
+  .cp-row{display:flex; gap:6px;} .cp-row #rider-sex{flex:0 0 auto; width:auto;} .cp-row #rider-cp{flex:1; min-width:0;}
+  @media(max-width:560px){ .cp-row{flex-direction:column;} .cp-row #rider-sex{width:100%;} }
   .rider-item.water{width:150px;}
   .rider label{font-weight:700; font-size:.82rem;}
   .rider input, .rider select{width:100%; background:var(--bg); border:1px solid var(--line); color:var(--txt);
@@ -861,17 +863,15 @@
     </div>
     <div class="rider-item form">
       <label for="rider-cp" data-i18n="l-form">🫀 Forme physique</label>
-      <select id="rider-cp">
-        <option value="150" data-i18n="opt-cp1">Cyclo occasionnel — sport quelques fois/an (~150 W)</option>
-        <option value="185" data-i18n="opt-cp1b">Sportif du dimanche — 10 km course en ~55 min (~185 W)</option>
-        <option value="220" selected data-i18n="opt-cp2">Sportif régulier — 10 km en ~50 min (~220 W)</option>
-        <option value="245" data-i18n="opt-cp2b">Sportif assidu — 10 km en ~46 min / vélo régulier (~245 W)</option>
-        <option value="270" data-i18n="opt-cp3">Bien entraîné — 10 km en ~43 min / vélo hebdo (~270 W)</option>
-        <option value="310" data-i18n="opt-cp3b">Très entraîné — 10 km &lt; 40 min / semi ~1h30 (~310 W)</option>
-        <option value="350" data-i18n="opt-cp4">Athlète d'endurance — marathon &lt; 3h (~350 W)</option>
-      </select>
+      <div class="cp-row">
+        <select id="rider-sex" aria-label="Sexe">
+          <option value="m" selected data-i18n="opt-sex-m">Homme</option>
+          <option value="f" data-i18n="opt-sex-f">Femme</option>
+        </select>
+        <select id="rider-cp"></select>
+      </div>
     </div>
-    <span class="rider-hint" data-i18n="rh1">La <b>forme</b> fixe ta puissance critique (l'effort que tu tiens des heures). Au-dessus, tu puises dans la réserve et tu finis par tomber. Repères course↔watts calibrés pour ~75 kg.</span>
+    <span class="rider-hint" data-i18n="rh1">La <b>forme</b> fixe ton <b>seuil</b> : l'effort que tu tiens <b>~1 h</b> (pour plusieurs heures, compte ~10-15 % de moins). Au-dessus, tu puises dans ta réserve et tu finis par tomber. Repères tirés des normes de médecine du sport (VO2max par sexe et âge). <b>Sans cardio régulier, même la meilleure aile ne te mène qu'à quelques km d'affilée</b> (3 à 6 km avec une technique parfaite, plutôt 1 à 2 km en vrai) : 10 km demande un moteur entraîné.</span>
   </div>
 
   <div class="wcombo" id="wc"></div>
@@ -1554,7 +1554,25 @@
   const M_IMM = 0.55;                          // mât compté à ~55 % immergé : on vole haut (~15-20 cm dans l'eau), cf. page vitesse
   const CD_FUS = 0.010, CD_STAB = 0.020;       // fuselage & stab : coeff de traînée
   const W_ANAER = 12300;                        // réserve anaérobie (J) — modèle illustratif
-  const riderCP = () => parseFloat(document.getElementById('rider-cp').value); // puissance critique du rider
+  // 🫀 FORME = seuil tenu ~1 h, en W/kg selon le sexe et la place dans la population (retour lecteur, oct. 2026) :
+  // médiane VO2max FRIEND (vélo, Kaminsky 2017) 41,9 ♂ / 31,0 ♀ mL/kg/min à 20-29 ans × seuil ~67 % (non entraîné) → ~83 % (entraîné)
+  // × rendement vélo ~20 % → médiane ~1,9 W/kg ♂ / ~1,4 ♀. Le 10 km est déduit (même coût par kg) : 50 min à 2,9 W/kg.
+  const CP_LV = [
+    {k:'low',  m:1.5, f:1.1, fr:'Pas de sport', en:'No sport'},
+    {k:'avg',  m:1.9, f:1.4, fr:'Sport de temps en temps, sans cardio régulier', en:'Sport now and then, no regular cardio'},
+    {k:'act',  m:2.4, f:1.9, fr:'Actif — 1 sortie cardio par semaine (course, vélo, natation…)', en:'Active — 1 cardio session a week (running, cycling, swimming…)'},
+    {k:'reg',  m:2.9, f:2.4, fr:'Sportif régulier — 2 à 3 sorties course ou vélo par semaine', en:'Regular — 2-3 runs or rides a week'},
+    {k:'trn',  m:3.4, f:2.8, fr:'Entraîné — 4 à 5 entraînements par semaine', en:'Trained — 4-5 workouts a week'},
+    {k:'comp', m:4.2, f:3.5, fr:'Compétiteur d\'endurance — 6 entraînements et + par semaine, avec un plan', en:'Endurance competitor — 6+ workouts a week, on a plan'}
+  ];
+  const CP_DEF = 'avg';   // beaucoup de foilers (wing, kite) ne font pas de cardio : le vent les porte (retour Paul) → médiane de la population par défaut
+  const cpWkg = () => { const L = CP_LV.find(l => l.k === document.getElementById('rider-cp').value) || CP_LV[1]; return document.getElementById('rider-sex').value === 'f' ? L.f : L.m; };
+  const riderCP = () => Math.round(cpWkg()*(parseFloat(document.getElementById('rider-w').value) || 75)/5)*5;   // puissance critique du rider (W)
+  function cpOptions(){
+    const sel = document.getElementById('rider-cp'), cur = sel.value || CP_DEF, kg = parseFloat(document.getElementById('rider-w').value) || 75, f = document.getElementById('rider-sex').value === 'f';
+    sel.innerHTML = CP_LV.map(L => { const w = f ? L.f : L.m, km = Math.round(50*2.9/w/5)*5;
+      return '<option value="'+L.k+'"'+(L.k === cur ? ' selected' : '')+'>'+t(L.fr, L.en)+' · ~'+Math.round(w*kg/5)*5+' W'+(L.k !== 'low' && L.k !== 'avg' ? t(' · 10 km en ~',' · 10 km in ~')+(km >= 60 ? Math.floor(km/60)+' h '+String(km % 60).padStart(2, '0') : km+' min') : '')+'</option>'; }).join('');
+  }
 
   // C_D0 profil & C_L max propres à chaque colonne (profil fin = décroche plus tôt)
   // mât/fus/stab = aire mouillée (m²) via les <select>
@@ -2037,6 +2055,8 @@
                'Area sized to fly from ~12 km/h (stall +30%, medium profile). Span makes the savings: take the top of the range if you can handle it. Past AR ~16, the gain flattens and stall speed climbs.')});
   }
   document.getElementById('rider-w').addEventListener('input', wcLD);
+  ['rider-w', 'rider-sex'].forEach(id => document.getElementById(id).addEventListener('input', cpOptions));
+  cpOptions();
   new MutationObserver(wcLD).observe(document.documentElement, {attributes:true, attributeFilter:['lang']});
   setTimeout(wcLD, 0);
 
@@ -2506,14 +2526,8 @@
     'pv-method':'A <b>steady-flight</b> model: at constant speed, the power you supply exactly replaces the energy lost to <b>drag</b> (induced drag, which dominates at low speed, + profile/mast/fuselage/stab, which dominates at high speed). An <b>estimated pumping efficiency</b> (rising with aspect ratio and mast stiffness) converts that drag into body effort. Since wing profiles are confidential, these are <b>orders of magnitude</b>: expect <b>± ~15 %</b>. The curve stops on the left where the wing <b>stalls</b> (it can no longer fly slowly enough). Two acknowledged simplifications: lift distribution <b>e = 0.91</b> (realistic for a pump foil: high CL + thick section; sourced from <a href="https://en.wikipedia.org/wiki/Oswald_efficiency_number" target="_blank" rel="noopener">taper/AR + lifting-line</a>) and <b>steady flight</b> — real pumping is unsteady motion, somewhat costlier than the model. The recommended cruise is also <b>floored at ≥ 11 km/h</b>: below that, real pumping no longer glides between strokes, and the model would underestimate very large wings. The <b>minimum flying speed</b> is taken at <b>stall +30%</b>: you don\'t pump at the edge of stall (field feedback — a 1600 doesn\'t fly at 12 km/h, more like 14).<br><br><b>For the aerodynamicists:</b> <b>trim drag</b> is now <b>included and broken out</b> in the breakdown: the stab pushes down to balance the cambered wing\'s pitching moment. Cm0 <b>scales with camber</b> — from ~−0.06 (thin blade) to ~−0.12 (thick wing), <b>each wing differs</b> — from real XFOIL polars (<a href="http://airfoiltools.com/polar/details?polar=xf-e817-il-200000" target="_blank" rel="noopener">E817</a> / <a href="http://airfoiltools.com/airfoil/details?airfoil=naca4412-il" target="_blank" rel="noopener">NACA 4412</a> / <a href="http://airfoiltools.com/airfoil/details?airfoil=naca6412-il" target="_blank" rel="noopener">6412</a>), costing <b>~1 to 2.5%</b> of drag depending on the wing (computed, not estimated). The more cambered the foil (i.e. the more «pump» it is), the more it pays — but it stays modest. And all the pumping <b>unsteadiness</b> is folded into η, not resolved: at Paul\'s measured cadence (~100 pumps/min ≈ 1.7 Hz), ~0.12 m chord, 5 m/s, the reduced frequency <b>k = πfc/U ≈ 0.13</b> (~25 convective times per cycle) stays quasi-steady to ~20% (Theodorsen C(k) ≈ 0.80), but pumping is also <b>unsteady propulsion</b> (flapping lift, added mass) — hence an empirical η rather than a resolved balance. <b>Direct consequence</b> (thanks to a wing designer for the point): the model is <b>blind to cadence</b> — η doesn\'t depend on pumping frequency — whereas unsteady thrust grows with it (wake jet ∝ <b>f²·A²</b>, dynamic lift overshoot that lets you fly below static stall). A skilled pumper raising cadence toward the <b>useful</b> Strouhal regime (~0.3; the efficiency peak at ~0.15 doesn\'t count — it makes almost no thrust) <b>beats the model</b>. With the field amplitude (~20 cm peak-to-peak) we sit at St ≈ 0.04-0.10, well below it — hence raising cadence almost always helps. The chosen η matches a «typical» cadence. <span style="color:var(--dim)">Refs <a href="https://www.cambridge.org/core/journals/journal-of-fluid-mechanics/article/abs/oscillating-foils-of-high-propulsive-efficiency/22E5CD028D92318AFC88ED104E55786B" target="_blank" rel="noopener">Anderson 1998</a> · <a href="https://www.nature.com/articles/nature02000" target="_blank" rel="noopener">Taylor 2003</a>.</span>',
     'l-weight':'⚖️ Rider weight (kg)',
     'l-form':'🫀 Fitness level',
-    'opt-cp1':'Occasional — sport a few times a year (~150 W)',
-    'opt-cp1b':'Weekend athlete — 10 km run in ~55 min (~185 W)',
-    'opt-cp2':'Regular athlete — 10 km in ~50 min (~220 W)',
-    'opt-cp2b':'Committed — 10 km in ~46 min / regular rides (~245 W)',
-    'opt-cp3':'Well-trained — 10 km in ~43 min / weekly cycling (~270 W)',
-    'opt-cp3b':'Highly trained — 10 km under 40 min / half ~1h30 (~310 W)',
-    'opt-cp4':'Endurance athlete — marathon &lt; 3h (~350 W)',
-    'rh1':'Your <b>fitness</b> sets your critical power (the effort you hold for hours). Above it, you dip into reserves and eventually drop. Running↔watts benchmarks calibrated for ~75 kg.',
+    'rh1':'Your <b>fitness</b> sets your <b>threshold</b>: the effort you hold for <b>~1 h</b> (for several hours, count ~10-15% less). Above it, you dip into your reserve and eventually drop. Benchmarks from sports-medicine norms (VO2max by sex and age). <b>Without regular cardio, even the best wing only takes you a few km in one go</b> (3-6 km with perfect technique, more like 1-2 km for real): 10 km takes a trained engine.',
+    'opt-sex-m':'Male', 'opt-sex-f':'Female',
     'mh-h3':'🚴 Your human engine',
     'mh-lede':'The watts each wing demands, against <b>🫀 your threshold</b> (your level, set above).',
     'mh-note':'⚡ At <b>peak</b> (a ~5 s sprint), a track cyclist puts out <b>&gt; 1200 W</b> — enough to power a toaster. And each pump stroke is a <b>mini-jump</b>: jumping 40 cm ≈ <b>1,000 W</b> for 0.3 s. Your <i>average</i> is 200 W, but every stroke spikes far higher — that\'s why 200 W of pumping «stings» more than 200 W of smooth cycling. To <i>fly long</i>, only <b>sustained</b> power counts.',
@@ -2804,6 +2818,7 @@
       else if(FRC[k]!==undefined){ el.innerHTML=FRC[k]; }
     });
     populatePresets();
+    if(typeof cpOptions === 'function') cpOptions();   // niveaux de forme : texte généré en JS
     ['1','2'].forEach(i=>{               // re-traduit le sous-titre sans réinitialiser les réglages
       const p = FLAT[document.getElementById('preset'+i).value];
       if(p){ const ar=((p.b/100)*(p.b/100))/(p.s/10000);
