@@ -1539,6 +1539,9 @@
   // la puissance ne grandit pas en proportion du poids : un rider plus lourd à forme égale a un peu plus de watts, pas autant de plus
   // (loi d'échelle des muscles : puissance ∝ masse^0,67, autour d'un poids de référence) — retour Paul : « je monte le poids, le seuil monte »
   const cpAt = (wkg, kg) => Math.round(wkg*70*Math.pow(kg/70, 0.67)/5)*5;
+  // 🎯 CALAGE TERRAIN (oct. 2026) : le modèle surestimait les watts d'~15 % face à 3 mesures — Paul RSX Carve 1100 à 78 kg = 5 min max,
+  // Sirus XL à 79 kg ≈ 240 W (Foilmotion, modèle 285 W), Ultra Trail 4XL ≈ 198 W à 12,9 km/h (Foilmotion) → tous les watts × 0,85
+  const CAL = 0.85;
   const riderCP = () => cpAt(cpWkg(), parseFloat(document.getElementById('rider-w').value) || 75);   // puissance critique du rider (W)
   function cpOptions(){
     const sel = document.getElementById('rider-cp'), cur = sel.value || CP_DEF, kg = parseFloat(document.getElementById('rider-w').value) || 75, f = document.getElementById('rider-sex').value === 'f';
@@ -1598,7 +1601,7 @@
     // Rendement de pompage ESTIMÉ : croît avec l'allongement et la rigidité du mât (matériau)
     const matFactor = parseFloat(document.getElementById(cfg.mat).value); // alu 0.90 / carbone 1.0 / UHM 1.06
     const eta = Math.min(0.80, (0.44 + 0.015*AR) * matFactor);
-    const P = (Dtot*v)/eta;               // puissance foiler
+    const P = (Dtot*v)/eta*CAL;           // puissance foiler (calage terrain)
 
     // Temps de vol estimé (modèle puissance critique, selon le niveau du rider)
     const CP = riderCP();
@@ -1614,7 +1617,7 @@
     const vStall = Math.sqrt(W/(0.5*RHO*S*clMax));
     const vSweet = Math.max(vOpt, vStall*1.30, V_FLOOR);                   // croisière : ≥ décrochage+15 % et ≥ 11 km/h
     const qs = 0.5*RHO*vSweet*vSweet;
-    const Psweet = ((Aind/(vSweet*vSweet) + qs*Kpar)*vSweet + Dt*vSweet)/eta;
+    const Psweet = ((Aind/(vSweet*vSweet) + qs*Kpar)*vSweet + Dt*vSweet)/eta*CAL;
     const vSweetKmh = vSweet*3.6;
 
     const stall = CL > clMax;
@@ -1801,7 +1804,7 @@
     const vOpt = Math.pow(Aind/(3*0.5*RHO*Kpar), 0.25);
     const vSweet = Math.max(vOpt, vStall*1.30, V_FLOOR);
     const Dt = 2*W*(6*cfg.cd0+0.012)*(S/b)*S/(0.65*Math.PI*b*b*E); // trim drag (Cm0 lié au profil)
-    const P = v => ((Aind/(v*v) + 0.5*RHO*v*v*Kpar + Dt) * v) / eta;   // v en m/s → W
+    const P = v => ((Aind/(v*v) + 0.5*RHO*v*v*Kpar + Dt) * v) / eta * CAL;   // v en m/s → W (calage terrain)
     return {P, vStall, vSweet, Psweet:P(vSweet)};
   }
 
@@ -1901,7 +1904,7 @@
       const clMax=Math.min((2*Math.PI/(1+2/AR))*(13*Math.PI/180), cap);
       const vOpt=Math.pow(Aind/(3*0.5*RHO*Kpar),0.25), vSt=Math.sqrt(W/(0.5*RHO*S*clMax));
       const v=Math.max(vOpt, vSt*1.30, V_FLOOR);
-      return ((Aind/(v*v)+0.5*RHO*v*v*Kpar)*v)/eta;
+      return ((Aind/(v*v)+0.5*RHO*v*v*Kpar)*v)/eta*CAL;
     };
     const b0 = r.span/100, P0 = psweet(w*G, b0);
     const pctI = 100*r.Di/r.Dtot;
@@ -2225,7 +2228,7 @@
       {n:'RSX 1540',    b:140, s:1540, cd0:0.012, clMax:1.5}
     ]},
     {g:'Alpine Foil RSX Carve — aile rapide (AR 11)', prof:'profil moyen', cat:'classic', items:[
-      {n:'RSX Carve 1100', b:112, s:1100, cd0:0.014, clMax:0.70}
+      {n:'RSX Carve 1100', b:112, s:1100, cd0:0.014, clMax:1.15, stb:'0.040', fus:'0.035'}   // portance max comme la page carve (était 0,70 → ~600 W absurdes) ; stab ~100, fuselage court (aile de carve)
     ]}
   ];
   const FLAT = {};
