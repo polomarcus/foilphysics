@@ -1536,18 +1536,21 @@
   ];
   const CP_DEF = 'avg';   // beaucoup de foilers (wing, kite) ne font pas de cardio : le vent les porte (retour Paul) → médiane de la population par défaut
   const cpWkg = () => { const L = CP_LV.find(l => l.k === document.getElementById('rider-cp').value) || CP_LV[1]; return document.getElementById('rider-sex').value === 'f' ? L.f : L.m; };
-  const riderCP = () => Math.round(cpWkg()*(parseFloat(document.getElementById('rider-w').value) || 75)/5)*5;   // puissance critique du rider (W)
+  // la puissance ne grandit pas en proportion du poids : un rider plus lourd à forme égale a un peu plus de watts, pas autant de plus
+  // (loi d'échelle des muscles : puissance ∝ masse^0,67, autour d'un poids de référence) — retour Paul : « je monte le poids, le seuil monte »
+  const cpAt = (wkg, kg) => Math.round(wkg*70*Math.pow(kg/70, 0.67)/5)*5;
+  const riderCP = () => cpAt(cpWkg(), parseFloat(document.getElementById('rider-w').value) || 75);   // puissance critique du rider (W)
   function cpOptions(){
     const sel = document.getElementById('rider-cp'), cur = sel.value || CP_DEF, kg = parseFloat(document.getElementById('rider-w').value) || 75, f = document.getElementById('rider-sex').value === 'f';
     sel.innerHTML = CP_LV.map(L => { const w = f ? L.f : L.m, km = Math.round(50*2.9/w/5)*5;
-      return '<option value="'+L.k+'"'+(L.k === cur ? ' selected' : '')+'>'+t(L.fr, L.en)+' · ~'+Math.round(w*kg/5)*5+' W'+(L.k !== 'low' && L.k !== 'avg' ? t(' · 10 km en ~',' · 10 km in ~')+(km >= 60 ? Math.floor(km/60)+' h '+String(km % 60).padStart(2, '0') : km+' min') : '')+'</option>'; }).join('');
+      return '<option value="'+L.k+'"'+(L.k === cur ? ' selected' : '')+'>'+t(L.fr, L.en)+' · ~'+cpAt(w, kg)+' W'+(L.k !== 'low' && L.k !== 'avg' ? t(' · 10 km en ~',' · 10 km in ~')+(km >= 60 ? Math.floor(km/60)+' h '+String(km % 60).padStart(2, '0') : km+' min') : '')+'</option>'; }).join('');
   }
 
   // C_D0 profil & C_L max propres à chaque colonne (profil fin = décroche plus tôt)
   // mât/fus/stab = aire mouillée (m²) via les <select>
   const CFG = {
     1: {b:'b1', s:'s1', v:'v1', w:'rider-w', mst:'mst1', fus:'fus1', stb:'stb1', mat:'mat1', cd0:0.018, clMax:1.5},
-    2: {b:'b2', s:'s2', v:'v2', w:'rider-w', mst:'mst2', fus:'fus2', stb:'stb2', mat:'mat2', cd0:0.008, clMax:0.65}
+    2: {b:'b2', s:'s2', v:'v2', w:'rider-w', mst:'mst2', fus:'fus2', stb:'stb2', mat:'mat2', cd0:0.008, clMax:0.90}
   };
 
   const val = id => parseFloat(document.getElementById(id).value);
@@ -1668,7 +1671,7 @@
 
   const BENCH = [
     {w:70,  fr:'🚶 Marche',          en:'🚶 Walking'},
-    {w:170, fr:'🚴 Balade à vélo',   en:'🚴 Easy ride'},
+    {w:100, fr:'🚴 Balade à vélo',   en:'🚴 Easy ride'},
     {w:430, fr:'🏁 Pro (FTP)',       en:'🏁 Pro (FTP)'}
   ];
   const SC_MAX = 450;
@@ -2154,6 +2157,8 @@
   });
 
   /* ---------- Presets d'ailes réelles (C_D0 & C_L max selon l'épaisseur) ---------- */
+  // ailes fines de distance (Fireball, Takoon Extreme, Ketos LD) : portance max ~0,9 (et non 0,62-0,72) → croisière ~14 km/h
+  // comme sur le terrain ; avant, le décrochage calculé forçait une croisière ~17 km/h trop chère (retour Paul + mesures Foilmotion, oct. 2026)
   const CATALOG = [
     {g:'F-One Jam — profil moyen (~13-14% t/c)', prof:'profil moyen', cat:'classic', items:[
       {n:'Jam 1400', b:120, s:1400, cd0:0.013, clMax:1.10},
@@ -2181,9 +2186,9 @@
       {n:'Pump 1900', b:141, s:1900, cd0:0.013, clMax:1.10}
     ]},
     {g:'Takoon Pump Extreme — profil fin (~12% t/c)', prof:'profil fin', cat:'ha', items:[
-      {n:'Takoon Extreme 1400', b:157, s:1400, cd0:0.011, clMax:0.72},
-      {n:'Takoon Extreme 1600', b:173, s:1600, cd0:0.011, clMax:0.72},
-      {n:'Takoon Extreme 1800', b:190, s:1800, cd0:0.011, clMax:0.72}
+      {n:'Takoon Extreme 1400', b:157, s:1400, cd0:0.011, clMax:0.90},
+      {n:'Takoon Extreme 1600', b:173, s:1600, cd0:0.011, clMax:0.90},
+      {n:'Takoon Extreme 1800', b:190, s:1800, cd0:0.011, clMax:0.90}
     ]},
     {g:'Takoon Pump Pro — même profil (~12% t/c) mais bas AR 13', prof:'profil fin', cat:'ha', items:[
       {n:'Pump Pro 1350', b:133,   s:1350, cd0:0.011, clMax:1.10},
@@ -2193,8 +2198,8 @@
       {n:'Pump Pro 2300', b:173.5, s:2300, cd0:0.011, clMax:1.10}
     ]},
     {g:'Axis Fireball — profil fin (mât Fatty requis)', prof:'profil fin', cat:'ha', items:[
-      {n:'Fireball 1750', b:175, s:1525, cd0:0.008, clMax:0.65, mast:'0.085', mat:'1.06', fus:'0.028', stb:'0.020'},
-      {n:'Fireball 1500', b:150, s:1313, cd0:0.008, clMax:0.65, mast:'0.085', mat:'1.06', fus:'0.028', stb:'0.020'}
+      {n:'Fireball 1750', b:175, s:1525, cd0:0.008, clMax:0.90, mast:'0.085', mat:'1.06', fus:'0.028', stb:'0.020'},
+      {n:'Fireball 1500', b:150, s:1313, cd0:0.008, clMax:0.90, mast:'0.085', mat:'1.06', fus:'0.028', stb:'0.020'}
     ]},
     {g:'Indiana Condor — profil moyen (~13%, mât alu)', prof:'profil moyen', cat:'ha', items:[
       {n:'Condor XL', b:170, s:2274, cd0:0.012, clMax:1.5, mast:'0.085', mat:'0.90'}
@@ -2204,7 +2209,7 @@
       {n:'Blackbird 1400', b:138, s:1549, cd0:0.013, clMax:1.5}
     ]},
     {g:'Ketos LD — profil fin speed (mât rigide fin)', prof:'profil fin', cat:'ha', items:[
-      {n:'Ketos 166 LD', b:166, s:1466, cd0:0.008, clMax:0.62, mast:'0.050', mat:'1.06', fus:'0.028', stb:'0.020'}
+      {n:'Ketos 166 LD', b:166, s:1466, cd0:0.008, clMax:0.90, mast:'0.050', mat:'1.06', fus:'0.028', stb:'0.020'}
     ]},
     {g:'GONG Sirus (petites) — profil moyen (AR 9-11)', prof:'profil moyen', cat:'classic', items:[
       {n:'Sirus L (1450)',  b:116, s:1450, cd0:0.013, clMax:1.5},
