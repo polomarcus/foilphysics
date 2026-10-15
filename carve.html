@@ -1323,7 +1323,9 @@
       g.restore();
     }
     // traînée des bouts d'aile : l'eau qu'ils ont balayée
+    let NO_TRAIL = false;   // vidéo : pas de traînées de bout d'aile (agrandies, elles faisaient des taches illisibles — retour Paul)
     function tipTrail(key, g, now, pts){
+      if(NO_TRAIL) return;
       const tr = trails[key] || (trails[key] = []);
       tr.push({t:now, p:pts});
       while(tr.length && now - tr[0].t > .55) tr.shift();
@@ -1575,6 +1577,7 @@
     }
 
     const DRAW = {span:drawSpan, mix:drawMix, drive:drawDrive, takeoff:drawTakeoff, dihedral:drawDihedral};
+    if(/[?&]video=1/.test(location.search)) window.cvFig = (k, g, now) => { NO_TRAIL = true; DRAW[k](g, now); return {w:FW, h:FH[k]}; };   // 🎬 la vidéo redessine la figure en grand
     const STILL = {span:8.3, mix:8.3, drive:6.5, takeoff:9, dihedral:3};
     let start = 0;
     function tick(ts){

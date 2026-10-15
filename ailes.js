@@ -51,5 +51,9 @@ window.FOIL_WINGS = [{k:'alp', n:'Alpine Foil', c:'#f472b6', w:[['RSX Carve 820'
   {k:'duo', n:'Duotone', c:'#e879f9', w:[['Crest SLS 800',85,800],['Crest SLS 925',90,925],['Crest SLS 1050',96,1050],['Crest SLS 1200',102,1200],   // Crest D/LAB : mêmes envergure et surface → même entrée
       ['Glide 3.0 SLS 825',100,825],['Glide 3.0 SLS 950',105,950],['Glide 3.0 SLS 1100',112,1100],['Glide 3.0 SLS 1250',118,1250],['Glide 3.0 SLS 1400',124,1400],
       ['AMP 2.0 SLS 1550',143,1550],['AMP 2.0 SLS 1800',148,1800],['AMP 2.0 SLS 2100',143,2100],
-      ['Hyperglide D/LAB 880',113,880]]}   // Glide 3.0 D/LAB : mêmes envergure et surface que la SLS → une seule entrée
+      ['Hyperglide D/LAB 880',113,880]]},   // Glide 3.0 D/LAB : mêmes envergure et surface que la SLS → une seule entrée
+  {k:'srk', n:'Sroka', c:'#fbbf24', w:[['UHA 800',93.9,800],['UHA 930',101.1,930],['UHA 1100',110,1100],['UHA 1260',117.9,1260],['UHA 1550',130.5,1550],
+      ['PF 1500',141,1500],['PF 1750',152,1750],['PF 2200',170,2200],
+      ['DW 900',112,900],
+      ['810 S HA',78,810],['950 S HA',85,950],['1190 HA',91,1190],['1350 L HA',110,1350]]}   // 1190 S / W / L HA : mêmes envergure et surface (seule l'épaisseur change) → une seule entrée
   ];
