@@ -2084,7 +2084,10 @@
           // 🔗 le nom de l'aile = lien vers sa page officielle (ailes.js : page de la gamme, sinon page des ailes de la marque)
           const L = window.foilLink && window.foilLink(q.n, 'vitesse'), nm = L ? '<a href="'+L.u+'" target="_blank" rel="noopener">'+q.n.replace(/ (\S+)$/, '&nbsp;$1')+window.wlTail(L)+'</a>'
             + (L.fam ? '' : '<small>'+t('site '+L.brand,L.brand+' site')+'</small>') : q.n;
-          return '<div class="pin-card" data-i="'+i+'"'+(f.col ? ' style="border-color:'+f.col+'"' : '')+'>'
+          // fond teinté de la couleur de la ZONE de l'aile (20 % sur fond sombre : tous les textes restent ≥ 4,6:1) + bande à gauche ;
+          // le nom de la zone reste écrit en bas de la fiche (la couleur n'est jamais seule)
+          const zbg = f.zc ? 'rgb('+[1, 3, 5].map((k, j) => Math.round(parseInt(f.zc.slice(k, k + 2), 16)*.2 + [15, 23, 42][j]*.8)).join(',')+')' : '';
+          return '<div class="pin-card" data-i="'+i+'" style="'+(f.col ? 'border-color:'+f.col+';' : '')+(zbg ? 'background:'+zbg+'; border-left:5px solid '+f.zc+';' : '')+'">'
             + '<button type="button" class="pin-x" data-pin="'+i+'" aria-label="'+t('Fermer la fiche','Close card')+'">×</button>'
             + f.html.replace('<div class="tt-h">'+q.n+'</div>', '<div class="tt-h"><span class="pin-n">'+(i + 1)+'</span>'+nm+'</div>')
             + (K.canTry(q.b, q.S) ? '<button type="button" class="pin-try" data-try-pin="'+i+'">▶ '+t('l\'essayer','try it')+'</button>' : '')+'</div>'; }).join('');
@@ -2155,7 +2158,7 @@
       const ar = b*b/S, ev = vaEval(b, S, VA.geo.kg), fits = ar >= VA.AR0 && ar <= VA.AR1;
       const rec = n && VA.sel.length && VA.reco ? VA.reco.find(r => Math.abs(r.b - b) < .01 && r.S === S) : null;
       const RL = {'🏁':t('meilleure sur 300 m','best over 300 m'), '⚡':t('rapide, petite conso','fast, low energy'), '🏆':t('polyvalente','all-round')};
-      return {col: rec ? VA_RC_C[rec.e] : '', html: (rec ? '<div class="tt-rec" style="color:'+VA_RC_C[rec.e]+'">'+rec.e+' '+t('recommandée','recommended')+' · '+RL[rec.e]+'</div>' : '')
+      return {col: rec ? VA_RC_C[rec.e] : '', zc: fits ? VA_CAT[ev.k].c : '', html: (rec ? '<div class="tt-rec" style="color:'+VA_RC_C[rec.e]+'">'+rec.e+' '+t('recommandée','recommended')+' · '+RL[rec.e]+'</div>' : '')
         + (n ? '<div class="tt-h">'+n+'</div>' : '')
         + '<div class="'+(n ? '' : 'tt-h')+'">'+b+'&nbsp;cm · '+num(S, 0)+'&nbsp;cm² · AR&nbsp;'+num(ar, 1)+'</div>'
         // 1) le verdict d'abord, dans la couleur de la zone, avec l'écart aux plus rapides (à ta puissance)

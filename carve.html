@@ -2654,7 +2654,10 @@
           // 🔗 le nom de l'aile = lien vers sa page officielle (ailes.js : page de la gamme, sinon page des ailes de la marque)
           const L = window.foilLink && window.foilLink(q.n, 'carve'), nm = L ? '<a href="'+L.u+'" target="_blank" rel="noopener">'+q.n.replace(/ (\S+)$/, '&nbsp;$1')+window.wlTail(L)+'</a>'
             + (L.fam ? '' : '<small>'+t('site '+L.brand,L.brand+' site')+'</small>') : q.n;
-          return '<div class="pin-card" data-i="'+i+'"'+(f.col ? ' style="border-color:'+f.col+'"' : '')+'>'
+          // fond teinté de la couleur de la ZONE de l'aile (20 % sur fond sombre : tous les textes restent ≥ 4,6:1) + bande à gauche ;
+          // le nom de la zone reste écrit en bas de la fiche (la couleur n'est jamais seule)
+          const zbg = f.zc ? 'rgb('+[1, 3, 5].map((k, j) => Math.round(parseInt(f.zc.slice(k, k + 2), 16)*.2 + [15, 23, 42][j]*.8)).join(',')+')' : '';
+          return '<div class="pin-card" data-i="'+i+'" style="'+(f.col ? 'border-color:'+f.col+';' : '')+(zbg ? 'background:'+zbg+'; border-left:5px solid '+f.zc+';' : '')+'">'
             + '<button type="button" class="pin-x" data-pin="'+i+'" aria-label="'+t('Fermer la fiche','Close card')+'">×</button>'
             + f.html.replace('<div class="tt-h">'+q.n+'</div>', '<div class="tt-h"><span class="pin-n">'+(i + 1)+'</span>'+nm+'</div>')
             + (K.canTry(q.b, q.S) ? '<button type="button" class="pin-try" data-try-pin="'+i+'">▶ '+t('l\'essayer','try it')+'</button>' : '')+'</div>'; }).join('');
@@ -2727,7 +2730,8 @@
       // aile recommandée (✨ / 🔥 / 🌊) : bulle teintée de la couleur de sa reco + bandeau en tête
       const rec = n && ATL.sel.length && ATL.reco ? ATL.reco.find(r => Math.abs(r.b - b) < .01 && r.S === S) : null;
       const RECO_L = {'✨':t('compromis','compromise'), '🔥':t('tourner','turning'), '🌊':t('enchaîner','linking')};
-      return {col: rec ? RECO_C[rec.e] : '', html: (rec ? '<div class="tt-rec" style="color:'+RECO_C[rec.e]+'">'+rec.e+' '+t('recommandée','recommended')+' · '+RECO_L[rec.e]+'</div>' : '')
+      const zk = ar >= ATL.AR0 && ar <= ATL.AR1 ? atlCat(b, S, g.kg, manOf(b, S) >= 45, ses.unlimited || ses.min >= SES_OK) : null;   // zone de l'aile (fond de sa fiche)
+      return {col: rec ? RECO_C[rec.e] : '', zc: zk ? ATL_CAT[zk].c : '', html: (rec ? '<div class="tt-rec" style="color:'+RECO_C[rec.e]+'">'+rec.e+' '+t('recommandée','recommended')+' · '+RECO_L[rec.e]+'</div>' : '')
         + (n ? '<div class="tt-h">'+n+'</div>' : '')
         + '<div class="'+(n ? 'tt-s' : 'tt-h')+'">'+tone(b+'&nbsp;cm', grad(b, 145, 85))+' · '+tone(num(S)+'&nbsp;cm²', grad(S, 1600, 750))
           +' · '+tone('AR&nbsp;'+num(ar, 1), grad(ar, 18, 7))+'</div>'
