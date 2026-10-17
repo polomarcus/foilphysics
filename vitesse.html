@@ -20,7 +20,7 @@
 <style>
   :root{
     --bg:#0f172a; --panel:#1e293b; --panel-2:#16213a; --line:#334155;
-    --txt:#e2e8f0; --muted:#94a3b8; --dim:#64748b; --sky:#38bdf8;
+    --txt:#e2e8f0; --muted:#94a3b8; --dim:#8796ab; --sky:#38bdf8;
   }
   *{margin:0; padding:0; box-sizing:border-box;}
   body{background:var(--bg); color:var(--txt); font-family:system-ui,-apple-system,"Segoe UI",sans-serif; line-height:1.5; overflow-x:hidden;}
@@ -309,7 +309,7 @@
   .atl-reco .rd{display:flex; flex-wrap:wrap; gap:4px; font-size:.76rem; color:#cbd5e1;} .atl-reco .rd > span{background:rgba(148,163,184,.12); border-radius:999px; padding:2px 8px;}
   .atl-reco button{margin-top:auto; align-self:flex-start; background:transparent; border:1.5px solid currentColor; border-radius:999px; padding:5px 14px; font:inherit; font-size:.82rem; font-weight:800; cursor:pointer;}
   .atl-reco button:disabled, .atl-cmp button:disabled{opacity:.35; cursor:default;}
-  .atl-bhint{flex-basis:100%; text-align:center; font-size:.76rem; color:var(--muted); margin-top:2px;}
+  .atl-bhint{flex-basis:100%; text-align:center; font-size:.76rem; color:var(--muted); margin:-4px 0 10px;}
   .atl-cmpw{overflow-x:auto; margin-bottom:14px;}
   .atl-cmp{width:100%; border-collapse:separate; border-spacing:6px; font-size:.82rem;}
   .atl-cmp th{text-align:left; color:var(--txt); font-weight:900; padding:6px 8px; vertical-align:top; white-space:nowrap;} .atl-cmp th small{display:block; font-size:.7rem; font-weight:600; color:var(--muted); white-space:normal;}
@@ -318,7 +318,7 @@
   .atl-cmp td > b{display:block; font-size:1.05rem; font-weight:900; color:var(--txt); margin-bottom:4px;}
   .atl-cmp .rd{display:flex; flex-wrap:wrap; gap:3px; font-size:.72rem; color:#cbd5e1; margin-bottom:6px;} .atl-cmp .rd > span{background:rgba(148,163,184,.12); border-radius:999px; padding:1px 7px;}
   .atl-cmp button{background:transparent; border:1px solid #f59e0b; color:#f59e0b; border-radius:999px; padding:3px 10px; font:inherit; font-size:.74rem; font-weight:800; cursor:pointer;}
-  @media(max-width:560px){ .atl-cmp th:first-child{position:sticky; left:0; z-index:1; background:var(--bg); white-space:normal; min-width:84px; max-width:96px;} .atl-cmp td{min-width:118px;} }
+  @media(max-width:560px){ .atl-cmp td > b{font-size:.95rem;} .atl-cmp th:first-child{position:sticky; left:0; z-index:1; background:var(--bg); white-space:normal; min-width:80px; max-width:88px;} .atl-cmp td{min-width:104px; padding:8px;} .atl-cmp{border-spacing:4px;} }
   td.cmp-none{color:var(--muted); text-align:center; vertical-align:middle;} td.cmp-rng{font-size:.74rem; color:#cbd5e1; line-height:1.4;}
   .atl-box{position:relative; max-width:900px; margin:0 auto; background:var(--panel-2); border-radius:12px; padding:8px;}
   .pw-box{max-width:900px; margin:12px auto 4px;} .pw-box:empty{display:none;} .pw-box h4{font-size:.95rem; font-weight:900; text-align:center;} .pw-box h4 small{display:block; font-size:.76rem; font-weight:600; color:var(--muted);}
@@ -328,7 +328,97 @@
   .eco-g{display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:8px;}
   .eco-g div{background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--c); border-radius:10px; padding:8px 10px; font-size:.8rem; color:#cbd5e1;}
   .eco-g b{color:var(--txt); font-size:.9rem;} .eco-g i{font-style:normal; color:var(--muted);}
-  #atl-cv{display:block; width:100%; cursor:crosshair; touch-action:pan-y;}
+  #atl-cv{display:block; width:100%; cursor:crosshair; touch-action:pan-x pan-y;}   /* pan-x/y : le doigt fait défiler, la pince à 2 doigts zoome la carte (pas la page) */
+  /* 🔍 zoom : la carte est redessinée plus grande dans ce cadre, qui défile au doigt (ou à la souris, en glissant) */
+  .atl-scroll{overflow:auto; overscroll-behavior-x:contain; border-radius:8px; scrollbar-width:thin;}
+  .atl-scroll.zoomed #atl-cv{cursor:grab;} .atl-scroll.zoomed #atl-cv.grabbing{cursor:grabbing;}
+  .atl-tools{display:flex; align-items:center; justify-content:space-between; gap:8px; margin:0 2px 6px; font-size:.76rem; line-height:1.3; color:var(--muted);}
+  .atl-zb{display:inline-flex; align-items:center; gap:4px; flex:none;}
+  .atl-zb button{width:36px; height:36px; border-radius:10px; border:1px solid var(--line); background:var(--panel); color:var(--txt); font:inherit; font-size:1.15rem; font-weight:800; line-height:1; cursor:pointer; touch-action:manipulation;}
+  .atl-zb button:disabled{opacity:.35; cursor:default;}
+  .atl-zb b{min-width:30px; text-align:center; font-size:.8rem; color:var(--txt); font-variant-numeric:tabular-nums;}
+  /* 📌 fiches épinglées : une par aile touchée, côte à côte pour comparer, fermables (×) */
+  .atl-pins{max-width:900px; margin:8px auto 10px; display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:10px 8px;}
+  .atl-pins:empty{display:none;}
+  .pin-bar{grid-column:1 / -1; display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:.8rem; color:var(--muted);}
+  .pin-bar button{flex:none; white-space:nowrap; background:transparent; border:1px solid var(--line); color:var(--txt); border-radius:999px; padding:6px 12px; font:inherit; font-size:.78rem; font-weight:700; cursor:pointer;}
+  .pin-card{position:relative; background:var(--panel); border:1.5px solid var(--line); border-radius:12px; padding:10px 30px 10px 12px; font-size:.8rem; line-height:1.5; color:#cbd5e1; min-width:0; overflow-wrap:anywhere;}
+  .pin-card b{color:var(--txt);} .pin-card .tt-h{font-weight:900; color:var(--txt); font-size:.95rem; line-height:1.25; margin:0 0 3px;} .pin-card .tt-rec{font-size:.68rem;}
+  .pin-n{display:inline-block; margin-right:6px; vertical-align:2px; width:20px; height:20px; border-radius:50%; background:#fff; color:#0f172a; font-size:.72rem; font-weight:900; line-height:20px; text-align:center; box-shadow:0 0 0 2px #0f172a;}
+  .pin-x{position:absolute; top:0; right:0; width:38px; height:38px; border:0; background:none; color:var(--muted); font-size:1.35rem; line-height:1; cursor:pointer;}
+  .pin-x:hover{color:var(--txt);}
+  .wl{color:inherit; text-decoration:underline; text-decoration-color:#93c5fd; text-decoration-thickness:2px; text-underline-offset:3px;}
+  .pin-card .tt-h a{color:inherit; text-decoration:underline; text-decoration-color:#93c5fd; text-decoration-thickness:2px; text-underline-offset:3px;}
+  .pin-card .tt-h small{display:block; font-size:.7rem; font-weight:600; color:#93c5fd;}
+  .pin-try{display:block; margin-top:8px; background:transparent; border:1.5px solid currentColor; color:var(--txt); border-radius:999px; padding:6px 10px; font:inherit; font-size:.76rem; font-weight:800; cursor:pointer;}
+  .atl-lay{display:flex; flex-wrap:wrap; align-items:center; gap:5px; margin:0 2px 6px; font-size:.74rem; color:var(--muted);}
+  .atl-lay:empty{display:none;}
+  .atl-lay button{background:transparent; border:1px dashed var(--line); color:var(--muted); border-radius:999px; padding:5px 9px; font:inherit; font-size:.74rem; font-weight:700; cursor:pointer;}
+  .atl-lay button.on{border-style:solid; border-color:#64748b; color:var(--txt); background:rgba(148,163,184,.12);}
+  .atl-choose{position:absolute; z-index:6; background:rgba(15,23,42,.98); border:1px solid #64748b; border-radius:12px; padding:4px; min-width:190px; max-width:min(280px, calc(100% - 8px)); box-shadow:0 8px 24px rgba(0,0,0,.5);}
+  .atl-choose[hidden]{display:none;}
+  .atl-choose .ac-h{display:flex; justify-content:space-between; align-items:center; padding:2px 2px 2px 8px; font-size:.74rem; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:.04em;}
+  .atl-choose .ac-h button{width:34px; height:34px; border:0; background:none; color:var(--muted); font-size:1.25rem; cursor:pointer;}
+  .atl-choose > button{display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 8px; width:100%; min-height:42px; text-align:left; background:transparent; border:0; border-top:1px solid var(--line); color:#cbd5e1; padding:8px; font:inherit; font-size:.82rem; cursor:pointer;}
+  .atl-choose > button:hover{background:rgba(148,163,184,.12);} .atl-choose > button b{color:var(--txt);} .atl-choose > button span{color:var(--muted); font-size:.74rem;}
+  .atl-choose > button i{width:9px; height:9px; border-radius:50%; flex:none; align-self:center;}
+  /* ⛶ plein écran (classe CSS : l'API plein écran n'existe pas sur iPhone) */
+  .atl-box.full{position:fixed; inset:0; z-index:200; max-width:none; margin:0; border-radius:0; display:flex; flex-direction:column; padding:8px 8px calc(8px + env(safe-area-inset-bottom)); background:var(--bg);}
+  .atl-box.full .atl-scroll{flex:1 1 0; min-height:0; height:auto !important; display:flex;} .atl-box.full #atl-cv{flex:none; margin:0 auto auto;}   /* carte en haut, centrée en largeur (marges auto : rien de coupé au zoom) */
+  /* 🏷️ marques en cases à cocher (téléphone + plein écran) ; sur ordinateur, les boutons de marque d'origine */
+  .atl-bdd{display:none; max-width:900px; margin:0 auto 10px;}
+  .atl-bdd > button{display:flex; align-items:center; gap:6px; width:100%; min-height:44px; padding:8px 14px; background:var(--panel-2); border:1px solid var(--line); border-radius:12px; color:var(--muted); font:inherit; font-size:.85rem; font-weight:700; text-align:left; cursor:pointer;}
+  .atl-bdd > button b{flex:1; color:var(--txt); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;} .atl-bdd > button i{font-style:normal; transition:transform .2s;}
+  .atl-bdd.open > button i{transform:rotate(180deg);}
+  .bdd-p{display:none; grid-template-columns:1fr 1fr; gap:2px 8px; margin-top:6px; padding:8px; background:var(--panel); border:1px solid var(--line); border-radius:12px;}
+  .atl-bdd.open .bdd-p{display:grid;}
+  .bdd-p label{display:flex; align-items:center; gap:8px; min-height:40px; padding:0 6px; border-radius:8px; color:var(--txt); font-size:.86rem; font-weight:700; cursor:pointer;}
+  .bdd-p label:hover{background:rgba(148,163,184,.1);} .bdd-p input{width:18px; height:18px; accent-color:#c084fc; flex:none;}
+  .bdd-p label i{width:9px; height:9px; border-radius:50%; flex:none;}
+  .bdd-p .bdd-all{grid-column:1 / -1; border-bottom:1px solid var(--line); border-radius:8px 8px 0 0;}
+  .bdd-p .bdd-ok{grid-column:1 / -1; justify-self:end; margin-top:4px; background:#c084fc; color:#1e1b2e; border:0; border-radius:999px; padding:8px 18px; font:inherit; font-weight:800; cursor:pointer;}
+  @media (max-width:560px){ .atl-bdd{display:block;} #atl-brands, #atl-bhint{display:none !important;} }
+  .atl-box.full .atl-bdd{display:block; flex:none; margin:0 0 6px; max-width:none; position:relative;}
+  .atl-box.full .bdd-p{position:absolute; z-index:7; left:0; right:0; top:100%; max-height:65vh; overflow-y:auto; box-shadow:0 12px 30px rgba(0,0,0,.6);}   /* plein écran : la liste passe PAR-DESSUS la carte (qui ne rétrécit pas) */ .atl-box.full #atl-brands, .atl-box.full #atl-bhint{display:none !important;}
+  .atl-box:not(.full) #atl-zs{display:none;}
+  .atl-rot{display:none; margin:0 2px 6px; font-size:.78rem; font-weight:700; color:#fbbf24;}
+  @media (orientation:portrait) and (hover:none){ .atl-box.full .atl-rot{display:block;} }
+  /* téléphone tourné : carte à gauche, fiches en colonne à droite */
+  @media (orientation:landscape) and (max-height:520px){
+    .atl-box.full{display:grid; grid-template-columns:minmax(0, 1fr) auto; grid-template-rows:auto auto auto minmax(0, 1fr); column-gap:8px;}
+    .atl-box.full .atl-tools, .atl-box.full .atl-lay, .atl-box.full .atl-bdd, .atl-box.full .atl-rot{grid-column:1 / -1; margin-bottom:4px;}
+    .atl-box.full .atl-bdd.open .bdd-p{grid-template-columns:repeat(3, 1fr);} .atl-box.full .atl-hint{display:none;}
+    .atl-box.full .atl-scroll{grid-column:1; grid-row:-2;}
+    .atl-box.full .atl-pins{grid-column:2; grid-row:-2; flex-direction:column; width:min(250px, 36vw); max-height:none; overflow-x:hidden; overflow-y:auto; margin:0; padding:0 2px 0 0;}
+    .atl-box.full .pin-card{flex:none;} .atl-box.full .pin-bar{flex-direction:row;}
+  }
+  .atl-box.full .atl-pins{flex:none; display:flex; gap:8px; overflow-x:auto; max-height:40vh; margin:8px 0 0; padding:10px 0 2px 8px;}
+  .atl-box.full .pin-card{flex:0 0 min(72vw, 240px); overflow-y:auto;} .atl-box.full .pin-bar{flex:none; flex-direction:column; justify-content:center;} .atl-box.full .pin-bar span{display:none;}
+  html.atl-full-on, html.atl-full-on body{overflow:hidden;}
+  /* 🧍 réglages résumés, collés sous la barre du haut pendant qu'on lit la carte */
+  .atl-sticky{position:fixed; left:0; right:0; z-index:45; display:flex; justify-content:center; flex-wrap:nowrap; gap:6px; overflow-x:auto; scrollbar-width:none; padding:6px 10px; background:rgba(15,23,42,.94); border-bottom:1px solid var(--line); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);}
+  .atl-sticky[hidden]{display:none;} .atl-sticky::-webkit-scrollbar{display:none;}
+  .atl-sticky > *{flex:none;} .atl-sticky .rc b{min-width:0;}
+  .mini-b{background:var(--panel); border:1px solid var(--line); color:var(--txt); border-radius:999px; padding:4px 10px; font:inherit; font-size:.78rem; font-weight:700; white-space:nowrap; cursor:pointer;}
+  @media (max-width:400px){ .atl-sticky{justify-content:flex-start;} }
+  .rc-mini{display:none;} .rc-full{display:contents;}
+  @media (max-width:560px){
+    .rc-mini{display:flex; flex-wrap:wrap; justify-content:center; gap:6px; width:100%;} .rc-mini .rc b{min-width:0;}
+    .rc-full{display:none;} .rc-full.open{display:flex; flex-wrap:wrap; justify-content:center; gap:6px; width:100%; margin-top:4px;}
+    /* intro : les 3 cartes repliées derrière une ligne (la carte des ailes remonte) */
+    .tldr .tl-fold{display:block;} .tldr:not(.open) .tl-cards{display:none;}
+  }
+  .tl-fold{display:none; margin:12px auto 0; background:var(--panel); border:1px solid var(--line); border-radius:999px; padding:9px 16px; color:var(--txt); font:inherit; font-size:.84rem; font-weight:700; cursor:pointer;}
+  .tldr.open .tl-fold i{display:inline-block; transform:rotate(180deg);} .tl-fold i{font-style:normal;}
+  /* doigt : boutons d'au moins ~40 px (les − / + de 24 px se ratent) */
+  @media (pointer:coarse){ .rc button{min-width:40px; min-height:40px; height:auto;} .rc-seg button{min-height:38px; padding:0 11px;} .mini-b{min-height:40px;} }
+  .hint-i{width:30px; height:30px; border-radius:50%; border:1px solid var(--line); background:var(--panel); color:var(--txt); font:inherit; font-size:.95rem; font-weight:800; cursor:pointer; vertical-align:middle;}
+  .hint-x{width:26px; height:26px; font-size:1rem; margin-right:4px;}
+  .atl-box .win-tip{white-space:normal; width:max-content; max-width:min(330px, calc(100% - 8px));}   /* jamais plus large que le cadre (plein écran étroit) */
+  .shp{width:13px; height:13px; vertical-align:-2px; margin-right:5px;}
+  .vh{position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;}   /* lu par les lecteurs d'écran, invisible */
+  .pin-card.flash{animation:pinf .9s ease-out;} @keyframes pinf{0%{box-shadow:0 0 0 4px #fff;} 100%{box-shadow:0 0 0 0 rgba(255,255,255,0);}}
+  @media (max-width:560px){ .atl-box{padding:4px;} .atl-box .win-tip{font-size:.8rem; white-space:normal; max-width:250px;} .atl-box .win-tip .tt-c{font-size:.72rem;} }
   /* grand écran : réglages + carte ENTIÈRE dans une seule fenêtre (retour Paul) — la carte (3:2) prend la hauteur restante,
      ~250 px pour les réglages, les marques et l'astuce */
   @media (min-width:700px){
@@ -376,13 +466,30 @@
 
   <div class="tldr">
     <div class="t" data-i18n="tldr-t">Pour la vitesse pure : <b>petite aile fine</b> + <b>petit stab</b><br>+ tes <b>watts de sprint</b>.</div>
+    <button type="button" class="tl-fold" aria-expanded="false" data-i18n="tl-fold">🪽 L'aile · 🦶 Straps + stab · ⚡ Tes watts <i>▾</i></button>
     <div class="tl-cards">
       <div class="tl-c"><span class="tl-e">🪽</span><b data-i18n="tl1-h">L'aile</b><p data-i18n="tl1-p">La <b>plus petite</b> qui décolle, avec le <b>plus d'envergure</b> possible : moins de surface = moins de frottement.</p><small data-i18n="tl1-s">frottement ≈ surface × vitesse³</small></div>
       <div class="tl-c"><span class="tl-e">🦶</span><b data-i18n="tl2-h">Straps + stab</b><p data-i18n="tl2-p">Les <b>straps</b> : +2 km/h minimum (tu tires aussi en remontant). Un <b>gros stab</b> freine : −1,7 km/h de 50 à 130 cm².</p></div>
       <div class="tl-c"><span class="tl-e">⚡</span><b data-i18n="tl3-h">Tes watts</b><p data-i18n="tl3-p"><b>2× les watts</b> = seulement <b>+26 %</b> de vitesse : la vitesse pure, c'est d'abord un <b>sprint</b>.</p></div>
     </div>
-    <div class="tl-go"><a href="#sim" data-i18n="tl-go1">🎛️ Ta vitesse max</a><a href="#atlas" data-i18n="tl-go2">🗺️ Voir toutes les ailes</a></div>
+    <div class="tl-go"><a href="#atlas" data-i18n="tl-go2">🗺️ Voir toutes les ailes</a><a href="#sim" data-i18n="tl-go1">🎛️ Ta vitesse max</a></div>
   </div>
+
+  <!-- 🗺️ ATLAS VITESSE (en tête, comme la page carve) : toutes les ailes sur la carte envergure × surface, zones course 300 m / 1 km -->
+  <section id="atlas" class="a-in">
+    <h3 data-i18n="atl-h3"><a class="h-anchor" href="#atlas">🗺️ Toutes les ailes sur la carte</a></h3>
+    <p class="lede" data-i18n="atl-lede">🏁 <b>À ta puissance, la vitesse de chaque aile</b> en sprint (300 m), calculée pour <b>ton poids</b>, <b>ta puissance</b> et ton <b>stab</b> — comme la maniabilité sur la page carve : les couleurs disent si l'aile est rapide, les tirets blancs donnent les km/h. Touche une aile : sa fiche s'affiche sous la carte (plusieurs pour comparer). Pince pour zoomer.</p>
+    <div class="rc-row" id="atl-rider"></div>
+    <div class="atl-brands" id="atl-brands"></div>
+    <div class="atl-box"><div class="atl-tools"><span class="atl-hint" id="atl-hint"></span><span class="atl-zb"><button type="button" id="atl-zm" aria-label="Zoom −">−</button><b id="atl-zl">1×</b><button type="button" id="atl-zp" aria-label="Zoom +">+</button><button type="button" id="atl-z1" aria-label="Zoom 1×">1:1</button><button type="button" id="atl-zf" aria-label="Plein écran">⛶</button><button type="button" id="atl-zs" aria-label="Partager la carte">🔗</button></span></div><div class="atl-lay" id="atl-lay"></div><div class="atl-scroll" id="atl-scroll"><canvas id="atl-cv" aria-hidden="true"></canvas></div><div class="win-tip" id="atl-tip" hidden></div></div>
+    <div class="atl-pins" id="atl-pins" aria-live="polite"></div>
+    <div class="atl-sticky" id="atl-sticky" hidden></div>
+    <div class="atl-fam" id="atl-fam"></div>
+    <div class="atl-info" id="atl-info"></div>
+    <div class="pw-box" id="pw-box"></div>
+    <div class="eco-box" id="eco-box"></div>
+    <div class="win-leg" id="atl-leg"></div>
+  </section>
 
   <!-- SIMULATEUR : résultat d'abord, réglages dessous -->
   <section id="sim" class="a-in">
@@ -452,19 +559,6 @@
     </div>
   </section>
 
-  <!-- 🗺️ ATLAS VITESSE : toutes les ailes sur la carte envergure × surface, zones course 300 m / 1 km -->
-  <section id="atlas" class="a-in">
-    <h3 data-i18n="atl-h3"><a class="h-anchor" href="#atlas">🗺️ Toutes les ailes sur la carte</a></h3>
-    <p class="lede" data-i18n="atl-lede">🏁 <b>À ta puissance, la vitesse de chaque aile</b> en sprint (300 m), calculée pour <b>ton poids</b>, <b>ta puissance</b> et ton <b>stab</b> — comme la maniabilité sur la page carve : les couleurs disent si l'aile est rapide, les tirets blancs donnent les km/h. Survole un point pour ses chiffres, clique une aile pour l'essayer.</p>
-    <div class="rc-row" id="atl-rider"></div>
-    <div class="atl-brands" id="atl-brands"></div>
-    <div class="atl-box"><canvas id="atl-cv" aria-hidden="true"></canvas><div class="win-tip" id="atl-tip" hidden></div></div>
-    <div class="atl-fam" id="atl-fam"></div>
-    <div class="atl-info" id="atl-info"></div>
-    <div class="pw-box" id="pw-box"></div>
-    <div class="eco-box" id="eco-box"></div>
-    <div class="win-leg" id="atl-leg"></div>
-  </section>
 
   <section class="race-full">
     <h2 data-i18n="rf-h2">🏁 La course : rapide ET maniable, c'est possible</h2>
@@ -664,7 +758,7 @@
   </footer>
 </main>
 
-<script src="ailes.js"></script>
+<script src="ailes.js?v=20261017"></script>
 <script>
 (function(){
   const RHO=1025, G=9.81, E=0.91, CDM=0.008, CDF=0.006, CDS=0.012, A_FUS=0.028;
@@ -692,7 +786,7 @@
     'tl2-p':'<b>Straps</b>: +2 km/h minimum (you pull on the way up too). A <b>big stab</b> brakes: −1.7 km/h from 50 to 130 cm².',
     'tl3-h':'Your watts',
     'tl3-p':'<b>2× the watts</b> = only <b>+26%</b> speed: pure speed is first a <b>sprint</b>.',
-    'tl-go1':'🎛️ Your top speed',
+    'tl-go1':'🎛️ Your top speed', 'tl-fold':'🪽 The wing · 🦶 Straps + stab · ⚡ Your watts <i>▾</i>',
     'tl-go2':'🗺️ See all the wings',
     'sim-h3':'🎛️ Your top speed',
     'sim-learn':'💡 <b>But top speed is only one piece</b>: a real race is won on <b>acceleration</b> and in the <b>turns</b> (handling), and over distance you <b>can\'t hold sprint watts</b> — speed drops. See “The race” just below ↓',
@@ -705,7 +799,7 @@
     'tor-lede':'Effect of each change on <b>your</b> Vmax, at equal sprint. <span style="color:#86efac">Green = faster</span>, <span style="color:#fca5a5">red = slower</span>.',
     'cb-h3':'🏆 The perfect combo (for YOUR watts)',
     'atl-h3':'<a class="h-anchor" href="#atlas">🗺️ All the wings on the map</a>',
-    'atl-lede':'🏁 <b>At your power, the speed of each wing</b> in a sprint (300 m), computed for <b>your weight</b>, <b>your power</b> and your <b>stab</b> — like maneuverability on the carve page: colours tell you if the wing is fast, the white dashes give the km/h. Hover a dot for its numbers, click a wing to try it.',
+    'atl-lede':'🏁 <b>At your power, the speed of each wing</b> in a sprint (300 m), computed for <b>your weight</b>, <b>your power</b> and your <b>stab</b> — like maneuverability on the carve page: colours tell you if the wing is fast, the white dashes give the km/h. Tap a wing: its card shows below the map (several to compare). Pinch to zoom.',
     'cb-lede':'Optimisation under the pump constraint: you need a <b>flight window</b> of at least ~4 km/h to pump up to speed. Result: <b>the more watts you have, the smaller the blade you can afford</b> — the window decides, not the catalogue. Computed for 75 kg, strapless.',
     'cb1-k':'Sprint ~600 W — sporty rider',
     'cb1-p':'Thin profile, stab 50, 13 mm mast → <b>~27 km/h</b>, flight window 22-27 km/h. The 550 blade stalls too high: <b>no window to launch it</b> at these watts.',
@@ -741,6 +835,8 @@
     render();
   }
   $('lang-btn').addEventListener('click', ()=> applyLang(LANG === 'fr' ? 'en' : 'fr'));
+  // téléphone : l'intro (3 cartes) se déplie d'un toucher
+  document.querySelectorAll('.tl-fold').forEach(b => b.addEventListener('click', () => { const d = b.closest('.tldr'); d.classList.toggle('open'); b.setAttribute('aria-expanded', d.classList.contains('open')); }));
 
   /* ---------- modèle ---------- */
   function cfg(){
@@ -1222,14 +1318,15 @@
   const VA = {key:'', g:null, B0:70, B1:195, S0:450, S1:1800, DB:1.5, DS:20, AR0:6, AR1:24, ARB:17, sel:[]};
   const VA_BRANDS = window.FOIL_WINGS || [];
   // Couleurs : palette de référence (sombre) vérifiée au validateur dataviz, paires de zones voisines OK
+  // couleurs des zones : clarté écartée pour les daltoniens (« ne démarre pas » ≠ « les plus rapides » : ΔE 5 → 16)
   const VA_CAT = {
-    start:{c:'#c98500', s:['🪶 ne démarre pas','🪶 won\'t take off'], x:['🪶 démarrage','🪶 takeoff'], d:['trop petite pour toi : il faut plus de 17 km/h pour décoller','too small for you: needs over 17 km/h to take off']},
+    start:{c:'#795000', s:['🪶 ne démarre pas','🪶 won\'t take off'], x:['🪶 démarrage','🪶 takeoff'], d:['trop petite pour toi : il faut plus de 17 km/h pour décoller','too small for you: needs over 17 km/h to take off']},
     // zones = VITESSE EN SPRINT (300 m) × CONSOMMATION : dans les zones rapides, l'aile économe (meilleur rendement que
     // la moitié des ailes de même vitesse : plus d'envergure) est en couleur foncée, la consommatrice en couleur claire
     s3e:  {c:'#c0392b', s:['🏁 les plus rapides pour toi','🏁 fastest for you'], x:['🏁 les plus rapides','🏁 fastest'], d:['à moins de 2 % du meilleur temps sur 300 m (~0,5 km/h) : dans ce modèle, elles se valent','within 2% of the best 300 m time (~0.5 km/h): in this model, they are equal']},
     oke:  {c:'#6c3fc4', s:['👍 rapide','👍 fast'], x:['👍 rapide','👍 fast'], d:['à 2-5 % du meilleur temps','2-5% off the best time']},
-    slow: {c:'#199e70', s:['✅ correcte','✅ decent'], x:['✅ correcte','✅ decent'], d:['à 5-10 % du meilleur temps : encore bien rapide','5-10% off the best time: still quite fast']},
-    drag: {c:'#3987e5', s:['🐢 plus lente en sprint','🐢 slower in a sprint'], x:['🐢 plus lente','🐢 slower'], d:['plus de 10 % derrière en sprint (grande ou trapue). Pour savoir si elle pompe loin : regarde « pomper loin » dans la bulle','over 10% behind in a sprint (big or stubby). To know if it pumps far: check “pumping far” in the tooltip']},
+    slow: {c:'#0f5f43', s:['✅ correcte','✅ decent'], x:['✅ correcte','✅ decent'], d:['à 5-10 % du meilleur temps : encore bien rapide','5-10% off the best time: still quite fast']},
+    drag: {c:'#88b7ef', s:['🐢 plus lente en sprint','🐢 slower in a sprint'], x:['🐢 plus lente','🐢 slower'], d:['plus de 10 % derrière en sprint (grande ou trapue). Pour savoir si elle pompe loin : regarde « pomper loin » dans la bulle','over 10% behind in a sprint (big or stubby). To know if it pumps far: check “pumping far” in the tooltip']},
   };
   const vaT = a => t(a[0], a[1]);
   // seul le rouge (la réponse) est vif : les autres zones sont mises en sourdine (mélangées au fond)
@@ -1344,20 +1441,24 @@
     const box = $('atl-brands'); if(!box) return;
     // un clic = ajoute / retire la marque (1 marque : ses recos · 2 et + : comparaison) · « Toutes » = tout réafficher
     const sel = VA.sel;
+    const sl = box.scrollLeft;   // téléphone : la rangée défile de côté → on garde sa position au re-dessin
+    // marques par ordre alphabétique (boutons + cases à cocher, qui se construisent à partir des boutons)
     box.innerHTML = '<button type="button" data-k="" class="'+(sel.length ? '' : 'on')+'">'+t('Toutes','All')+'</button>'
-      + VA_BRANDS.map(B => '<button type="button" data-k="'+B.k+'" class="'+(!sel.length || sel.includes(B.k) ? 'on' : '')+'"><i style="background:'+B.c+'"></i>'+B.n+'</button>').join('')
-      + '<div class="atl-bhint">'+(sel.length === 1 ? t('➕ clique une autre marque pour comparer','➕ click another brand to compare') : sel.length ? t('🆚 '+sel.length+' marques comparées · reclique une marque pour la retirer','🆚 '+sel.length+' brands compared · click a brand again to remove it') : t('👆 clique une marque pour voir ses recos, plusieurs pour comparer','👆 click a brand to see its picks, several to compare'))+'</div>';
+      + [VA_BRANDS].flat().sort((a, b) => a.n.localeCompare(b.n, 'fr', {sensitivity: 'base'})).map(B => '<button type="button" data-k="'+B.k+'" class="'+(!sel.length || sel.includes(B.k) ? 'on' : '')+'"><i style="background:'+B.c+'"></i>'+B.n+'</button>').join('');
+    box.scrollLeft = sl;
+    let bh = $('atl-bhint'); if(!bh){ bh = document.createElement('div'); bh.id = 'atl-bhint'; bh.className = 'atl-bhint'; box.after(bh); }
+    bh.innerHTML = (sel.length === 1 ? t('➕ clique une autre marque pour comparer','➕ click another brand to compare') : sel.length ? t('🆚 '+sel.length+' marques comparées · reclique une marque pour la retirer','🆚 '+sel.length+' brands compared · click a brand again to remove it') : t('👆 clique une marque pour voir ses recos, plusieurs pour comparer','👆 click a brand to see its picks, several to compare'));
     box.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => { const k = bt.dataset.k; VA.sel = !k ? [] : sel.includes(k) ? sel.filter(x => x !== k) : sel.concat(k); vaBrandsUI(); vaDraw(); vaHash(); }));
   }
   const VA_RC = {before:null};
   function vaRider(){
     const kg = +$('i-w').value;
     const st = $('i-stab'), sl = st ? st.options[st.selectedIndex].text : '';
-    if($('atl-rider')) $('atl-rider').innerHTML = '<span class="rc"><button type="button" data-va="-">−</button><b>🧍 '+kg+' kg</b><button type="button" data-va="+">+</button></span>'
+    if($('atl-rider')) $('atl-rider').innerHTML = (h => VA.kit ? VA.kit.rider(h) : h)('<span class="rc"><button type="button" data-va="-">−</button><b>🧍 '+kg+' kg</b><button type="button" data-va="+">+</button></span>'
       + '<span class="rc rc-seg">'+[600, 700, 800, 900].map(P => '<button type="button" data-va="pw'+P+'" class="'+(VA.P === P ? 'on' : '')+'">⚡ '+P+' W</button>').join('')+'</span>'
       + '<div class="lvl-x">'+t('⚡ ta puissance de sprint (tenue sur les ~40 s d\'un 300 m) — repères à '+kg+' kg : loisir ~'+num(vaP30(1, kg), 0)+' W · régulier ~'+num(vaP30(2, kg), 0)+' W · compétiteur ~'+num(vaP30(3, kg), 0)+' W','⚡ your sprint power (held over the ~40 s of a 300 m) — guide at '+kg+' kg: leisure ~'+num(vaP30(1, kg), 0)+' W · regular ~'+num(vaP30(2, kg), 0)+' W · racer ~'+num(vaP30(3, kg), 0)+' W')+'</div>'
       + '<span class="rc rc-seg"><button type="button" data-va="st" class="'+(vaStraps() > 1 ? 'on' : '')+'">'+(vaStraps() > 1 ? '✓ ' : '')+t('🦶 straps','🦶 straps')+'</button></span>'
-      + '<span class="rc"><button type="button" data-va="s-" aria-label="'+t('stab plus petit','smaller stab')+'">−</button><b>🪶 '+sl+'</b><button type="button" data-va="s+" aria-label="'+t('stab plus grand','bigger stab')+'">+</button></span>';
+      + '<span class="rc"><button type="button" data-va="s-" aria-label="'+t('stab plus petit','smaller stab')+'">−</button><b>🪶 '+sl+'</b><button type="button" data-va="s+" aria-label="'+t('stab plus grand','bigger stab')+'">+</button></span>');   // téléphone : rangée résumée + ⚙️
   }
   document.addEventListener('click', e => {
     const bt = e.target.closest('[data-va]'); if(!bt) return;
@@ -1375,13 +1476,15 @@
   const vaFam = n => n.replace(/\s+(\d[\d.]*|X{0,2}[SML]\+?|\dXL)(\s+[GV]\d)?$/, '');
   const vaTime = s => { s = Math.round(s); return s >= 60 ? Math.floor(s/60)+' min '+String(s % 60).padStart(2, '0') : s+' s'; };
   function vaDraw(){
-    const cv = $('atl-cv'); if(!cv) return;
+    const cv = $('atl-cv'); if(!cv || !VA.kit) return;   // la carte s'installe (atlKit) avant son 1er dessin
     const kg = +$('i-w').value; VA.S0 = vaS0(kg);
     if(VA.lang !== curLang()){ VA.lang = curLang(); vaBrandsUI(); }
     vaRider();
     // téléphone (< 520 px) : repère presque carré, points plus petits, noms courts
-    const w = cv.clientWidth || 600, narrow = !VIDEO && w < 520, W = VIDEO ? 300 : Math.max(340, Math.min(600, w)), Hh = VIDEO ? 290 : Math.round(W*(narrow ? .95 : 400/600)), dpr = Math.min(window.devicePixelRatio || 1, 2);
-    cv.width = Math.round(w*dpr); cv.height = Math.round(w*dpr*Hh/W); cv.style.aspectRatio = W+' / '+Hh;
+    // largeur du cadre × zoom (🔍) : zoomer = redessiner plus grand (textes à taille fixe)
+    const G0 = VA.kit.size((w, z, ratio, full) => { const narrow = !VIDEO && w < 520, W = VIDEO ? 300 : Math.max(340, Math.min(full ? 1100 : 600, w))*(z || 1);   // plein écran : plus large, hauteur de l'écran
+      return {W, H: VIDEO ? 290 : Math.round(W*(ratio || (narrow ? .95 : 400/600))), narrow}; });
+    const narrow = G0.narrow, W = G0.W, Hh = G0.H;
     const c = cv.getContext('2d'), k0 = cv.width/W; c.setTransform(k0,0,0,k0,0,0); c.clearRect(0,0,W,Hh);
     const X0 = VIDEO ? 46 : narrow ? 40 : 52, X1 = W - (VIDEO ? 16 : narrow ? 30 : 44), Y0 = 34, Y1 = Hh - 40;
     const px = v => X0 + (v - VA.B0)/(VA.B1 - VA.B0)*(X1 - X0), py = v => Y1 - (v - VA.S0)/(VA.S1 - VA.S0)*(Y1 - Y0);
@@ -1412,7 +1515,7 @@
     const xA = px(VA.B0) - (X1 - X0)/(nI - 1)/2, yA = py(VA.S1) - (Y1 - Y0)/(nJ - 1)/2, wA = (X1 - X0)*nI/(nI - 1), hA = (Y1 - Y0)*nJ/(nJ - 1);
     c.imageSmoothingEnabled = true; c.imageSmoothingQuality = 'high';
     c.drawImage(img, xA, yA, wA, hA);
-    if('filter' in c){ c.filter = 'blur('+(narrow ? 3 : 4)+'px)'; c.drawImage(img, xA, yA, wA, hA); c.filter = 'none'; }
+    if('filter' in c){ c.filter = 'blur('+(narrow ? 3 : 4)*(VA.z || 1)+'px)'; c.drawImage(img, xA, yA, wA, hA); c.filter = 'none'; }
     c.restore();
     c.save(); c.beginPath(); c.rect(X0, Y0, X1 - X0, Y1 - Y0); c.clip(); c.strokeStyle = 'rgba(148,163,184,.55)'; c.lineWidth = 1;
     [VA.AR0, VA.AR1].forEach(A => { c.beginPath(); for(let bb = VA.B0; bb <= VA.B1; bb += 1) c[bb === VA.B0 ? 'moveTo' : 'lineTo'](px(bb), py(bb*bb/A)); c.stroke(); });
@@ -1422,7 +1525,7 @@
     // lignes de même allongement
     c.lineWidth = 1; c.strokeStyle = 'rgba(253,230,138,.5)';
     const arLab = [];
-    [8, 10, 13, 16, 20].forEach(A => {
+    [8, 10, 13, 16, 20].forEach(A => { if(!VA.lay.ar) return;   // calque « AR » masqué
       c.beginPath(); for(let bb = VA.B0, f = 1; bb <= VA.B1; bb += 1, f = 0){ const x = px(bb), y = py(bb*bb/A); f ? c.moveTo(x, y) : c.lineTo(x, y); } c.stroke();
       const bT = Math.sqrt(A*VA.S1); if(bT <= VA.B1) arLab.push([px(bT), A]);
     });
@@ -1473,7 +1576,8 @@
       return segs; };
     // ⚡ LA mesure de la carte : lignes de même vitesse en sprint (moyenne sur 300 m), tous les 2 km/h, en tirets blancs
     // — comme les lignes de maniabilité de la page carve (elles traversent les zones)
-    { const VS = new Float32Array(vI*vJ).fill(NaN); FA.forEach((r, n) => { if(r === r) VS[n] = 300/(r*VA.best.b3)*3.6; });
+    if(VA.lay.v){ const VS = new Float32Array(vI*vJ).fill(NaN);   // calque « km/h » (on peut le masquer)
+      FA.forEach((r, n) => { if(r === r) VS[n] = 300/(r*VA.best.b3)*3.6; });
       let lo = 1e9, hi = 0; VS.forEach(v => { if(v === v){ lo = Math.min(lo, v); hi = Math.max(hi, v); } });
       // les tirets SONT les frontières des zones (comme la maniabilité 90/70/45/20 de la carve) : vitesse = meilleure ÷ 1,03 / 1,06 / 1,12
       const vB = 300/VA.best.b3*3.6;
@@ -1524,23 +1628,27 @@
         c.fillStyle = k1 ? '#fbbf24' : '#fff'; c.fillText(tx, bx, y + 3.5); }); };
     c.font = '800 10px system-ui, sans-serif'; c.fillStyle = '#fde68a'; c.textAlign = 'center';
     arLab.forEach(([x, A]) => c.fillText(A, x, Y0 - 5));
-    c.font = '700 10px system-ui, sans-serif'; c.textAlign = 'left'; c.fillText(t('Aspect Ratio (AR) →','Aspect Ratio (AR) →'), X0, Y0 - 20);
-    c.font = '600 10px system-ui, sans-serif'; c.fillStyle = '#94a3b8'; c.textAlign = 'center';
+    c.font = '700 10px system-ui, sans-serif'; c.textAlign = 'left';
+    // téléphone : « ↑ surface » est sur cette rangée (à gauche) → le titre AR passe à sa droite
+    const arX = narrow ? 4 + (c.font = '600 10.5px system-ui, sans-serif', c.measureText(t('↑ surface (cm²)','↑ area (cm²)')).width) + 14 : X0; c.font = '700 10px system-ui, sans-serif';
+    if(arLab.length) c.fillText(t('Aspect Ratio (AR) →','Aspect Ratio (AR) →'), arX, Y0 - 20);
+    c.font = '600 '+(narrow ? 11 : 10)+'px system-ui, sans-serif'; c.fillStyle = '#94a3b8'; c.textAlign = 'center';
     for(let v = 80; v <= 180; v += 20) c.fillText(v, px(v), Y1 + 13);
     c.fillText(t('envergure (cm) →','span (cm) →'), (X0 + X1)/2, Y1 + 28);
-    c.textAlign = 'right'; for(let v = Math.ceil(VA.S0/200)*200; v <= 1800; v += 200) c.fillText(num(v, 0), X0 - 5, py(v) + 3);
-    c.save(); c.translate(12, (Y0 + Y1)/2); c.rotate(-Math.PI/2); c.textAlign = 'center'; c.fillText(t('surface (cm²) →','area (cm²) →'), 0, 0); c.restore();
+    c.textAlign = 'right'; c.font = '600 '+(narrow ? 10.5 : 10)+'px system-ui, sans-serif'; for(let v = Math.ceil(VA.S0/200)*200; v <= 1800; v += 200) c.fillText(num(v, 0), X0 - 5, py(v) + 3);
+    if(narrow){ c.textAlign = 'left'; c.fillText(t('↑ surface (cm²)','↑ area (cm²)'), 4, Y0 - 20); }   // rangée du titre AR (sinon sur « 1 800 »)   // téléphone : à plat en haut (couché, il chevauchait « 1 600 »)
+    else { c.save(); c.translate(12, (Y0 + Y1)/2); c.rotate(-Math.PI/2); c.textAlign = 'center'; c.fillText(t('surface (cm²) →','area (cm²) →'), 0, 0); c.restore(); }
     // ailes
     const act = VA_BRANDS.filter(B => !VA.sel.length || VA.sel.includes(B.k)), few = VA.sel.length === 1, multi = VA.sel.length > 1, pts = [], famCol = {};
     const PAL = ['#f472b6', '#b7793f', '#fde047', '#22d3ee', '#a3e635', '#f87171', '#ffffff', '#fb923c', '#818cf8', '#2dd4bf'];
     act.forEach(B => B.w.forEach(([n, bb, ss]) => {
       if(bb < VA.B0 || bb > VA.B1 || ss < VA.S0 || ss > VA.S1) return;
       const f = vaFam(n); if(few && !(f in famCol)) famCol[f] = PAL[Object.keys(famCol).length % PAL.length];
-      const x = px(bb), y = py(ss); pts.push({n: B.n+' '+n, short: n, b: bb, S: ss, x, y});
+      const x = px(bb), y = py(ss); pts.push({n: B.n+' '+n, short: n, b: bb, S: ss, x, y, col: few ? famCol[f] : B.c});
       let fIn = true;
       if(VA.focus && VA.focus !== 'none'){ const ar = bb*bb/ss; fIn = ar >= VA.AR0 && ar <= VA.AR1 && vaEval(bb, ss, kg).k === VA.focus; pts[pts.length - 1].focus = fIn; }
       if(!fIn) c.globalAlpha = .18;
-      c.beginPath(); c.arc(x, y, narrow ? 3.4 : VIDEO ? (VA.focus && fIn ? 4.6 : 3.8) : 5, 0, 7); c.fillStyle = few ? famCol[f] : B.c; c.fill(); c.lineWidth = narrow ? 1.4 : 2; c.strokeStyle = '#0f172a'; c.stroke();
+      dotDraw(c, multi ? act.indexOf(B) % 4 : 0, x, y, narrow ? 4.2 : VIDEO ? (VA.focus && fIn ? 4.6 : 3.8) : 5, few ? famCol[f] : B.c, narrow ? 1.5 : 2);   // forme par marque en comparaison
       c.globalAlpha = 1;
     }));
     VA.pts = pts;
@@ -1561,7 +1669,7 @@
       const lx = Math.min(X1 - tw - 2, x - tw - 4);   // collée au bout droit de la ligne, à l'intérieur de la zone
       c.fillStyle = '#9d2d57'; c.strokeStyle = '#fff'; c.lineWidth = 1; c.beginPath(); if(c.roundRect) c.roundRect(lx, y - 7, tw, 13, 6); else c.rect(lx, y - 7, tw, 13); c.fill(); c.stroke();
       c.fillStyle = '#fff'; c.textAlign = 'left'; c.fillText(tx, lx + 4, y + 3); });
-    if($('atl-fam')) $('atl-fam').innerHTML = few || multi ? (few ? Object.entries(famCol).map(([f, col]) => '<span><i style="background:'+col+'"></i>'+f+'</span>') : act.map(B => '<span><i style="background:'+B.c+'"></i>'+B.n+'</span>')).join('')
+    if($('atl-fam')) $('atl-fam').innerHTML = few || multi ? (few ? Object.entries(famCol).map(([f, col]) => '<span><i style="background:'+col+'"></i>'+f+'</span>') : act.map((B, i) => '<span>'+shapeIco(i % 4, B.c)+B.n+'</span>')).join('')
       + '<span class="rleg">'+[['🏁', t('la plus rapide','fastest')], ['⚡', t('rapide, petite conso','fast, low energy')]].map(([e, l]) => '<span><i class="rring" style="border-color:'+VA_RC_C[e]+'"></i>'+e+' '+l+'</span>').join('')+'</span>' : '';
     // noms de zones sur leur couleur (sinon à côté avec un trait ; nom court en dernier recours)
     const boxes = pts.map(p => [p.x - 6, p.y - 6, 12, 12]).concat(VA.vBoxes || []);   // les noms de zones évitent aussi les étiquettes km/h
@@ -1574,7 +1682,7 @@
     });
     const ringB = (few || multi) && VA.reco ? VA.reco.map(r => { const x = px(r.b), y = py(r.S); return [x - 13, y - 32, 26, 45]; }) : [];
     ringB.forEach(r => boxes.push(r));   // les noms évitent les anneaux de reco
-    c.font = (narrow ? '900 10.5px' : '900 12px')+' system-ui, sans-serif'; c.textAlign = 'center'; c.lineJoin = 'round';
+    c.font = (narrow ? '900 11.5px' : '900 12px')+' system-ui, sans-serif'; c.textAlign = 'center'; c.lineJoin = 'round';
     if(!VIDEO) Object.keys(VA_CAT).forEach(k => {
       const cells = catCells[k]; if(!cells || cells.length < 4 ) return;
       const zt = VA.zTxt ? VA.zTxt(k) : '';
@@ -1613,7 +1721,7 @@
           c.beginPath(); c.arc(anchor[0], anchor[1], 2.5, 0, 7); c.fillStyle = '#fff'; c.fill(); c.restore();
         }
         boxes.push([best[0] - tw/2 - 3, best[1] - 8, tw + 6, 16]);
-        c.lineWidth = 4; c.strokeStyle = '#fff'; c.strokeText(txt, best[0], best[1] + 4); c.fillStyle = vaZC(k); c.fillText(txt, best[0], best[1] + 4);
+        zoneLab(c, txt, best[0], best[1], VA_CAT[k].c);
         if(false && zt && !anchor){   // (fourchette retirée de la carte : les km/h sont sur les tirets, la fourchette est dans la légende)   // 2e ligne, plus petite : vitesse atteinte + watts que tu donnes dans cette zone
           const f0 = c.font; c.font = (narrow ? '800 9px' : '800 10.5px')+' system-ui, sans-serif'; const sw = c.measureText(zt).width, sx = Math.max(X0 + sw/2 + 2, Math.min(X1 - sw/2 - 2, best[0]));
           c.lineWidth = 3.5; c.strokeStyle = 'rgba(15,23,42,.92)'; c.strokeText(zt, sx, best[1] + 17); c.fillStyle = '#fff'; c.fillText(zt, sx, best[1] + 17); c.font = f0;
@@ -1622,21 +1730,23 @@
       }
     });
     if(few || VA.sel.length === 2){
-      c.font = '700 9px system-ui, sans-serif'; c.textAlign = 'left'; c.lineWidth = 3; c.lineJoin = 'round';
-      const hit = (x0, y0, w0) => boxes.some(r => x0 < r[0] + r[2] && x0 + w0 > r[0] && y0 - 5 < r[1] + r[3] && y0 + 5 > r[1]);
+      arLab.forEach(([x]) => boxes.push([x - 9, Y0 - 16, 18, 14]));   // les noms d'ailes évitent les chiffres d'AR (en haut)
+      c.font = (narrow ? '800 10.5px' : '700 9px')+' system-ui, sans-serif'; c.textAlign = 'left'; c.lineWidth = 3; c.lineJoin = 'round';
+      const hit = (x0, y0, w0) => boxes.some(r => x0 < r[0] + r[2] && x0 + w0 > r[0] && y0 - 6 < r[1] + r[3] && y0 + 6 > r[1]);
       pts.forEach(p => {
         const lab = p.short;
         const tw = c.measureText(lab).width;
-        const ok = [[p.x + 7, p.y], [p.x - 7 - tw, p.y], [p.x - tw/2, p.y - 11], [p.x - tw/2, p.y + 12]].find(([lx, ly]) => lx >= X0 - 4 && lx + tw <= X1 + 4 && !hit(lx, ly, tw));
-        if(!ok) return; const [lx, ly] = ok; boxes.push([lx, ly - 5, tw, 10]);
+        const ok = [[p.x + 7, p.y], [p.x - 7 - tw, p.y], [p.x - tw/2, p.y - 12], [p.x - tw/2, p.y + 13]].find(([lx, ly]) => lx >= X0 - 4 && lx + tw <= X1 + 4 && !hit(lx, ly, tw));
+        if(!ok) return; const [lx, ly] = ok; boxes.push([lx, ly - 6, tw, 12]);
         c.strokeStyle = 'rgba(15,23,42,.9)'; c.strokeText(lab, lx, ly + 3); c.fillStyle = '#f1f5f9'; c.fillText(lab, lx, ly + 3);
       });
     }
+    VA.kit.after(c, px, py);   // 📌 repères des fiches épinglées + fiches sous la carte
     // légende : une ligne par couleur
     const lg = $('atl-leg');
     if(lg) lg.innerHTML = '<div class="atl-cats">'+Object.entries(VA_CAT).filter(([k]) => catCells[k]).map(([k, C]) => '<div><i style="background:'+vaZC(k)+'"></i><b>'+vaT(C.s)+(VA.zTxt && VA.zTxt(k) ? ' · '+VA.zTxt(k) : '')+'</b> <span>'+vaT(C.d)+'</span></div>').join('')+'</div>'
-      + '<span><i style="background:#fde68a; height:1px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même AR (chiffre en haut)','same AR (number on top)')+'</span>'
-      + '<span><i style="background:repeating-linear-gradient(90deg,#fff 0 6px,transparent 6px 10px); height:2px; width:22px; border-radius:0; vertical-align:3px"></i>'+t('tirets = vitesse moyenne sur 300 m (km/h) — ils glissent quand tu changes de puissance, à ~'+num(VA.s3W, 0)+' W','average speed over 300 m (km/h): your sprint speed, at ~'+num(VA.s3W, 0)+' W')+'</span>'
+      + (VA.lay.ar ? '<span><i style="background:#fde68a; height:1px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même AR (chiffre en haut)','same AR (number on top)')+'</span>' : '')   // légende seulement pour les lignes affichées
+      + (VA.lay.v ? '<span><i style="background:repeating-linear-gradient(90deg,#fff 0 6px,transparent 6px 10px); height:2px; width:22px; border-radius:0; vertical-align:3px"></i>'+t('tirets = vitesse moyenne sur 300 m (km/h) — ils glissent quand tu changes de puissance, à ~'+num(VA.s3W, 0)+' W','average speed over 300 m (km/h): your sprint speed, at ~'+num(VA.s3W, 0)+' W')+'</span>' : '')
       + '<span>🌿 '+t('Dans la bulle : la vitesse à 300 / 600 / 900 W, et pour pomper loin les watts qu\'il faut à la vitesse idéale de l\'aile (moins = elle glisse mieux, même calcul que la « glisse » de la page carve). Sous la carte : la vitesse de chaque aile à puissance égale.','In the tooltip: speed at 300 / 600 / 900 W, and for pumping far the watts needed at the wing\'s ideal speed (lower = it glides better, same maths as the carve page « glide »). Below the map: each wing\'s speed at equal power.')+'</span>'
       + '<span><i class="hatch"></i>'+t('hors gamme (AR < 6 ou > 24)','out of range (AR < 6 or > 24)')+'</span>'
       + '<span>'+kg+' kg · '+t('meilleur temps sur 300 m : ','best 300 m time: ')+vaTime(VA.best.b3)+t(' · tu donnes ~',' · you put out ~')+num(VA.s3W, 0)+' W '+t('pendant la course','during the race')+'</span>';
@@ -1654,7 +1764,7 @@
     const inZ = ws.filter(w => w.t <= VA.best.b3*1.02), exW = (inZ.length ? inZ : ws.slice(0, 3)).slice(0, 6); VA.top = exW.map(w => ({n: w.n})); VA.topIn = inZ.length > 0;
     // (phrase-réponse au-dessus de la carte retirée — retour Paul ; VA.top sert encore à la vidéo)
   }
-  const VA_RC_C = {'🏁':'#ff6fa3', '⚡':'#3ee08f', '🛣️':'#3ee08f', '🏆':'#5fb0ff'};   // mêmes familles que les zones 300 m / 1 km / les deux
+  const VA_RC_C = {'🏁':'#ff8ab6', '⚡':'#3ee08f', '🛣️':'#3ee08f', '🏆':'#5fb0ff'};   // mêmes familles que les zones 300 m / 1 km / les deux
   // les 3 recos d'une marque pour ce rider : 🏁 300 m · 🛣️ 1 km · 🏆 polyvalente
   function vaPicks(B, kg){
     const ev = B.w.map(([n, b, S]) => Object.assign({n, b, S, ar: b*b/S}, vaEval(b, S, kg)));
@@ -1668,6 +1778,10 @@
   const vaInSl = w => w.b >= +$('i-b').min && w.b <= +$('i-b').max && w.S >= +$('i-s').min && w.S <= +$('i-s').max;
   const vaTryBtn = (w, col) => '<button type="button"'+(col ? ' style="color:'+col+'"' : '')+' data-try="'+w.b+'|'+w.S+'"'+(vaInSl(w) ? '' : ' disabled title="'+t('hors des curseurs du simulateur','outside the simulator sliders')+'"')+'>▶ '+t('l\'essayer','try it')+'</button>';
   const vaInfo3 = {r3: w => vaTime(w.r3.t)+' · '+num(300/w.r3.t*3.6, 1)+' km/h', r1: w => vaTime(w.r3.t)+' · '+num(300/w.r3.t*3.6, 1)+' km/h', poly: w => ''};
+  // 🔗 nom d'aile cliquable → page officielle du fabricant (ailes.js, avec UTM)
+  // RGAA 6.1 (lien explicite) : l'intitulé lu = nom visible + destination + nouvel onglet ; la flèche ↗ n'est pas lue
+  window.wlTail = L => '<span class="vh"> — '+(L.fam ? t('page officielle sur le site '+L.brand,'official page on the '+L.brand+' website') : t('ailes '+L.brand+' sur le site officiel',L.brand+' wings on the official website'))+t(' (nouvel onglet)',' (new tab)')+'</span>&nbsp;<span aria-hidden="true">↗</span>';
+  const wLink = (B, n0) => { const n = n0.replace(/ (\S+)$/, '&nbsp;$1'), L = window.foilLink && window.foilLink(B.n+' '+n0, 'vitesse'); return L ? '<a class="wl" href="'+L.u+'" target="_blank" rel="noopener">'+n+wlTail(L)+'</a>' : n; };
   function vaInfo(B, kg, famCol){
     const box = $('atl-info'); if(!box) return;
     if(!B){ box.innerHTML = ''; VA.lastReco = null; VA.reco = null; return; }
@@ -1676,7 +1790,7 @@
     // une carte par reco : rôle · aile en gros · à quoi elle sert · chiffres clés · ▶ l'essayer
     const card = (key, e, lab, w, why) => { if(!w) return ''; const c = VA_RC_C[e];
       return '<div class="rc-card" style="border-color:'+c+'"><span class="rk" style="color:'+c+'"><i class="rring" style="border-color:'+c+'"></i>'+e+' '+lab+'</span>'
-        + '<b class="rn">'+w.n+'</b><span class="rw">'+why+was(key, w)+'</span>'
+        + '<b class="rn">'+wLink(B, w.n)+'</b><span class="rw">'+why+was(key, w)+'</span>'
         + '<span class="rd"><span>'+num(w.b, w.b % 1 ? 1 : 0)+' cm</span><span>'+num(w.S, 0)+' cm²</span><span>⏱️ '+vaInfo3[key](w)+'</span><span>🌿 '+(m => num(m.whkm, 0)+' Wh/km '+t('à','at')+' '+num(m.v, 0)+' km/h')(vaBest(w.b, w.S, kg))+'</span></span>'+vaTryBtn(w, c)+'</div>'; };
     box.innerHTML = '<div class="atl-reco"><div class="atl-for">🎯 '+t('Pour toi chez ','For you at ')+B.n+' <span>· '+num(kg)+' kg</span></div>'
       + card('r3', '🏁', t('sprint 300 m','300 m sprint'), r3, t('La plus rapide sur un sprint de 300 m.','The fastest over a 300 m sprint.'))
@@ -1696,10 +1810,10 @@
     VA.lastReco = null;
     const ROWS = [['🏁', t('sprint 300 m','300 m sprint'), t('la plus rapide sur 300 m','fastest over 300 m'), 'r3'],
                   ['⚡', t('rapide, petite conso','fast, low energy'), t('la plus petite conso parmi les rapides','lowest energy use among the fast ones'), 'r1']];
-    const cell = (w, key) => !w ? '<td class="cmp-none">—</td>' : '<td><b>'+w.n+'</b><span class="rd"><span>'+num(w.b, w.b % 1 ? 1 : 0)+' cm · '+num(w.S, 0)+' cm²</span><span>⏱️ '+vaInfo3[key](w)+'</span><span>🌿 '+(m => num(m.whkm, 0)+' Wh/km '+t('à','at')+' '+num(m.v, 0)+' km/h')(vaBest(w.b, w.S, kg))+'</span></span>'+vaTryBtn(w)+'</td>';
+    const cell = (w, key, B) => !w ? '<td class="cmp-none">—</td>' : '<td><b>'+wLink(B, w.n)+'</b><span class="rd"><span>'+num(w.b, w.b % 1 ? 1 : 0)+'&nbsp;cm · '+num(w.S, 0)+'&nbsp;cm²</span><span>⏱️ '+vaInfo3[key](w)+'</span><span>🌿 '+(m => num(m.whkm, 0)+' Wh/km '+t('à','at')+' '+num(m.v, 0)+' km/h')(vaBest(w.b, w.S, kg))+'</span></span>'+vaTryBtn(w)+'</td>';
     box.innerHTML = '<div class="atl-reco"><div class="atl-for">🆚 '+t('Comparaison pour toi','Comparison for you')+' <span>· '+num(kg)+' kg</span></div></div>'
       + '<div class="atl-cmpw"><table class="atl-cmp"><tr><th></th>'+P.map(p => '<th><i style="background:'+p.B.c+'"></i>'+p.B.n+'</th>').join('')+'</tr>'
-      + ROWS.map(([e, l, d, key]) => '<tr><th style="color:'+VA_RC_C[e]+'; border-left:3px solid '+VA_RC_C[e]+'">'+e+' '+l+'<small>'+d+'</small></th>'+P.map(p => cell(p[key], key)).join('')+'</tr>').join('')
+      + ROWS.map(([e, l, d, key]) => '<tr><th style="color:'+VA_RC_C[e]+'; border-left:3px solid '+VA_RC_C[e]+'">'+e+' '+l+'<small>'+d+'</small></th>'+P.map(p => cell(p[key], key, p.B)).join('')+'</tr>').join('')
       + '<tr><th>'+t('la gamme','the range')+'<small>'+t('ailes &gt; 700 cm²','wings &gt; 700 cm²')+'</small></th>'+P.map(p => { const bs = p.ev.map(w => w.b), ss = p.ev.map(w => w.S);
           return '<td class="cmp-rng">'+p.ev.length+' '+t('ailes','wings')+'<br>'+num(Math.min(...bs), 0)+'–'+num(Math.max(...bs), 0)+' cm<br>'+num(Math.min(...ss), 0)+'–'+num(Math.max(...ss), 0)+' cm²</td>'; }).join('')+'</tr>'
       + '</table></div>';
@@ -1753,7 +1867,7 @@
       h += '<text class="tt" x="'+px(P)+'" y="'+(py(v) - 14)+'" text-anchor="middle" style="font-size:'+(me ? 12 : 14)+'px; font-weight:900; paint-order:stroke; stroke:#0f172a; stroke-width:4px">'+(ok ? num(v, 1)+' km/h' : t('ne décolle pas','no takeoff'))+'</text>'; });
     h += '<text class="tt" x="'+(px(1000) + 6)+'" y="'+(py(vaVAt(F.b, F.S, kg, 1000)) + 5)+'" style="font-size:14px; font-weight:900; fill:'+F.c+'; paint-order:stroke; stroke:#0f172a; stroke-width:4px">'+F.n+'</text>';
     const who = VA.sel.length ? VA.sel.map(k => (VA_BRANDS.find(B => B.k === k) || {}).n).join(' + ') : t('toutes marques (2 ailes par zone) — choisis une marque au-dessus de la carte pour voir ses ailes','all brands (2 wings per zone) — pick a brand above the map to see its wings');
-    box.innerHTML = '<h4>⚡ '+t('Ta puissance → ta vitesse','Your power → your speed')+' · '+who+' <small>'+(VA.sel.length > 1 ? t('une couleur par marque · ','one colour per brand · ') : '')+t('survole une aile sur la carte : elle s\'affiche ici avec sa vitesse à 300, 600 et 900 W (et à ta puissance, en jaune). Plus la courbe est haute, plus l\'aile va vite pour les mêmes watts.','hover a wing on the map: it shows here with its speed at 300, 600 and 900 W (and at your power, in yellow). The higher the curve, the faster the wing for the same watts.')+'</small></h4>'+h+'</svg>';
+    box.innerHTML = '<h4>⚡ '+t('Ta puissance → ta vitesse','Your power → your speed')+' · '+who+' <small>'+(VA.sel.length > 1 ? t('une couleur par marque · ','one colour per brand · ') : '')+(matchMedia('(hover: hover)').matches ? t('survole','hover') : t('touche','tap'))+t(' une aile sur la carte : elle s\'affiche ici avec sa vitesse à 300, 600 et 900 W (et à ta puissance, en jaune). Plus la courbe est haute, plus l\'aile va vite pour les mêmes watts.',' a wing on the map: it shows here with its speed at 300, 600 and 900 W (and at your power, in yellow). The higher the curve, the faster the wing for the same watts.')+'</small></h4>'+h+'</svg>';
   }
   function vaTry(b, S){
     const ib = $('i-b'), is = $('i-s');
@@ -1761,47 +1875,284 @@
     ib.dispatchEvent(new Event('input', {bubbles:true})); is.dispatchEvent(new Event('input', {bubbles:true}));
     const sim = $('sim'); if(sim) window.scrollTo({top: sim.getBoundingClientRect().top + scrollY - 70, behavior:'smooth'});
   }
+  // 🔍📌 CARTE SUR TÉLÉPHONE (même code sur carve.html et vitesse.html) :
+  // • zoom = la carte est REDESSINÉE plus grande (points plus écartés, textes à taille fixe → plus de noms lisibles),
+  //   dans un cadre qui défile au doigt ; pince à 2 doigts, ctrl/⌘ + molette (ou pavé), boutons − / + / ⤢
+  // • toucher une aile = sa fiche s'épingle SOUS la carte (plusieurs → côte à côte pour comparer, × pour fermer) ;
+  //   on ne part plus vers le simulateur : c'est un bouton de la fiche
+  // • ailes trop proches pour viser au doigt → petite liste « laquelle ? »
+  // • calques (lignes) à afficher ou non · ⛶ plein écran · barre « mes réglages » qui reste en haut quand on descend
+  // K = {st: ATL | VA (état de la carte), redraw(), pick(e, rayonPx) → {…, near: [ailes sous le doigt]}, show(e), info(b, S, n) → {html, col},
+  //      canTry(b, S), tryIt(b, S), layers: [[clé, 'fr', 'en', visible par défaut sur téléphone ?]], mini() → html de la barre réglages}
+  // ♿ RGAA 3.1 / 3.3 + daltonisme : en comparaison de marques, chaque marque a sa FORME ● ■ ▲ ◆ (pas seulement sa couleur),
+  // et chaque point a un liseré clair en plus du contour sombre → il se détache sur toutes les zones (≥ 3:1)
+  function dotPath(c, sh, x, y, r){ c.beginPath();
+    if(sh === 1){ const a = r*.9; c.rect(x - a, y - a, 2*a, 2*a); }
+    else if(sh === 2){ const a = r*1.3; c.moveTo(x, y - a); c.lineTo(x + a*.95, y + a*.7); c.lineTo(x - a*.95, y + a*.7); c.closePath(); }
+    else if(sh === 3){ const a = r*1.25; c.moveTo(x, y - a); c.lineTo(x + a, y); c.lineTo(x, y + a); c.lineTo(x - a, y); c.closePath(); }
+    else c.arc(x, y, r, 0, 7); }
+  function dotDraw(c, sh, x, y, r, col, lw){
+    dotPath(c, sh, x, y, r); c.fillStyle = col; c.fill(); c.lineWidth = lw; c.strokeStyle = '#0f172a'; c.stroke();
+    dotPath(c, sh, x, y, r + lw*.5 + .6); c.lineWidth = 1; c.strokeStyle = 'rgba(255,255,255,.6)'; c.stroke(); }
+  const shapeIco = (sh, col) => '<svg class="shp" viewBox="-7 -7 14 14" aria-hidden="true">'+(sh === 1 ? '<rect x="-4.5" y="-4.5" width="9" height="9"' : sh === 2 ? '<polygon points="0,-5.8 5.4,3.8 -5.4,3.8"' : sh === 3 ? '<polygon points="0,-6 6,0 0,6 -6,0"' : '<circle r="5"')+' fill="'+col+'" stroke="#0f172a" stroke-width="1.5"/></svg>';
+  // RGAA 3.2 : nom de zone en BLANC sur une pastille de la couleur de la zone assombrie (contraste ≥ 6,7:1 ; avant 3,1 à 3,9)
+  function zoneLab(c, txt, x, y, col){
+    const tw = c.measureText(txt).width, dk = '#'+[1, 3, 5].map(i => Math.round(parseInt(col.slice(i, i + 2), 16)*.5).toString(16).padStart(2, '0')).join('');
+    c.beginPath(); if(c.roundRect) c.roundRect(x - tw/2 - 5, y - 8, tw + 10, 16, 8); else c.rect(x - tw/2 - 5, y - 8, tw + 10, 16);
+    c.fillStyle = dk; c.fill(); c.lineWidth = 1.5; c.strokeStyle = 'rgba(255,255,255,.85)'; c.stroke(); c.fillStyle = '#fff'; c.fillText(txt, x, y + 4); }
+  function atlKit(K){
+    const sc = $('atl-scroll'), cv = $('atl-cv'), tip = $('atl-tip'), pe = $('atl-pins'), S = K.st, ZMAX = 4;
+    S.z = 1; S.pins = []; S.w = 0; S.full = false; S.lastH = 0;
+    const phone = innerWidth < 560;   // téléphone : par défaut, zones + points seulement (les lignes s'ajoutent d'un toucher)
+    S.lay = {}; (K.layers || []).forEach(([k, , , onPhone]) => { S.lay[k] = VIDEO || !phone || !!onPhone; });
+    const box = sc.closest('.atl-box'), lay = $('atl-lay');
+    const layUI = () => { if(lay) lay.innerHTML = '<span>'+t('Lignes :','Lines:')+'</span>'+(K.layers || []).map(([k, fr, en]) => '<button type="button" data-lay="'+k+'" aria-pressed="'+S.lay[k]+'" class="'+(S.lay[k] ? 'on' : '')+'">'+(S.lay[k] ? '✓ ' : '')+t(fr, en)+'</button>').join(''); };
+    if(lay) lay.addEventListener('click', e => { const b = e.target.closest('[data-lay]'); if(!b) return; S.lay[b.dataset.lay] = !S.lay[b.dataset.lay]; K.redraw(); });
+    if(VIDEO && lay) lay.style.display = 'none';
+    if(VIDEO){ const tl = sc.parentElement.querySelector('.atl-tools'); if(tl) tl.style.display = 'none'; }   // vidéo Insta : carte seule
+    let tmr = 0, lastPT = 'mouse', drag = null, noClick = false, pinch = null;
+    // 💬 l'astuce « touche une aile / pince » : affichée jusqu'au 1er usage (fiche, zoom), ensuite réduite à un ⓘ qui la rouvre
+    let seen = false; try{ seen = localStorage.getItem('lcw-atl-hint') === '1'; }catch(e){}
+    S.hintOpen = false;
+    const used = () => { if(seen) return; seen = true; try{ localStorage.setItem('lcw-atl-hint', '1'); }catch(e){} };
+    const hEl = $('atl-hint'); if(hEl) hEl.addEventListener('click', e => { if(e.target.closest('.hint-i')){ S.hintOpen = !S.hintOpen; hint(); } });
+    const hint = () => { const h = $('atl-hint'); if(h) h.innerHTML = seen && !S.hintOpen ? '<button type="button" class="hint-i" aria-label="'+t('Comment utiliser la carte','How to use the map')+'">ⓘ</button>' : (seen ? '<button type="button" class="hint-i hint-x" aria-label="'+t('Fermer','Close')+'">×</button> ' : '') + (matchMedia('(hover: hover)').matches
+      ? t('👆 <b>clique une aile</b> : sa fiche s\'affiche sous la carte · 🔍 <b>+</b> ou ctrl + molette pour zoomer','👆 <b>click a wing</b>: its card shows below the map · 🔍 <b>+</b> or ctrl + wheel to zoom')
+      : t('👆 <b>touche une aile</b> → sa fiche<br>🤏 <b>pince</b> pour zoomer','👆 <b>tap a wing</b> → its card<br>🤏 <b>pinch</b> to zoom')); };
+    const zl = () => { $('atl-zl').textContent = num(S.z, S.z % 1 ? 1 : 0)+'×'; $('atl-zm').disabled = $('atl-z1').disabled = S.z <= 1; $('atl-zp').disabled = S.z >= ZMAX;
+      sc.classList.toggle('zoomed', S.z > 1); };
+    // zoom autour d'un point du cadre (cx, cy) : ce point reste sous le doigt / la souris
+    const setZ = (z, cx, cy, now) => {
+      z = Math.max(1, Math.min(ZMAX, Math.round(z*100)/100)); if(z === S.z) return;
+      const r = S.z, ax = (sc.scrollLeft + cx)/r, ay = (sc.scrollTop + cy)/r;
+      if(r <= 1 && !S.full) sc.style.height = sc.offsetHeight+'px';   // le cadre garde sa taille : c'est la carte dedans qui grandit
+      S.z = z; tip.hidden = true;
+      cv.style.width = Math.round(S.w*z)+'px';               // aperçu immédiat (étiré), redessiné net juste après
+      sc.scrollLeft = ax*z - cx; sc.scrollTop = ay*z - cy;
+      zl(); used(); clearTimeout(tmr); tmr = setTimeout(K.redraw, now ? 0 : 150);
+    };
+    const mid = () => [sc.clientWidth/2, sc.clientHeight/2];
+    $('atl-zp').addEventListener('click', () => setZ(S.z*1.6, ...mid(), true));
+    $('atl-zm').addEventListener('click', () => setZ(S.z/1.6, ...mid(), true));
+    $('atl-z1').addEventListener('click', () => setZ(1, 0, 0, true));
+    // ⛶ plein écran : la carte prend tout l'écran (et les fiches, en bas) ; ✕ ou Échap pour revenir
+    // 🏷️ marques en cases à cocher : construit à partir des boutons de marque de la page (mêmes clics → même logique)
+    const brEl = $('atl-brands'), dd = document.createElement('div'); dd.className = 'atl-bdd';
+    const bAnchor = brEl || box; bAnchor.after(dd);
+    function ddUI(){
+      if(!brEl) return; const bs = [...brEl.querySelectorAll('button[data-k]')], all = bs.find(b => !b.dataset.k), none = all && all.classList.contains('on');
+      const sel = none ? [] : bs.filter(b => b.dataset.k && b.classList.contains('on')), nm = b => b.textContent.trim();
+      dd.innerHTML = '<button type="button" aria-expanded="'+dd.classList.contains('open')+'">🏷️ '+t('Marques :','Brands:')+' <b>'+(sel.length ? sel.map(nm).join(', ') : t('toutes','all'))+'</b><i>▾</i></button>'
+        + '<div class="bdd-p"><label class="bdd-all"><input type="checkbox" data-bk=""'+(none ? ' checked' : '')+'>'+t('Toutes les marques','All brands')+'</label>'
+        + bs.filter(b => b.dataset.k).map(b => '<label><input type="checkbox" data-bk="'+b.dataset.k+'"'+(!none && b.classList.contains('on') ? ' checked' : '')+'><i style="background:'+((b.querySelector('i') || {}).style || {}).background+'"></i>'+nm(b)+'</label>').join('')
+        + '<button type="button" class="bdd-ok">OK</button></div>';
+    }
+    dd.addEventListener('click', e => {
+      if(e.target.closest('.bdd-ok') || e.target.closest('.atl-bdd > button')){ dd.classList.toggle('open'); ddUI(); return; }
+      const cb = e.target.closest('input[data-bk]'); if(!cb) return;
+      e.preventDefault();   // l'état vient de la page (re-dessin des boutons) : pas de double bascule
+      const b = brEl.querySelector('button[data-k="'+cb.dataset.bk+'"]'); if(b) b.click();
+    });
+    if(brEl) new MutationObserver(ddUI).observe(brEl, {childList: true});
+    ddUI();
+    const home = document.createComment('carte');
+    const full = on => {
+      S.full = on; box.classList.toggle('full', on); document.documentElement.classList.toggle('atl-full-on', on);
+      // la section a une animation (transform) : un « position:fixed » dedans ne couvrirait pas l'écran → la carte passe
+      // le temps du plein écran au bout de <body>, puis revient à sa place (repère : un commentaire)
+      // les marques suivent aussi (filtre en plein écran) : une rangée qui défile de côté, sous les boutons
+      if(on){ box.before(home); document.body.appendChild(box); box.insertBefore(dd, lay || sc); if(pe) box.appendChild(pe); }
+      else { home.after(box); bAnchor.after(dd); if(pe) box.after(pe); home.remove(); }
+      dd.classList.remove('open');
+      $('atl-zf').textContent = on ? '✕' : '⛶'; $('atl-zf').setAttribute('aria-label', on ? t('Quitter le plein écran','Exit full screen') : t('Plein écran','Full screen'));
+      tip.hidden = true; stk(); K.redraw(); if(K.hash) K.hash();   // l'adresse suit : #carte-… = lien partageable vers la carte plein écran
+    };
+    // 🔗 partager la carte (plein écran + marques choisies) : menu de partage du téléphone, sinon copie du lien
+    $('atl-zs').addEventListener('click', async () => {
+      const u = location.href, bt = $('atl-zs');
+      try{ if(navigator.share){ await navigator.share({title: document.title, url: u}); return; } await navigator.clipboard.writeText(u); bt.textContent = '✓'; }
+      catch(e){ if(e && e.name === 'AbortError') return; prompt(t('Copie ce lien :','Copy this link:'), u); }
+      setTimeout(() => { bt.textContent = '🔗'; }, 1500);
+    });
+    // 📱 en portrait, plein écran : la carte est plus large une fois le téléphone tourné
+    const rot = document.createElement('div'); rot.className = 'atl-rot'; box.insertBefore(rot, sc);
+    const rotTxt = () => { rot.textContent = t('📱↻ tourne ton téléphone pour une carte plus large','📱↻ turn your phone for a wider map'); };
+    $('atl-zf').addEventListener('click', () => full(!S.full));
+    addEventListener('keydown', e => { if(e.key === 'Escape' && S.full) full(false); });
+    // pince à 2 doigts (la page, elle, ne zoome pas : touch-action pan-x pan-y sur la carte)
+    const two = e => { const [a, b] = e.touches, r = sc.getBoundingClientRect(); return {d: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY), x: (a.clientX + b.clientX)/2 - r.left, y: (a.clientY + b.clientY)/2 - r.top}; };
+    sc.addEventListener('touchstart', e => { if(e.touches.length === 2){ pinch = Object.assign(two(e), {z: S.z}); tip.hidden = true; } }, {passive:true});
+    sc.addEventListener('touchmove', e => { if(!pinch || e.touches.length !== 2) return; if(e.cancelable) e.preventDefault(); const q = two(e); setZ(pinch.z*q.d/pinch.d, q.x, q.y); }, {passive:false});
+    sc.addEventListener('touchend', e => { if(pinch && e.touches.length < 2){ pinch = null; noClick = true; setTimeout(() => { noClick = false; }, 350); } });
+    // Safari (pavé tactile du Mac) : pincement = événements « gesture » (sur iPhone, la pince tactile ci-dessus suffit)
+    let gz = 0;
+    sc.addEventListener('gesturestart', e => { e.preventDefault(); gz = S.z; }, {passive:false});
+    sc.addEventListener('gesturechange', e => { e.preventDefault(); if(pinch) return; const r = sc.getBoundingClientRect(); setZ(gz*e.scale, (e.clientX || r.left + r.width/2) - r.left, (e.clientY || r.top + r.height/2) - r.top); }, {passive:false});
+    sc.addEventListener('gestureend', e => { e.preventDefault(); }, {passive:false});
+    // ordinateur : ctrl/⌘ + molette, et pincement du pavé tactile (qui arrive comme une molette + ctrl)
+    sc.addEventListener('wheel', e => { if(!e.ctrlKey && !e.metaKey) return; e.preventDefault(); const r = sc.getBoundingClientRect(); setZ(S.z*Math.exp(-e.deltaY*.01), e.clientX - r.left, e.clientY - r.top); }, {passive:false});
+    // souris : glisser pour se déplacer dans la carte zoomée
+    cv.addEventListener('pointerdown', e => { lastPT = e.pointerType || 'mouse';
+      if(lastPT === 'mouse' && S.z > 1 && e.button === 0) drag = {x: e.clientX, y: e.clientY, l: sc.scrollLeft, t: sc.scrollTop, on: false}; });
+    addEventListener('pointermove', e => { if(!drag) return; const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if(!drag.on && Math.hypot(dx, dy) > 5){ drag.on = true; cv.classList.add('grabbing'); tip.hidden = true; }
+      if(drag.on){ sc.scrollLeft = drag.l - dx; sc.scrollTop = drag.t - dy; } });
+    // fin d'un glisser : on ignore le clic qui suit… s'il arrive (relâché hors de la carte, il n'arrive jamais → délai)
+    addEventListener('pointerup', () => { if(drag && drag.on){ noClick = true; setTimeout(() => { noClick = false; }, 350); } drag = null; cv.classList.remove('grabbing'); });
+    cv.addEventListener('pointermove', e => { if(e.pointerType === 'mouse' && !(drag && drag.on)) K.show(e); });
+    cv.addEventListener('pointerleave', () => { if(lastPT === 'mouse') tip.hidden = true; });
+    sc.addEventListener('scroll', () => { if(lastPT !== 'mouse') tip.hidden = true; }, {passive:true});
+    // toucher / cliquer : une aile → sa fiche ; ailleurs (doigt) → la bulle du point touché
+    cv.addEventListener('click', e => {
+      if(noClick){ noClick = false; return; }
+      const p = K.pick(e, lastPT === 'mouse' ? 9 : 18); chooser(null);
+      // « laquelle ? » seulement si une autre aile est presque aussi près du doigt que la plus proche (écart < 8 px)
+      if(p && p.near) p.near = p.near.filter(w => w.dd - p.near[0].dd < 8);
+      // aile déjà épinglée : on ne la reprend pas (le clic ne fait rien) ; s'il y en a d'autres sous le doigt, elles seules sont proposées
+      if(p && p.near && p.near.length){ const free = p.near.filter(w => !S.pins.some(q => q.n === w.n && Math.abs(q.b - w.b) < .01 && q.S === w.S));
+        if(!free.length) return; p.near = free; p.wing = free[0]; p.b = free[0].b; p.S = free[0].S; }
+      if(p && p.near && p.near.length > 1){ tip.hidden = true; chooser(p); }
+      else if(p && p.wing){ tip.hidden = true; pin(p); } else if(lastPT !== 'mouse') K.show(e);
+    });
+    // plusieurs ailes sous le doigt : « laquelle ? » (au lieu de deviner la plus proche)
+    const ch = document.createElement('div'); ch.className = 'atl-choose'; ch.hidden = true; box.appendChild(ch);
+    function chooser(p){
+      if(!p){ ch.hidden = true; return; }
+      const L = p.near.slice(0, 8);
+      ch.innerHTML = '<div class="ac-h">'+t('Laquelle ?','Which one?')+'<button type="button" data-ac="x" aria-label="'+t('Fermer','Close')+'">×</button></div>'
+        + L.map((w, i) => '<button type="button" data-ac="'+i+'">'+(w.col ? '<i style="background:'+w.col+'"></i>' : '')+'<b>'+w.n+'</b><span>'+num(w.b, w.b % 1 ? 1 : 0)+' cm · '+num(w.S, 0)+' cm²</span></button>').join('');
+      ch.hidden = false;
+      const cw = ch.offsetWidth, chh = ch.offsetHeight;
+      ch.style.left = Math.max(4, Math.min(p.w - cw - 4, p.x - cw/2))+'px';
+      ch.style.top = Math.max(4, p.y + 16 + chh > box.clientHeight ? p.y - chh - 16 : p.y + 16)+'px';
+      ch.onclick = e => { const b = e.target.closest('[data-ac]'); if(!b) return; ch.hidden = true; if(b.dataset.ac !== 'x') pin(Object.assign({}, p, {wing: L[+b.dataset.ac], b: L[+b.dataset.ac].b, S: L[+b.dataset.ac].S})); };
+    }
+    sc.addEventListener('scroll', () => { ch.hidden = true; }, {passive:true});
+    document.addEventListener('click', e => { if(!ch.hidden && !ch.contains(e.target) && e.target !== cv) ch.hidden = true; });
+    const same = (q, p) => q.n === p.wing.n && Math.abs(q.b - p.b) < .01 && q.S === p.S;
+    function pin(p){
+      let i = S.pins.findIndex(q => same(q, p));
+      used();
+      if(i < 0){ S.pins.push({n: p.wing.n, b: p.b, S: p.S}); if(S.pins.length > 6) S.pins.shift(); i = S.pins.length - 1; K.redraw(); }
+      const el = pe && pe.querySelector('.pin-card[data-i="'+i+'"]'); if(!el) return;
+      el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+      // la fiche doit se voir sans perdre la carte : on ne défile que si elle est sous l'écran, juste assez
+      const r = el.getBoundingClientRect(); if(r.bottom > innerHeight) scrollBy({top: Math.min(r.bottom - innerHeight + 12, r.top - 60), behavior:'smooth'});
+    }
+    if(pe) pe.addEventListener('click', e => {
+      const x = e.target.closest('[data-pin]'), tr = e.target.closest('[data-try-pin]');
+      if(x){ const v = x.dataset.pin; S.pins = v === 'all' ? [] : S.pins.filter((q, i) => i !== +v); K.redraw(); }
+      else if(tr){ const q = S.pins[+tr.dataset.tryPin]; if(!q) return; if(S.full) full(false); K.tryIt(q.b, q.S); }   // plein écran : on en sort, sinon le simulateur reste caché dessous
+    });
+    // appelé à la fin de chaque dessin : repères numérotés sur la carte + fiches à jour (elles suivent poids / niveau / vague)
+    function after(c, px, py){
+      hint(); zl();
+      layUI(); rotTxt();
+      const rings = S.pins.map(q => [px(q.b), py(q.S)]), used = [];
+      S.pins.forEach((q, i) => { const [x, y] = rings[i];
+        c.beginPath(); c.arc(x, y, 9, 0, 7); c.lineWidth = 5; c.strokeStyle = '#0f172a'; c.stroke(); c.lineWidth = 2.5; c.strokeStyle = '#fff'; c.stroke();
+        // pastille numérotée : dans le coin libre (pas sur une autre pastille ni un autre anneau)
+        const offs = [[11, -11], [-11, -11], [11, 11], [-11, 11], [0, -16], [16, 0], [-16, 0], [0, 16]];
+        const [ox, oy] = offs.find(([a, b2]) => !used.some(([u, v]) => Math.hypot(u - x - a, v - y - b2) < 17) && !rings.some(([u, v], j) => j !== i && Math.hypot(u - x - a, v - y - b2) < 12)) || offs[0];
+        const bx = x + ox, by = y + oy; used.push([bx, by]); c.beginPath(); c.arc(bx, by, 8, 0, 7); c.fillStyle = '#fff'; c.fill(); c.lineWidth = 2; c.strokeStyle = '#0f172a'; c.stroke();
+        c.fillStyle = '#0f172a'; c.font = '900 11px system-ui, sans-serif'; c.textAlign = 'center'; c.fillText(String(i + 1), bx, by + 4); });
+      if(!pe) return;
+      pe.innerHTML = !S.pins.length ? '' : (S.pins.length > 1 ? '<div class="pin-bar"><span>📌 '+S.pins.length+' '+t('ailes épinglées · touche-en d\'autres pour comparer','pinned wings · tap more to compare')+'</span><button type="button" data-pin="all">'+t('Tout fermer','Close all')+' ×</button></div>' : '')
+        + S.pins.map((q, i) => { const f = K.info(q.b, q.S, q.n);
+          // 🔗 le nom de l'aile = lien vers sa page officielle (ailes.js : page de la gamme, sinon page des ailes de la marque)
+          const L = window.foilLink && window.foilLink(q.n, 'vitesse'), nm = L ? '<a href="'+L.u+'" target="_blank" rel="noopener">'+q.n.replace(/ (\S+)$/, '&nbsp;$1')+window.wlTail(L)+'</a>'
+            + (L.fam ? '' : '<small>'+t('site '+L.brand,L.brand+' site')+'</small>') : q.n;
+          return '<div class="pin-card" data-i="'+i+'"'+(f.col ? ' style="border-color:'+f.col+'"' : '')+'>'
+            + '<button type="button" class="pin-x" data-pin="'+i+'" aria-label="'+t('Fermer la fiche','Close card')+'">×</button>'
+            + f.html.replace('<div class="tt-h">'+q.n+'</div>', '<div class="tt-h"><span class="pin-n">'+(i + 1)+'</span>'+nm+'</div>')
+            + (K.canTry(q.b, q.S) ? '<button type="button" class="pin-try" data-try-pin="'+i+'">▶ '+t('l\'essayer','try it')+'</button>' : '')+'</div>'; }).join('');
+      if(stEl && K.mini) stEl.innerHTML = K.mini();
+      // plein écran : les fiches ont changé de hauteur → la carte se recale sur la place restante
+      if(S.full) requestAnimationFrame(() => { if(Math.abs(sc.clientHeight - S.lastH) > 4) K.redraw(); });
+    }
+    // 🧍 barre « mes réglages » : reste sous la barre du haut quand les réglages complets sont sortis de l'écran (carte visible)
+    const stEl = $('atl-sticky'), rider = $('atl-rider'), vis = {r: true, m: false};
+    function stk(){ if(!stEl) return; const on = !VIDEO && !S.full && vis.m && !vis.r;
+      if(on){ const tb = document.querySelector('.topbar'); stEl.style.top = Math.max(0, tb ? tb.getBoundingClientRect().bottom : 0)+'px'; } stEl.hidden = !on; }
+    addEventListener('scroll', () => { if(stEl && !stEl.hidden) stk(); }, {passive:true});   // la barre du haut ne reste fixe que sur grand écran
+    if(stEl && rider && 'IntersectionObserver' in window){
+      new IntersectionObserver(es => { es.forEach(e => { vis.r = e.isIntersecting; }); stk(); }, {rootMargin: '-60px 0px 0px 0px'}).observe(rider);
+      new IntersectionObserver(es => { es.forEach(e => { vis.m = e.isIntersecting; }); stk(); }).observe(box);
+    }
+    // taille du dessin : largeur du cadre × zoom ; la toile reste sous ~14 Mpx (limite des téléphones)
+    function size(geo){   // geo(w, z, ratio?, plein écran ?) → {W, H} ; renvoie la géométrie zoomée
+      const w0 = sc.clientWidth || 600; if(S.z <= 1 || !S.w || Math.abs(w0 - S.w) > 20) S.w = w0;
+      // plein écran : la carte remplit la hauteur dispo (ratio) ; sinon le cadre zoomé garde la hauteur de la carte à 1×
+      let ratio; if(S.full){ S.lastH = sc.clientHeight; ratio = Math.max(.45, Math.min(1.2, S.lastH/S.w)); }   // pas plus haute que large ×1,2 : sinon les courbes s'écrasent (portrait)
+      else if(S.z <= 1) sc.style.height = ''; else { const G1 = geo(S.w, 1); sc.style.height = Math.round(S.w*G1.H/G1.W)+'px'; }
+      const G = geo(S.w, S.z, ratio, S.full), cssW = S.w*S.z, cssH = cssW*G.H/G.W;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(14e6/(cssW*cssH)));
+      cv.style.width = S.z > 1 ? Math.round(cssW)+'px' : ''; cv.style.aspectRatio = G.W+' / '+G.H;
+      cv.width = Math.round(cssW*dpr); cv.height = Math.round(cssW*dpr*G.H/G.W);
+      return G;
+    }
+    // 🧍 réglages au-dessus de la carte : sur téléphone, une rangée résumée (même que la barre collée) + ⚙️ pour tout déplier
+    S.rOpen = false;
+    const rider0 = $('atl-rider'); if(rider0) rider0.addEventListener('click', e => { const b = e.target.closest('[data-ropen]'); if(!b) return;
+      S.rOpen = !S.rOpen; const fl = rider0.querySelector('.rc-full'); if(fl) fl.classList.toggle('open', S.rOpen); b.setAttribute('aria-expanded', S.rOpen); b.textContent = S.rOpen ? t('⚙️ moins','⚙️ less') : t('⚙️ réglages','⚙️ settings'); });
+    const riderHtml = fullHtml => '<div class="rc-mini">'+(K.mini ? K.mini() : '')+'<button type="button" class="mini-b" data-ropen aria-expanded="'+S.rOpen+'">'+(S.rOpen ? t('⚙️ moins','⚙️ less') : t('⚙️ réglages','⚙️ settings'))+'</button></div>'
+      + '<div class="rc-full'+(S.rOpen ? ' open' : '')+'">'+fullHtml+'</div>';
+    return {after, size, full, rider: riderHtml};
+  }
   (function(){
     const cv = $('atl-cv'), tip = $('atl-tip'); if(!cv || !tip) return;
     vaBrandsUI();
-    const pick = e => {
+    const box = cv.closest('.atl-box');
+    const pick = (e, rad) => {
       const g = VA.geo; if(!g) return null;
-      const r = cv.getBoundingClientRect(), x = (e.clientX - r.left)*g.W/r.width, y = (e.clientY - r.top)*g.W/r.width;
+      const r = cv.getBoundingClientRect(), k = g.W/r.width, x = (e.clientX - r.left)*k, y = (e.clientY - r.top)*k, bx = box.getBoundingClientRect();
       if(x < g.X0 || x > g.X1 || y < g.Y0 || y > g.Y1) return null;
-      let wing = null, dm = 81; (VA.pts || []).forEach(p => { const d = (p.x - x)**2 + (p.y - y)**2; if(d < dm){ dm = d; wing = p; } });
+      // doigt : zone de touche plus large ; toutes les ailes dedans (« laquelle ? »), la plus proche d'abord
+      const r2 = ((rad || 9)*k)**2, d2 = p => (p.x - x)**2 + (p.y - y)**2, near = (VA.pts || []).filter(p => d2(p) < r2).sort((a, b) => d2(a) - d2(b)), wing = near[0] || null;
+      near.forEach(p => { p.dd = Math.sqrt(d2(p))/k; });   // distance au doigt, en px d'écran
       const b = wing ? wing.b : Math.round(VA.B0 + (x - g.X0)/(g.X1 - g.X0)*(VA.B1 - VA.B0));
       const S = wing ? wing.S : Math.round((VA.S0 + (g.Y1 - y)/(g.Y1 - g.Y0)*(VA.S1 - VA.S0))/10)*10;
-      return {b, S, wing, x: e.clientX - r.left, y: e.clientY - r.top, w: r.width};
+      return {b, S, wing, near, x: e.clientX - bx.left, y: e.clientY - bx.top, w: bx.width};   // bulle placée dans le cadre (qui ne défile pas)
+    };
+    const inSl = (b, S) => b >= +$('i-b').min && b <= +$('i-b').max && S >= +$('i-s').min && S <= +$('i-s').max;
+    // contenu d'une bulle / d'une fiche : vitesse et watts de l'aile (ou du point) à TA puissance
+    const info = (b, S, n) => {
+      const ar = b*b/S, ev = vaEval(b, S, VA.geo.kg), fits = ar >= VA.AR0 && ar <= VA.AR1;
+      const rec = n && VA.sel.length && VA.reco ? VA.reco.find(r => Math.abs(r.b - b) < .01 && r.S === S) : null;
+      const RL = {'🏁':t('meilleure sur 300 m','best over 300 m'), '⚡':t('rapide, petite conso','fast, low energy'), '🏆':t('polyvalente','all-round')};
+      return {col: rec ? VA_RC_C[rec.e] : '', html: (rec ? '<div class="tt-rec" style="color:'+VA_RC_C[rec.e]+'">'+rec.e+' '+t('recommandée','recommended')+' · '+RL[rec.e]+'</div>' : '')
+        + (n ? '<div class="tt-h">'+n+'</div>' : '')
+        + '<div class="'+(n ? '' : 'tt-h')+'">'+b+'&nbsp;cm · '+num(S, 0)+'&nbsp;cm² · AR&nbsp;'+num(ar, 1)+'</div>'
+        // 1) le verdict d'abord, dans la couleur de la zone, avec l'écart aux plus rapides (à ta puissance)
+        + (fits ? (gap => '<div style="margin-top:3px; font-weight:800; color:'+(ev.k === 's3e' ? '#ff8a7a' : '#f1f5f9')+'">'+vaT(VA_CAT[ev.k].s)
+            + (ev.k === 'start' ? '' : ev.r3.stall ? ' — '+t('décroche en virage','stalls in turns') : gap < 0.25 ? '' : ' <span style="font-weight:600; color:#cbd5e1">— '+t('à ','')+num(gap, 1)+t(' km/h des plus rapides',' km/h behind the fastest')+'</span>')+'</div>')(300/VA.best.b3*3.6 - 300/ev.r3.t*3.6) : '')
+        // 2) la vitesse en sprint, MÊME mesure que la carte (moyenne sur 300 m), selon tes watts
+        + (fits && !ev.r3.stall && ev.k !== 'start' ? '<div style="margin-top:5px; font-weight:800">'+t('Sprint 300 m (vitesse moyenne) :','300 m sprint (average speed):')+'</div>'+vaBars3(b, S, VA.geo.kg) : '')
+        // 3) démarrage et « pomper loin »
+        + '<div>🛫 '+t('décolle dès','takes off from')+' <b>~'+Math.round(ev.r1.lo)+' km/h</b></div>'
+        + (fits ? (g => '<div>🌊 '+t('pomper loin : ','pumping far: ')+'<b>~'+num(Math.round(g.P/5)*5, 0)+' W</b> '+t('à','at')+' ~'+num(g.v, 0)+' km/h · '+num(g.P/g.v, 0)+' Wh/km</div>')(vaGlide(b, S, VA.geo.kg)) : '')};
     };
     const show = e => {
       if(VA.geo && vaKey(+$('i-w').value) !== VA.key) vaDraw();
       const p = pick(e); if(!p || (!p.wing && (p.b*p.b/p.S < VA.AR0 || p.b*p.b/p.S > VA.AR1))){ tip.hidden = true; return; }
       if(p.wing && (!VA.hoverWing || VA.hoverWing.b !== p.b || VA.hoverWing.S !== p.S)){ VA.hoverWing = {n:p.wing.n.replace(' Foils', '').replace(' Foil', ''), b:p.b, S:p.S}; if(VA.pwArgs) vaPowChart(...VA.pwArgs); }
-      const ar = p.b*p.b/p.S, ev = vaEval(p.b, p.S, VA.geo.kg), fits = ar >= VA.AR0 && ar <= VA.AR1;
-      const inSl = p.b >= +$('i-b').min && p.b <= +$('i-b').max && p.S >= +$('i-s').min && p.S <= +$('i-s').max;
-      const rec = p.wing && VA.sel.length && VA.reco ? VA.reco.find(r => Math.abs(r.b - p.b) < .01 && r.S === p.S) : null;
-      const RL = {'🏁':t('meilleure sur 300 m','best over 300 m'), '⚡':t('rapide, petite conso','fast, low energy'), '🏆':t('polyvalente','all-round')};
-      tip.style.background = rec ? 'color-mix(in srgb, '+VA_RC_C[rec.e]+' 30%, #0a1020)' : ''; tip.style.borderColor = rec ? VA_RC_C[rec.e] : '';
-      tip.innerHTML = (rec ? '<div class="tt-rec" style="color:'+VA_RC_C[rec.e]+'">'+rec.e+' '+t('recommandée','recommended')+' · '+RL[rec.e]+'</div>' : '')
-        + (p.wing ? '<div class="tt-h">'+p.wing.n+'</div>' : '')
-        + '<div class="'+(p.wing ? '' : 'tt-h')+'">'+p.b+' cm · '+num(p.S, 0)+' cm² · AR '+num(ar, 1)+'</div>'
-        // 1) le verdict d'abord, dans la couleur de la zone, avec l'écart aux plus rapides (à ta puissance)
-        + (fits ? (gap => '<div style="margin-top:3px; font-weight:800; color:'+(ev.k === 's3e' ? '#ff8a7a' : '#f1f5f9')+'">'+vaT(VA_CAT[ev.k].s)
-            + (ev.k === 'start' ? '' : ev.r3.stall ? ' — '+t('décroche en virage','stalls in turns') : gap < 0.25 ? '' : ' <span style="font-weight:600; color:#cbd5e1">— '+t('à ','')+num(gap, 1)+t(' km/h des plus rapides',' km/h behind the fastest')+'</span>')+'</div>')(300/VA.best.b3*3.6 - 300/ev.r3.t*3.6) : '')
-        // 2) la vitesse en sprint, MÊME mesure que la carte (moyenne sur 300 m), selon tes watts
-        + (fits && !ev.r3.stall && ev.k !== 'start' ? '<div style="margin-top:5px; font-weight:800">'+t('Sprint 300 m (vitesse moyenne) :','300 m sprint (average speed):')+'</div>'+vaBars3(p.b, p.S, VA.geo.kg) : '')
-        // 3) démarrage et « pomper loin »
-        + '<div>🛫 '+t('décolle dès','takes off from')+' <b>~'+Math.round(ev.r1.lo)+' km/h</b></div>'
-        + (fits ? (g => '<div>🌊 '+t('pomper loin : ','pumping far: ')+'<b>~'+num(Math.round(g.P/5)*5, 0)+' W</b> '+t('à','at')+' ~'+num(g.v, 0)+' km/h · '+num(g.P/g.v, 0)+' Wh/km</div>')(vaGlide(p.b, p.S, VA.geo.kg)) : '')
-        + (p.wing ? '<div class="tt-c">'+(inSl ? t('clic : l\'essayer dans le simulateur','click: try it in the simulator') : t('hors des curseurs du simulateur','outside the simulator sliders'))+'</div>' : '');
+      const f = info(p.b, p.S, p.wing && p.wing.n);
+      tip.style.background = f.col ? 'color-mix(in srgb, '+f.col+' 30%, #0a1020)' : ''; tip.style.borderColor = f.col;
+      const pi = p.wing ? VA.pins.findIndex(q => q.n === p.wing.n && Math.abs(q.b - p.b) < .01 && q.S === p.S) : -1;   // déjà épinglée ?
+      tip.innerHTML = f.html + (p.wing ? '<div class="tt-c">'+(pi >= 0 ? t('📌 épinglée (fiche n° '+(pi + 1)+' sous la carte)','📌 pinned (card #'+(pi + 1)+' below the map)') : t('clic : épingler sa fiche (+ lien officiel)','click: pin its card (+ official link)'))+'</div>' : '');
+      tip.style.left = '0px';   // mesurée collée à gauche : elle prend sa vraie largeur (et passe à la ligne si le cadre est étroit)
       tip.hidden = false;
       const tw = tip.offsetWidth, th = tip.offsetHeight;
       tip.style.left = Math.max(0, Math.min(p.w - tw, p.x + 14 + tw > p.w ? p.x - tw - 14 : p.x + 14))+'px';
       tip.style.top = Math.max(0, p.y - th - 12)+'px';
     };
-    cv.addEventListener('pointermove', show); cv.addEventListener('pointerdown', show);
-    cv.addEventListener('pointerleave', () => { tip.hidden = true; });
-    cv.addEventListener('click', e => { const p = pick(e); if(!p || !p.wing) return; if(p.b < +$('i-b').min || p.b > +$('i-b').max || p.S < +$('i-s').min || p.S > +$('i-s').max) return; vaTry(p.b, p.S); });
+    // barre « mes réglages » résumée : poids ±, puissance (passe à la suivante), straps (mêmes data-va que les réglages complets)
+    const mini = () => { const PS = [600, 700, 800, 900], nP = PS[(PS.indexOf(VA.P) + 1) % PS.length];
+      return '<span class="rc"><button type="button" data-va="-" aria-label="'+t('moins lourd','lighter')+'">−</button><b>🧍 '+$('i-w').value+' kg</b><button type="button" data-va="+" aria-label="'+t('plus lourd','heavier')+'">+</button></span>'
+        + '<button type="button" class="mini-b" data-va="pw'+nP+'">⚡ '+VA.P+' W</button>'
+        + '<button type="button" class="mini-b" data-va="st">'+(vaStraps() > 1 ? '✓ ' : '')+t('🦶 straps','🦶 straps')+'</button>'; };
+    VA.kit = atlKit({st: VA, redraw: vaDraw, pick, show, info, canTry: inSl, tryIt: vaTry, mini, hash: () => vaHash(),
+      layers: [['v', '– – km/h', '– – km/h', 1], ['ar', '╱ AR', '╱ AR']]});
     $('i-w').addEventListener('input', vaDraw);
     $('i-stab').addEventListener('change', vaDraw);
     $('i-straps').addEventListener('change', vaDraw);
@@ -1812,8 +2163,11 @@
   })();
   // 🔗 lien direct par marque : vitesse.html#atlas-axis, #atlas-alpine-foil… (même format que la page carve)
   function vaSlug(B){ return B.n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
-  function vaHash(){ const sl = VA.sel.map(k => vaSlug(VA_BRANDS.find(x => x.k === k))); try{ history.replaceState(null, '', location.pathname + location.search + (sl.length ? '#atlas-'+sl.join('+') : '#atlas')); }catch(e){} }
-  function vaFromHash(){ const m = /^#atlas-(.+)$/.exec(location.hash); if(!m) return; const ks = m[1].split('+').map(sl => (VA_BRANDS.find(x => vaSlug(x) === sl) || {}).k).filter(Boolean); if(!ks.length) return;
+  function vaHash(){ const sl = VA.sel.map(k => vaSlug(VA_BRANDS.find(x => x.k === k))), h = VA.full ? '#carte' : '#atlas';   // #carte = plein écran (lien partageable)
+    try{ history.replaceState(null, '', location.pathname + location.search + (sl.length ? h+'-'+sl.join('+') : h)); }catch(e){} }
+  function vaFromHash(){ const m = /^#(atlas|carte)(?:-(.+))?$/.exec(location.hash); if(!m) return; const ks = (m[2] || '').split('+').map(sl => (VA_BRANDS.find(x => vaSlug(x) === sl) || {}).k).filter(Boolean);
+    if(m[1] === 'carte'){ VA.sel = ks; vaBrandsUI(); if(!VA.full && VA.kit) VA.kit.full(true); else vaDraw(); return; }
+    if(!ks.length) return;
     VA.sel = ks; vaBrandsUI(); vaDraw(); const sec = $('atlas'); if(sec) setTimeout(() => sec.scrollIntoView(), 50); }
 })();
 </script>

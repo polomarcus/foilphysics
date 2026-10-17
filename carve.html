@@ -20,7 +20,7 @@
 <style>
   :root{
     --bg:#0f172a; --panel:#1e293b; --panel-2:#16213a; --line:#334155;
-    --txt:#e2e8f0; --muted:#94a3b8; --dim:#64748b; --sky:#38bdf8; --carve:#c084fc;
+    --txt:#e2e8f0; --muted:#94a3b8; --dim:#8796ab; --sky:#38bdf8; --carve:#c084fc;
   }
   *{margin:0; padding:0; box-sizing:border-box;}
   body{background:var(--bg); color:var(--txt); font-family:system-ui,-apple-system,"Segoe UI",sans-serif; line-height:1.5;}
@@ -266,7 +266,7 @@
   .atl-reco button{margin-top:auto; align-self:flex-start; background:transparent; border:1.5px solid currentColor; border-radius:999px; padding:5px 14px; font:inherit; font-size:.82rem; font-weight:800; cursor:pointer;}
   .atl-reco button:not(:disabled):hover{background:rgba(255,255,255,.06);}
   .atl-reco button:disabled, .atl-cmp button:disabled{opacity:.35; cursor:default;}
-  .atl-bhint{flex-basis:100%; text-align:center; font-size:.76rem; color:var(--muted); margin-top:2px;}
+  .atl-bhint{flex-basis:100%; text-align:center; font-size:.76rem; color:var(--muted); margin:-4px 0 10px;}
   .atl-cmpw{overflow-x:auto; margin-bottom:14px;}
   .atl-cmp{width:100%; border-collapse:separate; border-spacing:6px; font-size:.82rem;}
   .atl-cmp th{text-align:left; color:var(--txt); font-weight:900; padding:6px 8px; vertical-align:top; white-space:nowrap;} .atl-cmp th small{display:block; font-size:.7rem; font-weight:600; color:var(--muted); white-space:normal;}
@@ -275,10 +275,100 @@
   .atl-cmp td > b{display:block; font-size:1.05rem; font-weight:900; color:var(--txt); margin-bottom:4px;}
   .atl-cmp .rd{display:flex; flex-wrap:wrap; gap:3px; font-size:.72rem; color:#cbd5e1; margin-bottom:6px;} .atl-cmp .rd > span{background:rgba(148,163,184,.12); border-radius:999px; padding:1px 7px;}
   .atl-cmp button{background:transparent; border:1px solid var(--carve); color:var(--carve); border-radius:999px; padding:3px 10px; font:inherit; font-size:.74rem; font-weight:800; cursor:pointer;}
-  @media(max-width:560px){ .atl-cmp th:first-child{position:sticky; left:0; z-index:1; background:var(--bg); white-space:normal; min-width:84px; max-width:96px;} .atl-cmp td{min-width:118px;} }
+  @media(max-width:560px){ .atl-cmp td > b{font-size:.95rem;} .atl-cmp th:first-child{position:sticky; left:0; z-index:1; background:var(--bg); white-space:normal; min-width:80px; max-width:88px;} .atl-cmp td{min-width:104px; padding:8px;} .atl-cmp{border-spacing:4px;} }
   td.cmp-none{color:var(--muted); text-align:center; vertical-align:middle;} td.cmp-rng{font-size:.74rem; color:#cbd5e1; line-height:1.4;}
   .atl-box{position:relative; max-width:900px; margin:0 auto; background:var(--panel-2); border-radius:12px; padding:8px;}
-  #atl-cv{display:block; width:100%; cursor:crosshair; touch-action:pan-y;}
+  #atl-cv{display:block; width:100%; cursor:crosshair; touch-action:pan-x pan-y;}   /* pan-x/y : le doigt fait défiler, la pince à 2 doigts zoome la carte (pas la page) */
+  /* 🔍 zoom : la carte est redessinée plus grande dans ce cadre, qui défile au doigt (ou à la souris, en glissant) */
+  .atl-scroll{overflow:auto; overscroll-behavior-x:contain; border-radius:8px; scrollbar-width:thin;}
+  .atl-scroll.zoomed #atl-cv{cursor:grab;} .atl-scroll.zoomed #atl-cv.grabbing{cursor:grabbing;}
+  .atl-tools{display:flex; align-items:center; justify-content:space-between; gap:8px; margin:0 2px 6px; font-size:.76rem; line-height:1.3; color:var(--muted);}
+  .atl-zb{display:inline-flex; align-items:center; gap:4px; flex:none;}
+  .atl-zb button{width:36px; height:36px; border-radius:10px; border:1px solid var(--line); background:var(--panel); color:var(--txt); font:inherit; font-size:1.15rem; font-weight:800; line-height:1; cursor:pointer; touch-action:manipulation;}
+  .atl-zb button:disabled{opacity:.35; cursor:default;}
+  .atl-zb b{min-width:30px; text-align:center; font-size:.8rem; color:var(--txt); font-variant-numeric:tabular-nums;}
+  /* 📌 fiches épinglées : une par aile touchée, côte à côte pour comparer, fermables (×) */
+  .atl-pins{max-width:900px; margin:8px auto 10px; display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:10px 8px;}
+  .atl-pins:empty{display:none;}
+  .pin-bar{grid-column:1 / -1; display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:.8rem; color:var(--muted);}
+  .pin-bar button{flex:none; white-space:nowrap; background:transparent; border:1px solid var(--line); color:var(--txt); border-radius:999px; padding:6px 12px; font:inherit; font-size:.78rem; font-weight:700; cursor:pointer;}
+  .pin-card{position:relative; background:var(--panel); border:1.5px solid var(--line); border-radius:12px; padding:10px 30px 10px 12px; font-size:.8rem; line-height:1.5; color:#cbd5e1; min-width:0; overflow-wrap:anywhere;}
+  .pin-card b{color:var(--txt);} .pin-card .tt-h{font-weight:900; color:var(--txt); font-size:.95rem; line-height:1.25; margin:0 0 3px;} .pin-card .tt-rec{font-size:.68rem;}
+  .pin-n{display:inline-block; margin-right:6px; vertical-align:2px; width:20px; height:20px; border-radius:50%; background:#fff; color:#0f172a; font-size:.72rem; font-weight:900; line-height:20px; text-align:center; box-shadow:0 0 0 2px #0f172a;}
+  .pin-x{position:absolute; top:0; right:0; width:38px; height:38px; border:0; background:none; color:var(--muted); font-size:1.35rem; line-height:1; cursor:pointer;}
+  .pin-x:hover{color:var(--txt);}
+  .wl{color:inherit; text-decoration:underline; text-decoration-color:#93c5fd; text-decoration-thickness:2px; text-underline-offset:3px;}
+  .pin-card .tt-h a{color:inherit; text-decoration:underline; text-decoration-color:#93c5fd; text-decoration-thickness:2px; text-underline-offset:3px;}
+  .pin-card .tt-h small{display:block; font-size:.7rem; font-weight:600; color:#93c5fd;}
+  .pin-try{display:block; margin-top:8px; background:transparent; border:1.5px solid currentColor; color:var(--txt); border-radius:999px; padding:6px 10px; font:inherit; font-size:.76rem; font-weight:800; cursor:pointer;}
+  .atl-lay{display:flex; flex-wrap:wrap; align-items:center; gap:5px; margin:0 2px 6px; font-size:.74rem; color:var(--muted);}
+  .atl-lay:empty{display:none;}
+  .atl-lay button{background:transparent; border:1px dashed var(--line); color:var(--muted); border-radius:999px; padding:5px 9px; font:inherit; font-size:.74rem; font-weight:700; cursor:pointer;}
+  .atl-lay button.on{border-style:solid; border-color:#64748b; color:var(--txt); background:rgba(148,163,184,.12);}
+  .atl-choose{position:absolute; z-index:6; background:rgba(15,23,42,.98); border:1px solid #64748b; border-radius:12px; padding:4px; min-width:190px; max-width:min(280px, calc(100% - 8px)); box-shadow:0 8px 24px rgba(0,0,0,.5);}
+  .atl-choose[hidden]{display:none;}
+  .atl-choose .ac-h{display:flex; justify-content:space-between; align-items:center; padding:2px 2px 2px 8px; font-size:.74rem; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:.04em;}
+  .atl-choose .ac-h button{width:34px; height:34px; border:0; background:none; color:var(--muted); font-size:1.25rem; cursor:pointer;}
+  .atl-choose > button{display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 8px; width:100%; min-height:42px; text-align:left; background:transparent; border:0; border-top:1px solid var(--line); color:#cbd5e1; padding:8px; font:inherit; font-size:.82rem; cursor:pointer;}
+  .atl-choose > button:hover{background:rgba(148,163,184,.12);} .atl-choose > button b{color:var(--txt);} .atl-choose > button span{color:var(--muted); font-size:.74rem;}
+  .atl-choose > button i{width:9px; height:9px; border-radius:50%; flex:none; align-self:center;}
+  /* ⛶ plein écran (classe CSS : l'API plein écran n'existe pas sur iPhone) */
+  .atl-box.full{position:fixed; inset:0; z-index:200; max-width:none; margin:0; border-radius:0; display:flex; flex-direction:column; padding:8px 8px calc(8px + env(safe-area-inset-bottom)); background:var(--bg);}
+  .atl-box.full .atl-scroll{flex:1 1 0; min-height:0; height:auto !important; display:flex;} .atl-box.full #atl-cv{flex:none; margin:0 auto auto;}   /* carte en haut, centrée en largeur (marges auto : rien de coupé au zoom) */
+  /* 🏷️ marques en cases à cocher (téléphone + plein écran) ; sur ordinateur, les boutons de marque d'origine */
+  .atl-bdd{display:none; max-width:900px; margin:0 auto 10px;}
+  .atl-bdd > button{display:flex; align-items:center; gap:6px; width:100%; min-height:44px; padding:8px 14px; background:var(--panel-2); border:1px solid var(--line); border-radius:12px; color:var(--muted); font:inherit; font-size:.85rem; font-weight:700; text-align:left; cursor:pointer;}
+  .atl-bdd > button b{flex:1; color:var(--txt); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;} .atl-bdd > button i{font-style:normal; transition:transform .2s;}
+  .atl-bdd.open > button i{transform:rotate(180deg);}
+  .bdd-p{display:none; grid-template-columns:1fr 1fr; gap:2px 8px; margin-top:6px; padding:8px; background:var(--panel); border:1px solid var(--line); border-radius:12px;}
+  .atl-bdd.open .bdd-p{display:grid;}
+  .bdd-p label{display:flex; align-items:center; gap:8px; min-height:40px; padding:0 6px; border-radius:8px; color:var(--txt); font-size:.86rem; font-weight:700; cursor:pointer;}
+  .bdd-p label:hover{background:rgba(148,163,184,.1);} .bdd-p input{width:18px; height:18px; accent-color:#c084fc; flex:none;}
+  .bdd-p label i{width:9px; height:9px; border-radius:50%; flex:none;}
+  .bdd-p .bdd-all{grid-column:1 / -1; border-bottom:1px solid var(--line); border-radius:8px 8px 0 0;}
+  .bdd-p .bdd-ok{grid-column:1 / -1; justify-self:end; margin-top:4px; background:#c084fc; color:#1e1b2e; border:0; border-radius:999px; padding:8px 18px; font:inherit; font-weight:800; cursor:pointer;}
+  @media (max-width:560px){ .atl-bdd{display:block;} #atl-brands, #atl-bhint{display:none !important;} }
+  .atl-box.full .atl-bdd{display:block; flex:none; margin:0 0 6px; max-width:none; position:relative;}
+  .atl-box.full .bdd-p{position:absolute; z-index:7; left:0; right:0; top:100%; max-height:65vh; overflow-y:auto; box-shadow:0 12px 30px rgba(0,0,0,.6);}   /* plein écran : la liste passe PAR-DESSUS la carte (qui ne rétrécit pas) */ .atl-box.full #atl-brands, .atl-box.full #atl-bhint{display:none !important;}
+  .atl-box:not(.full) #atl-zs{display:none;}
+  .atl-rot{display:none; margin:0 2px 6px; font-size:.78rem; font-weight:700; color:#fbbf24;}
+  @media (orientation:portrait) and (hover:none){ .atl-box.full .atl-rot{display:block;} }
+  /* téléphone tourné : carte à gauche, fiches en colonne à droite */
+  @media (orientation:landscape) and (max-height:520px){
+    .atl-box.full{display:grid; grid-template-columns:minmax(0, 1fr) auto; grid-template-rows:auto auto auto minmax(0, 1fr); column-gap:8px;}
+    .atl-box.full .atl-tools, .atl-box.full .atl-lay, .atl-box.full .atl-bdd, .atl-box.full .atl-rot{grid-column:1 / -1; margin-bottom:4px;}
+    .atl-box.full .atl-bdd.open .bdd-p{grid-template-columns:repeat(3, 1fr);} .atl-box.full .atl-hint{display:none;}
+    .atl-box.full .atl-scroll{grid-column:1; grid-row:-2;}
+    .atl-box.full .atl-pins{grid-column:2; grid-row:-2; flex-direction:column; width:min(250px, 36vw); max-height:none; overflow-x:hidden; overflow-y:auto; margin:0; padding:0 2px 0 0;}
+    .atl-box.full .pin-card{flex:none;} .atl-box.full .pin-bar{flex-direction:row;}
+  }
+  .atl-box.full .atl-pins{flex:none; display:flex; gap:8px; overflow-x:auto; max-height:40vh; margin:8px 0 0; padding:10px 0 2px 8px;}
+  .atl-box.full .pin-card{flex:0 0 min(72vw, 240px); overflow-y:auto;} .atl-box.full .pin-bar{flex:none; flex-direction:column; justify-content:center;} .atl-box.full .pin-bar span{display:none;}
+  html.atl-full-on, html.atl-full-on body{overflow:hidden;}
+  /* 🧍 réglages résumés, collés sous la barre du haut pendant qu'on lit la carte */
+  .atl-sticky{position:fixed; left:0; right:0; z-index:45; display:flex; justify-content:center; flex-wrap:nowrap; gap:6px; overflow-x:auto; scrollbar-width:none; padding:6px 10px; background:rgba(15,23,42,.94); border-bottom:1px solid var(--line); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);}
+  .atl-sticky[hidden]{display:none;} .atl-sticky::-webkit-scrollbar{display:none;}
+  .atl-sticky > *{flex:none;} .atl-sticky .rc b{min-width:0;}
+  .mini-b{background:var(--panel); border:1px solid var(--line); color:var(--txt); border-radius:999px; padding:4px 10px; font:inherit; font-size:.78rem; font-weight:700; white-space:nowrap; cursor:pointer;}
+  @media (max-width:400px){ .atl-sticky{justify-content:flex-start;} }
+  .rc-mini{display:none;} .rc-full{display:contents;}
+  @media (max-width:560px){
+    .rc-mini{display:flex; flex-wrap:wrap; justify-content:center; gap:6px; width:100%;} .rc-mini .rc b{min-width:0;}
+    .rc-full{display:none;} .rc-full.open{display:flex; flex-wrap:wrap; justify-content:center; gap:6px; width:100%; margin-top:4px;}
+    /* intro : les 3 cartes repliées derrière une ligne (la carte des ailes remonte) */
+    .tldr .tl-fold{display:block;} .tldr:not(.open) .tl-cards{display:none;}
+  }
+  .tl-fold{display:none; margin:12px auto 0; background:var(--panel); border:1px solid var(--line); border-radius:999px; padding:9px 16px; color:var(--txt); font:inherit; font-size:.84rem; font-weight:700; cursor:pointer;}
+  .tldr.open .tl-fold i{display:inline-block; transform:rotate(180deg);} .tl-fold i{font-style:normal;}
+  /* doigt : boutons d'au moins ~40 px (les − / + de 24 px se ratent) */
+  @media (pointer:coarse){ .rc button{min-width:40px; min-height:40px; height:auto;} .rc-seg button{min-height:38px; padding:0 11px;} .mini-b{min-height:40px;} }
+  .hint-i{width:30px; height:30px; border-radius:50%; border:1px solid var(--line); background:var(--panel); color:var(--txt); font:inherit; font-size:.95rem; font-weight:800; cursor:pointer; vertical-align:middle;}
+  .hint-x{width:26px; height:26px; font-size:1rem; margin-right:4px;}
+  .atl-box .win-tip{white-space:normal; width:max-content; max-width:min(330px, calc(100% - 8px));}   /* jamais plus large que le cadre (plein écran étroit) */
+  .shp{width:13px; height:13px; vertical-align:-2px; margin-right:5px;}
+  .vh{position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;}   /* lu par les lecteurs d'écran, invisible */
+  .pin-card.flash{animation:pinf .9s ease-out;} @keyframes pinf{0%{box-shadow:0 0 0 4px #fff;} 100%{box-shadow:0 0 0 0 rgba(255,255,255,0);}}
+  @media (max-width:560px){ .atl-box{padding:4px;} .atl-box .win-tip{font-size:.8rem; white-space:normal; max-width:250px;} .atl-box .win-tip .tt-c{font-size:.72rem;} }
   .win-leg{display:flex; flex-wrap:wrap; justify-content:center; gap:3px 12px; font-size:.68rem; color:var(--muted); margin:4px 0 6px;}
   .win-leg i{display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px; vertical-align:-1px;}
   .win-leg i.hatch{background:repeating-linear-gradient(135deg, rgba(148,163,184,.35) 0 1px, transparent 1px 4px);}
@@ -406,13 +496,29 @@
 
   <div class="tldr">
     <div class="t" data-i18n="tldr-t">Trouve l'aile qui <b>tourne serré</b>… et qui <b>tient ta session</b>.</div>
+    <button type="button" class="tl-fold" aria-expanded="false" data-i18n="tl-fold">🔄 Tourner · 🪶 Le stab · ⏱️ La session <i>▾</i></button>
     <div class="tl-cards">
       <div class="tl-c"><span class="tl-e">🔄</span><b data-i18n="tl1-h">Tourner</b><p data-i18n="tl1-p"><b>Envergure courte</b> + <b>petite surface</b> : une aile 20 % plus courte passe d'un bord à l'autre ~1,5× plus vite.</p><small data-i18n="tl1-s">résistance au roulis ≈ surface × envergure²</small></div>
       <div class="tl-c"><span class="tl-e">🪶</span><b data-i18n="tl2-h">Le stab</b><p data-i18n="tl2-p"><b>Petit stab</b> = plus vif dans les virages · <b>grand stab</b> = plus stable, mais ça tourne moins.</p></div>
       <div class="tl-c"><span class="tl-e">⏱️</span><b data-i18n="tl3-h">Tenir la session</b><p data-i18n="tl3-p">Trop petite, tu t'épuises à <b>remonter</b> après chaque vague. Le bon choix = le <b>compromis</b> pour ton poids et ta houle.</p></div>
     </div>
-    <div class="tl-go"><a href="#sim" data-i18n="tl-go1">🎛️ Tester mon aile</a><a href="#atlas" data-i18n="tl-go2">🗺️ Voir toutes les ailes</a></div>
+    <div class="tl-go"><a href="#atlas" data-i18n="tl-go2">🗺️ Voir toutes les ailes</a><a href="#sim" data-i18n="tl-go1">🎛️ Tester mon aile</a></div>
   </div>
+
+
+  <!-- 🗺️ ATLAS : toutes les ailes sur la carte maniable × endurante — en tête de page : c'est l'atout central du site (Paul, 17 oct. 2026) -->
+  <section id="atlas" class="a-in">
+    <h3 data-i18n="atl-h3"><a class="h-anchor" href="#atlas">🗺️ Toutes les ailes sur la carte</a></h3>
+    <p class="lede" data-i18n="atl-lede">🧍 <b>La carte s'adapte à toi</b> : les zones bougent avec <b>ton poids</b>, <b>ton niveau</b> et <b>la taille de la houle</b> — règle-les juste en dessous et regarde les frontières glisser. Touche une aile : sa fiche s'affiche sous la carte (plusieurs pour comparer). Pince pour zoomer.</p>
+    <div class="rc-row" id="atl-rider"></div>
+    <div class="atl-brands" id="atl-brands"></div>
+    <div class="atl-box"><div class="atl-tools"><span class="atl-hint" id="atl-hint"></span><span class="atl-zb"><button type="button" id="atl-zm" aria-label="Zoom −">−</button><b id="atl-zl">1×</b><button type="button" id="atl-zp" aria-label="Zoom +">+</button><button type="button" id="atl-z1" aria-label="Zoom 1×">1:1</button><button type="button" id="atl-zf" aria-label="Plein écran">⛶</button><button type="button" id="atl-zs" aria-label="Partager la carte">🔗</button></span></div><div class="atl-lay" id="atl-lay"></div><div class="atl-scroll" id="atl-scroll"><canvas id="atl-cv" aria-hidden="true"></canvas></div><div class="win-tip" id="atl-tip" hidden></div></div>
+    <div class="atl-pins" id="atl-pins" aria-live="polite"></div>
+    <div class="atl-sticky" id="atl-sticky" hidden></div>
+    <div class="atl-fam" id="atl-fam"></div>
+    <div class="atl-info" id="atl-info"></div>
+    <div class="win-leg" id="atl-leg"></div>
+  </section>
 
 
   <!-- SIMULATEUR -->
@@ -489,17 +595,6 @@
   </section>
 
 
-  <!-- 🗺️ ATLAS : toutes les ailes sur la carte maniable × endurante -->
-  <section id="atlas" class="a-in">
-    <h3 data-i18n="atl-h3"><a class="h-anchor" href="#atlas">🗺️ Toutes les ailes sur la carte</a></h3>
-    <p class="lede" data-i18n="atl-lede">🧍 <b>La carte s'adapte à toi</b> : les zones bougent avec <b>ton poids</b>, <b>ton niveau</b> et <b>la taille de la houle</b> — règle-les juste en dessous et regarde les frontières glisser. Survole un point pour ses chiffres, clique une aile pour l'essayer.</p>
-    <div class="rc-row" id="atl-rider"></div>
-    <div class="atl-brands" id="atl-brands"></div>
-    <div class="atl-box"><canvas id="atl-cv" aria-hidden="true"></canvas><div class="win-tip" id="atl-tip" hidden></div></div>
-    <div class="atl-fam" id="atl-fam"></div>
-    <div class="atl-info" id="atl-info"></div>
-    <div class="win-leg" id="atl-leg"></div>
-  </section>
 
   <!-- VERDICTS -->
   <section class="a-in">
@@ -518,6 +613,7 @@
           0,8 × 0,8 = <b>0,64</b> de résistance → à même effort des pieds, elle bascule <b>1 / 0,64 ≈ 1,5× plus vite</b>.</p>
         <p style="margin-top:8px"><b>Et la surface ?</b> Elle fixe <b>combien d'eau</b> chaque bout pousse (et le poids de l'aile).
           Elle ne s'ajoute pas à l'envergure, elle se <b>multiplie</b> avec : les gains se cumulent… et les handicaps aussi.</p>
+        <p style="margin-top:8px; font-size:.9em; color:var(--muted)">📏 <b>La forme compte aussi, un peu</b> : le calcul suppose une aile classique. À surface et envergure égales, une aile <b>effilée</b> (large au centre, bouts fins) bascule plus facilement : environ <b>−10 %</b> pour une RSX Carve, jusqu'à <b>−20 %</b> pour les plus pointues. L'envergure reste le levier n°1.</p>
         <div class="note-fig" aria-hidden="true" style="margin:10px 0 0">
           <canvas class="fig-cv" data-fig="mix"></canvas>
           <div class="nf-caps"><span>🦶 même rythme de pieds pour les 4</span><span>longue <b>et</b> grande : 1,56 × 1,44 ≈ <b>×2,2</b> de résistance</span></div>
@@ -633,7 +729,7 @@
   </footer>
 </main>
 
-<script src="ailes.js"></script>
+<script src="ailes.js?v=20261017"></script>
 <script>
 (function(){
   const $ = id => document.getElementById(id);
@@ -659,10 +755,10 @@
     'tl1-h':'Turning', 'tl1-p':'<b>Short span</b> + <b>small area</b>: a wing 20% shorter goes rail to rail ~1.5× faster.', 'tl1-s':'roll resistance ≈ area × span²',
     'tl2-h':'The stab', 'tl2-p':'<b>Small stab</b> = livelier in turns · <b>big stab</b> = more stable, but turns less.',
     'tl3-h':'Lasting the session', 'tl3-p':'Too small and you wear yourself out <b>pumping back</b> after each wave. The right pick = the <b>compromise</b> for your weight and swell.',
-    'tl-go1':'🎛️ Test my wing', 'tl-go2':'🗺️ See all the wings',
+    'tl-go1':'🎛️ Test my wing', 'tl-go2':'🗺️ See all the wings', 'tl-fold':'🔄 Turning · 🪶 The stab · ⏱️ The session <i>▾</i>',
     'sim-h3':'🎛️ Compare the wings',
     'atl-h3':'<a class="h-anchor" href="#atlas">🗺️ All the wings on the map</a>',
-    'atl-lede':'🧍 <b>The map adapts to you</b>: the zones move with <b>your weight</b>, <b>your level</b> and <b>the swell size</b> — set them just below and watch the boundaries shift. Hover a point for its numbers, click a wing to try it.',
+    'atl-lede':'🧍 <b>The map adapts to you</b>: the zones move with <b>your weight</b>, <b>your level</b> and <b>the swell size</b> — set them just below and watch the boundaries shift. Tap a wing: its card shows below the map (several to compare). Pinch to zoom.',
     'sim-lede':'Pick your wing among 160 or play the sliders — everything updates live. The <b>💡 Explanations</b> button unfolds the physics behind each score.',
     'wp-l':'🪽 Pick your wing','wc-sum':'🎯 The ideal combo for your weight','wp-or':'or set span and area by hand ↓','to-map':'🗺️ see all the wings on the map ↓',
     'pg-ref':'📏 Glide reference','p-ld':'long distance<small>140 cm · 1,900 cm²</small>',
@@ -670,7 +766,7 @@
     'anim-cap':'its line in the wave: the livelier the wing, the <b>tighter</b> it turns and the harder it <b>banks</b>',
     'xp-lbl':'Explanations',
     'vd-h3':'🧾 What makes it turn, in 6 cards',
-    'vd1':'<div class="k">📐 Span — the #1 lever</div><div class="big">roll resistance ≈ area × span²</div><p>Switching rails means <b>rolling</b> the wing: one tip <b>rises</b>, the other <b>dives</b> — through the water. Each tip has to <b>push water</b> out of the way: that resistance is what your feet must overcome.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><canvas class="fig-cv" data-fig="span"></canvas><div class="nf-caps"><span>① tip further out → it sweeps <b>more water, faster</b> (× span)</span><span>② further from the axis → that resistance has <b>more leverage</b> against your feet (× span)</span></div></div><p style="margin-top:8px">① × ② = <b>span × span</b>, hence the « squared ». A wing 20% shorter: 0.8 × 0.8 = <b>0.64</b> of the resistance → for the same foot effort, it rolls <b>1 / 0.64 ≈ 1.5× faster</b>.</p><p style="margin-top:8px"><b>And area?</b> It sets <b>how much water</b> each tip pushes (and the wing\'s weight). It doesn\'t add to the span, it <b>multiplies</b> with it: gains stack up… and so do handicaps.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><canvas class="fig-cv" data-fig="mix"></canvas><div class="nf-caps"><span>🦶 same foot rhythm for all 4</span><span>long <b>and</b> big: 1.56 × 1.44 ≈ <b>×2.2</b> the resistance</span></div></div><p style="margin-top:8px">The trap: a <b>short but very wide</b> wing (big chord) keeps a big area → it stays slow (bottom left). The liveliest is <b>short AND small</b>. <span class="xpl">People often say « roll inertia »: in the water it\'s mostly this resistance that dominates, and it follows the same law.</span></p><div class="lim" style="margin-top:10px">⚠️ <b>Limit of the model</b>: it assumes the <b>same shape</b> for every wing. Every wing has tapered tips, but <b>the more tapered</b>, the faster it rolls compared with its score (up to ~30%). And a low score means <b>« slow to roll »</b>, not « doesn\'t turn »: a big wing flies slower, so once banked it turns <b>just as tight</b>.</div>',
+    'vd1':'<div class="k">📐 Span — the #1 lever</div><div class="big">roll resistance ≈ area × span²</div><p>Switching rails means <b>rolling</b> the wing: one tip <b>rises</b>, the other <b>dives</b> — through the water. Each tip has to <b>push water</b> out of the way: that resistance is what your feet must overcome.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><canvas class="fig-cv" data-fig="span"></canvas><div class="nf-caps"><span>① tip further out → it sweeps <b>more water, faster</b> (× span)</span><span>② further from the axis → that resistance has <b>more leverage</b> against your feet (× span)</span></div></div><p style="margin-top:8px">① × ② = <b>span × span</b>, hence the « squared ». A wing 20% shorter: 0.8 × 0.8 = <b>0.64</b> of the resistance → for the same foot effort, it rolls <b>1 / 0.64 ≈ 1.5× faster</b>.</p><p style="margin-top:8px"><b>And area?</b> It sets <b>how much water</b> each tip pushes (and the wing\'s weight). It doesn\'t add to the span, it <b>multiplies</b> with it: gains stack up… and so do handicaps.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><canvas class="fig-cv" data-fig="mix"></canvas><div class="nf-caps"><span>🦶 same foot rhythm for all 4</span><span>long <b>and</b> big: 1.56 × 1.44 ≈ <b>×2.2</b> the resistance</span></div></div><p style="margin-top:8px">The trap: a <b>short but very wide</b> wing (big chord) keeps a big area → it stays slow (bottom left). The liveliest is <b>short AND small</b>. <span class="xpl">People often say « roll inertia »: in the water it\'s mostly this resistance that dominates, and it follows the same law.</span></p><p style="margin-top:8px; font-size:.9em; color:var(--muted)">📏 <b>Shape counts too, a little</b>: the model assumes a classic wing. At equal area and span, a <b>tapered</b> wing (wide root, thin tips) rolls more easily: about <b>−10%</b> for an RSX Carve, up to <b>−20%</b> for the pointiest. Span stays the #1 lever.</p><div class="lim" style="margin-top:10px">⚠️ <b>Limit of the model</b>: it assumes the <b>same shape</b> for every wing. Every wing has tapered tips, but <b>the more tapered</b>, the faster it rolls compared with its score (up to ~30%). And a low score means <b>« slow to roll »</b>, not « doesn\'t turn »: a big wing flies slower, so once banked it turns <b>just as tight</b>.</div>',
     'vd2':'<div class="k">🎯 Small area — «drive»</div><div class="big">load the back foot and turn</div><p><b>Drive</b> is <b>pressing the back foot</b> to bury the rail and turn. But when the wave speeds you up, lift climbs with <b>speed²</b>. A <b>big</b> wing then lifts <b>too much</b>: it wants to breach, you have to <b>push the front foot</b> to hold it down… no way to load the back foot. A <b>small</b> one stays <b>planted</b>: you load it, it bites.</p><div class="note-fig" aria-hidden="true" style="margin:10px 0 0"><canvas class="fig-cv" data-fig="drive"></canvas></div><p class="xpl" style="margin-top:8px">Shapers call it <b>wing loading</b>: the weight each cm² of wing carries — the smaller the wing, the higher it is.</p>',
     'vd3':'<div class="k">🔩 The fuselage — the tube between wing and stab</div><div class="big">short: barely livelier, but less stable and worse at pumping</div><p>It\'s the bar between the front wing and the stab; its length is the lever arm that stabilises pitch (∝ length²). Shortening it makes the foil <b>a little</b> livelier to pivot — but the agility gain is <b>small</b>: rolling depends mostly on the front wing.</p><p style="margin-top:8px">The price comes fast: <b>less pitch stability</b> (the foil dives and stalls up more easily) and <b>less efficient pumping</b>. A medium fuselage (~65 cm) is the right starting point: look for agility in the wing and the stab before going shorter.</p>',
     'vd4':'<div class="k">🪶 The stab: a setting as strong as the wing</div><div class="big">big: more grip, but it caps speed and glide · smaller: you rediscover your wing</div><p>We often look for the agility limit of our front wing… when the stab changes everything. A <b>big stab</b> (~200 cm², like the “carve” stab supplied with the F-One Jam 1400) gives <b>grip</b> and stability, but it <b>drags</b>: speed and glide hit a ceiling — even on a small wing (seen on an SK8 750).</p><p style="margin-top:8px">Switch to a smaller stab and you <b>rediscover the wing</b>: looser in turns, faster, it pumps back better. The Stab slider acts on the <b>Glide / pump-back</b> bar. <span class="xpl">(Field feedback from a rider testing the Jam 1400 with several stabs.)</span></p>',
@@ -709,6 +805,8 @@
     render();
   }
   $('lang-btn').addEventListener('click', ()=> applyLang(LANG === 'fr' ? 'en' : 'fr'));
+  // téléphone : l'intro (3 cartes) se déplie d'un toucher
+  document.querySelectorAll('.tl-fold').forEach(b => b.addEventListener('click', () => { const d = b.closest('.tldr'); d.classList.toggle('open'); b.setAttribute('aria-expanded', d.classList.contains('open')); }));
 
   /* ---------- modèle : indices relatifs de maniabilité ---------- */
 
@@ -1827,8 +1925,9 @@
   (function(){
     const ms = $('mini-score'), sc = $('o-agil'), pn = document.querySelector('#sim .panel');
     if(!ms || !sc || !pn || !('IntersectionObserver' in window)) return;
-    const vis = {sc:true, pn:false};
-    const upd = () => { ms.hidden = !(vis.pn && !vis.sc); };
+    const vis = {sc:true, pn:false, atl:false};
+    const upd = () => { ms.hidden = !(vis.pn && !vis.sc) || vis.atl; };   // jamais par-dessus la carte des ailes
+    const ab = document.querySelector('.atl-box'); if(ab) new IntersectionObserver(es => { es.forEach(e => { vis.atl = e.isIntersecting; }); upd(); }, {threshold:0}).observe(ab);
     new IntersectionObserver(es => { es.forEach(e => { vis.sc = e.isIntersecting; }); upd(); }, {threshold:0}).observe(sc);
     new IntersectionObserver(es => { es.forEach(e => { vis.pn = e.isIntersecting; }); upd(); }, {threshold:0}).observe(pn);
     ms.addEventListener('click', () => { const t0 = document.querySelector('.showcase'); window.scrollTo({top: t0.getBoundingClientRect().top + scrollY - 70, behavior:'smooth'}); });
@@ -1881,13 +1980,14 @@
   // 8 familles d'ailes pour TON poids / niveau / vague. Ordre de priorité : trop petite → puis maniable × endurante.
   // Couleurs : palette de référence (thème sombre) vérifiée au validateur — chaque paire de zones VOISINES passe
   // (daltonisme ΔE ≥ 8, vision normale ≥ 15). « école » = ni l'un ni l'autre → gris neutre. Noms posés sur les zones.
+  // couleurs des zones : même teinte qu'avant, clarté écartée → zones voisines distinctes aussi pour les daltoniens (ΔE min 3 → 19)
   const ATL_CAT = {
     plume:{xfr:'🪶 plume', xen:'🪶 feather', c:'#c98500', sfr:'🪶 poids plume', sen:'🪶 featherweight', fr:'trop petite pour toi : démarrage trop rapide ou trop dur à pomper', en:'too small for you: takeoff too fast or too hard to pump'},
-    rad:  {xfr:'🔥 radical', xen:'🔥 radical', c:'#d55181', sfr:'🔥 surf radical', sen:'🔥 radical surf', fr:'très maniable (≥ 70), session courte', en:'very maneuverable (≥ 70), short session'},
-    carve:{xfr:'🔄 tourne', xen:'🔄 turns', c:'#9085e9', sfr:'🔄 ça tourne bien', sen:'🔄 turns well', fr:'assez maniable (45-70), session courte', en:'fairly maneuverable (45-70), short session'},
+    rad:  {xfr:'🔥 radical', xen:'🔥 radical', c:'#e89fba', sfr:'🔥 surf radical', sen:'🔥 radical surf', fr:'très maniable (≥ 70), session courte', en:'very maneuverable (≥ 70), short session'},
+    carve:{xfr:'🔄 tourne', xen:'🔄 turns', c:'#8278d2', sfr:'🔄 ça tourne bien', sen:'🔄 turns well', fr:'assez maniable (45-70), session courte', en:'fairly maneuverable (45-70), short session'},
     both: {xfr:'✨ les deux', xen:'✨ both', c:'#199e70', sfr:'✨ carve + endurance', sen:'✨ carve + endurance', fr:'maniable et tu tiens 10 min et +', en:'maneuverable and you last 10 min+'},
-    glide:{xfr:'🌊 enchaîner', xen:'🌊 linking', c:'#3987e5', sfr:'🌊 enchaîner', sen:'🌊 linking waves', fr:'un peu maniable (20-45), et tu tiens 10 min et +', en:'a bit maneuverable (20-45), and you last 10 min+'},
-    dw:   {xfr:'🧭 houle', xen:'🧭 swell', c:'#008300', sfr:'🧭 tout droit dans la houle', sen:'🧭 straight down the swell', fr:'peu maniable (< 20), mais tu tiens 10 min et + : aile élancée qui glisse', en:'barely maneuverable (< 20), but you last 10 min+: a slender wing that glides'},
+    glide:{xfr:'🌊 enchaîner', xen:'🌊 linking', c:'#92bdf1', sfr:'🌊 enchaîner', sen:'🌊 linking waves', fr:'un peu maniable (20-45), et tu tiens 10 min et +', en:'a bit maneuverable (20-45), and you last 10 min+'},
+    dw:   {xfr:'🧭 houle', xen:'🧭 swell', c:'#006900', sfr:'🧭 tout droit dans la houle', sen:'🧭 straight down the swell', fr:'peu maniable (< 20), mais tu tiens 10 min et + : aile élancée qui glisse', en:'barely maneuverable (< 20), but you last 10 min+: a slender wing that glides'},
     ecole:{xfr:'⚖️ entre-deux', xen:'⚖️ in-between', c:'#475569', sfr:'⚖️ entre-deux', sen:'⚖️ in-between', fr:'un peu maniable (< 45) mais tu t\'épuises (< 10 min) : ni une aile de carve serré, ni une aile qui tient la relance à ton poids — plus longues, 🧭 / 🌊 tiennent', en:'a bit maneuverable (< 45) but you tire (< 10 min): neither a tight-carving wing nor one that keeps pumping back at your weight — longer, 🧭 / 🌊 last'},
   };
   // « poids plume » (calé sur les retours de Paul, 75 kg : Sushi 740 / RSX 700 / DW 750 trop petites, DW 840 / Regata 850 OK) :
@@ -1911,16 +2011,21 @@
   // bulle : valeurs extrêmes colorées, du point de vue du CARVE (vert = atout, rouge = extrême défavorable)
   // dégradé continu : f = 0 (défavorable, rouge) → 0,5 (neutre, blanc) → 1 (favorable, vert). grad(x, mauvais, bon) mappe la valeur.
   const tone = (txt, f) => { f = Math.max(0, Math.min(1, f));
-    const R = [248, 113, 113], N = [226, 232, 240], G = [74, 222, 128], a = f < .5 ? R : N, b = f < .5 ? N : G, k = f < .5 ? f*2 : (f - .5)*2;
+    // orange ↔ bleu (pas rouge ↔ vert : indiscernables pour ~6 % des hommes)
+    const R = [251, 146, 60], N = [226, 232, 240], G = [96, 165, 250], a = f < .5 ? R : N, b = f < .5 ? N : G, k = f < .5 ? f*2 : (f - .5)*2;
     return '<span style="color:rgb('+a.map((v, i) => Math.round(v + (b[i] - v)*k)).join(',')+')">'+txt+'</span>'; };
   const grad = (x, bad, good) => (x - bad)/(good - bad);
   function atlBrandsUI(){
     const box = $('atl-brands'); if(!box) return;
     // un clic = ajoute / retire la marque (1 marque : sa gamme en détail · 2 et + : comparaison) · « Toutes » = tout réafficher
     const sel = ATL.sel;
+    const sl = box.scrollLeft;   // téléphone : la rangée défile de côté → on garde sa position au re-dessin
+    // marques par ordre alphabétique (boutons + cases à cocher, qui se construisent à partir des boutons)
     box.innerHTML = '<button type="button" data-k="" class="'+(sel.length ? '' : 'on')+'">'+t('Toutes','All')+'</button>'
-      + ATL_BRANDS.map(B => '<button type="button" data-k="'+B.k+'" class="'+(!sel.length || sel.includes(B.k) ? 'on' : '')+'"><i style="background:'+B.c+'"></i>'+B.n+'</button>').join('')
-      + '<div class="atl-bhint">'+(sel.length === 1 ? t('➕ clique une autre marque pour comparer','➕ click another brand to compare') : sel.length ? t('🆚 '+sel.length+' marques comparées · reclique une marque pour la retirer','🆚 '+sel.length+' brands compared · click a brand again to remove it') : t('👆 clique une marque pour voir sa gamme, plusieurs pour comparer','👆 click a brand to see its range, several to compare'))+'</div>';
+      + [ATL_BRANDS].flat().sort((a, b) => a.n.localeCompare(b.n, 'fr', {sensitivity: 'base'})).map(B => '<button type="button" data-k="'+B.k+'" class="'+(!sel.length || sel.includes(B.k) ? 'on' : '')+'"><i style="background:'+B.c+'"></i>'+B.n+'</button>').join('');
+    box.scrollLeft = sl;
+    let bh = $('atl-bhint'); if(!bh){ bh = document.createElement('div'); bh.id = 'atl-bhint'; bh.className = 'atl-bhint'; box.after(bh); }
+    bh.innerHTML = (sel.length === 1 ? t('➕ clique une autre marque pour comparer','➕ click another brand to compare') : sel.length ? t('🆚 '+sel.length+' marques comparées · reclique une marque pour la retirer','🆚 '+sel.length+' brands compared · click a brand again to remove it') : t('👆 clique une marque pour voir sa gamme, plusieurs pour comparer','👆 click a brand to see its range, several to compare'));
     box.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => {
       const k = bt.dataset.k;
       ATL.sel = !k ? [] : sel.includes(k) ? sel.filter(x => x !== k) : sel.concat(k);
@@ -1930,11 +2035,14 @@
   const brandSlug = B => B.n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   function atlHash(){
     const sl = ATL.sel.map(k => brandSlug(ATL_BRANDS.find(x => x.k === k)));
-    try{ history.replaceState(null, '', location.pathname + location.search + (sl.length ? '#atlas-'+sl.join('+') : '#atlas')); }catch(e){}
+    const h = ATL.full ? '#carte' : '#atlas';   // #carte = carte en plein écran (lien partageable)
+    try{ history.replaceState(null, '', location.pathname + location.search + (sl.length ? h+'-'+sl.join('+') : h)); }catch(e){}
   }
   function atlFromHash(){
-    const m = /^#atlas-(.+)$/.exec(location.hash); if(!m) return;
-    const ks = m[1].split('+').map(sl => (ATL_BRANDS.find(x => brandSlug(x) === sl) || {}).k).filter(Boolean); if(!ks.length) return;
+    const m = /^#(atlas|carte)(?:-(.+))?$/.exec(location.hash); if(!m) return;
+    const ks = (m[2] || '').split('+').map(sl => (ATL_BRANDS.find(x => brandSlug(x) === sl) || {}).k).filter(Boolean);
+    if(m[1] === 'carte'){ ATL.sel = ks; atlBrandsUI(); if(!ATL.full && ATL.kit) ATL.kit.full(true); else if(ATL.args) drawAtlas(...ATL.args); return; }
+    if(!ks.length) return;
     ATL.sel = ks; atlBrandsUI(); if(ATL.args) drawAtlas(...ATL.args);
     const sec = $('atlas'); if(sec) setTimeout(() => sec.scrollIntoView(), 50);
   }
@@ -1950,12 +2058,16 @@
   // positions des ailes (repère logique de la carte) : la vidéo pose ses étiquettes dessus
   window.atlPts = () => ({W: ATL.geo.W, H: ATL.geo.H, pts: (ATL.pts || []).map(p => ({n: p.n, x: p.x, y: p.y}))});
   window.atlFocusPts = () => (ATL.pts || []).filter(p => p.focus).map(p => ({n: p.n, b: p.b, S: p.S}));
-  function atlGeo(w){ if(VIDEO){ const W = 300, H = Math.round(W*.86) + 50; return {W, H, narrow:false, X0:48, X1:W - 26, Y0:34, Y1:H - 62}; }
-    const W = Math.max(340, Math.min(600, w)), narrow = w < 520, H = Math.round(W*(narrow ? .95 : 400/600)) + 50;   // +22 : rangée « maniabilité » sous l'axe
-    return {W, H, narrow, X0: narrow ? 40 : 52, X1: W - (narrow ? 30 : 44), Y0:34, Y1:H - 90}; }
+  function atlGeo(w, z, ratio, full){ if(VIDEO){ const W = 300, H = Math.round(W*.86) + 50; return {W, H, narrow:false, X0:48, X1:W - 26, Y0:34, Y1:H - 62}; }
+    // plein écran : la carte peut être plus large (textes à taille réelle) et prend la hauteur de l'écran (ratio)
+    const W = Math.max(340, Math.min(full ? 1100 : 600, w))*(z || 1), narrow = w < 520, L = ATL.lay || {man:1, ses:1};
+    // sous l'axe : graduations (34) + chiffres de maniabilité (+16) + une ligne de légende par calque affiché (16 chacune)
+    const bot = (L.man ? 50 : 34) + (L.man || L.ses ? 8 + 16*(!!L.man + !!L.ses) : 0);
+    const H = ratio ? Math.round(W*ratio) : Math.round(W*(narrow ? .95 : 400/600)) - 40 + bot;
+    return {W, H, narrow, X0: narrow ? 40 : 52, X1: W - (narrow ? 30 : 44), Y0:34, Y1:H - bot}; }
   // 🏷️ Marque seule : reco selon ton poids / niveau / vague + présentation de la gamme (familles, tailles, zone pour toi)
   // couleur de chaque reco : même famille que sa zone, en plus lumineux pour ressortir sur la carte
-  const RECO_C = {'✨':'#3ee08f', '🔥':'#ff6fa3', '🌊':'#5fb0ff'};
+  const RECO_C = {'✨':'#3ee08f', '🔥':'#ff8ab6', '🌊':'#5fb0ff'};   // rose éclairci : 4,8:1 sur le bandeau teinté (RGAA 3.2)
   // les 3 recos d'une marque pour ce rider : ✨ compromis · 🔥 tourner · 🌊 enchaîner
   function brandPicks(B, kg, H){
     const ev = B.w.map(([n, b, S]) => {
@@ -1974,6 +2086,10 @@
     const link = by(ev.filter(w => ok(w) && w.man >= 20), w => w.glide) || by(ev.filter(ok), w => w.glide);
     return {ev, both, comp, turn: turn !== comp ? turn : null, link: link !== comp && link !== turn ? link : null};
   }
+  // 🔗 nom d'aile cliquable → page officielle du fabricant (ailes.js, avec UTM)
+  // RGAA 6.1 (lien explicite) : l'intitulé lu = nom visible + destination + nouvel onglet ; la flèche ↗ n'est pas lue
+  window.wlTail = L => '<span class="vh"> — '+(L.fam ? t('page officielle sur le site '+L.brand,'official page on the '+L.brand+' website') : t('ailes '+L.brand+' sur le site officiel',L.brand+' wings on the official website'))+t(' (nouvel onglet)',' (new tab)')+'</span>&nbsp;<span aria-hidden="true">↗</span>';
+  const wLink = (B, n0) => { const n = n0.replace(/ (\S+)$/, '&nbsp;$1'), L = window.foilLink && window.foilLink(B.n+' '+n0, 'carve'); return L ? '<a class="wl" href="'+L.u+'" target="_blank" rel="noopener">'+n+wlTail(L)+'</a>' : n; };
   function atlBrandInfo(B, kg, H, famCol, fam){
     const box = $('atl-info'); if(!box) return;
     if(!B){ box.innerHTML = ''; ATL.reco = null; return; }
@@ -1983,7 +2099,7 @@
     // une carte par reco : rôle · aile en gros · à quoi elle sert · chiffres clés · ▶ l'essayer
     const card = (lab, w, why, note) => { if(!w) return ''; const c = RECO_C[lab.slice(0, 2).trim()];
       return '<div class="rc-card" style="border-color:'+c+'"><span class="rk" style="color:'+c+'"><i class="rring" style="border-color:'+c+'"></i>'+lab+'</span>'
-      + '<b class="rn">'+w.n+'</b><span class="rw">'+why+(note ? ' <i>'+note+'</i>' : '')+'</span>'
+      + '<b class="rn">'+wLink(B, w.n)+'</b><span class="rw">'+why+(note ? ' <i>'+note+'</i>' : '')+'</span>'
       + '<span class="rd"><span>'+num(w.b, w.b % 1 ? 1 : 0)+' cm</span><span>'+num(w.S)+' cm²</span><span>'+t('maniab.','maneuv.')+' '+w.man+'</span><span>⏱️ '+(w.ses.unlimited ? t('longtemps','a long time') : '~'+Math.max(1, Math.round(w.ses.min))+' min')+'</span></span>'
       + '<button type="button" style="color:'+c+'" data-try="'+w.b+'|'+w.S+'"'+(inSl(w) ? '' : ' disabled title="'+t('hors des curseurs du simulateur','outside the simulator sliders')+'"')+'>▶ '+t('l\'essayer','try it')+'</button></div>'; };
     ATL.lastComp = comp ? B.k+'|'+comp.n : null;
@@ -2017,11 +2133,11 @@
     const ROWS = [['✨', t('compromis','compromise'), t('tourne bien + tient la session','turns well + lasts the session'), 'comp'],
                   ['🔥', t('tourner','turning'), t('la plus vive en virage','liveliest in turns'), 'turn'],
                   ['🌊', t('enchaîner','linking'), t('glisse le plus','glides the most'), 'link']];
-    const cell = w => !w ? '<td class="cmp-none">—</td>' : '<td><b>'+w.n+'</b><span class="rd"><span>'+num(w.b, w.b % 1 ? 1 : 0)+' cm · '+num(w.S)+' cm²</span><span>'+t('maniab.','maneuv.')+' '+w.man+'</span><span>⏱️ '+(w.ses.unlimited ? t('longtemps','a long time') : '~'+Math.max(1, Math.round(w.ses.min))+' min')+'</span></span>'
+    const cell = (w, B) => !w ? '<td class="cmp-none">—</td>' : '<td><b>'+wLink(B, w.n)+'</b><span class="rd"><span>'+num(w.b, w.b % 1 ? 1 : 0)+'&nbsp;cm · '+num(w.S)+'&nbsp;cm²</span><span>'+t('maniab.','maneuv.')+' '+w.man+'</span><span>⏱️ '+(w.ses.unlimited ? t('longtemps','a long time') : '~'+Math.max(1, Math.round(w.ses.min))+' min')+'</span></span>'
       + '<button type="button" data-try="'+w.b+'|'+w.S+'"'+(inSl(w) ? '' : ' disabled title="'+t('hors des curseurs du simulateur','outside the simulator sliders')+'"')+'>▶ '+t('l\'essayer','try it')+'</button></td>';
     box.innerHTML = '<div class="atl-reco"><div class="atl-for">🆚 '+t('Comparaison pour toi','Comparison for you')+' <span>· '+num(kg)+' kg · '+lv+(H > 0 ? ' · '+t('vague ','wave ')+num(H, 1)+' m' : '')+'</span></div></div>'
       + '<div class="atl-cmpw"><table class="atl-cmp"><tr><th></th>'+P.map(p => '<th><i style="background:'+p.B.c+'"></i>'+p.B.n+'</th>').join('')+'</tr>'
-      + ROWS.map(([e, l, d, key]) => '<tr><th style="color:'+RECO_C[e]+'; border-left:3px solid '+RECO_C[e]+'">'+e+' '+l+'<small>'+d+'</small></th>'+P.map(p => cell(p[key])).join('')+'</tr>').join('')
+      + ROWS.map(([e, l, d, key]) => '<tr><th style="color:'+RECO_C[e]+'; border-left:3px solid '+RECO_C[e]+'">'+e+' '+l+'<small>'+d+'</small></th>'+P.map(p => cell(p[key], p.B)).join('')+'</tr>').join('')
       + '<tr><th>'+t('la gamme','the range')+'<small>'+t('ailes &gt; 700 cm²','wings &gt; 700 cm²')+'</small></th>'+P.map(p => { const bs = p.ev.map(w => w.b), ss = p.ev.map(w => w.S);
           return '<td class="cmp-rng">'+p.ev.length+' '+t('ailes','wings')+'<br>'+num(Math.min(...bs))+'–'+num(Math.max(...bs))+' cm<br>'+num(Math.min(...ss))+'–'+num(Math.max(...ss))+' cm²</td>'; }).join('')+'</tr>'
       + '</table></div>';
@@ -2032,11 +2148,10 @@
     // rider lourd (> 95 kg) : le cadre s'agrandit (jusqu'à ~2 600 cm² et 190 cm) — sinon tout est « plume » et ses ailes sont hors carte (retour Stefan, 128 kg)
     ATL.S1 = kg > 95 ? Math.min(2600, Math.ceil(1800*kg/95/100)*100) : 1800; ATL.B1 = kg > 95 ? 190 : 160;
     if(ATL.lang !== LANG){ ATL.lang = LANG; atlBrandsUI(); }
-    if($('atl-rider')) $('atl-rider').innerHTML = riderCtl(true);
+    if($('atl-rider')) $('atl-rider').innerHTML = ATL.kit ? ATL.kit.rider(riderCtl(true)) : riderCtl(true);   // téléphone : rangée résumée + ⚙️
     if($('surf-ctl')) $('surf-ctl').innerHTML = surfCtl();   // « Toutes / All » suit la langue
-    const cv = $('atl-cv'); if(!cv) return;
-    const w = cv.clientWidth || 600, G = atlGeo(w), dpr = Math.min(window.devicePixelRatio || 1, 2);
-    cv.width = Math.round(w*dpr); cv.height = Math.round(w*dpr*G.H/G.W); cv.style.aspectRatio = G.W+' / '+G.H;
+    const cv = $('atl-cv'); if(!cv || !ATL.kit) return;   // la carte s'installe (atlKit) avant son 1er dessin
+    const G = ATL.kit.size(atlGeo);   // largeur du cadre × zoom (🔍)
     const c = cv.getContext('2d'), k = cv.width/G.W; c.setTransform(k,0,0,k,0,0); c.clearRect(0,0,G.W,G.H);
     const {X0, X1, Y0, Y1} = G;
     const px = v => X0 + (v - ATL.B0)/(ATL.B1 - ATL.B0)*(X1 - X0), py = v => Y1 - (v - ATL.S0)/(ATL.S1 - ATL.S0)*(Y1 - Y0);
@@ -2072,7 +2187,7 @@
     const xA = px(ATL.B0) - (X1 - X0)/(nI - 1)/2, yA = py(ATL.S1) - (Y1 - Y0)/(nJ - 1)/2, wA = (X1 - X0)*nI/(nI - 1), hA = (Y1 - Y0)*nJ/(nJ - 1);
     c.imageSmoothingEnabled = true; c.imageSmoothingQuality = 'high';
     c.drawImage(img, xA, yA, wA, hA);                                  // fond net (évite un bord qui pâlit au flou)
-    if('filter' in c){ c.filter = 'blur('+(G.narrow ? 7 : 11)+'px)'; c.drawImage(img, xA, yA, wA, hA); c.filter = 'none'; }   // puis le fondu
+    if('filter' in c){ c.filter = 'blur('+(G.narrow ? 7 : 11)*(ATL.z || 1)+'px)'; c.drawImage(img, xA, yA, wA, hA); c.filter = 'none'; }   // puis le fondu
     c.restore();
     // liseré fin le long des deux courbes limites (la frontière « hors gamme » se lit comme une ligne, pas comme des marches)
     c.save(); c.beginPath(); c.rect(X0, Y0, X1 - X0, Y1 - Y0); c.clip(); c.strokeStyle = 'rgba(148,163,184,.55)'; c.lineWidth = 1;
@@ -2085,7 +2200,7 @@
     // halo sombre sous un tiret blanc (visible sur toutes les couleurs), chiffre posé SUR la ligne dans une pastille
     const lab = [], manLab = [];
     const rawMan = (bb, ss) => wingMan(bb, ss) - 4*Math.max(0, bb*bb/ss - 12) + rearBonus();
-    [20, 45, 70, 90].forEach(m => {
+    [20, 45, 70, 90].forEach(m => { if(!ATL.lay.man) return;   // calque « maniabilité » masqué
       // pour chaque envergure, deux passages : côté trapu (la surface fait chuter la maniabilité) et côté très fin (pénalité
       // AR > 12). La ligne fait donc demi-tour : au-delà d'une certaine envergure, aucune aile n'atteint ce niveau.
       const fall = [], rise = [];
@@ -2117,9 +2232,10 @@
       const row = [];
       for(let i = 0; i < nI2; i++){ const a = endMap.get(i+','+j), b2 = endMap.get((i + 1)+','+j); if(a === undefined || b2 === undefined || a === b2) continue;
         const bb = ATL.B0 + (i + .5)*ATL.DB, ss = ATL.S0 + j*ATL.DS, ar = bb*bb/ss; if(ar < ATL.AR0 || ar > ATL.AR1) continue; row.push([px(bb), py(ss)]); }
-      row.forEach(p => { const q = prevRow.reduce((m, r) => !m || Math.abs(r[0] - p[0]) < Math.abs(m[0] - p[0]) ? r : m, null); if(q && Math.abs(q[0] - p[0]) < 14) endSeg.push([q, p]); });
+      row.forEach(p => { const q = prevRow.reduce((m, r) => !m || Math.abs(r[0] - p[0]) < Math.abs(m[0] - p[0]) ? r : m, null); if(q && Math.abs(q[0] - p[0]) < Math.max(14, 3*cw)) endSeg.push([q, p]); });
       prevRow = row;
     }
+    if(!ATL.lay.ses) endSeg.length = 0;   // calque « limite 10 min » masqué
     c.save(); c.beginPath(); c.rect(X0, Y0, X1 - X0, Y1 - Y0); c.clip(); c.lineCap = 'round';
     c.lineWidth = 3.5; c.strokeStyle = 'rgba(15,23,42,.45)'; c.beginPath(); endSeg.forEach(([a, b2]) => { c.moveTo(a[0], a[1]); c.lineTo(b2[0], b2[1]); }); c.stroke();
     c.lineWidth = 1.6; c.strokeStyle = '#fbbf24'; c.beginPath(); endSeg.forEach(([a, b2]) => { c.moveTo(a[0], a[1]); c.lineTo(b2[0], b2[1]); }); c.stroke();
@@ -2128,7 +2244,7 @@
     // lignes de même allongement (AR = envergure² / surface) — chiffrées en haut
     c.setLineDash([]); c.lineWidth = 1; c.strokeStyle = 'rgba(253,230,138,.5)';   // allongement : trait fin jaune, continu
     const arLab = [];
-    [8, 10, 13, 16, 20].forEach(A => {
+    [8, 10, 13, 16, 20].forEach(A => { if(!ATL.lay.ar) return;   // calque « AR » masqué
       c.beginPath();
       for(let bb = ATL.B0, f = 1; bb <= ATL.B1; bb += 1, f = 0){ const x = px(bb), y = py(bb*bb/A); f ? c.moveTo(x, y) : c.lineTo(x, y); }
       c.stroke();
@@ -2144,7 +2260,7 @@
     // titre « Aspect Ratio (AR) → » sur la MÊME ligne que les chiffres, juste à gauche du premier (8)
     if(arLab.length){ const x8 = Math.min(...arLab.map(l => l[0])); c.textAlign = 'right'; c.fillText(t('Aspect Ratio (AR) →','Aspect Ratio (AR) →'), x8 - 12, Y0 - 5); }
     // axes
-    c.font = '600 10px system-ui, sans-serif'; c.fillStyle = '#94a3b8'; c.textAlign = 'center';
+    c.font = '600 '+(G.narrow ? 11 : 10)+'px system-ui, sans-serif'; c.fillStyle = '#94a3b8'; c.textAlign = 'center';
     for(let v = 80; v <= ATL.B1; v += 20) c.fillText(v, px(v), Y1 + 13);   // cadré sur 70-160 cm : là où sont les ailes de surf
     c.fillText(t('envergure (cm) →','span (cm) →'), (X0 + X1)/2, Y1 + 28);
     // 🌀 échelle de MANIABILITÉ : ses courbes sortent toutes par le bas du cadre → chiffres là où chaque tiret sort,
@@ -2161,18 +2277,21 @@
     exits.forEach(([x, m]) => c.fillText(m, x, Y1 + 46));
     // explication de la rangée, sur sa propre ligne en dessous (centrée)
     c.font = '700 '+(G.narrow ? 9 : 10)+'px system-ui, sans-serif'; c.textAlign = 'center'; c.fillStyle = '#94a3b8';
-    if(!VIDEO){ // légende sous la carte, sur 2 lignes : tiret blanc = maniabilité · trait ambre = limite des 10 min de session
-      const sw = 26, yA = Y1 + 58, yB = Y1 + 74;
-      const t1 = t(' = maniabilité (résistance au roulis : surface × envergure²)',' = maneuverability (roll resistance: area × span²)');
-      const t2 = t(' = limite des '+SES_OK+' min de session : d\'un côté tu t\'épuises, de l\'autre tu tiens '+SES_OK+' min +',' = '+SES_OK+'-min session limit: on one side you tire, on the other you last '+SES_OK+' min+');
+    if(!VIDEO && (ATL.lay.man || ATL.lay.ses)){ // légende sous la carte, une ligne par calque affiché : tiret blanc = maniabilité · trait ambre = limite des 10 min de session
+      const sw = 26, yA = Y1 + (ATL.lay.man ? 58 : 42), yB = yA + (ATL.lay.man ? 16 : 0);
+      let t1 = t(' = maniabilité (résistance au roulis : surface × envergure²)',' = maneuverability (roll resistance: area × span²)');
+      let t2 = t(' = limite des '+SES_OK+' min de session : d\'un côté tu t\'épuises, de l\'autre tu tiens '+SES_OK+' min +',' = '+SES_OK+'-min session limit: on one side you tire, on the other you last '+SES_OK+' min+');
+      if(Math.max(c.measureText(t1).width, c.measureText(t2).width) + sw + 14 > G.W){   // téléphone : version courte (le détail est dans la légende sous la carte)
+        t1 = t(' = maniabilité (roulis)',' = maneuverability (roll)'); t2 = t(' = limite des '+SES_OK+' min de session',' = '+SES_OK+'-min session limit'); }
       const w = Math.max(c.measureText(t1).width, c.measureText(t2).width), x0 = (X0 + X1)/2 - (sw + 6 + w)/2;
-      c.save(); c.setLineDash([6, 4]); c.lineWidth = 2; c.strokeStyle = '#fff'; c.beginPath(); c.moveTo(x0, yA - 4); c.lineTo(x0 + sw, yA - 4); c.stroke();
-      c.setLineDash([]); c.lineWidth = 2; c.strokeStyle = '#fbbf24'; c.beginPath(); c.moveTo(x0, yB - 4); c.lineTo(x0 + sw, yB - 4); c.stroke(); c.restore();
-      c.textAlign = 'left'; c.fillText(t1, x0 + sw + 6, yA); c.fillText(t2, x0 + sw + 6, yB);
+      c.save(); if(ATL.lay.man){ c.setLineDash([6, 4]); c.lineWidth = 2; c.strokeStyle = '#fff'; c.beginPath(); c.moveTo(x0, yA - 4); c.lineTo(x0 + sw, yA - 4); c.stroke(); }
+      if(ATL.lay.ses){ c.setLineDash([]); c.lineWidth = 2; c.strokeStyle = '#fbbf24'; c.beginPath(); c.moveTo(x0, yB - 4); c.lineTo(x0 + sw, yB - 4); c.stroke(); } c.restore();
+      c.textAlign = 'left'; if(ATL.lay.man) c.fillText(t1, x0 + sw + 6, yA); if(ATL.lay.ses) c.fillText(t2, x0 + sw + 6, yB);
     }
-    c.textAlign = 'right';
+    c.textAlign = 'right'; c.font = '600 '+(G.narrow ? 10.5 : 10)+'px system-ui, sans-serif';
     for(let v = 600; v <= ATL.S1; v += 200) c.fillText(num(v), X0 - 5, py(v) + 3);
-    c.save(); c.translate(12, (Y0 + Y1)/2); c.rotate(-Math.PI/2); c.textAlign = 'center'; c.fillText(t('surface (cm²) →','area (cm²) →'), 0, 0); c.restore();
+    if(G.narrow){ c.textAlign = 'left'; c.fillText(t('↑ surface (cm²)','↑ area (cm²)'), 4, 13); }   // téléphone : à plat en haut (couché, il chevauchait « 1 600 »)
+    else { c.save(); c.translate(12, (Y0 + Y1)/2); c.rotate(-Math.PI/2); c.textAlign = 'center'; c.fillText(t('surface (cm²) →','area (cm²) →'), 0, 0); c.restore(); }
     ATL.manBoxes = [];
     // les ailes
     const act = ATL_BRANDS.filter(B => !ATL.sel.length || ATL.sel.includes(B.k)), few = ATL.sel.length === 1, multi = ATL.sel.length > 1, pts = [];
@@ -2182,17 +2301,17 @@
     act.forEach(B => B.w.forEach(([n, bb, ss]) => {
       if(bb < ATL.B0 || bb > ATL.B1 || ss < ATL.S0 || ss > ATL.S1) return;
       const f = fam(n); if(few && !(f in famCol)) famCol[f] = PAL[Object.keys(famCol).length % PAL.length];
-      const x = px(bb), y = py(ss); pts.push({n: B.n+' '+n, short: n, b: bb, S: ss, x, y});
+      const x = px(bb), y = py(ss); pts.push({n: B.n+' '+n, short: n, b: bb, S: ss, x, y, col: few ? famCol[f] : B.c});
       let fIn = true;
       if(ATL.focus && ATL.focus !== 'none'){ const ar = bb*bb/ss, ses = waveSession(bb, ss, kg, H);
         fIn = ar >= ATL.AR0 && ar <= ATL.AR1 && atlCat(bb, ss, kg, manOf(bb, ss) >= 45, ses.unlimited || ses.min >= SES_OK) === ATL.focus;
         pts[pts.length - 1].focus = fIn; }
       c.globalAlpha = fIn ? 1 : .18;
-      c.beginPath(); c.arc(x, y, G.narrow ? 3.4 : VIDEO ? (ATL.focus && fIn ? 4.6 : 3.8) : 5, 0, 7); c.fillStyle = few ? famCol[f] : B.c; c.fill(); c.lineWidth = G.narrow ? 1.4 : 2; c.strokeStyle = '#0f172a'; c.stroke();
+      dotDraw(c, multi ? act.indexOf(B) % 4 : 0, x, y, G.narrow ? 4.2 : VIDEO ? (ATL.focus && fIn ? 4.6 : 3.8) : 5, few ? famCol[f] : B.c, G.narrow ? 1.5 : 2);   // forme par marque en comparaison
       c.globalAlpha = 1;
     }));
     const fl = $('atl-fam');
-    if(fl) fl.innerHTML = few || multi ? (few ? Object.entries(famCol).map(([f, col]) => '<span><i style="background:'+col+'"></i>'+f+'</span>') : act.map(B => '<span><i style="background:'+B.c+'"></i>'+B.n+'</span>')).join('')
+    if(fl) fl.innerHTML = few || multi ? (few ? Object.entries(famCol).map(([f, col]) => '<span><i style="background:'+col+'"></i>'+f+'</span>') : act.map((B, i) => '<span>'+shapeIco(i % 4, B.c)+B.n+'</span>')).join('')
       + '<span class="rleg">'+[['✨', t('compromis','compromise')], ['🔥', t('tourner','turning')], ['🌊', t('enchaîner','linking')]].map(([e, l]) => '<span><i class="rring" style="border-color:'+RECO_C[e]+'"></i>'+e+' '+l+'</span>').join('')+'</span>' : '';
     if(multi) atlCompare(act, kg, H); else atlBrandInfo(few ? act[0] : null, kg, H, famCol, fam);
     if((few || multi) && ATL.reco) ATL.reco.forEach(r => {   // recos visibles sur la carte : anneau blanc + emoji
@@ -2205,7 +2324,7 @@
     const boxes = pts.map(p => [p.x - 6, p.y - 6, 12, 12]);
     ATL.manTop = [];
     if(VIDEO){ ATL.placed = []; ATL.leaders = []; } else {
-    c.font = (G.narrow ? '900 10.5px' : '900 12px')+' system-ui, sans-serif'; c.textAlign = 'center'; c.lineWidth = 4; c.lineJoin = 'round';
+    c.font = (G.narrow ? '900 11.5px' : '900 12px')+' system-ui, sans-serif'; c.textAlign = 'center'; c.lineWidth = 4; c.lineJoin = 'round';
     const placed = []; ATL.placed = placed; ATL.leaders = [];   // noms de zones effectivement posés (contrôle)
     Object.keys(ATL_CAT).forEach(k => {
       const cells = catCells[k]; if(!cells || cells.length < 4) return;
@@ -2260,18 +2379,18 @@
         c.beginPath(); c.arc(anchor[0], anchor[1], 2.5, 0, 7); c.fillStyle = '#fff'; c.fill(); c.restore();
         c.lineWidth = 4;
       }
-      boxes.push([best[0] - tw/2 - 3, best[1] - 8, tw + 6, 16]);
+      boxes.push([best[0] - tw/2 - 5, best[1] - 8, tw + 10, 16]);
       placed.push(k);
       // nom de zone : texte de la couleur de la zone, contour blanc → ne se confond pas avec les noms d'ailes (blancs, contour sombre)
-      c.lineWidth = 4; c.strokeStyle = '#fff'; c.strokeText(txt, best[0], best[1] + 4); c.fillStyle = ATL_CAT[k].c; c.fillText(txt, best[0], best[1] + 4);
+      zoneLab(c, txt, best[0], best[1], ATL_CAT[k].c);
       break;
       }
     });
     }
     // noms (marque seule) : à droite du point, sinon à gauche ; s'il chevauche un nom ou un point, il reste visible au survol
     if(ATL.focus && !VIDEO){   // zone mise en avant : on nomme ses ailes (marque + modèle), sans chevauchement
-      c.font = '800 8.5px system-ui, sans-serif'; c.textAlign = 'left'; c.lineWidth = 3; c.lineJoin = 'round';
-      const hit = (x0, y0, w0) => boxes.some(r => x0 < r[0] + r[2] && x0 + w0 > r[0] && y0 - 5 < r[1] + r[3] && y0 + 5 > r[1]);
+      c.font = '800 '+(G.narrow ? 10 : 8.5)+'px system-ui, sans-serif'; c.textAlign = 'left'; c.lineWidth = 3; c.lineJoin = 'round';
+      const hit = (x0, y0, w0) => boxes.some(r => x0 < r[0] + r[2] && x0 + w0 > r[0] && y0 - 6 < r[1] + r[3] && y0 + 6 > r[1]);
       pts.filter(p => p.focus).forEach(p => {
         const nm = p.n.replace(' Foils', '').replace(' Foil', ''), tw = c.measureText(nm).width;
         const spots = [[p.x + 7, p.y], [p.x - 7 - tw, p.y], [p.x - tw/2, p.y - 11], [p.x - tw/2, p.y + 12]];
@@ -2280,20 +2399,22 @@
         c.strokeStyle = 'rgba(15,23,42,.92)'; c.strokeText(nm, lx, ly + 3); c.fillStyle = '#f1f5f9'; c.fillText(nm, lx, ly + 3);
       });
     } else if(few || ATL.sel.length === 2){
-      c.font = '700 9px system-ui, sans-serif'; c.textAlign = 'left'; c.lineWidth = 3; c.lineJoin = 'round';
-      const hit = (x0, y0, w0) => boxes.some(r => x0 < r[0] + r[2] && x0 + w0 > r[0] && y0 - 5 < r[1] + r[3] && y0 + 5 > r[1]);
+      arLab.forEach(([x]) => boxes.push([x - 9, Y0 - 16, 18, 14]));   // les noms d'ailes évitent les chiffres d'AR (en haut)
+      c.font = (G.narrow ? '800 10.5px' : '700 9px')+' system-ui, sans-serif'; c.textAlign = 'left'; c.lineWidth = 3; c.lineJoin = 'round';
+      const hit = (x0, y0, w0) => boxes.some(r => x0 < r[0] + r[2] && x0 + w0 > r[0] && y0 - 6 < r[1] + r[3] && y0 + 6 > r[1]);
       pts.forEach(p => {
         const tw = c.measureText(p.short).width;
         // 4 places essayées : droite, gauche, dessus, dessous
-        const spots = [[p.x + 7, p.y], [p.x - 7 - tw, p.y], [p.x - tw/2, p.y - 11], [p.x - tw/2, p.y + 12]];
+        const spots = [[p.x + 7, p.y], [p.x - 7 - tw, p.y], [p.x - tw/2, p.y - 12], [p.x - tw/2, p.y + 13]];
         const ok = spots.find(([lx, ly]) => lx >= X0 - 4 && lx + tw <= X1 + 4 && !hit(lx, ly, tw));
         if(!ok) return;
         const [lx, ly] = ok;
-        boxes.push([lx, ly - 5, tw, 10]);
+        boxes.push([lx, ly - 6, tw, 12]);
         c.strokeStyle = 'rgba(15,23,42,.9)'; c.strokeText(p.short, lx, ly + 3); c.fillStyle = '#f1f5f9'; c.fillText(p.short, lx, ly + 3);
       });
     }
     ATL.pts = pts;
+    ATL.kit.after(c, px, py);   // 📌 repères des fiches épinglées + fiches sous la carte
     // ⏱️ trait ambre : on écrit DE CHAQUE CÔTÉ ce qu'il sépare (« tu t'épuises » / « tu tiens 10 min et + »)
     if(!VIDEO && ATL.endSeg && ATL.endSeg.length){
       const all = ATL.endSeg.flat(), top = all.reduce((m, p) => !m || p[1] < m[1] ? p : m, null);
@@ -2318,61 +2439,295 @@
         : t('trop petite pour toi à '+kg+' kg : sous ~'+num(sPl)+' cm² (porte dès 16,5 km/h et +), ou envergure trop courte pour démarrer en pompant (> '+Math.round(1.2*riderLvl().cp/10)*10+' W)', 'too small for you at '+kg+' kg: below ~'+num(sPl)+' cm² (carries you from 16.5 km/h+), or span too short to pump it up (> '+Math.round(1.2*riderLvl().cp/10)*10+' W)'))
       : t(C.fr, C.en);
     if(lg) lg.innerHTML = '<div class="atl-cats">'+Object.entries(ATL_CAT).map(([k, C]) => '<div><i style="background:'+C.c+'"></i><b>'+t(C.sfr, C.sen)+'</b> <span>'+catTxt(k, C)+'</span></div>').join('')+'</div>'
-      + '<span><i style="background:repeating-linear-gradient(90deg, rgba(255,255,255,.85) 0 5px, transparent 5px 8px); height:2px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même maniabilité 90 · 70 · 45 · 20 (tirets blancs, chiffre en bas sous l\'envergure)','same maneuverability 90 · 70 · 45 · 20 (white dashes, number at the bottom under the span)')+'</span>'
-      + '<span><i style="background:#fbbf24; height:2px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('trait ambre : d\'un côté tu tiens 10 min et +, de l\'autre tu t\'épuises avant (écrit sur la carte ; bouge avec ton poids, ton niveau, la vague)','⏱️ 30 min session: on one side you last, on the other you tire (moves with your weight, level, wave)')+'</span>'
-      + '<span><i style="background:#fde68a; height:1px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même AR (trait jaune, chiffre en haut)','same AR (yellow line, number on top)')+'</span>'
+      + (ATL.lay.man ? '<span><i style="background:repeating-linear-gradient(90deg, rgba(255,255,255,.85) 0 5px, transparent 5px 8px); height:2px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même maniabilité 90 · 70 · 45 · 20 (tirets blancs, chiffre en bas sous l\'envergure)','same maneuverability 90 · 70 · 45 · 20 (white dashes, number at the bottom under the span)')+'</span>' : '')   // légende seulement pour les lignes affichées
+      + (ATL.lay.ses ? '<span><i style="background:#fbbf24; height:2px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('trait ambre : d\'un côté tu tiens 10 min et +, de l\'autre tu t\'épuises avant (écrit sur la carte ; bouge avec ton poids, ton niveau, la vague)','⏱️ 30 min session: on one side you last, on the other you tire (moves with your weight, level, wave)')+'</span>' : '')
+      + (ATL.lay.ar ? '<span><i style="background:#fde68a; height:1px; width:20px; border-radius:0; vertical-align:3px"></i>'+t('même AR (trait jaune, chiffre en haut)','same AR (yellow line, number on top)')+'</span>' : '')
       + '<span><i class="hatch"></i>'+t('hors gamme (AR < 6 ou > 24)','out of range (AR < 6 or > 24)')+'</span>'
       + '<span>'+kg+' kg · '+t(riderLvl().fr, riderLvl().en)+' · '+t('vague','wave')+' '+num(H, H % 1 ? 2 : 0).replace(/0$/,'')+' m</span>';
+  }
+  // 🔍📌 CARTE SUR TÉLÉPHONE (même code sur carve.html et vitesse.html) :
+  // • zoom = la carte est REDESSINÉE plus grande (points plus écartés, textes à taille fixe → plus de noms lisibles),
+  //   dans un cadre qui défile au doigt ; pince à 2 doigts, ctrl/⌘ + molette (ou pavé), boutons − / + / ⤢
+  // • toucher une aile = sa fiche s'épingle SOUS la carte (plusieurs → côte à côte pour comparer, × pour fermer) ;
+  //   on ne part plus vers le simulateur : c'est un bouton de la fiche
+  // • ailes trop proches pour viser au doigt → petite liste « laquelle ? »
+  // • calques (lignes) à afficher ou non · ⛶ plein écran · barre « mes réglages » qui reste en haut quand on descend
+  // K = {st: ATL | VA (état de la carte), redraw(), pick(e, rayonPx) → {…, near: [ailes sous le doigt]}, show(e), info(b, S, n) → {html, col},
+  //      canTry(b, S), tryIt(b, S), layers: [[clé, 'fr', 'en', visible par défaut sur téléphone ?]], mini() → html de la barre réglages}
+  // ♿ RGAA 3.1 / 3.3 + daltonisme : en comparaison de marques, chaque marque a sa FORME ● ■ ▲ ◆ (pas seulement sa couleur),
+  // et chaque point a un liseré clair en plus du contour sombre → il se détache sur toutes les zones (≥ 3:1)
+  function dotPath(c, sh, x, y, r){ c.beginPath();
+    if(sh === 1){ const a = r*.9; c.rect(x - a, y - a, 2*a, 2*a); }
+    else if(sh === 2){ const a = r*1.3; c.moveTo(x, y - a); c.lineTo(x + a*.95, y + a*.7); c.lineTo(x - a*.95, y + a*.7); c.closePath(); }
+    else if(sh === 3){ const a = r*1.25; c.moveTo(x, y - a); c.lineTo(x + a, y); c.lineTo(x, y + a); c.lineTo(x - a, y); c.closePath(); }
+    else c.arc(x, y, r, 0, 7); }
+  function dotDraw(c, sh, x, y, r, col, lw){
+    dotPath(c, sh, x, y, r); c.fillStyle = col; c.fill(); c.lineWidth = lw; c.strokeStyle = '#0f172a'; c.stroke();
+    dotPath(c, sh, x, y, r + lw*.5 + .6); c.lineWidth = 1; c.strokeStyle = 'rgba(255,255,255,.6)'; c.stroke(); }
+  const shapeIco = (sh, col) => '<svg class="shp" viewBox="-7 -7 14 14" aria-hidden="true">'+(sh === 1 ? '<rect x="-4.5" y="-4.5" width="9" height="9"' : sh === 2 ? '<polygon points="0,-5.8 5.4,3.8 -5.4,3.8"' : sh === 3 ? '<polygon points="0,-6 6,0 0,6 -6,0"' : '<circle r="5"')+' fill="'+col+'" stroke="#0f172a" stroke-width="1.5"/></svg>';
+  // RGAA 3.2 : nom de zone en BLANC sur une pastille de la couleur de la zone assombrie (contraste ≥ 6,7:1 ; avant 3,1 à 3,9)
+  function zoneLab(c, txt, x, y, col){
+    const tw = c.measureText(txt).width, dk = '#'+[1, 3, 5].map(i => Math.round(parseInt(col.slice(i, i + 2), 16)*.5).toString(16).padStart(2, '0')).join('');
+    c.beginPath(); if(c.roundRect) c.roundRect(x - tw/2 - 5, y - 8, tw + 10, 16, 8); else c.rect(x - tw/2 - 5, y - 8, tw + 10, 16);
+    c.fillStyle = dk; c.fill(); c.lineWidth = 1.5; c.strokeStyle = 'rgba(255,255,255,.85)'; c.stroke(); c.fillStyle = '#fff'; c.fillText(txt, x, y + 4); }
+  function atlKit(K){
+    const sc = $('atl-scroll'), cv = $('atl-cv'), tip = $('atl-tip'), pe = $('atl-pins'), S = K.st, ZMAX = 4;
+    S.z = 1; S.pins = []; S.w = 0; S.full = false; S.lastH = 0;
+    const phone = innerWidth < 560;   // téléphone : par défaut, zones + points seulement (les lignes s'ajoutent d'un toucher)
+    S.lay = {}; (K.layers || []).forEach(([k, , , onPhone]) => { S.lay[k] = VIDEO || !phone || !!onPhone; });
+    const box = sc.closest('.atl-box'), lay = $('atl-lay');
+    const layUI = () => { if(lay) lay.innerHTML = '<span>'+t('Lignes :','Lines:')+'</span>'+(K.layers || []).map(([k, fr, en]) => '<button type="button" data-lay="'+k+'" aria-pressed="'+S.lay[k]+'" class="'+(S.lay[k] ? 'on' : '')+'">'+(S.lay[k] ? '✓ ' : '')+t(fr, en)+'</button>').join(''); };
+    if(lay) lay.addEventListener('click', e => { const b = e.target.closest('[data-lay]'); if(!b) return; S.lay[b.dataset.lay] = !S.lay[b.dataset.lay]; K.redraw(); });
+    if(VIDEO && lay) lay.style.display = 'none';
+    if(VIDEO){ const tl = sc.parentElement.querySelector('.atl-tools'); if(tl) tl.style.display = 'none'; }   // vidéo Insta : carte seule
+    let tmr = 0, lastPT = 'mouse', drag = null, noClick = false, pinch = null;
+    // 💬 l'astuce « touche une aile / pince » : affichée jusqu'au 1er usage (fiche, zoom), ensuite réduite à un ⓘ qui la rouvre
+    let seen = false; try{ seen = localStorage.getItem('lcw-atl-hint') === '1'; }catch(e){}
+    S.hintOpen = false;
+    const used = () => { if(seen) return; seen = true; try{ localStorage.setItem('lcw-atl-hint', '1'); }catch(e){} };
+    const hEl = $('atl-hint'); if(hEl) hEl.addEventListener('click', e => { if(e.target.closest('.hint-i')){ S.hintOpen = !S.hintOpen; hint(); } });
+    const hint = () => { const h = $('atl-hint'); if(h) h.innerHTML = seen && !S.hintOpen ? '<button type="button" class="hint-i" aria-label="'+t('Comment utiliser la carte','How to use the map')+'">ⓘ</button>' : (seen ? '<button type="button" class="hint-i hint-x" aria-label="'+t('Fermer','Close')+'">×</button> ' : '') + (matchMedia('(hover: hover)').matches
+      ? t('👆 <b>clique une aile</b> : sa fiche s\'affiche sous la carte · 🔍 <b>+</b> ou ctrl + molette pour zoomer','👆 <b>click a wing</b>: its card shows below the map · 🔍 <b>+</b> or ctrl + wheel to zoom')
+      : t('👆 <b>touche une aile</b> → sa fiche<br>🤏 <b>pince</b> pour zoomer','👆 <b>tap a wing</b> → its card<br>🤏 <b>pinch</b> to zoom')); };
+    const zl = () => { $('atl-zl').textContent = num(S.z, S.z % 1 ? 1 : 0)+'×'; $('atl-zm').disabled = $('atl-z1').disabled = S.z <= 1; $('atl-zp').disabled = S.z >= ZMAX;
+      sc.classList.toggle('zoomed', S.z > 1); };
+    // zoom autour d'un point du cadre (cx, cy) : ce point reste sous le doigt / la souris
+    const setZ = (z, cx, cy, now) => {
+      z = Math.max(1, Math.min(ZMAX, Math.round(z*100)/100)); if(z === S.z) return;
+      const r = S.z, ax = (sc.scrollLeft + cx)/r, ay = (sc.scrollTop + cy)/r;
+      if(r <= 1 && !S.full) sc.style.height = sc.offsetHeight+'px';   // le cadre garde sa taille : c'est la carte dedans qui grandit
+      S.z = z; tip.hidden = true;
+      cv.style.width = Math.round(S.w*z)+'px';               // aperçu immédiat (étiré), redessiné net juste après
+      sc.scrollLeft = ax*z - cx; sc.scrollTop = ay*z - cy;
+      zl(); used(); clearTimeout(tmr); tmr = setTimeout(K.redraw, now ? 0 : 150);
+    };
+    const mid = () => [sc.clientWidth/2, sc.clientHeight/2];
+    $('atl-zp').addEventListener('click', () => setZ(S.z*1.6, ...mid(), true));
+    $('atl-zm').addEventListener('click', () => setZ(S.z/1.6, ...mid(), true));
+    $('atl-z1').addEventListener('click', () => setZ(1, 0, 0, true));
+    // ⛶ plein écran : la carte prend tout l'écran (et les fiches, en bas) ; ✕ ou Échap pour revenir
+    // 🏷️ marques en cases à cocher : construit à partir des boutons de marque de la page (mêmes clics → même logique)
+    const brEl = $('atl-brands'), dd = document.createElement('div'); dd.className = 'atl-bdd';
+    const bAnchor = brEl || box; bAnchor.after(dd);
+    function ddUI(){
+      if(!brEl) return; const bs = [...brEl.querySelectorAll('button[data-k]')], all = bs.find(b => !b.dataset.k), none = all && all.classList.contains('on');
+      const sel = none ? [] : bs.filter(b => b.dataset.k && b.classList.contains('on')), nm = b => b.textContent.trim();
+      dd.innerHTML = '<button type="button" aria-expanded="'+dd.classList.contains('open')+'">🏷️ '+t('Marques :','Brands:')+' <b>'+(sel.length ? sel.map(nm).join(', ') : t('toutes','all'))+'</b><i>▾</i></button>'
+        + '<div class="bdd-p"><label class="bdd-all"><input type="checkbox" data-bk=""'+(none ? ' checked' : '')+'>'+t('Toutes les marques','All brands')+'</label>'
+        + bs.filter(b => b.dataset.k).map(b => '<label><input type="checkbox" data-bk="'+b.dataset.k+'"'+(!none && b.classList.contains('on') ? ' checked' : '')+'><i style="background:'+((b.querySelector('i') || {}).style || {}).background+'"></i>'+nm(b)+'</label>').join('')
+        + '<button type="button" class="bdd-ok">OK</button></div>';
+    }
+    dd.addEventListener('click', e => {
+      if(e.target.closest('.bdd-ok') || e.target.closest('.atl-bdd > button')){ dd.classList.toggle('open'); ddUI(); return; }
+      const cb = e.target.closest('input[data-bk]'); if(!cb) return;
+      e.preventDefault();   // l'état vient de la page (re-dessin des boutons) : pas de double bascule
+      const b = brEl.querySelector('button[data-k="'+cb.dataset.bk+'"]'); if(b) b.click();
+    });
+    if(brEl) new MutationObserver(ddUI).observe(brEl, {childList: true});
+    ddUI();
+    const home = document.createComment('carte');
+    const full = on => {
+      S.full = on; box.classList.toggle('full', on); document.documentElement.classList.toggle('atl-full-on', on);
+      // la section a une animation (transform) : un « position:fixed » dedans ne couvrirait pas l'écran → la carte passe
+      // le temps du plein écran au bout de <body>, puis revient à sa place (repère : un commentaire)
+      // les marques suivent aussi (filtre en plein écran) : une rangée qui défile de côté, sous les boutons
+      if(on){ box.before(home); document.body.appendChild(box); box.insertBefore(dd, lay || sc); if(pe) box.appendChild(pe); }
+      else { home.after(box); bAnchor.after(dd); if(pe) box.after(pe); home.remove(); }
+      dd.classList.remove('open');
+      $('atl-zf').textContent = on ? '✕' : '⛶'; $('atl-zf').setAttribute('aria-label', on ? t('Quitter le plein écran','Exit full screen') : t('Plein écran','Full screen'));
+      tip.hidden = true; stk(); K.redraw(); if(K.hash) K.hash();   // l'adresse suit : #carte-… = lien partageable vers la carte plein écran
+    };
+    // 🔗 partager la carte (plein écran + marques choisies) : menu de partage du téléphone, sinon copie du lien
+    $('atl-zs').addEventListener('click', async () => {
+      const u = location.href, bt = $('atl-zs');
+      try{ if(navigator.share){ await navigator.share({title: document.title, url: u}); return; } await navigator.clipboard.writeText(u); bt.textContent = '✓'; }
+      catch(e){ if(e && e.name === 'AbortError') return; prompt(t('Copie ce lien :','Copy this link:'), u); }
+      setTimeout(() => { bt.textContent = '🔗'; }, 1500);
+    });
+    // 📱 en portrait, plein écran : la carte est plus large une fois le téléphone tourné
+    const rot = document.createElement('div'); rot.className = 'atl-rot'; box.insertBefore(rot, sc);
+    const rotTxt = () => { rot.textContent = t('📱↻ tourne ton téléphone pour une carte plus large','📱↻ turn your phone for a wider map'); };
+    $('atl-zf').addEventListener('click', () => full(!S.full));
+    addEventListener('keydown', e => { if(e.key === 'Escape' && S.full) full(false); });
+    // pince à 2 doigts (la page, elle, ne zoome pas : touch-action pan-x pan-y sur la carte)
+    const two = e => { const [a, b] = e.touches, r = sc.getBoundingClientRect(); return {d: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY), x: (a.clientX + b.clientX)/2 - r.left, y: (a.clientY + b.clientY)/2 - r.top}; };
+    sc.addEventListener('touchstart', e => { if(e.touches.length === 2){ pinch = Object.assign(two(e), {z: S.z}); tip.hidden = true; } }, {passive:true});
+    sc.addEventListener('touchmove', e => { if(!pinch || e.touches.length !== 2) return; if(e.cancelable) e.preventDefault(); const q = two(e); setZ(pinch.z*q.d/pinch.d, q.x, q.y); }, {passive:false});
+    sc.addEventListener('touchend', e => { if(pinch && e.touches.length < 2){ pinch = null; noClick = true; setTimeout(() => { noClick = false; }, 350); } });
+    // Safari (pavé tactile du Mac) : pincement = événements « gesture » (sur iPhone, la pince tactile ci-dessus suffit)
+    let gz = 0;
+    sc.addEventListener('gesturestart', e => { e.preventDefault(); gz = S.z; }, {passive:false});
+    sc.addEventListener('gesturechange', e => { e.preventDefault(); if(pinch) return; const r = sc.getBoundingClientRect(); setZ(gz*e.scale, (e.clientX || r.left + r.width/2) - r.left, (e.clientY || r.top + r.height/2) - r.top); }, {passive:false});
+    sc.addEventListener('gestureend', e => { e.preventDefault(); }, {passive:false});
+    // ordinateur : ctrl/⌘ + molette, et pincement du pavé tactile (qui arrive comme une molette + ctrl)
+    sc.addEventListener('wheel', e => { if(!e.ctrlKey && !e.metaKey) return; e.preventDefault(); const r = sc.getBoundingClientRect(); setZ(S.z*Math.exp(-e.deltaY*.01), e.clientX - r.left, e.clientY - r.top); }, {passive:false});
+    // souris : glisser pour se déplacer dans la carte zoomée
+    cv.addEventListener('pointerdown', e => { lastPT = e.pointerType || 'mouse';
+      if(lastPT === 'mouse' && S.z > 1 && e.button === 0) drag = {x: e.clientX, y: e.clientY, l: sc.scrollLeft, t: sc.scrollTop, on: false}; });
+    addEventListener('pointermove', e => { if(!drag) return; const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if(!drag.on && Math.hypot(dx, dy) > 5){ drag.on = true; cv.classList.add('grabbing'); tip.hidden = true; }
+      if(drag.on){ sc.scrollLeft = drag.l - dx; sc.scrollTop = drag.t - dy; } });
+    // fin d'un glisser : on ignore le clic qui suit… s'il arrive (relâché hors de la carte, il n'arrive jamais → délai)
+    addEventListener('pointerup', () => { if(drag && drag.on){ noClick = true; setTimeout(() => { noClick = false; }, 350); } drag = null; cv.classList.remove('grabbing'); });
+    cv.addEventListener('pointermove', e => { if(e.pointerType === 'mouse' && !(drag && drag.on)) K.show(e); });
+    cv.addEventListener('pointerleave', () => { if(lastPT === 'mouse') tip.hidden = true; });
+    sc.addEventListener('scroll', () => { if(lastPT !== 'mouse') tip.hidden = true; }, {passive:true});
+    // toucher / cliquer : une aile → sa fiche ; ailleurs (doigt) → la bulle du point touché
+    cv.addEventListener('click', e => {
+      if(noClick){ noClick = false; return; }
+      const p = K.pick(e, lastPT === 'mouse' ? 9 : 18); chooser(null);
+      // « laquelle ? » seulement si une autre aile est presque aussi près du doigt que la plus proche (écart < 8 px)
+      if(p && p.near) p.near = p.near.filter(w => w.dd - p.near[0].dd < 8);
+      // aile déjà épinglée : on ne la reprend pas (le clic ne fait rien) ; s'il y en a d'autres sous le doigt, elles seules sont proposées
+      if(p && p.near && p.near.length){ const free = p.near.filter(w => !S.pins.some(q => q.n === w.n && Math.abs(q.b - w.b) < .01 && q.S === w.S));
+        if(!free.length) return; p.near = free; p.wing = free[0]; p.b = free[0].b; p.S = free[0].S; }
+      if(p && p.near && p.near.length > 1){ tip.hidden = true; chooser(p); }
+      else if(p && p.wing){ tip.hidden = true; pin(p); } else if(lastPT !== 'mouse') K.show(e);
+    });
+    // plusieurs ailes sous le doigt : « laquelle ? » (au lieu de deviner la plus proche)
+    const ch = document.createElement('div'); ch.className = 'atl-choose'; ch.hidden = true; box.appendChild(ch);
+    function chooser(p){
+      if(!p){ ch.hidden = true; return; }
+      const L = p.near.slice(0, 8);
+      ch.innerHTML = '<div class="ac-h">'+t('Laquelle ?','Which one?')+'<button type="button" data-ac="x" aria-label="'+t('Fermer','Close')+'">×</button></div>'
+        + L.map((w, i) => '<button type="button" data-ac="'+i+'">'+(w.col ? '<i style="background:'+w.col+'"></i>' : '')+'<b>'+w.n+'</b><span>'+num(w.b, w.b % 1 ? 1 : 0)+' cm · '+num(w.S, 0)+' cm²</span></button>').join('');
+      ch.hidden = false;
+      const cw = ch.offsetWidth, chh = ch.offsetHeight;
+      ch.style.left = Math.max(4, Math.min(p.w - cw - 4, p.x - cw/2))+'px';
+      ch.style.top = Math.max(4, p.y + 16 + chh > box.clientHeight ? p.y - chh - 16 : p.y + 16)+'px';
+      ch.onclick = e => { const b = e.target.closest('[data-ac]'); if(!b) return; ch.hidden = true; if(b.dataset.ac !== 'x') pin(Object.assign({}, p, {wing: L[+b.dataset.ac], b: L[+b.dataset.ac].b, S: L[+b.dataset.ac].S})); };
+    }
+    sc.addEventListener('scroll', () => { ch.hidden = true; }, {passive:true});
+    document.addEventListener('click', e => { if(!ch.hidden && !ch.contains(e.target) && e.target !== cv) ch.hidden = true; });
+    const same = (q, p) => q.n === p.wing.n && Math.abs(q.b - p.b) < .01 && q.S === p.S;
+    function pin(p){
+      let i = S.pins.findIndex(q => same(q, p));
+      used();
+      if(i < 0){ S.pins.push({n: p.wing.n, b: p.b, S: p.S}); if(S.pins.length > 6) S.pins.shift(); i = S.pins.length - 1; K.redraw(); }
+      const el = pe && pe.querySelector('.pin-card[data-i="'+i+'"]'); if(!el) return;
+      el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+      // la fiche doit se voir sans perdre la carte : on ne défile que si elle est sous l'écran, juste assez
+      const r = el.getBoundingClientRect(); if(r.bottom > innerHeight) scrollBy({top: Math.min(r.bottom - innerHeight + 12, r.top - 60), behavior:'smooth'});
+    }
+    if(pe) pe.addEventListener('click', e => {
+      const x = e.target.closest('[data-pin]'), tr = e.target.closest('[data-try-pin]');
+      if(x){ const v = x.dataset.pin; S.pins = v === 'all' ? [] : S.pins.filter((q, i) => i !== +v); K.redraw(); }
+      else if(tr){ const q = S.pins[+tr.dataset.tryPin]; if(!q) return; if(S.full) full(false); K.tryIt(q.b, q.S); }   // plein écran : on en sort, sinon le simulateur reste caché dessous
+    });
+    // appelé à la fin de chaque dessin : repères numérotés sur la carte + fiches à jour (elles suivent poids / niveau / vague)
+    function after(c, px, py){
+      hint(); zl();
+      layUI(); rotTxt();
+      const rings = S.pins.map(q => [px(q.b), py(q.S)]), used = [];
+      S.pins.forEach((q, i) => { const [x, y] = rings[i];
+        c.beginPath(); c.arc(x, y, 9, 0, 7); c.lineWidth = 5; c.strokeStyle = '#0f172a'; c.stroke(); c.lineWidth = 2.5; c.strokeStyle = '#fff'; c.stroke();
+        // pastille numérotée : dans le coin libre (pas sur une autre pastille ni un autre anneau)
+        const offs = [[11, -11], [-11, -11], [11, 11], [-11, 11], [0, -16], [16, 0], [-16, 0], [0, 16]];
+        const [ox, oy] = offs.find(([a, b2]) => !used.some(([u, v]) => Math.hypot(u - x - a, v - y - b2) < 17) && !rings.some(([u, v], j) => j !== i && Math.hypot(u - x - a, v - y - b2) < 12)) || offs[0];
+        const bx = x + ox, by = y + oy; used.push([bx, by]); c.beginPath(); c.arc(bx, by, 8, 0, 7); c.fillStyle = '#fff'; c.fill(); c.lineWidth = 2; c.strokeStyle = '#0f172a'; c.stroke();
+        c.fillStyle = '#0f172a'; c.font = '900 11px system-ui, sans-serif'; c.textAlign = 'center'; c.fillText(String(i + 1), bx, by + 4); });
+      if(!pe) return;
+      pe.innerHTML = !S.pins.length ? '' : (S.pins.length > 1 ? '<div class="pin-bar"><span>📌 '+S.pins.length+' '+t('ailes épinglées · touche-en d\'autres pour comparer','pinned wings · tap more to compare')+'</span><button type="button" data-pin="all">'+t('Tout fermer','Close all')+' ×</button></div>' : '')
+        + S.pins.map((q, i) => { const f = K.info(q.b, q.S, q.n);
+          // 🔗 le nom de l'aile = lien vers sa page officielle (ailes.js : page de la gamme, sinon page des ailes de la marque)
+          const L = window.foilLink && window.foilLink(q.n, 'carve'), nm = L ? '<a href="'+L.u+'" target="_blank" rel="noopener">'+q.n.replace(/ (\S+)$/, '&nbsp;$1')+window.wlTail(L)+'</a>'
+            + (L.fam ? '' : '<small>'+t('site '+L.brand,L.brand+' site')+'</small>') : q.n;
+          return '<div class="pin-card" data-i="'+i+'"'+(f.col ? ' style="border-color:'+f.col+'"' : '')+'>'
+            + '<button type="button" class="pin-x" data-pin="'+i+'" aria-label="'+t('Fermer la fiche','Close card')+'">×</button>'
+            + f.html.replace('<div class="tt-h">'+q.n+'</div>', '<div class="tt-h"><span class="pin-n">'+(i + 1)+'</span>'+nm+'</div>')
+            + (K.canTry(q.b, q.S) ? '<button type="button" class="pin-try" data-try-pin="'+i+'">▶ '+t('l\'essayer','try it')+'</button>' : '')+'</div>'; }).join('');
+      if(stEl && K.mini) stEl.innerHTML = K.mini();
+      // plein écran : les fiches ont changé de hauteur → la carte se recale sur la place restante
+      if(S.full) requestAnimationFrame(() => { if(Math.abs(sc.clientHeight - S.lastH) > 4) K.redraw(); });
+    }
+    // 🧍 barre « mes réglages » : reste sous la barre du haut quand les réglages complets sont sortis de l'écran (carte visible)
+    const stEl = $('atl-sticky'), rider = $('atl-rider'), vis = {r: true, m: false};
+    function stk(){ if(!stEl) return; const on = !VIDEO && !S.full && vis.m && !vis.r;
+      if(on){ const tb = document.querySelector('.topbar'); stEl.style.top = Math.max(0, tb ? tb.getBoundingClientRect().bottom : 0)+'px'; } stEl.hidden = !on; }
+    addEventListener('scroll', () => { if(stEl && !stEl.hidden) stk(); }, {passive:true});   // la barre du haut ne reste fixe que sur grand écran
+    if(stEl && rider && 'IntersectionObserver' in window){
+      new IntersectionObserver(es => { es.forEach(e => { vis.r = e.isIntersecting; }); stk(); }, {rootMargin: '-60px 0px 0px 0px'}).observe(rider);
+      new IntersectionObserver(es => { es.forEach(e => { vis.m = e.isIntersecting; }); stk(); }).observe(box);
+    }
+    // taille du dessin : largeur du cadre × zoom ; la toile reste sous ~14 Mpx (limite des téléphones)
+    function size(geo){   // geo(w, z, ratio?, plein écran ?) → {W, H} ; renvoie la géométrie zoomée
+      const w0 = sc.clientWidth || 600; if(S.z <= 1 || !S.w || Math.abs(w0 - S.w) > 20) S.w = w0;
+      // plein écran : la carte remplit la hauteur dispo (ratio) ; sinon le cadre zoomé garde la hauteur de la carte à 1×
+      let ratio; if(S.full){ S.lastH = sc.clientHeight; ratio = Math.max(.45, Math.min(1.2, S.lastH/S.w)); }   // pas plus haute que large ×1,2 : sinon les courbes s'écrasent (portrait)
+      else if(S.z <= 1) sc.style.height = ''; else { const G1 = geo(S.w, 1); sc.style.height = Math.round(S.w*G1.H/G1.W)+'px'; }
+      const G = geo(S.w, S.z, ratio, S.full), cssW = S.w*S.z, cssH = cssW*G.H/G.W;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(14e6/(cssW*cssH)));
+      cv.style.width = S.z > 1 ? Math.round(cssW)+'px' : ''; cv.style.aspectRatio = G.W+' / '+G.H;
+      cv.width = Math.round(cssW*dpr); cv.height = Math.round(cssW*dpr*G.H/G.W);
+      return G;
+    }
+    // 🧍 réglages au-dessus de la carte : sur téléphone, une rangée résumée (même que la barre collée) + ⚙️ pour tout déplier
+    S.rOpen = false;
+    const rider0 = $('atl-rider'); if(rider0) rider0.addEventListener('click', e => { const b = e.target.closest('[data-ropen]'); if(!b) return;
+      S.rOpen = !S.rOpen; const fl = rider0.querySelector('.rc-full'); if(fl) fl.classList.toggle('open', S.rOpen); b.setAttribute('aria-expanded', S.rOpen); b.textContent = S.rOpen ? t('⚙️ moins','⚙️ less') : t('⚙️ réglages','⚙️ settings'); });
+    const riderHtml = fullHtml => '<div class="rc-mini">'+(K.mini ? K.mini() : '')+'<button type="button" class="mini-b" data-ropen aria-expanded="'+S.rOpen+'">'+(S.rOpen ? t('⚙️ moins','⚙️ less') : t('⚙️ réglages','⚙️ settings'))+'</button></div>'
+      + '<div class="rc-full'+(S.rOpen ? ' open' : '')+'">'+fullHtml+'</div>';
+    return {after, size, full, rider: riderHtml};
   }
   (function(){
     const cv = $('atl-cv'), tip = $('atl-tip'); if(!cv || !tip) return;
     atlBrandsUI();
-    const pick = e => {
+    const box = cv.closest('.atl-box');
+    const pick = (e, rad) => {
       const g = ATL.geo; if(!g) return null;
-      const r = cv.getBoundingClientRect(), x = (e.clientX - r.left)*g.W/r.width, y = (e.clientY - r.top)*g.W/r.width;
+      const r = cv.getBoundingClientRect(), k = g.W/r.width, x = (e.clientX - r.left)*k, y = (e.clientY - r.top)*k, bx = box.getBoundingClientRect();
       if(x < g.X0 || x > g.X1 || y < g.Y0 || y > g.Y1) return null;
-      let wing = null, dm = 81;
-      (ATL.pts || []).forEach(p => { const d = (p.x - x)**2 + (p.y - y)**2; if(d < dm){ dm = d; wing = p; } });
+      // doigt : zone de touche plus large qu'à la souris ; toutes les ailes dedans (« laquelle ? »), la plus proche d'abord
+      const r2 = ((rad || 9)*k)**2, d2 = p => (p.x - x)**2 + (p.y - y)**2, near = (ATL.pts || []).filter(p => d2(p) < r2).sort((a, b) => d2(a) - d2(b)), wing = near[0] || null;
+      near.forEach(p => { p.dd = Math.sqrt(d2(p))/k; });   // distance au doigt, en px d'écran
       const b = wing ? wing.b : Math.round(ATL.B0 + (x - g.X0)/(g.X1 - g.X0)*(ATL.B1 - ATL.B0));
       const S = wing ? wing.S : Math.round((ATL.S0 + (g.Y1 - y)/(g.Y1 - g.Y0)*(ATL.S1 - ATL.S0))/10)*10;
-      return {b, S, wing, x: e.clientX - r.left, y: e.clientY - r.top, w: r.width};
+      return {b, S, wing, near, x: e.clientX - bx.left, y: e.clientY - bx.top, w: bx.width};   // bulle placée dans le cadre (qui ne défile pas)
+    };
+    const inSl = (b, S) => b >= +$('i-b').min && b <= +$('i-b').max && S >= +$('i-s').min && S <= +$('i-s').max;
+    // contenu d'une bulle / d'une fiche : chiffres de l'aile (ou du point) pour TON poids, ta vague
+    const info = (b, S, n) => {
+      const g = ATL.geo, ar = b*b/S, man = manOf(b, S);
+      const ses = waveSession(b, S, g.kg, g.Hw), sesTxt = ses.unlimited ? t('longtemps','a long time') : '~'+Math.max(1, Math.round(ses.min))+' min';
+      // aile recommandée (✨ / 🔥 / 🌊) : bulle teintée de la couleur de sa reco + bandeau en tête
+      const rec = n && ATL.sel.length && ATL.reco ? ATL.reco.find(r => Math.abs(r.b - b) < .01 && r.S === S) : null;
+      const RECO_L = {'✨':t('compromis','compromise'), '🔥':t('tourner','turning'), '🌊':t('enchaîner','linking')};
+      return {col: rec ? RECO_C[rec.e] : '', html: (rec ? '<div class="tt-rec" style="color:'+RECO_C[rec.e]+'">'+rec.e+' '+t('recommandée','recommended')+' · '+RECO_L[rec.e]+'</div>' : '')
+        + (n ? '<div class="tt-h">'+n+'</div>' : '')
+        + '<div class="'+(n ? 'tt-s' : 'tt-h')+'">'+tone(b+'&nbsp;cm', grad(b, 145, 85))+' · '+tone(num(S)+'&nbsp;cm²', grad(S, 1600, 750))
+          +' · '+tone('AR&nbsp;'+num(ar, 1), grad(ar, 18, 7))+'</div>'
+        + t('maniabilité','maneuverability')+'&nbsp;<b>'+tone(man, grad(man, 0, 90))+'</b> · '+t('glisse','glide')+'&nbsp;<b>'+(g2 => tone(g2, grad(g2, 20, 95)))(glideScore(b, S, g.kg))+'</b><br>'
+        + t('vole dès','flies from')+'&nbsp;<b>'+(v => tone('~'+v+'&nbsp;km/h', grad(v, 19, 11)))(liftoffKmh(S, g.kg))+'</b> · '+t('session','session')+'&nbsp;<b>'+tone(sesTxt.replace(' ', '&nbsp;'), ses.unlimited ? 1 : grad(Math.log(Math.max(1, ses.min)), Math.log(2), Math.log(60)))+'</b>'
+        + (ar >= ATL.AR0 && ar <= ATL.AR1 ? '<div style="margin-top:2px; font-weight:700">'+(C => t(C.sfr, C.sen))(ATL_CAT[atlCat(b, S, g.kg, manOf(b, S) >= 45, ses.unlimited || ses.min >= SES_OK)])+'</div>' : '')};
     };
     const show = e => {
       if(ATL.args && ATL.geo && gridKey(ATL.geo.kg, ATL.geo.Hw) !== ATL.key) drawAtlas(...ATL.args);   // réglage changé depuis le dessin
       const p = pick(e); if(!p){ tip.hidden = true; return; }
-      const g = ATL.geo, ar = p.b*p.b/p.S, man = manOf(p.b, p.S);
-      const ses = waveSession(p.b, p.S, g.kg, g.Hw), sesTxt = ses.unlimited ? t('longtemps','a long time') : '~'+Math.max(1, Math.round(ses.min))+' min';
-      const inSl = p.b >= +$('i-b').min && p.b <= +$('i-b').max && p.S >= +$('i-s').min && p.S <= +$('i-s').max;
-      // aile recommandée (✨ / 🔥 / 🌊) : bulle teintée de la couleur de sa reco + bandeau en tête
-      const rec = p.wing && ATL.sel.length && ATL.reco ? ATL.reco.find(r => Math.abs(r.b - p.b) < .01 && r.S === p.S) : null;
-      const RECO_L = {'✨':t('compromis','compromise'), '🔥':t('tourner','turning'), '🌊':t('enchaîner','linking')};
-      tip.style.background = rec ? 'color-mix(in srgb, '+RECO_C[rec.e]+' 30%, #0a1020)' : '';
-      tip.style.borderColor = rec ? RECO_C[rec.e] : '';
-      tip.innerHTML = (rec ? '<div class="tt-rec" style="color:'+RECO_C[rec.e]+'">'+rec.e+' '+t('recommandée','recommended')+' · '+RECO_L[rec.e]+'</div>' : '')
-        + (p.wing ? '<div class="tt-h">'+p.wing.n+'</div>' : '')
-        + '<div class="'+(p.wing ? 'tt-s' : 'tt-h')+'">'+tone(p.b+' cm', grad(p.b, 145, 85))+' · '+tone(num(p.S)+' cm²', grad(p.S, 1600, 750))
-          +' · '+tone('AR '+num(ar, 1), grad(ar, 18, 7))+'</div>'
-        + t('maniabilité','maneuverability')+' <b>'+tone(man, grad(man, 0, 90))+'</b> · '+t('glisse','glide')+' <b>'+(g2 => tone(g2, grad(g2, 20, 95)))(glideScore(p.b, p.S, g.kg))+'</b><br>'
-        + t('vole dès','flies from')+' <b>'+(v => tone('~'+v+' km/h', grad(v, 19, 11)))(liftoffKmh(p.S, g.kg))+'</b> · '+t('session','session')+' <b>'+tone(sesTxt, ses.unlimited ? 1 : grad(Math.log(Math.max(1, ses.min)), Math.log(2), Math.log(60)))+'</b>'
-        + (ar >= ATL.AR0 && ar <= ATL.AR1 ? '<div style="margin-top:2px; font-weight:700">'+(C => t(C.sfr, C.sen))(ATL_CAT[atlCat(p.b, p.S, g.kg, manOf(p.b, p.S) >= 45, ses.unlimited || ses.min >= SES_OK)])+'</div>' : '')
-        + (p.wing ? '<div class="tt-c">'+(inSl ? t('clic : l\'essayer dans le simulateur','click: try it in the simulator') : t('hors des curseurs du simulateur','outside the simulator sliders'))+'</div>' : '');
+      const f = info(p.b, p.S, p.wing && p.wing.n);
+      tip.style.background = f.col ? 'color-mix(in srgb, '+f.col+' 30%, #0a1020)' : '';
+      tip.style.borderColor = f.col;
+      const pi = p.wing ? ATL.pins.findIndex(q => q.n === p.wing.n && Math.abs(q.b - p.b) < .01 && q.S === p.S) : -1;   // déjà épinglée ?
+      tip.innerHTML = f.html + (p.wing ? '<div class="tt-c">'+(pi >= 0 ? t('📌 épinglée (fiche n° '+(pi + 1)+' sous la carte)','📌 pinned (card #'+(pi + 1)+' below the map)') : t('clic : épingler sa fiche (+ lien officiel)','click: pin its card (+ official link)'))+'</div>' : '');
+      tip.style.left = '0px';   // mesurée collée à gauche : elle prend sa vraie largeur (et passe à la ligne si le cadre est étroit)
       tip.hidden = false;
       const tw = tip.offsetWidth, th = tip.offsetHeight;
       tip.style.left = Math.max(0, Math.min(p.w - tw, p.x + 14 + tw > p.w ? p.x - tw - 14 : p.x + 14))+'px';
       tip.style.top = Math.max(0, p.y - th - 12)+'px';
     };
-    cv.addEventListener('pointermove', show);
-    cv.addEventListener('pointerdown', show);
-    cv.addEventListener('pointerleave', () => { tip.hidden = true; });
-    cv.addEventListener('click', e => {
-      const p = pick(e); if(!p || !p.wing) return;
+    // barre « mes réglages » résumée : chaque bouton passe à la valeur suivante (mêmes data-rc que les réglages complets)
+    const mini = () => { const lv = $('i-lvl').value, H = waveH(), HS = [0.5, 1, 1.75], nx = (a, v) => a[(a.indexOf(v) + 1) % a.length];
+      return '<span class="rc"><button type="button" data-rc="kg-" aria-label="'+t('moins lourd','lighter')+'">−</button><b>🧍 '+riderKg()+' kg</b><button type="button" data-rc="kg+" aria-label="'+t('plus lourd','heavier')+'">+</button></span>'
+        + '<button type="button" class="mini-b" data-rc="lv:'+nx(['1', '2', '3'], lv)+'">'+{'1': t('🌱 progression','🌱 learning'), '2': t('💪 confirmé','💪 experienced'), '3': '🏆 expert'}[lv]+'</button>'
+        + '<button type="button" class="mini-b" data-rc="h:'+nx(HS, HS.includes(H) ? H : 1)+'">🌊 '+(H >= 1.5 ? '1,5-2' : num(H, H % 1 ? 1 : 0))+' m</button>'
+        + '<button type="button" class="mini-b" data-rc="sr:'+(SURF.ride === 'carve' ? 'porte' : 'carve')+'">'+(SURF.ride === 'carve' ? t('🔥 je carve','🔥 I carve') : t('↗️ porté','↗️ carried'))+'</button>'; };
+    ATL.kit = atlKit({st: ATL, redraw: () => { if(ATL.args) drawAtlas(...ATL.args); }, pick, show, info, canTry: inSl, mini, hash: () => atlHash(),
+      layers: [['man', '– – maniabilité', '– – maneuverability'], ['ses', '— '+SES_OK+' min', '— '+SES_OK+' min'], ['ar', '╱ AR', '╱ AR']], tryIt: (b, S) => {
       const ib = $('i-b'), is = $('i-s');
-      if(p.b < +ib.min || p.b > +ib.max || p.S < +is.min || p.S > +is.max) return;
-      ib.value = Math.round(p.b); is.value = p.S;
+      ib.value = Math.round(b); is.value = S;
       document.querySelectorAll('.preset-btn.on').forEach(x => x.classList.remove('on'));
       ib.dispatchEvent(new Event('input', {bubbles:true})); is.dispatchEvent(new Event('input', {bubbles:true}));
       const sc = document.querySelector('.showcase'); window.scrollTo({top: sc.getBoundingClientRect().top + scrollY - 70, behavior:'smooth'});
-    });
+    }});
     addEventListener('resize', () => { if(ATL.args) drawAtlas(...ATL.args); });
   })();
   // 🧍 Réglages rider « sur place » : là où on lit le résultat. Un clic → mêmes curseurs du panneau → tout se recalcule,
