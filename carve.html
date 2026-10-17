@@ -200,6 +200,7 @@
   .rc button:hover{background:rgba(192,132,252,.15);}
   .rc b{min-width:46px; text-align:center;}
   .rc-seg button{color:var(--muted); font-weight:700; white-space:nowrap;}
+  .rc.rc-in{vertical-align:middle; margin:0 2px;} .rc.rc-in b{min-width:0; padding:0 2px;}   /* stab réglable dans la ligne du score */
   .rc-seg{flex-wrap:wrap; justify-content:center; border-radius:16px;}
   .rc-seg button.on{background:var(--carve); color:#1e1b2e;}
   .ses-help{max-width:560px; margin:4px auto 8px; font-size:.78rem; color:var(--muted); text-align:left; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:6px 12px;}
@@ -2125,9 +2126,15 @@
     box.innerHTML = html;
     atlTryBtns(box);
   }
+  // aile de ailes.js → « 🪽 Choisis ton aile » (même chemin qu'un choix dans la liste : nom affiché, curseurs, preset)
+  function tryByName(b, S, n){
+    const nm = n && WING_IDX[n] ? n : Object.keys(WING_IDX).find(k => Math.abs(WING_IDX[k][0] - b) < .01 && WING_IDX[k][1] === S);
+    if(!nm) return false; wpPick(nm); return true;
+  }
   function atlTryBtns(box){
     box.querySelectorAll('[data-try]').forEach(bt => bt.addEventListener('click', () => {
       const [bb, ss] = bt.dataset.try.split('|').map(Number), ib = $('i-b'), is = $('i-s');
+      if(tryByName(bb, ss, null)){ const sc = document.querySelector('.showcase'); window.scrollTo({top: sc.getBoundingClientRect().top + scrollY - 70, behavior:'smooth'}); return; }
       ib.value = Math.round(bb); is.value = ss;
       document.querySelectorAll('.preset-btn.on').forEach(x => x.classList.remove('on'));
       ib.dispatchEvent(new Event('input', {bubbles:true})); is.dispatchEvent(new Event('input', {bubbles:true}));
@@ -2769,11 +2776,12 @@
       return '<span>'+num(p.b, p.b % 1 ? 1 : 0)+'&nbsp;cm · '+num(p.S)+'&nbsp;cm² · AR&nbsp;'+num(ar, 1)+'</span>'
         + '<span>'+t('maniabilité','maneuverability')+' '+manOf(p.b, p.S)+' · '+t('glisse','glide')+' '+glideScore(p.b, p.S, g.kg)+' · '+t('session','session')+' '+(ses.unlimited ? t('longtemps','a long time') : '~'+Math.max(1, Math.round(ses.min))+'&nbsp;min')+'</span><span>'+z+'</span>'; };
     ATL.kit = atlKit({st: ATL, redraw: () => { if(ATL.args) drawAtlas(...ATL.args); }, pick, show, info, canTry: inSl, mini, hash: () => atlHash(), row, page: 'carve',
-      layers: [['man', '– – maniabilité', '– – maneuverability'], ['ses', '— '+SES_OK+' min', '— '+SES_OK+' min'], ['ar', '╱ AR', '╱ AR']], tryIt: (b, S) => {
-      const ib = $('i-b'), is = $('i-s');
-      ib.value = Math.round(b); is.value = S;
-      document.querySelectorAll('.preset-btn.on').forEach(x => x.classList.remove('on'));
-      ib.dispatchEvent(new Event('input', {bubbles:true})); is.dispatchEvent(new Event('input', {bubbles:true}));
+      layers: [['man', '– – maniabilité', '– – maneuverability'], ['ses', '— '+SES_OK+' min', '— '+SES_OK+' min'], ['ar', '╱ AR', '╱ AR']], tryIt: (b, S, slot, n) => {
+      if(!tryByName(b, S, n)){   // aile connue → sélectionnée dans « 🪽 Choisis ton aile » (sinon : simples curseurs)
+        const ib = $('i-b'), is = $('i-s');
+        ib.value = Math.round(b); is.value = S;
+        document.querySelectorAll('.preset-btn.on').forEach(x => x.classList.remove('on'));
+        ib.dispatchEvent(new Event('input', {bubbles:true})); is.dispatchEvent(new Event('input', {bubbles:true})); }
       const sc = document.querySelector('.showcase'); window.scrollTo({top: sc.getBoundingClientRect().top + scrollY - 70, behavior:'smooth'});
     }});
     addEventListener('resize', () => { if(ATL.args) drawAtlas(...ATL.args); });
@@ -2916,7 +2924,7 @@
 
     $('o-agil').innerHTML = '<span style="color:hsl('+Math.round(agility*1.2)+',68%,55%)">' + agility + '</span> <small>/ 100 ' + t('maniabilité','maneuverability') + '</small>';
     const sg = v => v === 0 ? '±0' : (v > 0 ? '<span class="pos">+'+v+'</span>' : '<span class="neg">−'+(-v)+'</span>');
-    $('o-split').innerHTML = t('aile','wing')+' <b>'+agWing+'</b> · '+(arP ? t('aile fine','slender wing')+' (AR '+num(ar, 1)+') '+sg(-arP)+' · ' : '')+t('stab','stab')+' '+(+$('i-stab').value)+' cm² '+sg(rp.stab)
+    $('o-split').innerHTML = t('aile','wing')+' <b>'+agWing+'</b> · '+(arP ? t('aile fine','slender wing')+' (AR '+num(ar, 1)+') '+sg(-arP)+' · ' : '')+t('stab','stab')+' <span class="rc rc-in"><button type="button" data-rc="st-" aria-label="'+t('stab plus petit','smaller stab')+'">−</button><b>'+(+$('i-stab').value)+' cm²</b><button type="button" data-rc="st+" aria-label="'+t('stab plus grand','bigger stab')+'">+</button></span> '+sg(rp.stab)
       + ' · '+t('dièdre','dihedral')+' '+sg(rp.dih)+' · '+t('fuselage','fuselage')+' '+sg(rp.fus)+' = <b>'+agility+'</b>';
     setAnim(agility, 'hsl('+Math.round(agility*1.2)+',68%,55%)');
     // 🌊 conditions : une vague qui déferle avance à ≈ √(g·(profondeur + hauteur)) avec profondeur ≈ 1,3 × hauteur
