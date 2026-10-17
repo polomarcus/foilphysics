@@ -773,16 +773,32 @@
 </script>
 <!-- 📊 GoatCounter : mesure d'audience SANS cookie (donc pas de bandeau de consentement) — foilhouse.goatcounter.com.
      Rien n'est compté en local (localhost, réseau maison, fichier) ni en mode vidéo Insta (?video=1).
-     En plus des pages vues : chaque clic vers le site d'un fabricant = un événement « lien/Marque Modèle » (quelles ailes intéressent). -->
+     En plus des pages vues : chaque clic vers le site d'un fabricant = un événement « lien/Marque Modèle » (quelles ailes intéressent),
+     et ce que les gens FONT : gcEv('page/action') — chaque action comptée UNE fois par visite (une pince = 1 « zoom », pas 50). -->
 <script>
 (function(){
-  if(location.protocol === 'file:' || /^(localhost|127\.|192\.168\.|10\.|\[::1\]$)/.test(location.hostname) || /[?&]video=1/.test(location.search)) return;
-  window.goatcounter = {path: function(){ return location.pathname === '/' ? '/' : location.pathname.replace(/\/index\.html$/, '/'); }};   // sans ?lang= ni #ancre : une page = une ligne
-  var s = document.createElement('script'); s.async = true; s.src = 'https://gc.zgo.at/count.js'; s.setAttribute('data-goatcounter', 'https://foilhouse.goatcounter.com/count'); document.head.appendChild(s);
+  window.gcEv = function(){};   // sans compteur (local, vidéo) : ne fait rien
+  var dbg = /[?&]gcdebug=1/.test(location.search);   // ?gcdebug=1 : affiche les événements dans la console, n'envoie rien (pour tester)
+  if(!dbg && (location.protocol === 'file:' || /^(localhost|127\.|192\.168\.|10\.|\[::1\]$)/.test(location.hostname) || /[?&]video=1/.test(location.search))) return;
+  if(!dbg){ window.goatcounter = {path: function(){ return location.pathname === '/' ? '/' : location.pathname.replace(/\/index\.html$/, '/'); }};   // sans ?lang= ni #ancre : une page = une ligne
+  var s = document.createElement('script'); s.async = true; s.src = 'https://gc.zgo.at/count.js'; s.setAttribute('data-goatcounter', 'https://foilhouse.goatcounter.com/count'); document.head.appendChild(s); }
+  var page = (location.pathname.match(/([a-z-]+)\.html$/) || [, 'accueil'])[1].replace('long-distance', 'accueil').replace('index', 'accueil'), seen = {};
+  window.gcEv = function(p, title){ p = page + '/' + p; if(seen[p]) return; seen[p] = 1;
+    if(dbg) return console.info('📊 GoatCounter (test, non envoyé) :', p);
+    if(window.goatcounter && window.goatcounter.count) window.goatcounter.count({path: p, title: title || p, event: true}); };
   document.addEventListener('click', function(e){
-    var a = e.target.closest && e.target.closest('a[data-w]'); if(!a || !window.goatcounter || !window.goatcounter.count) return;
-    window.goatcounter.count({path: 'lien/' + a.getAttribute('data-w'), title: 'Clic vers le fabricant : ' + a.getAttribute('data-w'), event: true});
+    if(!e.target.closest) return;
+    var a = e.target.closest('a[data-w]');   // clic vers le site d'un fabricant : quelle aile, depuis quelle page
+    if(a) gcEv('lien/' + a.getAttribute('data-w'), 'Clic vers le fabricant : ' + a.getAttribute('data-w'));
+    var b = e.target.closest('#lang-btn, #xp-btn, #tune-btn');
+    if(b) gcEv({'lang-btn': 'langue', 'xp-btn': 'explications', 'tune-btn': 'regler-finement'}[b.id]);
+    var r = e.target.closest('[data-rc], [data-va], [data-ld]');   // boutons de réglage (poids ±, niveau, vague, puissance, straps…)
+    if(r) gcEv('reglage/' + (r.getAttribute('data-rc') || r.getAttribute('data-va') || r.getAttribute('data-ld')).replace(/[:\d.+\-]+$/, '').replace(/^$/, 'poids'));
+    if(e.target.closest('.preset-btn')) gcEv('reglage/preset');
   }, true);
+  // réglages par champs (curseurs, menus) : quel réglage est touché (pas sa valeur)
+  document.addEventListener('change', function(e){ var el = e.target; if(el && el.id && /^(i-|rider-|b[12]$|s[12]$|v[12]$|preset|prof|mst|mat|fus|stb|cf-|cad-)/.test(el.id)) gcEv('reglage/' + el.id.replace(/[12]$/, '')); }, true);
+  document.addEventListener('pointerdown', function(e){ var li = e.target.closest && e.target.closest('li[data-nm]'); if(li) gcEv('choix-aile/' + li.getAttribute('data-nm')); }, true);
 })();
 </script>
 </body>

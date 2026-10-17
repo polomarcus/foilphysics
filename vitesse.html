@@ -1918,7 +1918,7 @@
     S.lay = {}; (K.layers || []).forEach(([k, , , onPhone]) => { S.lay[k] = VIDEO || !phone || !!onPhone; });
     const box = sc.closest('.atl-box'), lay = $('atl-lay');
     const layUI = () => { if(lay) lay.innerHTML = '<span>'+t('Lignes :','Lines:')+'</span>'+(K.layers || []).map(([k, fr, en]) => '<button type="button" data-lay="'+k+'" aria-pressed="'+S.lay[k]+'" class="'+(S.lay[k] ? 'on' : '')+'">'+(S.lay[k] ? '✓ ' : '')+t(fr, en)+'</button>').join(''); };
-    if(lay) lay.addEventListener('click', e => { const b = e.target.closest('[data-lay]'); if(!b) return; S.lay[b.dataset.lay] = !S.lay[b.dataset.lay]; K.redraw(); });
+    if(lay) lay.addEventListener('click', e => { const b = e.target.closest('[data-lay]'); if(!b) return; S.lay[b.dataset.lay] = !S.lay[b.dataset.lay]; K.redraw(); window.gcEv && gcEv('carte/lignes-'+b.dataset.lay); });
     if(VIDEO && lay) lay.style.display = 'none';
     if(VIDEO){ const tl = sc.parentElement.querySelector('.atl-tools'); if(tl) tl.style.display = 'none'; }   // vidéo Insta : carte seule
     let tmr = 0, lastPT = 'mouse', drag = null, noClick = false, pinch = null;
@@ -1940,7 +1940,7 @@
       S.z = z; tip.hidden = true;
       cv.style.width = Math.round(S.w*z)+'px';               // aperçu immédiat (étiré), redessiné net juste après
       sc.scrollLeft = ax*z - cx; sc.scrollTop = ay*z - cy;
-      zl(); used(); clearTimeout(tmr); tmr = setTimeout(K.redraw, now ? 0 : 150);
+      zl(); used(); clearTimeout(tmr); tmr = setTimeout(K.redraw, now ? 0 : 150); window.gcEv && gcEv('carte/zoom');
     };
     const mid = () => [sc.clientWidth/2, sc.clientHeight/2];
     $('atl-zp').addEventListener('click', () => setZ(S.z*1.6, ...mid(), true));
@@ -1965,6 +1965,7 @@
       const b = brEl.querySelector('button[data-k="'+cb.dataset.bk+'"]'); if(b) b.click();
     });
     if(brEl) new MutationObserver(ddUI).observe(brEl, {childList: true});
+    if(brEl) brEl.addEventListener('click', e => { const b = e.target.closest('button[data-k]'); if(b && window.gcEv) gcEv('marque/'+(b.dataset.k ? b.textContent.trim() : 'toutes')); }, true);
     if(VIDEO){ dd.style.display = 'none'; const l0 = $('atl-list'); if(l0) l0.style.display = 'none'; }   // vidéo Insta : rien d'autre que la carte
     ddUI();
     const home = document.createComment('carte');
@@ -1977,11 +1978,11 @@
       else { home.after(box); bAnchor.after(dd); if(pe) box.after(pe); home.remove(); }
       dd.classList.remove('open');
       $('atl-zf').textContent = on ? '✕' : '⛶'; $('atl-zf').setAttribute('aria-label', on ? t('Quitter le plein écran','Exit full screen') : t('Plein écran','Full screen'));
-      tip.hidden = true; stk(); K.redraw(); if(K.hash) K.hash();   // l'adresse suit : #carte-… = lien partageable vers la carte plein écran
+      tip.hidden = true; stk(); K.redraw(); if(K.hash) K.hash(); if(on && window.gcEv) gcEv('carte/plein-ecran');   // l'adresse suit : #carte-… = lien partageable vers la carte plein écran
     };
     // 🔗 partager la carte (plein écran + marques choisies) : menu de partage du téléphone, sinon copie du lien
     $('atl-zs').addEventListener('click', async () => {
-      const u = location.href, bt = $('atl-zs');
+      const u = location.href, bt = $('atl-zs'); window.gcEv && gcEv('carte/partager');
       try{ if(navigator.share){ await navigator.share({title: document.title, url: u}); return; } await navigator.clipboard.writeText(u); bt.textContent = '✓'; }
       catch(e){ if(e && e.name === 'AbortError') return; prompt(t('Copie ce lien :','Copy this link:'), u); }
       setTimeout(() => { bt.textContent = '🔗'; }, 1500);
@@ -2021,7 +2022,7 @@
       // « laquelle ? » seulement si une autre aile est presque aussi près du doigt que la plus proche (écart < 8 px)
       if(p && p.near) p.near = p.near.filter(w => w.dd - p.near[0].dd < 8);
       // plusieurs ailes sous le doigt → « laquelle ? » (les déjà épinglées y sont cochées) ; une seule, déjà épinglée → le clic ne fait rien
-      if(p && p.near && p.near.length > 1){ tip.hidden = true; chooser(p); }
+      if(p && p.near && p.near.length > 1){ tip.hidden = true; chooser(p); window.gcEv && gcEv('carte/laquelle'); }
       else if(p && p.wing){ if(isPinned(p.wing)) return; tip.hidden = true; pin(p); } else if(lastPT !== 'mouse') K.show(e);
     });
     // plusieurs ailes sous le doigt : « laquelle ? » (au lieu de deviner la plus proche)
@@ -2055,6 +2056,7 @@
     function pin(p, quiet){
       let i = S.pins.findIndex(q => same(q, p));
       used();
+      if(i < 0 && window.gcEv) gcEv('fiche/'+p.wing.n, 'Fiche épinglée : '+p.wing.n);   // quelles ailes on regarde de près
       if(i < 0){ S.pins.push({n: p.wing.n, b: p.b, S: p.S}); if(S.pins.length > 8) S.pins.shift(); i = S.pins.length - 1; K.redraw(); }
       const el = pe && pe.querySelector('.pin-card[data-i="'+i+'"]'); if(!el) return;
       el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
@@ -2065,7 +2067,7 @@
     if(pe) pe.addEventListener('click', e => {
       const x = e.target.closest('[data-pin]'), tr = e.target.closest('[data-try-pin]');
       if(x){ const v = x.dataset.pin; S.pins = v === 'all' ? [] : S.pins.filter((q, i) => i !== +v); K.redraw(); }
-      else if(tr){ const q = S.pins[+tr.dataset.tryPin]; if(!q) return; if(S.full) full(false); K.tryIt(q.b, q.S, tr.dataset.slot || undefined, q.n); }   // plein écran : on en sort, sinon le simulateur reste caché dessous
+      else if(tr){ const q = S.pins[+tr.dataset.tryPin]; if(!q) return; window.gcEv && gcEv('essayer'+(tr.dataset.slot ? '-aile-'+tr.dataset.slot : '')+'/'+q.n, 'Essayer : '+q.n); if(S.full) full(false); K.tryIt(q.b, q.S, tr.dataset.slot || undefined, q.n); }   // plein écran : on en sort, sinon le simulateur reste caché dessous
     });
     // appelé à la fin de chaque dessin : repères numérotés sur la carte + fiches à jour (elles suivent poids / niveau / vague)
     function after(c, px, py){
@@ -2136,7 +2138,7 @@
       lst.querySelector('ul').innerHTML = P.map(p => { const L = window.foilLink && window.foilLink(p.n, K.page);
         return '<li><b>'+(L ? '<a href="'+L.u+'" target="_blank" rel="noopener" data-w="'+p.n+'">'+p.n+window.wlTail(L)+'</a>' : p.n)+'</b>'+K.row(p)+'</li>'; }).join('');
     }
-    if(lst) lst.addEventListener('toggle', listUI);
+    if(lst) lst.addEventListener('toggle', () => { listUI(); if(lst.open && window.gcEv) gcEv('carte/liste'); });
     return {after: (c, px, py) => { after(c, px, py); listUI(); }, size, full, rider: riderHtml};
   }
   (function(){
@@ -2218,16 +2220,32 @@
 </script>
 <!-- 📊 GoatCounter : mesure d'audience SANS cookie (donc pas de bandeau de consentement) — foilhouse.goatcounter.com.
      Rien n'est compté en local (localhost, réseau maison, fichier) ni en mode vidéo Insta (?video=1).
-     En plus des pages vues : chaque clic vers le site d'un fabricant = un événement « lien/Marque Modèle » (quelles ailes intéressent). -->
+     En plus des pages vues : chaque clic vers le site d'un fabricant = un événement « lien/Marque Modèle » (quelles ailes intéressent),
+     et ce que les gens FONT : gcEv('page/action') — chaque action comptée UNE fois par visite (une pince = 1 « zoom », pas 50). -->
 <script>
 (function(){
-  if(location.protocol === 'file:' || /^(localhost|127\.|192\.168\.|10\.|\[::1\]$)/.test(location.hostname) || /[?&]video=1/.test(location.search)) return;
-  window.goatcounter = {path: function(){ return location.pathname === '/' ? '/' : location.pathname.replace(/\/index\.html$/, '/'); }};   // sans ?lang= ni #ancre : une page = une ligne
-  var s = document.createElement('script'); s.async = true; s.src = 'https://gc.zgo.at/count.js'; s.setAttribute('data-goatcounter', 'https://foilhouse.goatcounter.com/count'); document.head.appendChild(s);
+  window.gcEv = function(){};   // sans compteur (local, vidéo) : ne fait rien
+  var dbg = /[?&]gcdebug=1/.test(location.search);   // ?gcdebug=1 : affiche les événements dans la console, n'envoie rien (pour tester)
+  if(!dbg && (location.protocol === 'file:' || /^(localhost|127\.|192\.168\.|10\.|\[::1\]$)/.test(location.hostname) || /[?&]video=1/.test(location.search))) return;
+  if(!dbg){ window.goatcounter = {path: function(){ return location.pathname === '/' ? '/' : location.pathname.replace(/\/index\.html$/, '/'); }};   // sans ?lang= ni #ancre : une page = une ligne
+  var s = document.createElement('script'); s.async = true; s.src = 'https://gc.zgo.at/count.js'; s.setAttribute('data-goatcounter', 'https://foilhouse.goatcounter.com/count'); document.head.appendChild(s); }
+  var page = (location.pathname.match(/([a-z-]+)\.html$/) || [, 'accueil'])[1].replace('long-distance', 'accueil').replace('index', 'accueil'), seen = {};
+  window.gcEv = function(p, title){ p = page + '/' + p; if(seen[p]) return; seen[p] = 1;
+    if(dbg) return console.info('📊 GoatCounter (test, non envoyé) :', p);
+    if(window.goatcounter && window.goatcounter.count) window.goatcounter.count({path: p, title: title || p, event: true}); };
   document.addEventListener('click', function(e){
-    var a = e.target.closest && e.target.closest('a[data-w]'); if(!a || !window.goatcounter || !window.goatcounter.count) return;
-    window.goatcounter.count({path: 'lien/' + a.getAttribute('data-w'), title: 'Clic vers le fabricant : ' + a.getAttribute('data-w'), event: true});
+    if(!e.target.closest) return;
+    var a = e.target.closest('a[data-w]');   // clic vers le site d'un fabricant : quelle aile, depuis quelle page
+    if(a) gcEv('lien/' + a.getAttribute('data-w'), 'Clic vers le fabricant : ' + a.getAttribute('data-w'));
+    var b = e.target.closest('#lang-btn, #xp-btn, #tune-btn');
+    if(b) gcEv({'lang-btn': 'langue', 'xp-btn': 'explications', 'tune-btn': 'regler-finement'}[b.id]);
+    var r = e.target.closest('[data-rc], [data-va], [data-ld]');   // boutons de réglage (poids ±, niveau, vague, puissance, straps…)
+    if(r) gcEv('reglage/' + (r.getAttribute('data-rc') || r.getAttribute('data-va') || r.getAttribute('data-ld')).replace(/[:\d.+\-]+$/, '').replace(/^$/, 'poids'));
+    if(e.target.closest('.preset-btn')) gcEv('reglage/preset');
   }, true);
+  // réglages par champs (curseurs, menus) : quel réglage est touché (pas sa valeur)
+  document.addEventListener('change', function(e){ var el = e.target; if(el && el.id && /^(i-|rider-|b[12]$|s[12]$|v[12]$|preset|prof|mst|mat|fus|stb|cf-|cad-)/.test(el.id)) gcEv('reglage/' + el.id.replace(/[12]$/, '')); }, true);
+  document.addEventListener('pointerdown', function(e){ var li = e.target.closest && e.target.closest('li[data-nm]'); if(li) gcEv('choix-aile/' + li.getAttribute('data-nm')); }, true);
 })();
 </script>
 </body>
