@@ -2099,7 +2099,7 @@
   // 🔗 nom d'aile cliquable → page officielle du fabricant (ailes.js, avec UTM)
   // RGAA 6.1 (lien explicite) : l'intitulé lu = nom visible + destination + nouvel onglet ; la flèche ↗ n'est pas lue
   window.wlTail = L => '<span class="vh"> — '+(L.fam ? t('page officielle sur le site '+L.brand,'official page on the '+L.brand+' website') : t('ailes '+L.brand+' sur le site officiel',L.brand+' wings on the official website'))+t(' (nouvel onglet)',' (new tab)')+'</span>&nbsp;<span aria-hidden="true">↗</span>';
-  const wLink = (B, n0) => { const n = n0.replace(/ (\S+)$/, '&nbsp;$1'), L = window.foilLink && window.foilLink(B.n+' '+n0, 'carve'); return L ? '<a class="wl" href="'+L.u+'" target="_blank" rel="noopener">'+n+wlTail(L)+'</a>' : n; };
+  const wLink = (B, n0) => { const n = n0.replace(/ (\S+)$/, '&nbsp;$1'), L = window.foilLink && window.foilLink(B.n+' '+n0, 'carve'); return L ? '<a class="wl" href="'+L.u+'" target="_blank" rel="noopener" data-w="'+B.n+' '+n0+'">'+n+wlTail(L)+'</a>' : n; };
   function atlBrandInfo(B, kg, H, famCol, fam){
     const box = $('atl-info'); if(!box) return;
     if(!B){ box.innerHTML = ''; ATL.reco = null; return; }
@@ -2652,7 +2652,7 @@
       pe.innerHTML = !S.pins.length ? '' : (S.pins.length > 1 ? '<div class="pin-bar"><span>📌 '+S.pins.length+' '+t('ailes épinglées · touche-en d\'autres pour comparer','pinned wings · tap more to compare')+'</span><button type="button" data-pin="all">'+t('Tout fermer','Close all')+' ×</button></div>' : '')
         + S.pins.map((q, i) => { const f = K.info(q.b, q.S, q.n);
           // 🔗 le nom de l'aile = lien vers sa page officielle (ailes.js : page de la gamme, sinon page des ailes de la marque)
-          const L = window.foilLink && window.foilLink(q.n, 'carve'), nm = L ? '<a href="'+L.u+'" target="_blank" rel="noopener">'+q.n.replace(/ (\S+)$/, '&nbsp;$1')+window.wlTail(L)+'</a>'
+          const L = window.foilLink && window.foilLink(q.n, 'carve'), nm = L ? '<a href="'+L.u+'" target="_blank" rel="noopener" data-w="'+q.n+'">'+q.n.replace(/ (\S+)$/, '&nbsp;$1')+window.wlTail(L)+'</a>'
             + (L.fam ? '' : '<small>'+t('site '+L.brand,L.brand+' site')+'</small>') : q.n;
           // fond teinté de la couleur de la ZONE de l'aile (20 % sur fond sombre : tous les textes restent ≥ 4,6:1) + bande à gauche ;
           // le nom de la zone reste écrit en bas de la fiche (la couleur n'est jamais seule)
@@ -2702,7 +2702,7 @@
       cv.setAttribute('aria-label', t('Carte des '+P.length+' ailes : envergure en abscisse, surface en ordonnée, zones en couleur. Le détail de chaque aile est dans la liste sous la carte.','Map of '+P.length+' wings: span across, area up, coloured zones. Each wing\'s details are in the list below the map.'));
       if(!lst.open) return;
       lst.querySelector('ul').innerHTML = P.map(p => { const L = window.foilLink && window.foilLink(p.n, K.page);
-        return '<li><b>'+(L ? '<a href="'+L.u+'" target="_blank" rel="noopener">'+p.n+window.wlTail(L)+'</a>' : p.n)+'</b>'+K.row(p)+'</li>'; }).join('');
+        return '<li><b>'+(L ? '<a href="'+L.u+'" target="_blank" rel="noopener" data-w="'+p.n+'">'+p.n+window.wlTail(L)+'</a>' : p.n)+'</b>'+K.row(p)+'</li>'; }).join('');
     }
     if(lst) lst.addEventListener('toggle', listUI);
     return {after: (c, px, py) => { after(c, px, py); listUI(); }, size, full, rider: riderHtml};
@@ -3071,6 +3071,20 @@
   else if(/[?&]lang=fr/i.test(location.search)) startLang = 'fr';   // ?lang=fr force aussi le français (même si l'anglais est mémorisé)
   else { try{ if(localStorage.getItem('lcw-lang') === 'en') startLang = 'en'; }catch(e){} }
   if(startLang === 'en') applyLang('en'); else render();
+})();
+</script>
+<!-- 📊 GoatCounter : mesure d'audience SANS cookie (donc pas de bandeau de consentement) — foilhouse.goatcounter.com.
+     Rien n'est compté en local (localhost, réseau maison, fichier) ni en mode vidéo Insta (?video=1).
+     En plus des pages vues : chaque clic vers le site d'un fabricant = un événement « lien/Marque Modèle » (quelles ailes intéressent). -->
+<script>
+(function(){
+  if(location.protocol === 'file:' || /^(localhost|127\.|192\.168\.|10\.|\[::1\]$)/.test(location.hostname) || /[?&]video=1/.test(location.search)) return;
+  window.goatcounter = {path: function(){ return location.pathname === '/' ? '/' : location.pathname.replace(/\/index\.html$/, '/'); }};   // sans ?lang= ni #ancre : une page = une ligne
+  var s = document.createElement('script'); s.async = true; s.src = 'https://gc.zgo.at/count.js'; s.setAttribute('data-goatcounter', 'https://foilhouse.goatcounter.com/count'); document.head.appendChild(s);
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a[data-w]'); if(!a || !window.goatcounter || !window.goatcounter.count) return;
+    window.goatcounter.count({path: 'lien/' + a.getAttribute('data-w'), title: 'Clic vers le fabricant : ' + a.getAttribute('data-w'), event: true});
+  }, true);
 })();
 </script>
 </body>

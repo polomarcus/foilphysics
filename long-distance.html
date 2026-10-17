@@ -2916,5 +2916,19 @@
   };
 })();
 </script>
+<!-- 📊 GoatCounter : mesure d'audience SANS cookie (donc pas de bandeau de consentement) — foilhouse.goatcounter.com.
+     Rien n'est compté en local (localhost, réseau maison, fichier) ni en mode vidéo Insta (?video=1).
+     En plus des pages vues : chaque clic vers le site d'un fabricant = un événement « lien/Marque Modèle » (quelles ailes intéressent). -->
+<script>
+(function(){
+  if(location.protocol === 'file:' || /^(localhost|127\.|192\.168\.|10\.|\[::1\]$)/.test(location.hostname) || /[?&]video=1/.test(location.search)) return;
+  window.goatcounter = {path: function(){ return location.pathname === '/' ? '/' : location.pathname.replace(/\/index\.html$/, '/'); }};   // sans ?lang= ni #ancre : une page = une ligne
+  var s = document.createElement('script'); s.async = true; s.src = 'https://gc.zgo.at/count.js'; s.setAttribute('data-goatcounter', 'https://foilhouse.goatcounter.com/count'); document.head.appendChild(s);
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a[data-w]'); if(!a || !window.goatcounter || !window.goatcounter.count) return;
+    window.goatcounter.count({path: 'lien/' + a.getAttribute('data-w'), title: 'Clic vers le fabricant : ' + a.getAttribute('data-w'), event: true});
+  }, true);
+})();
+</script>
 </body>
 </html>
