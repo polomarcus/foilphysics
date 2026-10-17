@@ -343,11 +343,11 @@
     .atl-box.full .atl-tools, .atl-box.full .atl-lay, .atl-box.full .atl-bdd, .atl-box.full .atl-rot{grid-column:1 / -1; margin-bottom:4px;}
     .atl-box.full .atl-bdd.open .bdd-p{grid-template-columns:repeat(3, 1fr);} .atl-box.full .atl-hint{display:none;}
     .atl-box.full .atl-scroll{grid-column:1; grid-row:-2;}
-    .atl-box.full .atl-pins{grid-column:2; grid-row:-2; flex-direction:column; width:min(250px, 36vw); max-height:none; overflow-x:hidden; overflow-y:auto; margin:0; padding:0 2px 0 0;}
-    .atl-box.full .pin-card{flex:none;} .atl-box.full .pin-bar{flex-direction:row;}
+    html .atl-box.full .atl-pins{grid-column:2; grid-row:-2; display:flex; flex-direction:column; gap:10px; width:min(250px, 36vw); max-height:none; overflow-x:hidden; overflow-y:auto; margin:0; padding:10px 2px 0 4px;}
+    html .atl-box.full .pin-card{flex:none;}
   }
-  .atl-box.full .atl-pins{flex:none; display:flex; gap:8px; overflow-x:auto; max-height:40vh; margin:8px 0 0; padding:10px 0 2px 8px;}
-  .atl-box.full .pin-card{flex:0 0 min(72vw, 240px); overflow-y:auto;} .atl-box.full .pin-bar{flex:none; flex-direction:column; justify-content:center;} .atl-box.full .pin-bar span{display:none;}
+  /* plein écran (portrait) : fiches EMPILÉES sous la carte, 2 par ligne, la zone défile verticalement (pas de défilement de côté) */
+  .atl-box.full .atl-pins{flex:none; display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:10px 8px; overflow-y:auto; overscroll-behavior:contain; max-height:38vh; margin:8px 0 0; padding:10px 2px 2px 4px;}
   html.atl-full-on, html.atl-full-on body{overflow:hidden;}
   /* 🧍 réglages résumés, collés sous la barre du haut pendant qu'on lit la carte */
   .atl-sticky{position:fixed; left:0; right:0; z-index:45; display:flex; justify-content:center; flex-wrap:nowrap; gap:6px; overflow-x:auto; scrollbar-width:none; padding:6px 10px; background:rgba(15,23,42,.94); border-bottom:1px solid var(--line); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);}
@@ -370,6 +370,11 @@
   .hint-x{width:26px; height:26px; font-size:1rem; margin-right:4px;}
   .atl-box .win-tip{white-space:normal; width:max-content; max-width:min(330px, calc(100% - 8px));}   /* jamais plus large que le cadre (plein écran étroit) */
   .shp{width:13px; height:13px; vertical-align:-2px; margin-right:5px;}
+  .atl-list{max-width:900px; margin:6px auto 12px; background:var(--panel-2); border:1px solid var(--line); border-radius:12px;}
+  .atl-list summary{cursor:pointer; padding:11px 14px; font-weight:800; font-size:.86rem; color:var(--txt);}
+  .atl-list ul{list-style:none; margin:0; padding:0 8px 8px; max-height:60vh; overflow-y:auto; display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:6px;}
+  .atl-list li{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:8px 10px; font-size:.8rem; line-height:1.45; color:#cbd5e1;}
+  .atl-list li b{display:block; color:var(--txt);} .atl-list li a{color:inherit; text-decoration:underline; text-decoration-color:#93c5fd; text-underline-offset:2px;} .atl-list li span{display:block;}
   .vh{position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;}   /* lu par les lecteurs d'écran, invisible */
   .pin-card.flash{animation:pinf .9s ease-out;} @keyframes pinf{0%{box-shadow:0 0 0 4px #fff;} 100%{box-shadow:0 0 0 0 rgba(255,255,255,0);}}
   @media (max-width:560px){ .atl-box{padding:4px;} .atl-box .win-tip{font-size:.8rem; white-space:normal; max-width:250px;} .atl-box .win-tip .tt-c{font-size:.72rem;} }
@@ -518,6 +523,7 @@
     <div class="atl-brands" id="atl-brands"></div>
     <div class="atl-box"><div class="atl-tools"><span class="atl-hint" id="atl-hint"></span><span class="atl-zb"><button type="button" id="atl-zm" aria-label="Zoom −">−</button><b id="atl-zl">1×</b><button type="button" id="atl-zp" aria-label="Zoom +">+</button><button type="button" id="atl-z1" aria-label="Zoom 1×">1:1</button><button type="button" id="atl-zf" aria-label="Plein écran">⛶</button><button type="button" id="atl-zs" aria-label="Partager la carte">🔗</button></span></div><div class="atl-lay" id="atl-lay"></div><div class="atl-scroll" id="atl-scroll"><canvas id="atl-cv" aria-hidden="true"></canvas></div><div class="win-tip" id="atl-tip" hidden></div></div>
     <div class="atl-pins" id="atl-pins" aria-live="polite"></div>
+    <details class="atl-list" id="atl-list"><summary></summary><ul></ul></details>
     <div class="atl-sticky" id="atl-sticky" hidden></div>
     <div class="atl-fam" id="atl-fam"></div>
     <div class="atl-info" id="atl-info"></div>
@@ -2528,6 +2534,7 @@
       const b = brEl.querySelector('button[data-k="'+cb.dataset.bk+'"]'); if(b) b.click();
     });
     if(brEl) new MutationObserver(ddUI).observe(brEl, {childList: true});
+    if(VIDEO){ dd.style.display = 'none'; const l0 = $('atl-list'); if(l0) l0.style.display = 'none'; }   // vidéo Insta : rien d'autre que la carte
     ddUI();
     const home = document.createComment('carte');
     const full = on => {
@@ -2682,7 +2689,20 @@
       S.rOpen = !S.rOpen; const fl = rider0.querySelector('.rc-full'); if(fl) fl.classList.toggle('open', S.rOpen); b.setAttribute('aria-expanded', S.rOpen); b.textContent = S.rOpen ? t('⚙️ moins','⚙️ less') : t('⚙️ réglages','⚙️ settings'); });
     const riderHtml = fullHtml => '<div class="rc-mini">'+(K.mini ? K.mini() : '')+'<button type="button" class="mini-b" data-ropen aria-expanded="'+S.rOpen+'">'+(S.rOpen ? t('⚙️ moins','⚙️ less') : t('⚙️ réglages','⚙️ settings'))+'</button></div>'
       + '<div class="rc-full'+(S.rOpen ? ' open' : '')+'">'+fullHtml+'</div>';
-    return {after, size, full, rider: riderHtml};
+    // 📋 RGAA (thème 1) : la carte est un dessin → alternative texte = la liste des ailes affichées, avec leurs chiffres
+    // (repliée ; construite à l'ouverture, refaite à chaque dessin si ouverte). La toile devient une image décrite.
+    const lst = $('atl-list');
+    cv.removeAttribute('aria-hidden'); cv.setAttribute('role', 'img');
+    function listUI(){
+      if(!lst) return; const P = (S.pts || []).slice().sort((a, b) => a.n.localeCompare(b.n, 'fr', {numeric: true}));
+      lst.querySelector('summary').textContent = t('📋 Liste des ailes de la carte','📋 List of the wings on the map')+' ('+P.length+')';
+      cv.setAttribute('aria-label', t('Carte des '+P.length+' ailes : envergure en abscisse, surface en ordonnée, zones en couleur. Le détail de chaque aile est dans la liste sous la carte.','Map of '+P.length+' wings: span across, area up, coloured zones. Each wing\'s details are in the list below the map.'));
+      if(!lst.open) return;
+      lst.querySelector('ul').innerHTML = P.map(p => { const L = window.foilLink && window.foilLink(p.n, K.page);
+        return '<li><b>'+(L ? '<a href="'+L.u+'" target="_blank" rel="noopener">'+p.n+window.wlTail(L)+'</a>' : p.n)+'</b>'+K.row(p)+'</li>'; }).join('');
+    }
+    if(lst) lst.addEventListener('toggle', listUI);
+    return {after: (c, px, py) => { after(c, px, py); listUI(); }, size, full, rider: riderHtml};
   }
   (function(){
     const cv = $('atl-cv'), tip = $('atl-tip'); if(!cv || !tip) return;
@@ -2735,7 +2755,12 @@
         + '<button type="button" class="mini-b" data-rc="lv:'+nx(['1', '2', '3'], lv)+'">'+{'1': t('🌱 progression','🌱 learning'), '2': t('💪 confirmé','💪 experienced'), '3': '🏆 expert'}[lv]+'</button>'
         + '<button type="button" class="mini-b" data-rc="h:'+nx(HS, HS.includes(H) ? H : 1)+'">🌊 '+(H >= 1.5 ? '1,5-2' : num(H, H % 1 ? 1 : 0))+' m</button>'
         + '<button type="button" class="mini-b" data-rc="sr:'+(SURF.ride === 'carve' ? 'porte' : 'carve')+'">'+(SURF.ride === 'carve' ? t('🔥 je carve','🔥 I carve') : t('↗️ porté','↗️ carried'))+'</button>'; };
-    ATL.kit = atlKit({st: ATL, redraw: () => { if(ATL.args) drawAtlas(...ATL.args); }, pick, show, info, canTry: inSl, mini, hash: () => atlHash(),
+    // une ligne de la liste texte (alternative à la carte) : taille, scores, session, zone — en mots, sans couleur
+    const row = p => { const g = ATL.geo, ar = p.b*p.b/p.S, ses = waveSession(p.b, p.S, g.kg, g.Hw);
+      const z = ar >= ATL.AR0 && ar <= ATL.AR1 ? (C => t(C.sfr, C.sen))(ATL_CAT[atlCat(p.b, p.S, g.kg, manOf(p.b, p.S) >= 45, ses.unlimited || ses.min >= SES_OK)]) : t('hors gamme (AR)','out of range (AR)');
+      return '<span>'+num(p.b, p.b % 1 ? 1 : 0)+'&nbsp;cm · '+num(p.S)+'&nbsp;cm² · AR&nbsp;'+num(ar, 1)+'</span>'
+        + '<span>'+t('maniabilité','maneuverability')+' '+manOf(p.b, p.S)+' · '+t('glisse','glide')+' '+glideScore(p.b, p.S, g.kg)+' · '+t('session','session')+' '+(ses.unlimited ? t('longtemps','a long time') : '~'+Math.max(1, Math.round(ses.min))+'&nbsp;min')+'</span><span>'+z+'</span>'; };
+    ATL.kit = atlKit({st: ATL, redraw: () => { if(ATL.args) drawAtlas(...ATL.args); }, pick, show, info, canTry: inSl, mini, hash: () => atlHash(), row, page: 'carve',
       layers: [['man', '– – maniabilité', '– – maneuverability'], ['ses', '— '+SES_OK+' min', '— '+SES_OK+' min'], ['ar', '╱ AR', '╱ AR']], tryIt: (b, S) => {
       const ib = $('i-b'), is = $('i-s');
       ib.value = Math.round(b); is.value = S;

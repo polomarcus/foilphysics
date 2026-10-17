@@ -26,8 +26,8 @@
 <style>
   :root{
     --bg:#0f172a; --panel:#1e293b; --panel-2:#243347; --line:#334155;
-    --txt:#e2e8f0; --muted:#94a3b8; --dim:#64748b;
-    --sky:#0ea5e9; --induced:#f43f5e; --profile:#94a3b8;   /* frottement = ardoise (l'ambre = aile classique) */
+    --txt:#e2e8f0; --muted:#94a3b8; --dim:#8f9db1;   /* dim : ≥ 4,6:1 sur tous les fonds (avant 2,7) — RGAA 3.2 */
+    --sky:#0ea5e9; --induced:#f43f5e; --induced-t:#fb7185;   /* induced-t = même rouge, éclairci pour le TEXTE (≥ 4,7:1) */ --profile:#94a3b8;   /* frottement = ardoise (l'ambre = aile classique) */
     --green:#22c55e; --amber:#f59e0b; --red:#ef4444;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
@@ -447,8 +447,9 @@
   .scale-tick .ln{width:1px; height:8px; margin:0 auto; background:var(--dim);}
   .scale-tick .tw{font-size:.72rem; font-weight:700; color:var(--txt); margin-top:2px;}
   .scale-tick .tl{font-size:.68rem; color:var(--muted); line-height:1.1;}
+  .scale-tick.alt .ln{height:34px;} .scale-tick.end{transform:translateX(-100%); text-align:right;} .scale-tick.end .ln{margin:0 0 0 auto;}   /* dernier repère collé au bord droit : texte aligné à droite (sinon « 430 W » est coupé) */ .tick-layer:has(.alt){height:74px;}
   @media(max-width:560px){
-    .tick-layer{height:48px;}
+    .tick-layer{height:48px;} .tick-layer:has(.alt){height:78px;}
     .scale-tick{width:50px;}
     .scale-tick .tw{font-size:.68rem;}
     .scale-tick .tl{font-size:.62rem;}
@@ -1070,7 +1071,7 @@
   <!-- CHOC DES WATTS -->
   <div class="shock">
     <h3 data-i18n="choc-h3">⚡ Ce qui te freine (et brûle tes watts)</h3>
-    <p class="lede" data-i18n="choc-lede">Deux freinages s'additionnent. L'aile classique paie surtout le <b style="color:var(--induced)">freinage
+    <p class="lede" data-i18n="choc-lede">Deux freinages s'additionnent. L'aile classique paie surtout le <b style="color:var(--induced-t)">freinage
       « portance »</b> : voler lentement avec une aile courte coûte cher juste pour rester en l'air.
       L'aile longue distance peut le diviser par <b>3 à 5</b> grâce à sa grande envergure (le chiffre exact dépend des deux ailes — regarde les barres).</p>
     <div class="scale-note" style="line-height:1.55; margin-bottom:16px" data-i18n="why-hiar">
@@ -1099,7 +1100,7 @@
     <div class="fr-cfg">
       <div class="note-title" style="margin-top:4px" data-i18n="cfg-title">🎛️ Configurateur : qu'est-ce qui te freine ?</div>
       <p class="lede" style="text-align:center; margin-bottom:14px" data-i18n="cfg-lede">Joue avec l'aile et le rig, chaque poste de traînée bouge en direct.
-        La <b style="color:var(--induced)">portance</b> (traînée induite) fond avec l'<b>envergure</b> et la vitesse ; le reste = <b style="color:var(--profile)">frottement</b>.</p>
+        La <b style="color:var(--induced-t)">portance</b> (traînée induite) fond avec l'<b>envergure</b> et la vitesse ; le reste = <b style="color:var(--profile)">frottement</b>.</p>
       <div class="fr-controls">
         <div class="field"><label for="cf-b"><span data-i18n="cfg-lspan">Envergure</span> : <span class="fval" id="cf-bv">150</span> cm</label><input type="range" id="cf-b" min="90" max="250" step="1" value="150"></div>
         <div class="field"><label for="cf-v"><span data-i18n="cfg-lspeed">Vitesse</span> : <span class="fval" id="cf-vv">15</span> km/h</label><input type="range" id="cf-v" min="8" max="25" step="0.5" value="15"></div>
@@ -1682,8 +1683,9 @@
 
   function drawEngine(r1, r2){
     const pos = w => Math.max(1.5, Math.min(98.5, (w/SC_MAX)*100));
-    document.getElementById('scale-ticks').innerHTML = BENCH.map(b=>
-      '<div class="scale-tick" style="left:'+pos(b.w)+'%"><div class="ln"></div>'+
+    // deux repères trop proches (70 / 100 W sur téléphone) : le second descend d'une ligne au lieu de chevaucher
+    document.getElementById('scale-ticks').innerHTML = BENCH.map((b, i)=>
+      '<div class="scale-tick'+(i && pos(b.w) - pos(BENCH[i - 1].w) < 16 ? ' alt' : '')+(pos(b.w) > 88 ? ' end' : '')+'" style="left:'+pos(b.w)+'%"><div class="ln"></div>'+
       '<div class="tw">'+b.w+' W</div><div class="tl">'+t(b.fr,b.en)+'</div></div>').join('');
     const marks = [
       {r:r1, name:t('🪽 Classique','🪽 Classic'), bottom:26},
@@ -1776,10 +1778,10 @@
       t('Traînée totale : ','Total drag: ')+'<b>'+num(tot,0)+' N</b> ≈ '+t('tracter ','pulling ')+num(tot/G,1)+' kg';
     document.getElementById('cf-bar').innerHTML = parts.map(p=>{
       const w = (p.D/tot)*100;
-      return '<div class="seg" style="width:'+w+'%;background:'+p.col+(p.txtc?';color:'+p.txtc:'')+'">'+(w>16?num(p.D,0)+' N':'')+'</div>';
+      return '<div class="seg" style="width:'+w+'%;background:'+p.col+(p.txtc?';color:'+p.txtc:'')+'">'+(w>16?num(p.D,0)+' N':w>4.5?'<small>'+(parts.indexOf(p) + 1)+'</small>':'')+'</div>';
     }).join('');
-    document.getElementById('cf-leg').innerHTML = parts.map(p=>
-      '<span><i style="background:'+p.col+'"></i>'+p.lab+' — '+num(p.D,0)+' N ('+num(p.D/tot*100,0)+' %)</span>').join('');
+    document.getElementById('cf-leg').innerHTML = parts.map((p, i)=>   // numérotée dans l'ordre de la barre (gauche → droite)
+      '<span><i style="background:'+p.col+'"></i>'+(i + 1)+'. '+p.lab+' — '+num(p.D,0)+' N ('+num(p.D/tot*100,0)+' %)</span>').join('');
   }
 
   /* ---------- Graphe puissance / vitesse (vue Simple) ---------- */
@@ -2502,12 +2504,12 @@
     
     
     'choc-h3':'⚡ What slows you down (and burns your watts)',
-    'choc-lede':'Two drags add up. The classic wing pays mostly the <b style="color:var(--induced)">"lift" drag</b>: flying slowly with a short wing costs a lot just to stay airborne. The long-distance wing can cut it <b>3 to 5×</b> thanks to its wide span (the exact figure depends on both wings — check the bars).',
+    'choc-lede':'Two drags add up. The classic wing pays mostly the <b style="color:var(--induced-t)">"lift" drag</b>: flying slowly with a short wing costs a lot just to stay airborne. The long-distance wing can cut it <b>3 to 5×</b> thanks to its wide span (the exact figure depends on both wings — check the bars).',
     'leg-ind':'<i class="i-ind"></i><b>🔴 "Lift" drag</b> — the price to pay just to stay airborne. Explodes if you fly slow or with a short span.',
     'leg-pro':'<i class="i-pro"></i><b>⚪ "Friction" drag</b> — the water the wing, mast, fuselage and stab must push aside. Rises when you speed up.',
     'bar1':'🪽 Classic wing','bar2':'🌊 Long-distance wing',
     'cfg-title':'🎛️ Configurator: what slows you down?',
-    'cfg-lede':'Play with the wing and rig, each drag source moves live. The <b style="color:var(--induced)">lift</b> (induced drag) melts with <b>span</b> and speed; the rest = <b style="color:var(--profile)">friction</b>.',
+    'cfg-lede':'Play with the wing and rig, each drag source moves live. The <b style="color:var(--induced-t)">lift</b> (induced drag) melts with <b>span</b> and speed; the rest = <b style="color:var(--profile)">friction</b>.',
     'cfg-lspan':'Span','cfg-lspeed':'Speed','cfg-lsurf':'Wing surface','cfg-lcd0':'Wing profile','cfg-lmast':'Mast','cfg-lfus':'Fuselage','cfg-lstab':'Stab',
     'opt-cd0-1':'Thin (~12 %)','opt-cd0-2':'Medium (~15 %)','opt-cd0-3':'Thick (~17 %)',
     'opt-cfmast1':'13 mm — thin','opt-cfmast2':'16 mm — standard','opt-cfmast3':'19 mm — big (Fatty)',
