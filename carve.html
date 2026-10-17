@@ -309,9 +309,13 @@
   .atl-choose[hidden]{display:none;}
   .atl-choose .ac-h{display:flex; justify-content:space-between; align-items:center; padding:2px 2px 2px 8px; font-size:.74rem; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:.04em;}
   .atl-choose .ac-h button{width:34px; height:34px; border:0; background:none; color:var(--muted); font-size:1.25rem; cursor:pointer;}
-  .atl-choose > button{display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 8px; width:100%; min-height:42px; text-align:left; background:transparent; border:0; border-top:1px solid var(--line); color:#cbd5e1; padding:8px; font:inherit; font-size:.82rem; cursor:pointer;}
-  .atl-choose > button:hover{background:rgba(148,163,184,.12);} .atl-choose > button b{color:var(--txt);} .atl-choose > button span{color:var(--muted); font-size:.74rem;}
-  .atl-choose > button i{width:9px; height:9px; border-radius:50%; flex:none; align-self:center;}
+  .atl-choose .ac-h small{flex:1; margin-left:6px; font-size:.7rem; font-weight:600; text-transform:none; letter-spacing:0; color:var(--muted);}
+  .atl-choose .ac-l{max-height:min(50vh, 380px); overflow-y:auto; overscroll-behavior:contain;}
+  .atl-choose .ac-l > button.on{cursor:default; background:rgba(148,163,184,.1);} .atl-choose .ac-l > button.on b{color:var(--muted);}
+  .atl-choose .ac-l > button em{font-style:normal; font-weight:900; color:#4ade80; width:9px; flex:none;}
+  .atl-choose > button, .atl-choose .ac-l > button{display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 8px; width:100%; min-height:42px; text-align:left; background:transparent; border:0; border-top:1px solid var(--line); color:#cbd5e1; padding:8px; font:inherit; font-size:.82rem; cursor:pointer;}
+  .atl-choose .ac-l > button:not(.on):hover, .atl-choose > button:hover{background:rgba(148,163,184,.12);} .atl-choose .ac-l > button b{color:var(--txt);} .atl-choose .ac-l > button span{color:var(--muted); font-size:.74rem;}
+  .atl-choose .ac-l > button i{width:9px; height:9px; border-radius:50%; flex:none; align-self:center;}
   /* ⛶ plein écran (classe CSS : l'API plein écran n'existe pas sur iPhone) */
   .atl-box.full{position:fixed; inset:0; z-index:200; max-width:none; margin:0; border-radius:0; display:flex; flex-direction:column; padding:8px 8px calc(8px + env(safe-area-inset-bottom)); background:var(--bg);}
   .atl-box.full .atl-scroll{flex:1 1 0; min-height:0; height:auto !important; display:flex;} .atl-box.full #atl-cv{flex:none; margin:0 auto auto;}   /* carte en haut, centrée en largeur (marges auto : rien de coupé au zoom) */
@@ -2578,35 +2582,46 @@
       const p = K.pick(e, lastPT === 'mouse' ? 9 : 18); chooser(null);
       // « laquelle ? » seulement si une autre aile est presque aussi près du doigt que la plus proche (écart < 8 px)
       if(p && p.near) p.near = p.near.filter(w => w.dd - p.near[0].dd < 8);
-      // aile déjà épinglée : on ne la reprend pas (le clic ne fait rien) ; s'il y en a d'autres sous le doigt, elles seules sont proposées
-      if(p && p.near && p.near.length){ const free = p.near.filter(w => !S.pins.some(q => q.n === w.n && Math.abs(q.b - w.b) < .01 && q.S === w.S));
-        if(!free.length) return; p.near = free; p.wing = free[0]; p.b = free[0].b; p.S = free[0].S; }
+      // plusieurs ailes sous le doigt → « laquelle ? » (les déjà épinglées y sont cochées) ; une seule, déjà épinglée → le clic ne fait rien
       if(p && p.near && p.near.length > 1){ tip.hidden = true; chooser(p); }
-      else if(p && p.wing){ tip.hidden = true; pin(p); } else if(lastPT !== 'mouse') K.show(e);
+      else if(p && p.wing){ if(isPinned(p.wing)) return; tip.hidden = true; pin(p); } else if(lastPT !== 'mouse') K.show(e);
     });
     // plusieurs ailes sous le doigt : « laquelle ? » (au lieu de deviner la plus proche)
     const ch = document.createElement('div'); ch.className = 'atl-choose'; ch.hidden = true; box.appendChild(ch);
+    // la liste RESTE OUVERTE : on peut en épingler plusieurs d'affilée (8 ailes dans le même coin, ça arrive) ;
+    // les épinglées sont cochées ✓ et ne se reprennent pas ; × ou un toucher ailleurs pour fermer
     function chooser(p){
       if(!p){ ch.hidden = true; return; }
-      const L = p.near.slice(0, 8);
-      ch.innerHTML = '<div class="ac-h">'+t('Laquelle ?','Which one?')+'<button type="button" data-ac="x" aria-label="'+t('Fermer','Close')+'">×</button></div>'
-        + L.map((w, i) => '<button type="button" data-ac="'+i+'">'+(w.col ? '<i style="background:'+w.col+'"></i>' : '')+'<b>'+w.n+'</b><span>'+num(w.b, w.b % 1 ? 1 : 0)+' cm · '+num(w.S, 0)+' cm²</span></button>').join('');
-      ch.hidden = false;
-      const cw = ch.offsetWidth, chh = ch.offsetHeight;
-      ch.style.left = Math.max(4, Math.min(p.w - cw - 4, p.x - cw/2))+'px';
-      ch.style.top = Math.max(4, p.y + 16 + chh > box.clientHeight ? p.y - chh - 16 : p.y + 16)+'px';
-      ch.onclick = e => { const b = e.target.closest('[data-ac]'); if(!b) return; ch.hidden = true; if(b.dataset.ac !== 'x') pin(Object.assign({}, p, {wing: L[+b.dataset.ac], b: L[+b.dataset.ac].b, S: L[+b.dataset.ac].S})); };
+      const L = p.near.slice(0, 12), nP = L.filter(isPinned).length;
+      ch.innerHTML = '<div class="ac-h">'+t('Laquelle ?','Which one?')+' <small>'+(nP ? nP+' '+t('épinglée'+(nP > 1 ? 's' : ''),'pinned') : t('touche-en une ou plusieurs','tap one or more'))+'</small>'
+        + '<button type="button" data-ac="x" aria-label="'+t('Fermer','Close')+'">×</button></div><div class="ac-l">'
+        + L.map((w, i) => { const on = isPinned(w);
+          return '<button type="button" data-ac="'+i+'"'+(on ? ' class="on" aria-pressed="true" aria-disabled="true"' : ' aria-pressed="false"')+'>'+(on ? '<em aria-hidden="true">✓</em>' : (w.col ? '<i style="background:'+w.col+'"></i>' : ''))
+            +'<b>'+w.n+'</b><span>'+num(w.b, w.b % 1 ? 1 : 0)+'&nbsp;cm · '+num(w.S, 0)+'&nbsp;cm²</span></button>'; }).join('')+'</div>';
+      if(ch.hidden || ch.dataset.at !== p.x+','+p.y){   // position calculée à l'ouverture seulement (la liste ne saute pas quand on coche)
+        ch.hidden = false; ch.dataset.at = p.x+','+p.y;
+        const cw = ch.offsetWidth, chh = ch.offsetHeight;
+        ch.style.left = Math.max(4, Math.min(p.w - cw - 4, p.x - cw/2))+'px';
+        ch.style.top = Math.max(4, p.y + 16 + chh > box.clientHeight ? p.y - chh - 16 : p.y + 16)+'px';
+      }
+      ch.onclick = e => { e.stopPropagation();   // sinon le clic « en dehors » (le bouton vient d'être remplacé) refermerait la liste
+        const b = e.target.closest('[data-ac]'); if(!b) return;
+        if(b.dataset.ac === 'x'){ ch.hidden = true; return; }
+        const w = L[+b.dataset.ac]; if(!w || isPinned(w)) return;
+        pin(Object.assign({}, p, {wing: w, b: w.b, S: w.S}), true); chooser(p); };
     }
     sc.addEventListener('scroll', () => { ch.hidden = true; }, {passive:true});
     document.addEventListener('click', e => { if(!ch.hidden && !ch.contains(e.target) && e.target !== cv) ch.hidden = true; });
     const same = (q, p) => q.n === p.wing.n && Math.abs(q.b - p.b) < .01 && q.S === p.S;
-    function pin(p){
+    function isPinned(w){ return S.pins.some(q => q.n === w.n && Math.abs(q.b - w.b) < .01 && q.S === w.S); }
+    function pin(p, quiet){
       let i = S.pins.findIndex(q => same(q, p));
       used();
-      if(i < 0){ S.pins.push({n: p.wing.n, b: p.b, S: p.S}); if(S.pins.length > 6) S.pins.shift(); i = S.pins.length - 1; K.redraw(); }
+      if(i < 0){ S.pins.push({n: p.wing.n, b: p.b, S: p.S}); if(S.pins.length > 8) S.pins.shift(); i = S.pins.length - 1; K.redraw(); }
       const el = pe && pe.querySelector('.pin-card[data-i="'+i+'"]'); if(!el) return;
       el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
       // la fiche doit se voir sans perdre la carte : on ne défile que si elle est sous l'écran, juste assez
+      if(quiet) return;   // depuis la liste « laquelle ? » : la page ne bouge pas pendant qu'on choisit
       const r = el.getBoundingClientRect(); if(r.bottom > innerHeight) scrollBy({top: Math.min(r.bottom - innerHeight + 12, r.top - 60), behavior:'smooth'});
     }
     if(pe) pe.addEventListener('click', e => {
