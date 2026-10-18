@@ -385,6 +385,7 @@
   .pf > span{color:var(--muted); flex:none;} .pf > b{text-align:right; font-weight:800; color:var(--txt);}
   /* tableau de comparaison (≥ 2 ailes) : ▲ le plus haut (fond de la couleur du chiffre) · ▼ le plus bas (atténué) */
   .pin-tblw{grid-column:1 / -1; overflow-x:auto;}
+  .pin-tbl.one{width:auto; min-width:min(100%, 380px);}   /* une seule aile : tableau compact, pas étiré sur toute la largeur */
   .pin-set{grid-column:1 / -1; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:6px; padding:8px; background:var(--panel-2); border:1px solid var(--line); border-radius:12px;}
   .pin-sort{grid-column:1 / -1; display:flex; flex-wrap:wrap; align-items:center; gap:6px; font-size:.8rem; color:var(--muted);}
   .pin-sort button{background:transparent; border:1px solid var(--line); color:var(--muted); border-radius:999px; padding:6px 12px; font:inherit; font-weight:700; cursor:pointer; min-height:34px;}
@@ -2702,7 +2703,7 @@
           S._F = F; S._top = top;
           // ≥ 2 fiches : TABLEAU de comparaison (une colonne par aile, une ligne par chiffre) ; couleur = qualité 0 → 100
           // (rouge → jaune → vert) + petite barre de la même longueur (lisible sans la couleur) + ★ sur la meilleure
-          if(F && F.length > 1){
+          if(F && F.length){   // tableau dès la 1re aile (même présentation, la 2e ajoute une colonne)
             const cell = (r, j) => { const star = top[j] !== undefined && typeof r.q === 'number' && top[j] - r.q < 0.01;
               return '<td'+(typeof r.q === 'number' ? ' style="--qc:'+qCol(r.q)+'"' : '')+'>'+qVal(r)
                 + (star ? ' <span class="pt-star" aria-hidden="true">★</span><span class="vh"> '+t('(la meilleure des ailes comparées)','(best of the compared wings)')+'</span>' : '')+'</td>'; };
@@ -2711,9 +2712,9 @@
             const ord = S.pins.map((q, i) => i); if(S.sort) ord.sort((a, b) => key(S.pins[a]) - key(S.pins[b]));
             // réglages (poids, stab, niveau…) juste au-dessus du tableau : un clic → tout le tableau se recalcule
             S._tbl = (K.mini ? '<div class="pin-set" role="group" aria-label="'+t('Tes réglages','Your settings')+'">'+K.mini()+'</div>' : '')
-              + '<div class="pin-sort" role="group" aria-label="'+t('Trier les ailes comparées','Sort the compared wings')+'">'+t('Trier :','Sort:')
-              + [['', t('ajout','added')], ['b', t('envergure','span')], ['S', t('surface','area')], ['ar', 'AR']].map(([k, l]) => '<button type="button" data-sort="'+k+'" aria-pressed="'+((S.sort || '') === k)+'" class="'+((S.sort || '') === k ? 'on' : '')+'">'+l+'</button>').join('')+'</div>'
-              + '<div class="pin-tblw"><table class="pin-tbl"><caption class="vh">'+t('Comparaison des ailes épinglées','Pinned wings compared')+'</caption><thead><tr><td></td>'
+              + (S.pins.length < 2 ? '' : '<div class="pin-sort" role="group" aria-label="'+t('Trier les ailes comparées','Sort the compared wings')+'">'+t('Trier :','Sort:')
+              + [['', t('ajout','added')], ['b', t('envergure','span')], ['S', t('surface','area')], ['ar', 'AR']].map(([k, l]) => '<button type="button" data-sort="'+k+'" aria-pressed="'+((S.sort || '') === k)+'" class="'+((S.sort || '') === k ? 'on' : '')+'">'+l+'</button>').join('')+'</div>')
+              + '<div class="pin-tblw"><table class="pin-tbl'+(S.pins.length < 2 ? ' one' : '')+'"><caption class="vh">'+t('Comparaison des ailes épinglées','Pinned wings compared')+'</caption><thead><tr><td></td>'
               + ord.map(i => { const q = S.pins[i], f = K.info(q.b, q.S, q.n), L = window.foilLink && window.foilLink(q.n, K.page);
                   const nm = L ? '<a href="'+L.u+'" target="_blank" rel="noopener" data-w="'+q.n+'">'+q.n.replace(/ (\S+)$/, '&nbsp;$1')+window.wlTail(L)+'</a>' : q.n;
                   return '<th scope="col" style="'+(f.zc ? 'border-top:4px solid '+f.zc+';' : '')+(f.col ? 'box-shadow:inset 0 0 0 2px '+f.col+';' : '')+'"><button type="button" class="pin-x" data-pin="'+i+'" aria-label="'+t('Retirer de la comparaison','Remove from comparison')+'">×</button><span class="pin-n">'+(i + 1)+'</span>'+nm+'</th>'; }).join('')+'</tr></thead><tbody>'
