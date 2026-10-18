@@ -3602,12 +3602,31 @@
     if(a) gcEv('lien/' + a.getAttribute('data-w'), 'Clic vers le fabricant : ' + a.getAttribute('data-w'));
     var b = e.target.closest('#lang-btn, #xp-btn, #tune-btn');
     if(b) gcEv({'lang-btn': 'langue', 'xp-btn': 'explications', 'tune-btn': 'regler-finement'}[b.id]);
-    var r = e.target.closest('[data-rc], [data-va], [data-ld]');   // boutons de réglage (poids ±, niveau, vague, puissance, straps…)
-    if(r) gcEv('reglage/' + (r.getAttribute('data-rc') || r.getAttribute('data-va') || r.getAttribute('data-ld')).replace(/[:\d.+\-]+$/, '').replace(/^$/, 'poids'));
-    if(e.target.closest('.preset-btn')) gcEv('reglage/preset');
+    if(!e.isTrusted) return;   // seulement les vrais clics (pas ceux que la page déclenche elle-même)
+    var r = e.target.closest('[data-rc], [data-va], [data-ld]');   // boutons de réglage → nom lisible
+    if(r) gcEv('reglage/' + btnName(r.getAttribute('data-rc') || r.getAttribute('data-va') || r.getAttribute('data-ld') || ''));
+    if(e.target.closest('.preset-btn')) gcEv('reglage/aile-preset');
   }, true);
-  // réglages par champs (curseurs, menus) : quel réglage est touché (pas sa valeur)
-  document.addEventListener('change', function(e){ var el = e.target; if(el && el.id && /^(i-|rider-|b[12]$|s[12]$|v[12]$|preset|prof|mst|mat|fus|stb|cf-|cad-)/.test(el.id)) gcEv('reglage/' + el.id.replace(/[12]$/, '')); }, true);
+  // noms lisibles des réglages (boutons et champs) — on compte QUEL réglage est touché, jamais sa valeur
+  function btnName(v){
+    if(/^kg|^[+-]$/.test(v)) return 'poids';
+    if(/^lv/.test(v)) return 'niveau';
+    if(/^h:/.test(v)) return 'taille-vague';
+    if(/^sr:/.test(v)) return 'porte-ou-carve';
+    if(/^pw/.test(v)) return 'puissance';
+    if(/^s[t]?[+-]$/.test(v)) return 'stab';
+    if(v === 'st') return 'straps';
+    if(v === 'sex') return 'homme-femme';
+    if(v === 'cp') return 'forme';
+    return v.replace(/[^a-z]+/g, '') || 'autre';
+  }
+  var FIELD = {'i-lvl':'niveau', 'i-kg':'poids', 'i-w':'poids', 'rider-w':'poids', 'rider-cp':'forme', 'rider-sex':'homme-femme', 'i-stab':'stab', 'i-stabd':'diedre-stab',
+    'i-fus':'fuselage', 'i-b':'envergure', 'i-s':'surface', 'i-stage':'etape', 'i-straps':'straps', 'i-p':'puissance', 'i-mast':'mat', 'i-prof':'profil', 'preset':'aile-preset', 'b':'envergure', 's':'surface',
+    'v':'vitesse', 'prof':'profil', 'mst':'mat', 'mat':'materiau-mat', 'fus':'fuselage', 'stb':'stab'};
+  document.addEventListener('change', function(e){ var el = e.target; if(!e.isTrusted || !el || !el.id || el.closest('[data-ld]') || el.matches('[data-ld]')) return;   // les réglages compacts (data-ld) sont déjà comptés
+    var id = el.id.replace(/[12]$/, ''), n = FIELD[id] || (/^cf-/.test(id) ? 'reglage-fin' : /^cad-/.test(id) ? 'cadence' : null);
+    if(n) gcEv('reglage/' + n); }, true);
+  document.addEventListener('change', function(e){ if(e.isTrusted && e.target.matches && e.target.matches('select[data-ld]')) gcEv('reglage/' + btnName(e.target.getAttribute('data-ld'))); }, true);
   document.addEventListener('pointerdown', function(e){ var li = e.target.closest && e.target.closest('li[data-nm]'); if(li) gcEv('choix-aile/' + li.getAttribute('data-nm')); }, true);
 })();
 </script>
