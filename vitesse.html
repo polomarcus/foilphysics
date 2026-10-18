@@ -336,6 +336,7 @@
   .atl-zb{display:inline-flex; align-items:center; gap:4px; flex:none;}
   .atl-zb button{width:36px; height:36px; border-radius:10px; border:1px solid var(--line); background:var(--panel); color:var(--txt); font:inherit; font-size:1.15rem; font-weight:800; line-height:1; cursor:pointer; touch-action:manipulation;}
   .atl-zb button:disabled{opacity:.35; cursor:default;}
+  .atl-box.full #atl-zf{background:#dc2626; border-color:#f87171; color:#fff;}   /* ✕ quitter le plein écran : rouge, on le trouve tout de suite */
   .atl-zb b{min-width:30px; text-align:center; font-size:.8rem; color:var(--txt); font-variant-numeric:tabular-nums;}
   /* 📌 fiches épinglées : une par aile touchée, côte à côte pour comparer, fermables (×) */
   .atl-pins{max-width:900px; margin:8px auto 10px; display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 270px), 1fr)); gap:10px 8px;}
@@ -369,7 +370,7 @@
   .atl-choose .ac-l > button i{width:9px; height:9px; border-radius:50%; flex:none; align-self:center;}
   /* ⛶ plein écran (classe CSS : l'API plein écran n'existe pas sur iPhone) */
   .atl-box.full{position:fixed; inset:0; z-index:200; max-width:none; margin:0; border-radius:0; display:flex; flex-direction:column; padding:8px 8px calc(8px + env(safe-area-inset-bottom)); background:var(--bg);}
-  .atl-box.full .atl-scroll{flex:1 1 0; min-height:0; height:auto !important; display:flex;} .atl-box.full #atl-cv{flex:none; margin:0 auto auto;}   /* carte en haut, centrée en largeur (marges auto : rien de coupé au zoom) */
+  .atl-box.full .atl-scroll{flex:1 1 0; min-height:0; height:auto !important; display:flex;} .atl-box.full #atl-cv{flex:none; margin:auto;}   /* carte en haut, centrée en largeur (marges auto : rien de coupé au zoom) */
   /* 🏷️ marques en cases à cocher (téléphone + plein écran) ; sur ordinateur, les boutons de marque d'origine */
   .atl-bdd{display:none; max-width:900px; margin:0 auto 10px;}
   .atl-bdd > button{display:flex; align-items:center; gap:6px; width:100%; min-height:44px; padding:8px 14px; background:var(--panel-2); border:1px solid var(--line); border-radius:12px; color:var(--muted); font:inherit; font-size:.85rem; font-weight:700; text-align:left; cursor:pointer;}
@@ -388,17 +389,12 @@
   .atl-box:not(.full) #atl-zs{display:none;}
   .atl-rot{display:none; margin:0 2px 6px; font-size:.78rem; font-weight:700; color:#fbbf24;}
   @media (orientation:portrait) and (hover:none){ .atl-box.full .atl-rot{display:block;} }
-  /* téléphone tourné : carte à gauche, fiches en colonne à droite */
-  @media (orientation:landscape) and (max-height:520px){
-    .atl-box.full{display:grid; grid-template-columns:minmax(0, 1fr) auto; grid-template-rows:auto auto auto minmax(0, 1fr); column-gap:8px;}
-    .atl-box.full .atl-tools, .atl-box.full .atl-lay, .atl-box.full .atl-bdd, .atl-box.full .atl-rot{grid-column:1 / -1; margin-bottom:4px;}
-    .atl-box.full .atl-bdd.open .bdd-p{grid-template-columns:repeat(3, 1fr);} .atl-box.full .atl-hint{display:none;}
-    .atl-box.full .atl-scroll{grid-column:1; grid-row:-2;}
-    html .atl-box.full .atl-pins{grid-column:2; grid-row:-2; display:flex; flex-direction:column; gap:10px; width:min(250px, 36vw); max-height:none; overflow-x:hidden; overflow-y:auto; margin:0; padding:10px 2px 0 4px;}
-    html .atl-box.full .pin-card{flex:none;}
-  }
-  /* plein écran (portrait) : fiches EMPILÉES sous la carte, 2 par ligne, la zone défile verticalement (pas de défilement de côté) */
-  .atl-box.full .atl-pins{flex:none; display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:10px 8px; overflow-y:auto; overscroll-behavior:contain; max-height:38vh; margin:8px 0 0; padding:10px 2px 2px 4px;}
+  /* plein écran = UNE seule page qui défile (retour Paul : le tableau dans sa petite boîte qui défile à part était dur à faire défiler au doigt) :
+     la carte en haut (~70 % de l'écran), puis réglages + tableau dessous, comme une page normale — aussi téléphone tourné */
+  .atl-box.full{overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch;}
+  .atl-box.full .atl-scroll{min-height:min(72dvh, 140vw);}
+  @media (orientation:landscape) and (max-height:520px){ .atl-box.full .atl-hint{display:none;} .atl-box.full .atl-bdd.open .bdd-p{grid-template-columns:repeat(3, 1fr);} .atl-box.full .atl-scroll{min-height:80dvh;} }
+  .atl-box.full .atl-pins{flex:none; display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:10px 8px; overflow:visible; max-height:none; margin:8px 0 0; padding:10px 2px 2px 4px;}
   html.atl-full-on, html.atl-full-on body{overflow:hidden;}
   /* 🧍 réglages résumés, collés sous la barre du haut pendant qu'on lit la carte */
   .atl-sticky{position:fixed; left:0; right:0; z-index:45; display:flex; justify-content:center; flex-wrap:nowrap; gap:6px; overflow-x:auto; scrollbar-width:none; padding:6px 10px; background:rgba(15,23,42,.94); border-bottom:1px solid var(--line); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);}
@@ -1946,7 +1942,7 @@
     S.lay = {}; (K.layers || []).forEach(([k, , , onPhone]) => { S.lay[k] = VIDEO || !phone || !!onPhone; });
     const box = sc.closest('.atl-box'), lay = $('atl-lay');
     const layUI = () => { if(lay) lay.innerHTML = '<span>'+t('Lignes :','Lines:')+'</span>'+(K.layers || []).map(([k, fr, en]) => '<button type="button" data-lay="'+k+'" aria-pressed="'+S.lay[k]+'" class="'+(S.lay[k] ? 'on' : '')+'">'+(S.lay[k] ? '✓ ' : '')+t(fr, en)+'</button>').join(''); };
-    if(lay) lay.addEventListener('click', e => { const b = e.target.closest('[data-lay]'); if(!b) return; S.lay[b.dataset.lay] = !S.lay[b.dataset.lay]; K.redraw(); window.gcEv && gcEv('carte/lignes-'+b.dataset.lay); });
+    if(lay) lay.addEventListener('click', e => { const b = e.target.closest('[data-lay]'); if(!b) return; S.layTouched = true; S.lay[b.dataset.lay] = !S.lay[b.dataset.lay]; K.redraw(); window.gcEv && gcEv('carte/lignes-'+b.dataset.lay); });
     if(VIDEO && lay) lay.style.display = 'none';
     if(VIDEO){ const tl = sc.parentElement.querySelector('.atl-tools'); if(tl) tl.style.display = 'none'; }   // vidéo Insta : carte seule
     let tmr = 0, lastPT = 'mouse', drag = null, noClick = false, pinch = null;
@@ -1998,7 +1994,8 @@
     ddUI();
     const home = document.createComment('carte');
     const full = on => {
-      S.full = on; box.classList.toggle('full', on); document.documentElement.classList.toggle('atl-full-on', on);
+      S.full = on; if(on && K.fullLay && !S.layTouched) K.fullLay.forEach(k => { S.lay[k] = true; });   // plein écran : ces lignes s'allument d'office (la place le permet)
+      box.classList.toggle('full', on); document.documentElement.classList.toggle('atl-full-on', on);
       // la section a une animation (transform) : un « position:fixed » dedans ne couvrirait pas l'écran → la carte passe
       // le temps du plein écran au bout de <body>, puis revient à sa place (repère : un commentaire)
       // les marques suivent aussi (filtre en plein écran) : une rangée qui défile de côté, sous les boutons
@@ -2186,6 +2183,7 @@
       const G = geo(S.w, S.z, ratio, S.full), cssW = S.w*S.z, cssH = cssW*G.H/G.W;
       const dpr = Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(14e6/(cssW*cssH)));
       cv.style.width = S.z > 1 ? Math.round(cssW)+'px' : ''; cv.style.aspectRatio = G.W+' / '+G.H;
+      if(S.full){ cv.style.width = Math.round(cssW)+'px'; cv.style.height = Math.round(cssH)+'px'; } else cv.style.height = '';   // plein écran : taille exacte en px (sinon certains téléphones étiraient la carte)
       cv.width = Math.round(cssW*dpr); cv.height = Math.round(cssW*dpr*G.H/G.W);
       return G;
     }
@@ -2262,7 +2260,8 @@
     const grad = (x, bad, good) => (x - bad)/(good - bad);
     const facts = (b, S, n) => { const ar = b*b/S, ev = vaEval(b, S, VA.geo.kg), fits = ar >= VA.AR0 && ar <= VA.AR1, ok = fits && !ev.r3.stall && ev.k !== 'start', sp = ok ? 300/ev.r3.t*3.6 : null, gl = fits ? vaGlide(b, S, VA.geo.kg) : null;
       return [
-        {k: t('Taille','Size'), v: num(b, b % 1 ? 1 : 0)+'&nbsp;cm · '+num(S, 0)+'&nbsp;cm²'},
+        {k: t('Envergure','Span'), v: num(b, b % 1 ? 1 : 0)+'&nbsp;cm'},   // envergure et surface sur 2 lignes (retour : plus lisible que « 111 cm · 1 130 cm² »)
+        {k: t('Surface','Area'), v: num(S, 0)+'&nbsp;cm²'},
         {k: 'AR', v: num(ar, 1)},
         {k: t('Verdict','Verdict'), v: fits ? vaT(VA_CAT[ev.k].s) : '—'},
         // q = qualité 0 → 1 : sprint proche du meilleur = vert · décollage bas = vert · peu de watts pour pomper loin = vert
