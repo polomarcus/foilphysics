@@ -786,6 +786,32 @@
   .atl-list li a{color:inherit; text-decoration:underline; text-decoration-color:#93c5fd; text-underline-offset:2px;}
   .atl-list li > span{display:block;}
   .vh{position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;}
+  /* fiches en lignes alignées (comparaison) : chaque fiche = sous-grille → la ligne « Glisse » est à la même hauteur partout */
+  .pin-card.pf-card{display:grid; grid-template-rows:subgrid; row-gap:0; padding:10px 12px 10px;}
+  .pf-head{padding-right:26px; margin-bottom:4px; align-self:start;}
+  .pf{display:flex; justify-content:space-between; align-items:baseline; gap:8px; padding:4px 0; border-top:1px solid rgba(148,163,184,.16); font-size:.8rem;}
+  .pf > span{color:var(--muted); flex:none;} .pf > b{text-align:right; font-weight:800; color:var(--txt);}
+  /* tableau de comparaison (≥ 2 ailes) : ▲ le plus haut (fond de la couleur du chiffre) · ▼ le plus bas (atténué) */
+  .pin-tblw{grid-column:1 / -1; overflow-x:auto;}
+  .pin-set{grid-column:1 / -1; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:6px; padding:8px; background:var(--panel-2); border:1px solid var(--line); border-radius:12px;}
+  .pin-sort{grid-column:1 / -1; display:flex; flex-wrap:wrap; align-items:center; gap:6px; font-size:.8rem; color:var(--muted);}
+  .pin-sort button{background:transparent; border:1px solid var(--line); color:var(--muted); border-radius:999px; padding:6px 12px; font:inherit; font-weight:700; cursor:pointer; min-height:34px;}
+  .pin-sort button.on{border-color:#64748b; color:var(--txt); background:rgba(148,163,184,.14);}
+  .pin-tbl{width:100%; border-collapse:separate; border-spacing:0; font-size:.82rem; background:var(--panel); border:1px solid var(--line); border-radius:12px;}
+  .pin-tbl th, .pin-tbl td{padding:7px 9px; border-top:1px solid rgba(148,163,184,.14); text-align:left; vertical-align:middle;}
+  .pin-tbl thead th{position:relative; border-top:0; padding:9px 30px 9px 9px; font-weight:900; color:var(--txt); vertical-align:top; min-width:110px;}
+  .pin-tbl thead th a{color:inherit; text-decoration:underline; text-decoration-color:#93c5fd; text-underline-offset:3px;}
+  .pin-tbl tbody th{font-weight:800; white-space:nowrap; position:sticky; left:0; background:var(--panel); z-index:1;}
+  .pin-tbl td b{font-weight:800; color:var(--txt);}
+  .pin-tbl td[style*="--qc"]{background:color-mix(in srgb, var(--qc) 13%, transparent);}
+  b.q{color:var(--qc) !important;}
+  .qbar{display:block; height:4px; margin-top:4px; border-radius:2px; background:rgba(148,163,184,.18); overflow:hidden; font-style:normal;}
+  .qbar > i{display:block; height:100%; background:var(--qc); border-radius:2px;}
+  .pf .qbar{width:60px; margin:3px 0 0 auto;} .pf{flex-wrap:wrap;} .pf > b{flex:1;}
+  .pt-star{color:#fde047; font-style:normal;}
+  .pin-tbl .pin-x{top:4px; right:2px; width:30px; height:30px;}
+  .pin-tbl .pin-try{margin:0; padding:5px 10px; font-size:.74rem;}
+  .pf-foot{align-self:end; padding-top:4px;}
   .pin-card.flash{animation:pinf .9s ease-out;}
   @keyframes pinf{0%{box-shadow:0 0 0 4px #fff;} 100%{box-shadow:0 0 0 0 rgba(255,255,255,0);}}
   @media (max-width:560px){ .atl-box{padding:4px;} .atl-box .win-tip{font-size:.8rem; white-space:normal; max-width:250px;} .atl-box .win-tip .tt-c{font-size:.72rem;} }
@@ -3240,10 +3266,15 @@
       const r = el.getBoundingClientRect(); if(r.bottom > innerHeight) scrollBy({top: Math.min(r.bottom - innerHeight + 12, r.top - 60), behavior:'smooth'});
     }
     if(pe) pe.addEventListener('click', e => {
+      const so = e.target.closest('[data-sort]'); if(so){ S.sort = so.dataset.sort; K.redraw(); window.gcEv && gcEv('carte/tri-'+(S.sort || 'ajout')); return; }
       const x = e.target.closest('[data-pin]'), tr = e.target.closest('[data-try-pin]');
       if(x){ const v = x.dataset.pin; S.pins = v === 'all' ? [] : S.pins.filter((q, i) => i !== +v); K.redraw(); }
       else if(tr){ const q = S.pins[+tr.dataset.tryPin]; if(!q) return; window.gcEv && gcEv('essayer'+(tr.dataset.slot ? '-aile-'+tr.dataset.slot : '')+'/'+q.n, 'Essayer : '+q.n); if(S.full) full(false); K.tryIt(q.b, q.S, tr.dataset.slot || undefined, q.n); }   // plein écran : on en sort, sinon le simulateur reste caché dessous
     });
+    // qualité 0 → 1 d'un chiffre : couleur rouge → jaune → vert, et barre de la même longueur (la couleur n'est jamais seule)
+    const qCol = q => { q = Math.max(0, Math.min(1, q)); const A = q < .5 ? [248, 113, 113] : [251, 191, 36], B = q < .5 ? [251, 191, 36] : [74, 222, 128], k = q < .5 ? q*2 : (q - .5)*2;
+      return 'rgb('+A.map((v, i) => Math.round(v + (B[i] - v)*k)).join(',')+')'; };
+    const qVal = r => '<b class="'+(typeof r.q === 'number' ? 'q' : '')+'">'+r.v+'</b>'+(typeof r.q === 'number' ? '<i class="qbar" aria-hidden="true"><i style="width:'+Math.round(Math.max(0.04, Math.min(1, r.q))*100)+'%"></i></i>' : '');
     // appelé à la fin de chaque dessin : repères numérotés sur la carte + fiches à jour (elles suivent poids / niveau / vague)
     function after(c, px, py){
       hint(); zl();
@@ -3258,18 +3289,54 @@
         c.fillStyle = '#0f172a'; c.font = '900 11px system-ui, sans-serif'; c.textAlign = 'center'; c.fillText(String(i + 1), bx, by + 4); });
       if(!pe) return;
       pe.innerHTML = !S.pins.length ? '' : (S.pins.length > 1 ? '<div class="pin-bar"><span>📌 '+S.pins.length+' '+t('ailes épinglées · touche-en d\'autres pour comparer','pinned wings · tap more to compare')+'</span><button type="button" data-pin="all">'+t('Tout fermer','Close all')+' ×</button></div>' : '')
-        + S.pins.map((q, i) => { const f = K.info(q.b, q.S, q.n);
+        + (() => {
+          // 📊 lignes alignées pour COMPARER : chaque page donne la même liste de chiffres (K.facts) → une ligne par chiffre, même ordre
+          // et même hauteur d'une fiche à l'autre (CSS subgrid) ; à partir de 2 fiches, ★ sur la meilleure valeur de chaque ligne
+          const F = K.facts ? S.pins.map(q => K.facts(q.b, q.S, q.n)) : null, top = [];
+          // ★ = la meilleure des ailes comparées sur cette ligne (q le plus haut : « vole dès » bas, glisse haute…)
+          if(F && F.length > 1) F[0].forEach((r, j) => { const qs = F.map(x => x[j].q).filter(v => typeof v === 'number');
+            if(qs.length < 2 || Math.max(...qs) - Math.min(...qs) < 0.01) return; top[j] = Math.max(...qs); });
+          S._F = F; S._top = top;
+          // ≥ 2 fiches : TABLEAU de comparaison (une colonne par aile, une ligne par chiffre) ; couleur = qualité 0 → 100
+          // (rouge → jaune → vert) + petite barre de la même longueur (lisible sans la couleur) + ★ sur la meilleure
+          if(F && F.length > 1){
+            const cell = (r, j) => { const star = top[j] !== undefined && typeof r.q === 'number' && top[j] - r.q < 0.01;
+              return '<td'+(typeof r.q === 'number' ? ' style="--qc:'+qCol(r.q)+'"' : '')+'>'+qVal(r)
+                + (star ? ' <span class="pt-star" aria-hidden="true">★</span><span class="vh"> '+t('(la meilleure des ailes comparées)','(best of the compared wings)')+'</span>' : '')+'</td>'; };
+            // ordre des colonnes au choix : ajout (défaut) · envergure · surface · AR (les numéros restent ceux de la carte)
+            const key = q => S.sort === 'b' ? q.b : S.sort === 'S' ? q.S : S.sort === 'ar' ? q.b*q.b/q.S : 0;
+            const ord = S.pins.map((q, i) => i); if(S.sort) ord.sort((a, b) => key(S.pins[a]) - key(S.pins[b]));
+            // réglages (poids, stab, niveau…) juste au-dessus du tableau : un clic → tout le tableau se recalcule
+            S._tbl = (K.mini ? '<div class="pin-set" role="group" aria-label="'+t('Tes réglages','Your settings')+'">'+K.mini()+'</div>' : '')
+              + '<div class="pin-sort" role="group" aria-label="'+t('Trier les ailes comparées','Sort the compared wings')+'">'+t('Trier :','Sort:')
+              + [['', t('ajout','added')], ['b', t('envergure','span')], ['S', t('surface','area')], ['ar', 'AR']].map(([k, l]) => '<button type="button" data-sort="'+k+'" aria-pressed="'+((S.sort || '') === k)+'" class="'+((S.sort || '') === k ? 'on' : '')+'">'+l+'</button>').join('')+'</div>'
+              + '<div class="pin-tblw"><table class="pin-tbl"><caption class="vh">'+t('Comparaison des ailes épinglées','Pinned wings compared')+'</caption><thead><tr><td></td>'
+              + ord.map(i => { const q = S.pins[i], f = K.info(q.b, q.S, q.n), L = window.foilLink && window.foilLink(q.n, K.page);
+                  const nm = L ? '<a href="'+L.u+'" target="_blank" rel="noopener" data-w="'+q.n+'">'+q.n.replace(/ (\S+)$/, '&nbsp;$1')+window.wlTail(L)+'</a>' : q.n;
+                  return '<th scope="col" style="'+(f.zc ? 'border-top:4px solid '+f.zc+';' : '')+(f.col ? 'box-shadow:inset 0 0 0 2px '+f.col+';' : '')+'"><button type="button" class="pin-x" data-pin="'+i+'" aria-label="'+t('Retirer de la comparaison','Remove from comparison')+'">×</button><span class="pin-n">'+(i + 1)+'</span>'+nm+'</th>'; }).join('')+'</tr></thead><tbody>'
+              + F[0].map((r0, j) => '<tr><th scope="row">'+r0.k+'</th>'+ord.map(i => cell(F[i][j], j)).join('')+'</tr>').join('')
+              + '<tr><th scope="row"></th>'+ord.map(i => { const q = S.pins[i]; return '<td>'+(K.canTry(q.b, q.S) ? (K.slots || [['', t('l\'essayer','try it')]]).map(([sl, lab]) => '<button type="button" class="pin-try" data-try-pin="'+i+'" data-slot="'+sl+'">▶ '+lab+'</button>').join('') : '')+'</td>'; }).join('')+'</tr>'
+              + '</tbody></table></div>'; } else S._tbl = '';
+          return S._tbl; })()
+        + (S._tbl ? '' : S.pins.map((q, i) => { const f = K.info(q.b, q.S, q.n);
           // 🔗 le nom de l'aile = lien vers sa page officielle (ailes.js : page de la gamme, sinon page des ailes de la marque)
           const L = window.foilLink && window.foilLink(q.n, K.page), nm = L ? '<a href="'+L.u+'" target="_blank" rel="noopener" data-w="'+q.n+'">'+q.n.replace(/ (\S+)$/, '&nbsp;$1')+window.wlTail(L)+'</a>'
             + (L.fam ? '' : '<small>'+t('site '+L.brand,L.brand+' site')+'</small>') : q.n;
           // fond teinté de la couleur de la ZONE de l'aile (20 % sur fond sombre : tous les textes restent ≥ 4,6:1) + bande à gauche ;
           // le nom de la zone reste écrit en bas de la fiche (la couleur n'est jamais seule)
           const zbg = f.zc ? 'rgb('+[1, 3, 5].map((k, j) => Math.round(parseInt(f.zc.slice(k, k + 2), 16)*.2 + [15, 23, 42][j]*.8)).join(',')+')' : '';
-          return '<div class="pin-card" data-i="'+i+'" style="'+(f.col ? 'border-color:'+f.col+';' : '')+(zbg ? 'background:'+zbg+'; border-left:5px solid '+f.zc+';' : '')+'">'
+          const style = (f.col ? 'border-color:'+f.col+';' : '')+(zbg ? 'background:'+zbg+'; border-left:5px solid '+f.zc+';' : '');
+          const head = '<div class="tt-h"><span class="pin-n">'+(i + 1)+'</span>'+nm+'</div>';
+          if(S._F){ const rows = S._F[i], rec = (f.html.match(/<(div) class="tt-rec"[^]*?<\/\1>/) || [''])[0];
+            return '<div class="pin-card pf-card" data-i="'+i+'" style="'+style+' grid-row:span '+(rows.length + 2)+';">'
+              + '<div class="pf-head"><button type="button" class="pin-x" data-pin="'+i+'" aria-label="'+t('Fermer la fiche','Close card')+'">×</button>'+rec+head+'</div>'
+              + rows.map(r => '<div class="pf"'+(typeof r.q === 'number' ? ' style="--qc:'+qCol(r.q)+'"' : '')+'><span>'+r.k+'</span>'+qVal(r)+'</div>').join('')
+              + '<div class="pf-foot">'+(K.canTry(q.b, q.S) ? (K.slots || [['', t('l\'essayer','try it')]]).map(([sl, lab]) => '<button type="button" class="pin-try" data-try-pin="'+i+'" data-slot="'+sl+'">▶ '+lab+'</button>').join('') : '')+'</div></div>'; }
+          return '<div class="pin-card" data-i="'+i+'" style="'+style+'">'
             + '<button type="button" class="pin-x" data-pin="'+i+'" aria-label="'+t('Fermer la fiche','Close card')+'">×</button>'
-            + f.html.replace('<div class="tt-h">'+q.n+'</div>', '<div class="tt-h"><span class="pin-n">'+(i + 1)+'</span>'+nm+'</div>')
+            + f.html.replace('<div class="tt-h">'+q.n+'</div>', head)
             // un ou plusieurs boutons (page longue distance : « en Aile 1 » / « en Aile 2 » du duel)
-            + (K.canTry(q.b, q.S) ? (K.slots || [['', t('l\'essayer','try it')]]).map(([sl, lab]) => '<button type="button" class="pin-try" data-try-pin="'+i+'" data-slot="'+sl+'">▶ '+lab+'</button>').join('') : '')+'</div>'; }).join('');
+            + (K.canTry(q.b, q.S) ? (K.slots || [['', t('l\'essayer','try it')]]).map(([sl, lab]) => '<button type="button" class="pin-try" data-try-pin="'+i+'" data-slot="'+sl+'">▶ '+lab+'</button>').join('') : '')+'</div>'; }).join(''));
       if(stEl && K.mini) stEl.innerHTML = K.mini();
       // plein écran : les fiches ont changé de hauteur → la carte se recale sur la place restante
       if(S.full) requestAnimationFrame(() => { if(Math.abs(sc.clientHeight - S.lastH) > 4) K.redraw(); });
@@ -3538,6 +3605,20 @@
           + '<div>'+t('conso','energy')+' <b>'+num(e.whkm, 1)+'&nbsp;Wh/km</b> · '+t('tu tiens','you last')+' <b>'+ldHold(e, g.cp)+'</b></div>')
         + (n ? '<div style="font-size:.85em; color:var(--muted)">'+(pf ? t('profil de la gamme (catalogue)','range profile (catalogue)') : t('profil moyen supposé','assumed medium profile'))+'</div>' : '')};
     };
+    // 📊 chiffres de la fiche, en lignes alignées (comparaison) — ★ sur le meilleur
+    const cl = v => Math.max(0, Math.min(1, v));   // qualité 0 → 1 (0 = faible, 1 = excellent)
+    const grad = (x, bad, good) => (x - bad)/(good - bad);
+    const facts = (b, S, n) => { const g = LA.geo, e = ldEval(b, S, g.kg, n ? ldProfOf(n) : null), ar = b*b/S, fits = ar >= LA.AR0 && ar <= LA.AR1, z = ldZone(e, g.cp), sm = z === 'small';
+      const hold = e.P < 0.85*g.cp ? 1e6 : e.P < g.cp ? 3600 : W_ANAER/(e.P - g.cp);
+      return [
+        {k: t('Taille','Size'), v: num(b, b % 1 ? 1 : 0)+'&nbsp;cm · '+num(S)+'&nbsp;cm²'},
+        {k: 'AR', v: num(ar, 1)},
+        {k: t('Zone','Zone'), v: fits ? t(LD_CAT[z].fr, LD_CAT[z].en) : '—'},
+        {k: t('Croisière','Cruise'), v: sm ? '—' : '~'+num(e.kmh, 1)+'&nbsp;km/h'},
+        // q = qualité 0 → 1 : sous ton seuil = vert · peu de Wh/km = vert · tu tiens longtemps = vert
+        {k: t('Puissance','Power'), v: sm ? '—' : Math.round(e.P)+'&nbsp;W', q: sm ? undefined : cl(grad(e.P, g.cp + 90, 0.75*g.cp))},
+        {k: t('Conso','Energy'), v: sm ? '—' : num(e.whkm, 1)+'&nbsp;Wh/km', q: sm ? undefined : cl(grad(e.whkm, 22, 8))},
+        {k: t('Tu tiens','You last'), v: sm ? '—' : ldHold(e, g.cp), q: sm ? undefined : (hold >= 1e6 ? 1 : cl(grad(Math.log(hold), Math.log(60), Math.log(7200))))}]; };
     const row = p => { const e = ldEval(p.b, p.S, LA.geo.kg, ldProfOf(p.n)), ar = p.b*p.b/p.S, fits = ar >= LA.AR0 && ar <= LA.AR1, z = ldZone(e, LA.geo.cp);
       return '<span>'+num(p.b, p.b % 1 ? 1 : 0)+'&nbsp;cm · '+num(p.S)+'&nbsp;cm² · AR&nbsp;'+num(ar, 1)+'</span>'
         + '<span>'+(fits ? t(LD_CAT[z].fr, LD_CAT[z].en) : t('hors gamme (AR)','out of range (AR)'))+'</span>'
@@ -3564,7 +3645,7 @@
       render();
       const tgt = document.body.classList.contains('tune') ? $('card-'+i) : $('duel-sum'); if(tgt) window.scrollTo({top: tgt.getBoundingClientRect().top + scrollY - 70, behavior: 'smooth'});
     };
-    LA.kit = atlKit({st: LA, redraw: ldDraw, pick, show, info, row, page: 'longue-distance', canTry: inSl, tryIt, hash: () => ldHash(), mini: ldMini,
+    LA.kit = atlKit({st: LA, redraw: ldDraw, pick, show, info, facts, row, page: 'longue-distance', canTry: inSl, tryIt, hash: () => ldHash(), mini: ldMini,
       slots: [['1', t('en Aile 1','as Wing 1')], ['2', t('en Aile 2','as Wing 2')]],
       layers: [['wh', '– – Wh/km', '– – Wh/km', 1], ['ar', '╱ AR', '╱ AR']]});
     ['rider-w', 'rider-cp', 'rider-sex'].forEach(k => { const el = $(k); if(el){ el.addEventListener('input', ldDraw); el.addEventListener('change', ldDraw); } });
