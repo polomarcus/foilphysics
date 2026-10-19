@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pump foil : comparateur d'ailes longue distance | Foil House</title>
-<link rel="canonical" href="https://simulator.foil-house.com/">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230f172a'/><rect x='9' y='33' width='82' height='13' rx='6.5' fill='%2338bdf8'/><path d='M57 53 L40 76 h10 l-6 18 18-24 h-10 z' fill='%23f59e0b'/></svg>">
 <meta name="description" content="Quelle aile de pump foil pour aller loin ? Compare 2 ailes : watts, Wh/km, aspect ratio, envergure. Calculateur gratuit, plus de 300 ailes, selon ton poids.">
 <link rel="alternate" hreflang="fr" href="https://simulator.foil-house.com/">
@@ -15,7 +14,10 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Le Choc des Watts", "headline": "Pump foil : comparateur d'ailes longue distance", "description": "Quelle aile de pump foil pour aller loin ? Compare 2 ailes : watts, Wh/km, aspect ratio, envergure. Calculateur gratuit, plus de 300 ailes, selon ton poids.", "url": "https://simulator.foil-house.com/", "applicationCategory": "SportsApplication", "operatingSystem": "Web", "inLanguage": ["fr", "en"], "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "about": ["pump foil", "foil wing", "hydrofoil"], "publisher": {"@type": "Organization", "name": "Foil House", "url": "https://simulator.foil-house.com/"}}</script>
 <script>/* 🔎 SEO : titre, description et adresse canonique suivent la langue (FR = adresse nue, EN = ?lang=en) */
 window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].indexOf(x) >= 0 ? x : 'fr'; }; var M = {"fr": {"t": "Pump foil : comparateur d'ailes longue distance | Foil House", "d": "Quelle aile de pump foil pour aller loin ? Compare 2 ailes : watts, Wh/km, aspect ratio, envergure. Calculateur gratuit, plus de 300 ailes, selon ton poids.", "u": "https://simulator.foil-house.com/"}, "en": {"t": "Pump foil wing comparator for long distance | Foil House", "d": "Which pump foil wing goes the furthest? Compare two foil wings: watts, Wh/km, aspect ratio, span. Free calculator, 300+ wings, tuned to your weight.", "u": "https://simulator.foil-house.com/?lang=en"}, "es": {"t": "Pump foil: comparador de alas para larga distancia | Foil House", "d": "¿Qué ala de pump foil llega más lejos? Compara dos alas: vatios, Wh/km, alargamiento, envergadura. Calculadora gratis, más de 300 alas, según tu peso.", "u": "https://simulator.foil-house.com/?lang=es"}, "it": {"t": "Pump foil: comparatore di ali per la lunga distanza | Foil House", "d": "Quale ala da pump foil va più lontano? Confronta due ali: watt, Wh/km, allungamento, apertura alare. Calcolatore gratuito, più di 300 ali, in base al tuo peso.", "u": "https://simulator.foil-house.com/?lang=it"}}[M_L(l)]; document.title = M.t;
-  var d = document.querySelector('meta[name="description"]'), c = document.querySelector('link[rel="canonical"]'); if(d) d.setAttribute('content', M.d); if(c) c.setAttribute('href', M.u); };</script>
+  var d = document.querySelector('meta[name="description"]'), c = document.querySelector('link[rel="canonical"]');
+  if(!c){ c = document.createElement('link'); c.rel = 'canonical'; document.head.appendChild(c); }   // canonique posée par le script (jamais en dur) : toujours celle de la langue de l'adresse
+  if(d) d.setAttribute('content', M.d); c.setAttribute('href', M.u); };
+seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   // dès le chargement, d'après ?lang=</script>
 <script src="lang/xl.js?v=20261021"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Le Choc des Watts · The Watts Showdown — foil wing comparator">
@@ -830,19 +832,6 @@ window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].ind
   .win-leg i{display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px; vertical-align:-1px;}
   .win-leg i.hatch{background:repeating-linear-gradient(135deg, rgba(148,163,184,.35) 0 1px, transparent 1px 4px);}
 </style>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Le Choc des Watts — Comparateur d'ailes de pump foil",
-  "url": "https://simulator.foil-house.com/",
-  "description": "Comparateur pédagogique d'ailes de pump foil : comprendre pourquoi une aile à grande envergure économise ton énergie (traînée induite, watts, Wh/km). Chiffres estimés, modèle physique open source.",
-  "applicationCategory": "EducationalApplication",
-  "inLanguage": ["fr", "en"],
-  "isAccessibleForFree": true,
-  "operatingSystem": "Web"
-}
-</script>
 </head>
 <body>
 <a class="skip" href="#contenu" onclick="event.preventDefault();var m=document.getElementById('contenu');m.setAttribute('tabindex','-1');m.focus();m.scrollIntoView();">Aller au contenu / Skip to content</a>

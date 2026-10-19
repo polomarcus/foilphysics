@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pump foil carve : quelle aile pour tourner ? | Foil House</title>
 <meta name="description" content="Carte de plus de 300 ailes de pump foil et de foil : maniabilité, glisse, vitesse de décollage, selon ton poids et ta vague. Compare-les et trouve ton aile de carve.">
-<link rel="canonical" href="https://simulator.foil-house.com/carve.html">
 <link rel="alternate" hreflang="fr" href="https://simulator.foil-house.com/carve.html">
 <link rel="alternate" hreflang="en" href="https://simulator.foil-house.com/carve.html?lang=en">
 <link rel="alternate" hreflang="es" href="https://simulator.foil-house.com/carve.html?lang=es">
@@ -14,7 +13,10 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Le Carve", "headline": "Pump foil carve : quelle aile pour tourner ?", "description": "Carte de plus de 300 ailes de pump foil et de foil : maniabilité, glisse, vitesse de décollage, selon ton poids et ta vague. Compare-les et trouve ton aile de carve.", "url": "https://simulator.foil-house.com/carve.html", "applicationCategory": "SportsApplication", "operatingSystem": "Web", "inLanguage": ["fr", "en"], "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "about": ["pump foil", "foil wing", "hydrofoil"], "publisher": {"@type": "Organization", "name": "Foil House", "url": "https://simulator.foil-house.com/"}}</script>
 <script>/* 🔎 SEO : titre, description et adresse canonique suivent la langue (FR = adresse nue, EN = ?lang=en) */
 window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].indexOf(x) >= 0 ? x : 'fr'; }; var M = {"fr": {"t": "Pump foil carve : quelle aile pour tourner ? | Foil House", "d": "Carte de plus de 300 ailes de pump foil et de foil : maniabilité, glisse, vitesse de décollage, selon ton poids et ta vague. Compare-les et trouve ton aile de carve.", "u": "https://simulator.foil-house.com/carve.html"}, "en": {"t": "Pump foil carving: which wing turns best? | Foil House", "d": "Map of 300+ pump foil and surf foil wings: maneuverability, glide, take-off speed, for your weight and your wave. Compare them and find your carving wing.", "u": "https://simulator.foil-house.com/carve.html?lang=en"}, "es": {"t": "Pump foil carve: ¿qué ala gira mejor? | Foil House", "d": "Mapa de más de 300 alas de pump foil y surf foil: maniobrabilidad, planeo, velocidad de despegue, según tu peso y tu ola. Compáralas y encuentra tu ala de carve.", "u": "https://simulator.foil-house.com/carve.html?lang=es"}, "it": {"t": "Pump foil carve: quale ala gira meglio? | Foil House", "d": "Mappa di oltre 300 ali da pump foil e surf foil: manovrabilità, planata, velocità di decollo, in base al tuo peso e alla tua onda. Confrontale e trova la tua ala da carve.", "u": "https://simulator.foil-house.com/carve.html?lang=it"}}[M_L(l)]; document.title = M.t;
-  var d = document.querySelector('meta[name="description"]'), c = document.querySelector('link[rel="canonical"]'); if(d) d.setAttribute('content', M.d); if(c) c.setAttribute('href', M.u); };</script>
+  var d = document.querySelector('meta[name="description"]'), c = document.querySelector('link[rel="canonical"]');
+  if(!c){ c = document.createElement('link'); c.rel = 'canonical'; document.head.appendChild(c); }   // canonique posée par le script (jamais en dur) : toujours celle de la langue de l'adresse
+  if(d) d.setAttribute('content', M.d); c.setAttribute('href', M.u); };
+seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   // dès le chargement, d'après ?lang=</script>
 <script src="lang/xl.js?v=20261021"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Le Carve — tourner serré en pump foil dans les vagues">

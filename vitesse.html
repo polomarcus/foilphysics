@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Vitesse en pump foil : qu'est-ce qui fait aller vite ? | Foil House</title>
 <meta name="description" content="Simulateur de vitesse en pump foil : surface, profil, stab, envergure, straps et tes watts de sprint. Calibré sur les vraies courses (30-38 km/h). Carte des ailes rapides.">
-<link rel="canonical" href="https://simulator.foil-house.com/vitesse.html">
 <link rel="alternate" hreflang="fr" href="https://simulator.foil-house.com/vitesse.html">
 <link rel="alternate" hreflang="en" href="https://simulator.foil-house.com/vitesse.html?lang=en">
 <link rel="alternate" hreflang="es" href="https://simulator.foil-house.com/vitesse.html?lang=es">
@@ -14,7 +13,10 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "La Course aux km/h", "headline": "Vitesse en pump foil : qu'est-ce qui fait aller vite ?", "description": "Simulateur de vitesse en pump foil : surface, profil, stab, envergure, straps et tes watts de sprint. Calibré sur les vraies courses (30-38 km/h). Carte des ailes rapides.", "url": "https://simulator.foil-house.com/vitesse.html", "applicationCategory": "SportsApplication", "operatingSystem": "Web", "inLanguage": ["fr", "en"], "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "about": ["pump foil", "foil wing", "hydrofoil"], "publisher": {"@type": "Organization", "name": "Foil House", "url": "https://simulator.foil-house.com/"}}</script>
 <script>/* 🔎 SEO : titre, description et adresse canonique suivent la langue (FR = adresse nue, EN = ?lang=en) */
 window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].indexOf(x) >= 0 ? x : 'fr'; }; var M = {"fr": {"t": "Vitesse en pump foil : qu'est-ce qui fait aller vite ? | Foil House", "d": "Simulateur de vitesse en pump foil : surface, profil, stab, envergure, straps et tes watts de sprint. Calibré sur les vraies courses (30-38 km/h). Carte des ailes rapides.", "u": "https://simulator.foil-house.com/vitesse.html"}, "en": {"t": "Pump foil speed: what makes a foil fast? | Foil House", "d": "Pump foil speed simulator: area, profile, stab, span, straps and your sprint watts. Calibrated on real races (30-38 km/h). Map of the fastest foil wings.", "u": "https://simulator.foil-house.com/vitesse.html?lang=en"}, "es": {"t": "Velocidad en pump foil: ¿qué hace rápido un foil? | Foil House", "d": "Simulador de velocidad de pump foil: superficie, perfil, estabilizador, envergadura, straps y tus vatios de sprint. Calibrado con carreras reales (30-38 km/h).", "u": "https://simulator.foil-house.com/vitesse.html?lang=es"}, "it": {"t": "Velocità nel pump foil: cosa rende veloce un foil? | Foil House", "d": "Simulatore di velocità per pump foil: superficie, profilo, stabilizzatore, apertura alare, straps e i tuoi watt di sprint. Calibrato su gare reali (30-38 km/h).", "u": "https://simulator.foil-house.com/vitesse.html?lang=it"}}[M_L(l)]; document.title = M.t;
-  var d = document.querySelector('meta[name="description"]'), c = document.querySelector('link[rel="canonical"]'); if(d) d.setAttribute('content', M.d); if(c) c.setAttribute('href', M.u); };</script>
+  var d = document.querySelector('meta[name="description"]'), c = document.querySelector('link[rel="canonical"]');
+  if(!c){ c = document.createElement('link'); c.rel = 'canonical'; document.head.appendChild(c); }   // canonique posée par le script (jamais en dur) : toujours celle de la langue de l'adresse
+  if(d) d.setAttribute('content', M.d); c.setAttribute('href', M.u); };
+seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   // dès le chargement, d'après ?lang=</script>
 <script src="lang/xl.js?v=20261021"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="La Course aux km/h — qu'est-ce qui fait aller un foil vite ?">
