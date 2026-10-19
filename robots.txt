@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /pump-simulator.html
+Disallow: /foilhouse.html
+
+Sitemap: https://simulator.foil-house.com/sitemap.xml
