@@ -8,11 +8,14 @@
 <link rel="canonical" href="https://simulator.foil-house.com/debutant.html">
 <link rel="alternate" hreflang="fr" href="https://simulator.foil-house.com/debutant.html">
 <link rel="alternate" hreflang="en" href="https://simulator.foil-house.com/debutant.html?lang=en">
+<link rel="alternate" hreflang="es" href="https://simulator.foil-house.com/debutant.html?lang=es">
+<link rel="alternate" hreflang="it" href="https://simulator.foil-house.com/debutant.html?lang=it">
 <link rel="alternate" hreflang="x-default" href="https://simulator.foil-house.com/debutant.html">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Bien débuter en pump foil", "headline": "Débuter en pump foil : quel foil pour apprendre ?", "description": "Guide pour débuter en pump foil : quel foil pour apprendre, grande aile épaisse, gros stab, mât court, selon ton poids. Départ au ponton (dock start) et sécurité d'abord.", "url": "https://simulator.foil-house.com/debutant.html", "applicationCategory": "SportsApplication", "operatingSystem": "Web", "inLanguage": ["fr", "en"], "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "about": ["pump foil", "foil wing", "hydrofoil"], "publisher": {"@type": "Organization", "name": "Foil House", "url": "https://simulator.foil-house.com/"}}</script>
 <script>/* 🔎 SEO : titre, description et adresse canonique suivent la langue (FR = adresse nue, EN = ?lang=en) */
-window.seoLang = function(l){ var M = {"fr": {"t": "Débuter en pump foil : guide et matos pour apprendre | Foil House", "d": "Guide pour débuter en pump foil : quel foil pour apprendre, grande aile épaisse, gros stab, mât court, selon ton poids. Départ au ponton (dock start) et sécurité d'abord.", "u": "https://simulator.foil-house.com/debutant.html"}, "en": {"t": "How to pump foil: beginner guide & best setup | Foil House", "d": "How to pump foil: a beginner guide to the right setup for your weight (big thick wing, big stab, short mast), the dock start, and safety first.", "u": "https://simulator.foil-house.com/debutant.html?lang=en"}}[l === 'en' ? 'en' : 'fr']; document.title = M.t;
+window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].indexOf(x) >= 0 ? x : 'fr'; }; var M = {"fr": {"t": "Débuter en pump foil : guide et matos pour apprendre | Foil House", "d": "Guide pour débuter en pump foil : quel foil pour apprendre, grande aile épaisse, gros stab, mât court, selon ton poids. Départ au ponton (dock start) et sécurité d'abord.", "u": "https://simulator.foil-house.com/debutant.html"}, "en": {"t": "How to pump foil: beginner guide & best setup | Foil House", "d": "How to pump foil: a beginner guide to the right setup for your weight (big thick wing, big stab, short mast), the dock start, and safety first.", "u": "https://simulator.foil-house.com/debutant.html?lang=en"}, "es": {"t": "Cómo hacer pump foil: guía para principiantes | Foil House", "d": "Guía de pump foil para principiantes: qué foil elegir según tu peso (ala grande y gruesa, estabilizador grande, mástil corto), la salida desde pantalán y la seguridad primero.", "u": "https://simulator.foil-house.com/debutant.html?lang=es"}, "it": {"t": "Come fare pump foil: guida per principianti | Foil House", "d": "Guida al pump foil per principianti: quale foil scegliere in base al tuo peso (ala grande e spessa, stabilizzatore grande, albero corto), la partenza dal pontile e la sicurezza prima di tutto.", "u": "https://simulator.foil-house.com/debutant.html?lang=it"}}[M_L(l)]; document.title = M.t;
   var d = document.querySelector('meta[name="description"]'), c = document.querySelector('link[rel="canonical"]'); if(d) d.setAttribute('content', M.d); if(c) c.setAttribute('href', M.u); };</script>
+<script src="lang/xl.js?v=20261020"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Bien débuter en pump foil — le matos qui pardonne">
 <meta property="og:description" content="Quel foil pour apprendre ? Grande aile, gros stab, mât court — le matos de débutant expliqué par la physique, selon ton poids. Et la sécurité d'abord.">
@@ -46,6 +49,7 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Débuter en pump foil : guid
   .topbar a, .topbar button{background:var(--panel); border:1px solid var(--line); color:var(--txt);
     border-radius:999px; padding:6px 12px; font-size:.78rem; font-weight:700; text-decoration:none; cursor:pointer;}
   .topbar a:hover, .topbar button:hover{border-color:var(--sky); color:var(--sky);}
+  .topbar select#lang-btn{background:var(--panel); border:1px solid var(--line); color:var(--txt); border-radius:999px; padding:6px 10px; font:inherit; font-size:.78rem; font-weight:700; cursor:pointer; -webkit-appearance:none; appearance:none;}   /* 🌍 FR · EN · ES · IT */
   .tb-nav{display:flex; background:var(--panel); border:1px solid var(--line); border-radius:999px; padding:3px; gap:2px;}
   .tb-nav .tb-tab{background:none; border:none; color:var(--muted); border-radius:999px; padding:5px 12px;
     font-size:.78rem; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:5px; white-space:nowrap;}
@@ -213,7 +217,7 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Débuter en pump foil : guid
   </div>
   <div class="tb-ctrl">
     <button type="button" id="xp-btn" aria-pressed="false">💡 <span data-i18n="xp-lbl">Explications</span><span class="xp-state"></span></button>
-    <button id="lang-btn" type="button">🇬🇧 EN</button>
+    <select id="lang-btn" aria-label="Langue · Language"><option value="fr">🇫🇷 FR</option><option value="en">🇬🇧 EN</option><option value="es">🇪🇸 ES</option><option value="it">🇮🇹 IT</option></select>
     <details class="tb-more">
       <summary data-i18n="tb-more">Liens ▾</summary>
       <div class="tb-menu">
@@ -576,8 +580,8 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Débuter en pump foil : guid
 
   /* ---------- i18n ---------- */
   let LANG = 'fr';
-  const t = (fr, en) => LANG === 'fr' ? fr : en;
-  const num = (x,d=0)=> x.toLocaleString(LANG==='fr'?'fr-FR':'en-GB',{maximumFractionDigits:d, minimumFractionDigits:d});
+  const t = (fr, en) => LANG === 'fr' ? fr : LANG === 'en' ? en : XL.tr(en);   // espagnol / italien : traduit depuis l'anglais (lang/es.js, lang/it.js)
+  const num = (x,d=0)=> x.toLocaleString(XL.locale(LANG),{maximumFractionDigits:d, minimumFractionDigits:d});
   const FRC = {};
   const EN = {
     'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve','tb-more':'Links ▾','tb-model':'💻 Physics model',
@@ -645,6 +649,8 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Débuter en pump foil : guid
     'foot':'<b style="color:var(--txt)">Model</b> — steady flight (lift = weight), based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>: the recommended area targets a stall around ~10 km/h (<code>S ≈ weight / (½ρv²·C_Lmax)</code>); the estimated effort includes a <b>beginner-technique penalty</b> (~30% wasted watts at first — the biggest lever when you start, and it only costs time). Educational estimates, not a test bench.<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
   };
   function applyLang(l){
+    if((l === 'es' || l === 'it') && !XL.data[l]){ XL.load(l).then(() => applyLang(l), () => applyLang('en')); return; }   // dictionnaire chargé à la demande
+    if(l === 'es' || l === 'it') XL.use(l);
     LANG = l;
     document.documentElement.lang = l;
     if(window.seoLang) seoLang(l);   // 🔎 titre / description / canonique dans la bonne langue
@@ -653,12 +659,13 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Débuter en pump foil : guid
       if(!(k in FRC)) FRC[k] = el.innerHTML;
       if(l === 'en' && EN[k]) el.innerHTML = EN[k];
       if(l === 'fr') el.innerHTML = FRC[k];
+      if(l === 'es' || l === 'it'){ const v = XL.key('debutant', k); el.innerHTML = v !== undefined ? v : (EN[k] || FRC[k]); }
     });
-    $('lang-btn').textContent = l === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
+    $('lang-btn').value = l;
     try{ localStorage.setItem('lcw-lang', l); }catch(e){}
     render();
   }
-  $('lang-btn').addEventListener('click', ()=> applyLang(LANG === 'fr' ? 'en' : 'fr'));
+  $('lang-btn').addEventListener('change', e => applyLang(e.target.value));
 
   /* ---------- modèle ---------- */
   // Étapes : k = cm²/kg visés · profil (cd0|clMax) · pénalité de technique (watts gaspillés)
@@ -774,10 +781,10 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Débuter en pump foil : guid
   }
 
   /* langue : URL ?lang=en, sinon préférence partagée */
-  let startLang = 'fr';
-  if(/[?&]lang=en/i.test(location.search)) startLang = 'en';
-  else { try{ if(localStorage.getItem('lcw-lang') === 'en') startLang = 'en'; }catch(e){} }
-  if(startLang === 'en') applyLang('en'); else render();
+  // langue de départ : ?lang=fr|en|es|it > choix mémorisé > français
+  let startLang = XL.fromUrl();
+  if(!startLang){ startLang = 'fr'; try{ const sv = localStorage.getItem('lcw-lang'); if(['en', 'es', 'it'].includes(sv)) startLang = sv; }catch(e){} }
+  if(startLang !== 'fr') applyLang(startLang); else render();
 })();
 </script>
 <!-- 📊 GoatCounter : mesure d'audience SANS cookie (donc pas de bandeau de consentement) — foilhouse.goatcounter.com.

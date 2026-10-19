@@ -8,11 +8,14 @@
 <link rel="canonical" href="https://simulator.foil-house.com/carve.html">
 <link rel="alternate" hreflang="fr" href="https://simulator.foil-house.com/carve.html">
 <link rel="alternate" hreflang="en" href="https://simulator.foil-house.com/carve.html?lang=en">
+<link rel="alternate" hreflang="es" href="https://simulator.foil-house.com/carve.html?lang=es">
+<link rel="alternate" hreflang="it" href="https://simulator.foil-house.com/carve.html?lang=it">
 <link rel="alternate" hreflang="x-default" href="https://simulator.foil-house.com/carve.html">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Le Carve", "headline": "Pump foil carve : quelle aile pour tourner ?", "description": "Carte de plus de 300 ailes de pump foil et de foil : maniabilité, glisse, vitesse de décollage, selon ton poids et ta vague. Compare-les et trouve ton aile de carve.", "url": "https://simulator.foil-house.com/carve.html", "applicationCategory": "SportsApplication", "operatingSystem": "Web", "inLanguage": ["fr", "en"], "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "about": ["pump foil", "foil wing", "hydrofoil"], "publisher": {"@type": "Organization", "name": "Foil House", "url": "https://simulator.foil-house.com/"}}</script>
 <script>/* 🔎 SEO : titre, description et adresse canonique suivent la langue (FR = adresse nue, EN = ?lang=en) */
-window.seoLang = function(l){ var M = {"fr": {"t": "Pump foil carve : quelle aile pour tourner ? | Foil House", "d": "Carte de plus de 300 ailes de pump foil et de foil : maniabilité, glisse, vitesse de décollage, selon ton poids et ta vague. Compare-les et trouve ton aile de carve.", "u": "https://simulator.foil-house.com/carve.html"}, "en": {"t": "Pump foil carving: which wing turns best? | Foil House", "d": "Map of 300+ pump foil and surf foil wings: maneuverability, glide, take-off speed, for your weight and your wave. Compare them and find your carving wing.", "u": "https://simulator.foil-house.com/carve.html?lang=en"}}[l === 'en' ? 'en' : 'fr']; document.title = M.t;
+window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].indexOf(x) >= 0 ? x : 'fr'; }; var M = {"fr": {"t": "Pump foil carve : quelle aile pour tourner ? | Foil House", "d": "Carte de plus de 300 ailes de pump foil et de foil : maniabilité, glisse, vitesse de décollage, selon ton poids et ta vague. Compare-les et trouve ton aile de carve.", "u": "https://simulator.foil-house.com/carve.html"}, "en": {"t": "Pump foil carving: which wing turns best? | Foil House", "d": "Map of 300+ pump foil and surf foil wings: maneuverability, glide, take-off speed, for your weight and your wave. Compare them and find your carving wing.", "u": "https://simulator.foil-house.com/carve.html?lang=en"}, "es": {"t": "Pump foil carve: ¿qué ala gira mejor? | Foil House", "d": "Mapa de más de 300 alas de pump foil y surf foil: maniobrabilidad, planeo, velocidad de despegue, según tu peso y tu ola. Compáralas y encuentra tu ala de carve.", "u": "https://simulator.foil-house.com/carve.html?lang=es"}, "it": {"t": "Pump foil carve: quale ala gira meglio? | Foil House", "d": "Mappa di oltre 300 ali da pump foil e surf foil: manovrabilità, planata, velocità di decollo, in base al tuo peso e alla tua onda. Confrontale e trova la tua ala da carve.", "u": "https://simulator.foil-house.com/carve.html?lang=it"}}[M_L(l)]; document.title = M.t;
   var d = document.querySelector('meta[name="description"]'), c = document.querySelector('link[rel="canonical"]'); if(d) d.setAttribute('content', M.d); if(c) c.setAttribute('href', M.u); };</script>
+<script src="lang/xl.js?v=20261020"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Le Carve — tourner serré en pump foil dans les vagues">
 <meta property="og:description" content="Envergure courte = faible résistance au roulis = virages vifs. La physique de la maniabilité, aile par aile.">
@@ -46,6 +49,7 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Pump foil carve : quelle ail
   .topbar a, .topbar button{background:var(--panel); border:1px solid var(--line); color:var(--txt);
     border-radius:999px; padding:6px 12px; font-size:.78rem; font-weight:700; text-decoration:none; cursor:pointer;}
   .topbar a:hover, .topbar button:hover{border-color:var(--sky); color:var(--sky);}
+  .topbar select#lang-btn{background:var(--panel); border:1px solid var(--line); color:var(--txt); border-radius:999px; padding:6px 10px; font:inherit; font-size:.78rem; font-weight:700; cursor:pointer; -webkit-appearance:none; appearance:none;}   /* 🌍 FR · EN · ES · IT */
   .tb-nav{display:flex; background:var(--panel); border:1px solid var(--line); border-radius:999px; padding:3px; gap:2px;}
   .tb-nav .tb-tab{background:none; border:none; color:var(--muted); border-radius:999px; padding:5px 12px;
     font-size:.78rem; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:5px; white-space:nowrap;}
@@ -519,7 +523,7 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Pump foil carve : quelle ail
   </div>
   <div class="tb-ctrl">
     <button type="button" id="xp-btn" aria-pressed="false">💡 <span data-i18n="xp-lbl">Explications</span><span class="xp-state"></span></button>
-    <button id="lang-btn" type="button">🇬🇧 EN</button>
+    <select id="lang-btn" aria-label="Langue · Language"><option value="fr">🇫🇷 FR</option><option value="en">🇬🇧 EN</option><option value="es">🇪🇸 ES</option><option value="it">🇮🇹 IT</option></select>
     <details class="tb-more">
       <summary data-i18n="tb-more">Liens ▾</summary>
       <div class="tb-menu">
@@ -781,8 +785,8 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Pump foil carve : quelle ail
 
   /* ---------- i18n ---------- */
   let LANG = 'fr';
-  const t = (fr, en) => LANG === 'fr' ? fr : en;
-  const num = (x,d=0)=> x.toLocaleString(LANG==='fr'?'fr-FR':'en-GB',{maximumFractionDigits:d, minimumFractionDigits:d});
+  const t = (fr, en) => LANG === 'fr' ? fr : LANG === 'en' ? en : XL.tr(en);   // espagnol / italien : traduit depuis l'anglais (lang/es.js, lang/it.js)
+  const num = (x,d=0)=> x.toLocaleString(XL.locale(LANG),{maximumFractionDigits:d, minimumFractionDigits:d});
   const FRC = {};
   const EN = {
     'ws-ask':'👇 Pick the wave size:',
@@ -836,6 +840,8 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Pump foil carve : quelle ail
     'foot':'<b style="color:var(--txt)">Model</b> — a maneuverability index, not a test bench. Roll resistance ∝ <b>area × span²</b>, maneuverability = its inverse; the <b>character</b> (turns easily / goes straight) comes mostly from the stab (size and dihedral), a little from the fuselage. Limit: every wing is assumed to have the <b>same planform</b> (very tapered tips roll faster than the score); a low score = <b>slow to roll</b>, not « doesn\'t turn ». Real carving depends mostly on <b>technique</b>, the wave and tuning — these are <b>educational orders of magnitude</b>. Wing specs: <a href="https://www.realwatersports.com/products/axis-surge-front-wing" target="_blank" rel="noopener">Axis Surge</a> (surf, AR ~9.5 — official size table: 740→1010 mm) · Alpine RSX Carve (AR 11 range: 700→1100, i.e. 89→112 cm).<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
   };
   function applyLang(l){
+    if((l === 'es' || l === 'it') && !XL.data[l]){ XL.load(l).then(() => applyLang(l), () => applyLang('en')); return; }   // dictionnaire chargé à la demande
+    if(l === 'es' || l === 'it') XL.use(l);
     LANG = l;
     document.documentElement.lang = l;
     if(window.seoLang) seoLang(l);   // 🔎 titre / description / canonique dans la bonne langue
@@ -844,12 +850,13 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Pump foil carve : quelle ail
       if(!(k in FRC)) FRC[k] = el.innerHTML;
       if(l === 'en' && EN[k]) el.innerHTML = EN[k];
       if(l === 'fr') el.innerHTML = FRC[k];
+      if(l === 'es' || l === 'it'){ const v = XL.key('carve', k); el.innerHTML = v !== undefined ? v : (EN[k] || FRC[k]); }
     });
-    $('lang-btn').textContent = l === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
+    $('lang-btn').value = l;
     try{ localStorage.setItem('lcw-lang', l); }catch(e){}
     render();
   }
-  $('lang-btn').addEventListener('click', ()=> applyLang(LANG === 'fr' ? 'en' : 'fr'));
+  $('lang-btn').addEventListener('change', e => applyLang(e.target.value));
   // téléphone : l'intro (3 cartes) se déplie d'un toucher
   document.querySelectorAll('.tl-fold').forEach(b => b.addEventListener('click', () => { const d = b.closest('.tldr'); d.classList.toggle('open'); b.setAttribute('aria-expanded', d.classList.contains('open')); }));
 
@@ -2871,7 +2878,7 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Pump foil carve : quelle ail
     const mini = () => { const lv = $('i-lvl').value, H = waveH(), HS = [0.5, 1, 1.75], nx = (a, v) => a[(a.indexOf(v) + 1) % a.length];
       return '<span class="rc"><button type="button" data-rc="kg-" aria-label="'+t('moins lourd','lighter')+'">−</button><b>🧍 '+riderKg()+' kg</b><button type="button" data-rc="kg+" aria-label="'+t('plus lourd','heavier')+'">+</button></span>'
         + '<span class="rc"><button type="button" data-rc="st-" aria-label="'+t('stab plus petit','smaller stab')+'">−</button><b>🪶 '+$('i-stab').value+' cm²</b><button type="button" data-rc="st+" aria-label="'+t('stab plus grand','bigger stab')+'">+</button></span>'
-        + '<button type="button" class="mini-b" data-rc="lv:'+nx(['1', '2', '3'], lv)+'">'+{'1': t('🌱 progression','🌱 learning'), '2': t('💪 confirmé','💪 experienced'), '3': '🏆 expert'}[lv]+'</button>'
+        + '<button type="button" class="mini-b" data-rc="lv:'+nx(['1', '2', '3'], lv)+'">'+{'1': t('🌱 progression','🌱 learning'), '2': t('💪 confirmé','💪 experienced'), '3': t('🏆 expert','🏆 expert')}[lv]+'</button>'
         + '<button type="button" class="mini-b" data-rc="h:'+nx(HS, HS.includes(H) ? H : 1)+'">🌊 '+(H >= 1.5 ? '1,5-2' : num(H, H % 1 ? 1 : 0))+' m</button>'
         + '<button type="button" class="mini-b" data-rc="sr:'+(SURF.ride === 'carve' ? 'porte' : 'carve')+'">'+(SURF.ride === 'carve' ? t('🔥 je carve','🔥 I carve') : t('↗️ porté','↗️ carried'))+'</button>'; };
     // une ligne de la liste texte (alternative à la carte) : taille, scores, session, zone — en mots, sans couleur
@@ -2898,7 +2905,7 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Pump foil carve : quelle ail
     const seg = (pre, items, cur) => '<span class="rc rc-seg">'+items.map(([v, l]) => '<button type="button" data-rc="'+pre+v+'" class="'+(String(cur) === String(v) ? 'on' : '')+'">'+l+'</button>').join('')+'</span>';
     return '<span class="rc"><button type="button" data-rc="kg-" aria-label="'+t('moins lourd','lighter')+'">−</button><b>🧍 '+kg+' kg</b><button type="button" data-rc="kg+" aria-label="'+t('plus lourd','heavier')+'">+</button></span>'
       + (withWave ? '<span class="rc"><button type="button" data-rc="st-" aria-label="'+t('stab plus petit','smaller stab')+'">−</button><b>🪶 stab '+$('i-stab').value+' cm²</b><button type="button" data-rc="st+" aria-label="'+t('stab plus grand','bigger stab')+'">+</button></span>' : '')
-      + seg('lv:', [['1', t('progression','learning')], ['2', t('confirmé','experienced')], ['3', 'expert']], lv)
+      + seg('lv:', [['1', t('progression','learning')], ['2', t('confirmé','experienced')], ['3', t('expert','expert')]], lv)
       + '<div class="lvl-x">'+lvlDesc(lv)+'</div>'
       + (withWave ? seg('h:', [['0.5', '0,5 m'], ['1', '1 m'], ['1.75', '1,5-2 m']], waveH()) + surfCtl(false) : '');
   }
@@ -3182,11 +3189,10 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Pump foil carve : quelle ail
     document.querySelectorAll('.a-in').forEach(el=> io.observe(el));
   } else { document.querySelectorAll('.a-in').forEach(el=> el.classList.add('seen')); }
 
-  let startLang = 'fr';
-  if(/[?&]lang=en/i.test(location.search)) startLang = 'en';
-  else if(/[?&]lang=fr/i.test(location.search)) startLang = 'fr';   // ?lang=fr force aussi le français (même si l'anglais est mémorisé)
-  else { try{ if(localStorage.getItem('lcw-lang') === 'en') startLang = 'en'; }catch(e){} }
-  if(startLang === 'en') applyLang('en'); else render();
+  // langue de départ : ?lang=fr|en|es|it > choix mémorisé > français
+  let startLang = XL.fromUrl();
+  if(!startLang){ startLang = 'fr'; try{ const sv = localStorage.getItem('lcw-lang'); if(['en', 'es', 'it'].includes(sv)) startLang = sv; }catch(e){} }
+  if(startLang !== 'fr') applyLang(startLang); else render();
 })();
 </script>
 <!-- 📊 GoatCounter : mesure d'audience SANS cookie (donc pas de bandeau de consentement) — foilhouse.goatcounter.com.

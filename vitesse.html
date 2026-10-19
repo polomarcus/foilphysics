@@ -8,11 +8,14 @@
 <link rel="canonical" href="https://simulator.foil-house.com/vitesse.html">
 <link rel="alternate" hreflang="fr" href="https://simulator.foil-house.com/vitesse.html">
 <link rel="alternate" hreflang="en" href="https://simulator.foil-house.com/vitesse.html?lang=en">
+<link rel="alternate" hreflang="es" href="https://simulator.foil-house.com/vitesse.html?lang=es">
+<link rel="alternate" hreflang="it" href="https://simulator.foil-house.com/vitesse.html?lang=it">
 <link rel="alternate" hreflang="x-default" href="https://simulator.foil-house.com/vitesse.html">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "La Course aux km/h", "headline": "Vitesse en pump foil : qu'est-ce qui fait aller vite ?", "description": "Simulateur de vitesse en pump foil : surface, profil, stab, envergure, straps et tes watts de sprint. Calibré sur les vraies courses (30-38 km/h). Carte des ailes rapides.", "url": "https://simulator.foil-house.com/vitesse.html", "applicationCategory": "SportsApplication", "operatingSystem": "Web", "inLanguage": ["fr", "en"], "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "about": ["pump foil", "foil wing", "hydrofoil"], "publisher": {"@type": "Organization", "name": "Foil House", "url": "https://simulator.foil-house.com/"}}</script>
 <script>/* 🔎 SEO : titre, description et adresse canonique suivent la langue (FR = adresse nue, EN = ?lang=en) */
-window.seoLang = function(l){ var M = {"fr": {"t": "Vitesse en pump foil : qu'est-ce qui fait aller vite ? | Foil House", "d": "Simulateur de vitesse en pump foil : surface, profil, stab, envergure, straps et tes watts de sprint. Calibré sur les vraies courses (30-38 km/h). Carte des ailes rapides.", "u": "https://simulator.foil-house.com/vitesse.html"}, "en": {"t": "Pump foil speed: what makes a foil fast? | Foil House", "d": "Pump foil speed simulator: area, profile, stab, span, straps and your sprint watts. Calibrated on real races (30-38 km/h). Map of the fastest foil wings.", "u": "https://simulator.foil-house.com/vitesse.html?lang=en"}}[l === 'en' ? 'en' : 'fr']; document.title = M.t;
+window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].indexOf(x) >= 0 ? x : 'fr'; }; var M = {"fr": {"t": "Vitesse en pump foil : qu'est-ce qui fait aller vite ? | Foil House", "d": "Simulateur de vitesse en pump foil : surface, profil, stab, envergure, straps et tes watts de sprint. Calibré sur les vraies courses (30-38 km/h). Carte des ailes rapides.", "u": "https://simulator.foil-house.com/vitesse.html"}, "en": {"t": "Pump foil speed: what makes a foil fast? | Foil House", "d": "Pump foil speed simulator: area, profile, stab, span, straps and your sprint watts. Calibrated on real races (30-38 km/h). Map of the fastest foil wings.", "u": "https://simulator.foil-house.com/vitesse.html?lang=en"}, "es": {"t": "Velocidad en pump foil: ¿qué hace rápido un foil? | Foil House", "d": "Simulador de velocidad de pump foil: superficie, perfil, estabilizador, envergadura, straps y tus vatios de sprint. Calibrado con carreras reales (30-38 km/h).", "u": "https://simulator.foil-house.com/vitesse.html?lang=es"}, "it": {"t": "Velocità nel pump foil: cosa rende veloce un foil? | Foil House", "d": "Simulatore di velocità per pump foil: superficie, profilo, stabilizzatore, apertura alare, straps e i tuoi watt di sprint. Calibrato su gare reali (30-38 km/h).", "u": "https://simulator.foil-house.com/vitesse.html?lang=it"}}[M_L(l)]; document.title = M.t;
   var d = document.querySelector('meta[name="description"]'), c = document.querySelector('link[rel="canonical"]'); if(d) d.setAttribute('content', M.d); if(c) c.setAttribute('href', M.u); };</script>
+<script src="lang/xl.js?v=20261020"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="La Course aux km/h — qu'est-ce qui fait aller un foil vite ?">
 <meta property="og:description" content="Simulateur pédagogique : surface, profil, stab, envergure, straps — et surtout tes watts de sprint. Calibré sur les vitesses de course réelles (30-38 km/h).">
@@ -46,6 +49,7 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Vitesse en pump foil : qu'es
   .topbar a, .topbar button{background:var(--panel); border:1px solid var(--line); color:var(--txt);
     border-radius:999px; padding:6px 12px; font-size:.78rem; font-weight:700; text-decoration:none; cursor:pointer;}
   .topbar a:hover, .topbar button:hover{border-color:var(--sky); color:var(--sky);}
+  .topbar select#lang-btn{background:var(--panel); border:1px solid var(--line); color:var(--txt); border-radius:999px; padding:6px 10px; font:inherit; font-size:.78rem; font-weight:700; cursor:pointer; -webkit-appearance:none; appearance:none;}   /* 🌍 FR · EN · ES · IT */
   .tb-nav{display:flex; background:var(--panel); border:1px solid var(--line); border-radius:999px; padding:3px; gap:2px;}
   .tb-nav .tb-tab{background:none; border:none; color:var(--muted); border-radius:999px; padding:5px 12px;
     font-size:.78rem; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:5px; white-space:nowrap;}
@@ -488,7 +492,7 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Vitesse en pump foil : qu'es
   </div>
   <div class="tb-ctrl">
     <button type="button" id="xp-btn" aria-pressed="false">💡 <span data-i18n="xp-lbl">Explications</span><span class="xp-state"></span></button>
-    <button id="lang-btn" type="button">🇬🇧 EN</button>
+    <select id="lang-btn" aria-label="Langue · Language"><option value="fr">🇫🇷 FR</option><option value="en">🇬🇧 EN</option><option value="es">🇪🇸 ES</option><option value="it">🇮🇹 IT</option></select>
     <details class="tb-more">
       <summary data-i18n="tb-more">Liens ▾</summary>
       <div class="tb-menu">
@@ -811,8 +815,8 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Vitesse en pump foil : qu'es
 
   /* ---------- i18n ---------- */
   let LANG = 'fr';
-  const t = (fr, en) => LANG === 'fr' ? fr : en;
-  const num = (x,d=1)=> x.toLocaleString(LANG==='fr'?'fr-FR':'en-GB',{maximumFractionDigits:d, minimumFractionDigits:d});
+  const t = (fr, en) => LANG === 'fr' ? fr : LANG === 'en' ? en : XL.tr(en);   // espagnol / italien : traduit depuis l'anglais (lang/es.js, lang/it.js)
+  const num = (x,d=1)=> x.toLocaleString(XL.locale(LANG),{maximumFractionDigits:d, minimumFractionDigits:d});
   const FRC = {};   // cache des textes FR d'origine
   const EN = {
     'rf-h2':'🏁 The race: fast AND agile is possible','rf-sub':'Two <b>twin courses</b> (they never cross — safety), 2 turns each, same effort. Surprise: the <b>speed blade turns almost as tight</b> as the carve — its roll resistance (<b>area × span²</b>) is nearly the same. It loses a hair at the buoys… and takes it all back on the straights.',
@@ -865,6 +869,8 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Vitesse en pump foil : qu'es
     'foot':'<b style="color:var(--txt)">Model</b> — steady flight (lift = weight), based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>: <code>P(v) = [weight²/(½ρv²·π·span²) + ½ρv²·(area·C_D0 + mast + fuselage + stab)] · v / η</code>; Vmax solves P(v) = your sprint, <b>rider air drag included</b> (CdA ≈ 0.45 tucked — ~90 W at 25 km/h!). ρ = 1025 · span efficiency e=0.91 + trim drag (consistent with the index) · estimated η (grows with aspect ratio) · short fuselage fixed · mast counted ~55% immersed (at Vmax you fly high) · stab & fuselage C_D mid-range, <b>calibrated on real race speeds</b> (observed 30-38 km/h, Takoon Flow / GONG Veloce H specs — anchor points: strapped on a 600, 30 km/h ≈ 750 W · 33 ≈ 1,000 W · the champion\'s ~37 km/h ≈ 1,300 W burst) · cavitation ignored (negligible below ~45 km/h: the champion\'s 37 km/h stays under the threshold) · no swell, no take-off · straps = +20% efficiency (upstroke pull, cf. the original model\'s «unstrapped» clamp). Educational estimates, not a test bench.<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
   };
   function applyLang(l){
+    if((l === 'es' || l === 'it') && !XL.data[l]){ XL.load(l).then(() => applyLang(l), () => applyLang('en')); return; }   // dictionnaire chargé à la demande
+    if(l === 'es' || l === 'it') XL.use(l);
     LANG = l;
     document.documentElement.lang = l;
     if(window.seoLang) seoLang(l);   // 🔎 titre / description / canonique dans la bonne langue
@@ -873,12 +879,13 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Vitesse en pump foil : qu'es
       if(!(k in FRC)) FRC[k] = el.innerHTML;
       if(l === 'en' && EN[k]) el.innerHTML = EN[k];
       if(l === 'fr') el.innerHTML = FRC[k];
+      if(l === 'es' || l === 'it'){ const v = XL.key('vitesse', k); el.innerHTML = v !== undefined ? v : (EN[k] || FRC[k]); }
     });
-    $('lang-btn').textContent = l === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
+    $('lang-btn').value = l;
     try{ localStorage.setItem('lcw-lang', l); }catch(e){}
     render();
   }
-  $('lang-btn').addEventListener('click', ()=> applyLang(LANG === 'fr' ? 'en' : 'fr'));
+  $('lang-btn').addEventListener('change', e => applyLang(e.target.value));
   // téléphone : l'intro (3 cartes) se déplie d'un toucher
   document.querySelectorAll('.tl-fold').forEach(b => b.addEventListener('click', () => { const d = b.closest('.tldr'); d.classList.toggle('open'); b.setAttribute('aria-expanded', d.classList.contains('open')); }));
 
@@ -1092,10 +1099,10 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Vitesse en pump foil : qu'es
   }
 
   /* langue : URL ?lang=en, sinon préférence partagée avec l'index */
-  let startLang = 'fr';
-  if(/[?&]lang=en/i.test(location.search)) startLang = 'en';
-  else { try{ if(localStorage.getItem('lcw-lang') === 'en') startLang = 'en'; }catch(e){} }
-  if(startLang === 'en') applyLang('en'); else render();
+  // langue de départ : ?lang=fr|en|es|it > choix mémorisé > français
+  let startLang = XL.fromUrl();
+  if(!startLang){ startLang = 'fr'; try{ const sv = localStorage.getItem('lcw-lang'); if(['en', 'es', 'it'].includes(sv)) startLang = sv; }catch(e){} }
+  if(startLang !== 'fr') applyLang(startLang); else render();
 })();
 </script>
 
@@ -1109,7 +1116,7 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Vitesse en pump foil : qu'es
   const g = cv.getContext('2d');
   const $ = id => document.getElementById(id);
   const EN = () => document.documentElement.lang === 'en';
-  const tt = (fr,en) => EN() ? en : fr;
+  const tt = (fr,en) => { const l = document.documentElement.lang; return l === 'fr' ? fr : l === 'en' ? en : XL.tr(en); };
   const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const W = 480, H = 340, Y0 = 80, Y1 = 272;          // repère logique · haut et bas des lignes droites
   const FONT = 'system-ui,-apple-system,sans-serif';
@@ -1354,9 +1361,9 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Vitesse en pump foil : qu'es
 (function(){
   // helpers locaux (les autres blocs de la page sont dans leurs propres fonctions)
   const $ = id => document.getElementById(id);
-  const curLang = () => (document.documentElement.lang || 'fr').slice(0, 2) === 'en' ? 'en' : 'fr';
-  const t = (fr, en) => curLang() === 'en' ? en : fr;
-  const num = (x, d = 1) => x.toLocaleString(curLang() === 'fr' ? 'fr-FR' : 'en-GB', {maximumFractionDigits:d, minimumFractionDigits:d});
+  const curLang = () => { const l = (document.documentElement.lang || 'fr').slice(0, 2); return ['en', 'es', 'it'].includes(l) ? l : 'fr'; };
+  const t = (fr, en) => { const l = curLang(); return l === 'fr' ? fr : l === 'en' ? en : XL.tr(en); };
+  const num = (x, d = 1) => x.toLocaleString(XL.locale(curLang()), {maximumFractionDigits:d, minimumFractionDigits:d});
   /* 🗺️ ATLAS VITESSE — mêmes ailes (ailes.js) et même rendu que la carte carve ; zones = modèle « Le combo selon ton poids »
      (puissance-durée : ~3,5 W/kg tenus + réserve 280 J/kg, démarrage ≤ 17 km/h, +20 % au-dessus du décrochage en virage). */
   const VA = {key:'', g:null, B0:70, B1:195, S0:450, S1:1800, DB:1.5, DS:20, AR0:6, AR1:24, ARB:17, sel:[]};

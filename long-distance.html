@@ -9,11 +9,14 @@
 <meta name="description" content="Quelle aile de pump foil pour aller loin ? Compare 2 ailes : watts, Wh/km, aspect ratio, envergure. Calculateur gratuit, plus de 300 ailes, selon ton poids.">
 <link rel="alternate" hreflang="fr" href="https://simulator.foil-house.com/">
 <link rel="alternate" hreflang="en" href="https://simulator.foil-house.com/?lang=en">
+<link rel="alternate" hreflang="es" href="https://simulator.foil-house.com/?lang=es">
+<link rel="alternate" hreflang="it" href="https://simulator.foil-house.com/?lang=it">
 <link rel="alternate" hreflang="x-default" href="https://simulator.foil-house.com/">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Le Choc des Watts", "headline": "Pump foil : comparateur d'ailes longue distance", "description": "Quelle aile de pump foil pour aller loin ? Compare 2 ailes : watts, Wh/km, aspect ratio, envergure. Calculateur gratuit, plus de 300 ailes, selon ton poids.", "url": "https://simulator.foil-house.com/", "applicationCategory": "SportsApplication", "operatingSystem": "Web", "inLanguage": ["fr", "en"], "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "about": ["pump foil", "foil wing", "hydrofoil"], "publisher": {"@type": "Organization", "name": "Foil House", "url": "https://simulator.foil-house.com/"}}</script>
 <script>/* 🔎 SEO : titre, description et adresse canonique suivent la langue (FR = adresse nue, EN = ?lang=en) */
-window.seoLang = function(l){ var M = {"fr": {"t": "Pump foil : comparateur d'ailes longue distance | Foil House", "d": "Quelle aile de pump foil pour aller loin ? Compare 2 ailes : watts, Wh/km, aspect ratio, envergure. Calculateur gratuit, plus de 300 ailes, selon ton poids.", "u": "https://simulator.foil-house.com/"}, "en": {"t": "Pump foil wing comparator for long distance | Foil House", "d": "Which pump foil wing goes the furthest? Compare two foil wings: watts, Wh/km, aspect ratio, span. Free calculator, 300+ wings, tuned to your weight.", "u": "https://simulator.foil-house.com/?lang=en"}}[l === 'en' ? 'en' : 'fr']; document.title = M.t;
+window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].indexOf(x) >= 0 ? x : 'fr'; }; var M = {"fr": {"t": "Pump foil : comparateur d'ailes longue distance | Foil House", "d": "Quelle aile de pump foil pour aller loin ? Compare 2 ailes : watts, Wh/km, aspect ratio, envergure. Calculateur gratuit, plus de 300 ailes, selon ton poids.", "u": "https://simulator.foil-house.com/"}, "en": {"t": "Pump foil wing comparator for long distance | Foil House", "d": "Which pump foil wing goes the furthest? Compare two foil wings: watts, Wh/km, aspect ratio, span. Free calculator, 300+ wings, tuned to your weight.", "u": "https://simulator.foil-house.com/?lang=en"}, "es": {"t": "Pump foil: comparador de alas para larga distancia | Foil House", "d": "¿Qué ala de pump foil llega más lejos? Compara dos alas: vatios, Wh/km, alargamiento, envergadura. Calculadora gratis, más de 300 alas, según tu peso.", "u": "https://simulator.foil-house.com/?lang=es"}, "it": {"t": "Pump foil: comparatore di ali per la lunga distanza | Foil House", "d": "Quale ala da pump foil va più lontano? Confronta due ali: watt, Wh/km, allungamento, apertura alare. Calcolatore gratuito, più di 300 ali, in base al tuo peso.", "u": "https://simulator.foil-house.com/?lang=it"}}[M_L(l)]; document.title = M.t;
   var d = document.querySelector('meta[name="description"]'), c = document.querySelector('link[rel="canonical"]'); if(d) d.setAttribute('content', M.d); if(c) c.setAttribute('href', M.u); };</script>
+<script src="lang/xl.js?v=20261020"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Le Choc des Watts · The Watts Showdown — foil wing comparator">
 <meta property="og:description" content="Classique vs longue distance : où partent tes watts ? · Classic vs long-distance: where do your watts go? AR, traînée/drag, Wh/km. FR/EN.">
@@ -60,6 +63,7 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Pump foil : comparateur d'ai
     border-radius:999px; padding:6px 12px; font-size:.78rem; font-weight:700; cursor:pointer; text-decoration:none;
     display:inline-flex; align-items:center; gap:5px;}
   .topbar button:hover, .topbar a:hover{border-color:var(--sky); color:var(--sky);}
+  .topbar select#lang-btn{background:var(--panel); border:1px solid var(--line); color:var(--txt); border-radius:999px; padding:6px 10px; font:inherit; font-size:.78rem; font-weight:700; cursor:pointer; -webkit-appearance:none; appearance:none;}   /* 🌍 FR · EN · ES · IT */
   .tb-nav{display:flex; background:var(--panel); border:1px solid var(--line); border-radius:999px; padding:3px; gap:2px;}
   .tb-nav .tb-tab{background:none; border:none; color:var(--muted); border-radius:999px; padding:5px 12px;
     font-size:.78rem; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:5px; white-space:nowrap;}
@@ -851,7 +855,7 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Pump foil : comparateur d'ai
   </div>
   <div class="tb-ctrl">
     <button id="xp-btn" type="button" aria-pressed="true">💡 <span data-i18n="xp-lbl">Explications</span><span class="xp-state"></span></button>
-    <button id="lang-btn" type="button">🇬🇧 EN</button>
+    <select id="lang-btn" aria-label="Langue · Language"><option value="fr">🇫🇷 FR</option><option value="en">🇬🇧 EN</option><option value="es">🇪🇸 ES</option><option value="it">🇮🇹 IT</option></select>
     <details class="tb-more">
       <summary data-i18n="tb-more">Liens ▾</summary>
       <div class="tb-menu">
@@ -1702,7 +1706,7 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Pump foil : comparateur d'ai
   const VIDEO = /[?&]video=1/.test(location.search);   // 🎬 ?video=1 : la page sert de moteur à la vidéo Insta (insta-longue.html) — sans ce paramètre, rien ne change
 
   let LANG = 'fr';
-  const t = (fr, en) => LANG === 'fr' ? fr : en;   // helper i18n pour le texte généré en JS
+  const t = (fr, en) => LANG === 'fr' ? fr : LANG === 'en' ? en : XL.tr(en);   // helper i18n pour le texte généré en JS
   const store = (k,v)=>{ try{ localStorage.setItem(k,v); }catch(e){} };   // mémorise langue & mode
   const stored = k=>{ try{ return localStorage.getItem(k); }catch(e){ return null; } };
   const CD_MAST = 0.008;                       // mât : coeff commun (aire via <select>)
@@ -1745,8 +1749,8 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Pump foil : comparateur d'ai
   };
 
   const val = id => parseFloat(document.getElementById(id).value);
-  const num = (x,d=0) => x.toLocaleString(LANG==='fr'?'fr-FR':'en-GB',{maximumFractionDigits:d, minimumFractionDigits:d});
-  const dec = x => LANG==='fr' ? String(x).replace('.',',') : String(x);   // décimale localisée pour les valeurs de sliders
+  const num = (x,d=0) => x.toLocaleString(XL.locale(LANG),{maximumFractionDigits:d, minimumFractionDigits:d});
+  const dec = x => LANG==='en' ? String(x) : String(x).replace('.',',');   // décimale localisée pour les valeurs de sliders
 
   function compute(cfg){
     const RHO = rho();
@@ -2429,7 +2433,7 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Pump foil : comparateur d'ai
     ['mât alu','alu mast'], ['aile rapide','fast wing'],
     ['(petites)','(small)'], ['(grandes)','(large)']
   ];
-  const trGroup = g => { if(LANG==='fr') return g; let s=g; GRP_TR.forEach(([f,e])=> s=s.split(f).join(e)); return s; };
+  const trGroup = g => { if(LANG==='fr') return g; let s=g; GRP_TR.forEach(([f,e])=> s=s.split(f).join(LANG==='en' ? e : XL.tr(e))); return s; };
   function populatePresets(){
     ['1','2'].forEach(i=>{
       const sel = document.getElementById('preset'+i), cur = sel.value, wantCat = i==='1' ? 'classic' : 'ha';
@@ -2935,13 +2939,17 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Pump foil : comparateur d'ai
   })();
 
   function applyLang(l){
+    if((l === 'es' || l === 'it') && !XL.data[l]){ XL.load(l).then(() => applyLang(l), () => applyLang('en')); return; }   // dictionnaire chargé à la demande
+    if(l === 'es' || l === 'it') XL.use(l);
     LANG = l;
     document.documentElement.lang = l;
     if(window.seoLang) seoLang(l);   // 🔎 titre / description / canonique dans la bonne langue
     document.querySelectorAll('[data-i18n]').forEach(el=>{
       const k = el.getAttribute('data-i18n');
-      if(l==='en'){ if(FRC[k]===undefined) FRC[k]=el.innerHTML; if(EN[k]!==undefined) el.innerHTML=EN[k]; }
-      else if(FRC[k]!==undefined){ el.innerHTML=FRC[k]; }
+      if(FRC[k]===undefined) FRC[k]=el.innerHTML;
+      if(l==='fr') el.innerHTML=FRC[k];
+      else if(l==='en'){ if(EN[k]!==undefined) el.innerHTML=EN[k]; }
+      else { const v = XL.key('long-distance', k); el.innerHTML = v!==undefined ? v : (EN[k]!==undefined ? EN[k] : FRC[k]); }
     });
     populatePresets();
     if(typeof cpOptions === 'function') cpOptions();   // niveaux de forme : texte généré en JS
@@ -2954,22 +2962,25 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Pump foil : comparateur d'ai
     render();
     renderMental();
     attachAnchors();   // les boutons 🔗 vivent dans des titres traduits → recréés après chaque bascule
-    document.getElementById('lang-btn').textContent = l==='fr' ? '🇬🇧 EN' : '🇫🇷 FR';
+    document.getElementById('lang-btn').value = l;
     try {   // langue en ?lang=… pour ne pas écraser l'ancre de section (#duel, #sensibilite…)
       const u = new URL(location.href);
-      if(l==='en') u.searchParams.set('lang','en'); else u.searchParams.delete('lang');
+      if(l!=='fr') u.searchParams.set('lang',l); else u.searchParams.delete('lang');
       const h = (u.hash==='#en'||u.hash==='#fr') ? '' : u.hash;   // purge l'ancien hash de langue
       history.replaceState(null, '', u.pathname + u.search + h);
     } catch(e){}
   }
-  document.getElementById('lang-btn').addEventListener('click', ()=>{ applyLang(LANG==='fr'?'en':'fr'); store('lcw-lang', LANG); });
-  // langue initiale : lien explicite (?lang=en ou #en) > choix mémorisé > langue du navigateur
-  if(location.hash==='#en' || /[?&]lang=en/i.test(location.search)) applyLang('en');
-  else if(!/[?&]lang=fr/i.test(location.search)){
+  document.getElementById('lang-btn').addEventListener('change', e=>{ applyLang(e.target.value); store('lcw-lang', e.target.value); });
+  // langue initiale : lien explicite (?lang=en|es|it ou #en) > choix mémorisé > langue du navigateur
+  const urlLang = XL.fromUrl();
+  if(location.hash==='#en') applyLang('en');
+  else if(urlLang){ if(urlLang !== 'fr') applyLang(urlLang); }
+  else {
     const savedLang = stored('lcw-lang');
-    if(savedLang==='en') applyLang('en');
-    // (pas pour les robots des moteurs de recherche : l'adresse nue = la version française, la version anglaise = ?lang=en)
-    else if(!savedLang && navigator.language && !/^fr/i.test(navigator.language) && !/bot|crawl|spider|slurp|lighthouse/i.test(navigator.userAgent)) applyLang('en');
+    if(['en','es','it'].includes(savedLang)) applyLang(savedLang);
+    // (pas pour les robots des moteurs de recherche : l'adresse nue = la version française, les autres = ?lang=…)
+    else if(!savedLang && navigator.language && !/^fr/i.test(navigator.language) && !/bot|crawl|spider|slurp|lighthouse/i.test(navigator.userAgent))
+      applyLang(/^es/i.test(navigator.language) ? 'es' : /^it/i.test(navigator.language) ? 'it' : 'en');
   }
 
   /* ---------- Ancres partageables : ?lang=en & #section ---------- */
@@ -2993,7 +3004,7 @@ window.seoLang = function(l){ var M = {"fr": {"t": "Pump foil : comparateur d'ai
         b.addEventListener('click', e=>{
           e.preventDefault(); e.stopPropagation();
           const url = location.origin + location.pathname +
-            (LANG === 'en' ? '?lang=en' : '') + '#' + s.id;
+            (LANG !== 'fr' ? '?lang='+LANG : '') + '#' + s.id;
           navigator.clipboard.writeText(url).then(()=>{
             b.textContent = '✅'; setTimeout(()=> b.textContent = '🔗', 1200);
           });
