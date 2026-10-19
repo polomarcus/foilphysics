@@ -4,7 +4,7 @@
    Ce qui manque reste en anglais (jamais de trou). */
 (function(){
   var X = window.XL = {data: {}, s: {}, k: {}, tpl: [], cache: new Map(), lang: null, miss: new Set()};   // miss : textes anglais sans traduction (contrôle)
-  var V = '20261020';
+  var V = '20261021';
   X.def = function(lang, d){ X.data[lang] = d; };
   X.load = function(lang){
     if(X.data[lang]) return Promise.resolve();
@@ -31,5 +31,15 @@
   X.key = function(page, k){ return (X.k[page] || {})[k]; };
   X.LANGS = [['fr', '🇫🇷 FR'], ['en', '🇬🇧 EN'], ['es', '🇪🇸 ES'], ['it', '🇮🇹 IT']];
   X.locale = function(l){ return {fr: 'fr-FR', en: 'en-GB', es: 'es-ES', it: 'it-IT'}[l] || 'fr-FR'; };
+  // liens vers les autres pages du site (menu, textes) : ?lang=… suit la langue choisie (FR = adresse nue)
+  // → changer de page garde la langue, même sans mémoire du navigateur (fichiers locaux, navigation privée)
+  X.links = function(lang){
+    document.querySelectorAll('a[href]').forEach(function(a){
+      var h = a.getAttribute('href'), m = /^((?:[\w.-]+\.html)|\.\/?|)(\?[^#]*)?(#.*)?$/.exec(h);
+      if(!m || /^(https?:|mailto:|\/\/)/.test(h) || (!m[1] && !m[2] && m[3])) return;   // externe, ou simple ancre (#…) de la même page
+      var q = new URLSearchParams((m[2] || '').slice(1)); if(lang === 'fr') q.delete('lang'); else q.set('lang', lang);
+      var qs = q.toString(); a.setAttribute('href', (m[1] || './') + (qs ? '?' + qs : '') + (m[3] || ''));
+    });
+  };
   X.fromUrl = function(){ var m = /[?&]lang=(fr|en|es|it)\b/i.exec(location.search); return m ? m[1].toLowerCase() : null; };
 })();

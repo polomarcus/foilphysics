@@ -15,7 +15,7 @@
 <script>/* 🔎 SEO : titre, description et adresse canonique suivent la langue (FR = adresse nue, EN = ?lang=en) */
 window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].indexOf(x) >= 0 ? x : 'fr'; }; var M = {"fr": {"t": "Débuter en pump foil : guide et matos pour apprendre | Foil House", "d": "Guide pour débuter en pump foil : quel foil pour apprendre, grande aile épaisse, gros stab, mât court, selon ton poids. Départ au ponton (dock start) et sécurité d'abord.", "u": "https://simulator.foil-house.com/debutant.html"}, "en": {"t": "How to pump foil: beginner guide & best setup | Foil House", "d": "How to pump foil: a beginner guide to the right setup for your weight (big thick wing, big stab, short mast), the dock start, and safety first.", "u": "https://simulator.foil-house.com/debutant.html?lang=en"}, "es": {"t": "Cómo hacer pump foil: guía para principiantes | Foil House", "d": "Guía de pump foil para principiantes: qué foil elegir según tu peso (ala grande y gruesa, estabilizador grande, mástil corto), la salida desde pantalán y la seguridad primero.", "u": "https://simulator.foil-house.com/debutant.html?lang=es"}, "it": {"t": "Come fare pump foil: guida per principianti | Foil House", "d": "Guida al pump foil per principianti: quale foil scegliere in base al tuo peso (ala grande e spessa, stabilizzatore grande, albero corto), la partenza dal pontile e la sicurezza prima di tutto.", "u": "https://simulator.foil-house.com/debutant.html?lang=it"}}[M_L(l)]; document.title = M.t;
   var d = document.querySelector('meta[name="description"]'), c = document.querySelector('link[rel="canonical"]'); if(d) d.setAttribute('content', M.d); if(c) c.setAttribute('href', M.u); };</script>
-<script src="lang/xl.js?v=20261020"></script>
+<script src="lang/xl.js?v=20261021"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Bien débuter en pump foil — le matos qui pardonne">
 <meta property="og:description" content="Quel foil pour apprendre ? Grande aile, gros stab, mât court — le matos de débutant expliqué par la physique, selon ton poids. Et la sécurité d'abord.">
@@ -662,6 +662,7 @@ window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].ind
       if(l === 'es' || l === 'it'){ const v = XL.key('debutant', k); el.innerHTML = v !== undefined ? v : (EN[k] || FRC[k]); }
     });
     $('lang-btn').value = l;
+    XL.links(l);   // les liens vers les autres pages gardent la langue
     try{ localStorage.setItem('lcw-lang', l); }catch(e){}
     render();
   }

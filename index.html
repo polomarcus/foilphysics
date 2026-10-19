@@ -16,7 +16,7 @@
 <script>/* 🔎 SEO : titre, description et adresse canonique suivent la langue (FR = adresse nue, EN = ?lang=en) */
 window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].indexOf(x) >= 0 ? x : 'fr'; }; var M = {"fr": {"t": "Pump foil : comparateur d'ailes longue distance | Foil House", "d": "Quelle aile de pump foil pour aller loin ? Compare 2 ailes : watts, Wh/km, aspect ratio, envergure. Calculateur gratuit, plus de 300 ailes, selon ton poids.", "u": "https://simulator.foil-house.com/"}, "en": {"t": "Pump foil wing comparator for long distance | Foil House", "d": "Which pump foil wing goes the furthest? Compare two foil wings: watts, Wh/km, aspect ratio, span. Free calculator, 300+ wings, tuned to your weight.", "u": "https://simulator.foil-house.com/?lang=en"}, "es": {"t": "Pump foil: comparador de alas para larga distancia | Foil House", "d": "¿Qué ala de pump foil llega más lejos? Compara dos alas: vatios, Wh/km, alargamiento, envergadura. Calculadora gratis, más de 300 alas, según tu peso.", "u": "https://simulator.foil-house.com/?lang=es"}, "it": {"t": "Pump foil: comparatore di ali per la lunga distanza | Foil House", "d": "Quale ala da pump foil va più lontano? Confronta due ali: watt, Wh/km, allungamento, apertura alare. Calcolatore gratuito, più di 300 ali, in base al tuo peso.", "u": "https://simulator.foil-house.com/?lang=it"}}[M_L(l)]; document.title = M.t;
   var d = document.querySelector('meta[name="description"]'), c = document.querySelector('link[rel="canonical"]'); if(d) d.setAttribute('content', M.d); if(c) c.setAttribute('href', M.u); };</script>
-<script src="lang/xl.js?v=20261020"></script>
+<script src="lang/xl.js?v=20261021"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Le Choc des Watts · The Watts Showdown — foil wing comparator">
 <meta property="og:description" content="Classique vs longue distance : où partent tes watts ? · Classic vs long-distance: where do your watts go? AR, traînée/drag, Wh/km. FR/EN.">
@@ -2963,6 +2963,7 @@ window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].ind
     renderMental();
     attachAnchors();   // les boutons 🔗 vivent dans des titres traduits → recréés après chaque bascule
     document.getElementById('lang-btn').value = l;
+    XL.links(l);   // les liens vers les autres pages gardent la langue
     try {   // langue en ?lang=… pour ne pas écraser l'ancre de section (#duel, #sensibilite…)
       const u = new URL(location.href);
       if(l!=='fr') u.searchParams.set('lang',l); else u.searchParams.delete('lang');
