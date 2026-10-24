@@ -681,7 +681,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   };
   function model(c){
     const AR = c.b*c.b/c.S;
-    const eta = Math.min(0.80, (0.44 + 0.015*AR)*1.06);
+    const eta = 0.83*AR/(AR + 2);   // rendement du pompage : la formule de la page longue distance (forme Prandtl, η∞ 0,83 ajusté sur 2 mesures de puissance)
     const K  = c.S*c.cd0 + A_MAST*CDM + A_FUS*CDF + c.As*CDS;
     const Ai = (c.W*c.W)/(0.5*RHO*Math.PI*c.b*c.b*E);
     const Dt = 2*c.W*(6*c.cd0+0.012)*(c.S/c.b)*c.S/(0.65*Math.PI*c.b*c.b*E);   // trim drag : Cm0 lié à la cambrure du profil

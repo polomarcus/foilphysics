@@ -1424,7 +1424,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     const Kpar = S*cd0 + 0.065*0.55*0.008 + 0.028*0.010 + stabA*0.044, Aind = W*W/(0.5*RHO*Math.PI*b*b*E);
     const Dt = 2*W*(6*cd0 + 0.012)*(S/b)*S/(0.65*Math.PI*b*b*E), vOpt = Math.pow(Aind/(3*0.5*RHO*Kpar), 0.25);
     const cl = Math.min((2*Math.PI/(1 + 2/AR))*(13*Math.PI/180), 1.15), v = Math.max(vOpt, Math.sqrt(W/(0.5*RHO*S*cl))*1.30, 11/3.6);
-    const eta = Math.min(0.80, 0.44 + 0.015*AR), P = ((Aind/(v*v) + 0.5*RHO*v*v*Kpar + Dt)*v)/eta;
+    const eta = 0.72*AR/(AR + 2), P = ((Aind/(v*v) + 0.5*RHO*v*v*Kpar + Dt)*v)/eta;   // η : même formule que la page carve (forme Prandtl, calée sur RSX Carve 1100)
     return {P, v: v*3.6};   // watts de croisière à la vitesse idéale (pas de note /100 : elle plafonnait à 100 pour toutes les grandes ailes longues)
   };
   // puissance de sprint selon le niveau, sur la durée d'un 300 m (~40 s) : seuil + réserve / 40 s — la même que la carte

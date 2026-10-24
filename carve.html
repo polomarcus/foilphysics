@@ -886,7 +886,9 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     const cl   = Math.min((2*Math.PI/(1+2/AR))*(13*Math.PI/180), 1.15);
     const v    = Math.max(vOpt, Math.sqrt(W/(0.5*RHO*S*cl))*1.30, 11/3.6);
     // fuselage court = moins de stabilité en tangage → le pompage transmet moins bien (retour terrain)
-    const eta  = Math.min(0.80, 0.44+0.015*AR) * Math.min(1.03, Math.pow(fusL/65, 0.6));
+    // rendement du pompage : même forme physique que la page longue distance (η∞ · AR/(AR+2), Prandtl, oct. 2026) ;
+    // niveau η∞ = 0,72 calé ici sur le repère terrain de la page (RSX Carve 1100 ≈ 2 min @85 kg, « confirmé ») → inchangé à ce repère
+    const eta  = 0.72*AR/(AR + 2) * Math.min(1.03, Math.pow(fusL/65, 0.6));
     return {P:((Aind/(v*v) + 0.5*RHO*v*v*Kpar + Dt)*v)/eta, v:v};
   }
   // 🌊 Une session de vagues = des cycles : ~30 s portées par la vague (gratuites si ton aile vole à la vitesse
