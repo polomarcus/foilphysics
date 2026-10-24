@@ -17,7 +17,7 @@ window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].ind
   if(!c){ c = document.createElement('link'); c.rel = 'canonical'; document.head.appendChild(c); }   // canonique posée par le script (jamais en dur) : toujours celle de la langue de l'adresse
   if(d) d.setAttribute('content', M.d); c.setAttribute('href', M.u); };
 seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   // dès le chargement, d'après ?lang=</script>
-<script src="lang/xl.js?v=20261021"></script>
+<script src="lang/xl.js?v=20261024"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="La Course aux km/h — qu'est-ce qui fait aller un foil vite ?">
 <meta property="og:description" content="Simulateur pédagogique : surface, profil, stab, envergure, straps — et surtout tes watts de sprint. Calibré sur les vitesses de course réelles (30-38 km/h).">
@@ -1398,6 +1398,10 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     window.vaZC = vaZC; window.vaStarOn = on => { if(VA.noStar !== !on){ VA.noStar = !on; vaDraw(); } }; window.vaSetP = P => { VA.P = P; vaDraw(); };
     window.vaTop = () => VA.top || []; window.vaStarPt = () => VA.starXY ? {W: VA.geo.W, H: VA.geo.H, x: VA.starXY[0], y: VA.starXY[1]} : null;
     window.vaFocusPts = () => (VA.pts || []).filter(p => p.focus).map(p => ({n: p.n, b: p.b, S: p.S}));
+    // vitesse sur 300 m (même course que la carte) pour une aile, un poids et des watts donnés : v = vitesse tenue, avg = moyenne départ compris,
+    // lo = vitesse où l'aile porte (> 17 km/h : ne décolle pas en pompant) — la vidéo « ta vitesse max en 3 chiffres » s'en sert
+    window.vaSpeed = (b, S, kg, P) => { const P0 = VA.P; VA.P = P; const r = vaRace(b, S, kg, 300); VA.P = P0; return {v: r.v, avg: 300/r.t*3.6, stall: r.stall, lo: r.lo}; };
+    window.vaP30 = (l, kg) => vaP30(l, kg);   // puissance de sprint d'un niveau (loisir / régulier / compétiteur)
   }
   // watts qu'il faut pour TENIR la vitesse v (km/h) avec cette aile (même modèle que la course, sans la phase de départ)
   function vaPow(b, S, kg, vk){

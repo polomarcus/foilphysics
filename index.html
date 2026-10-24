@@ -18,7 +18,7 @@ window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].ind
   if(!c){ c = document.createElement('link'); c.rel = 'canonical'; document.head.appendChild(c); }   // canonique posée par le script (jamais en dur) : toujours celle de la langue de l'adresse
   if(d) d.setAttribute('content', M.d); c.setAttribute('href', M.u); };
 seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   // dès le chargement, d'après ?lang=</script>
-<script src="lang/xl.js?v=20261021"></script>
+<script src="lang/xl.js?v=20261024"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Le Choc des Watts · The Watts Showdown — foil wing comparator">
 <meta property="og:description" content="Classique vs longue distance : où partent tes watts ? · Classic vs long-distance: where do your watts go? AR, traînée/drag, Wh/km. FR/EN.">
@@ -341,6 +341,8 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   .rider-item{display:flex; flex-direction:column; gap:5px;}
   .rider-item.weight{width:150px;}
   .rider-item.form{flex:1; min-width:190px;}
+  .rider-item.pump{flex:1; min-width:190px;}
+  .fx .fx-step{margin:12px 0; line-height:1.55;} .fx code{display:block; margin:6px 0; padding:8px 10px; background:var(--panel-2); border-radius:8px; overflow-x:auto; white-space:normal; font-size:.9em;} .fx li code, .fx p code{display:inline; padding:1px 5px; margin:0;} .fx ul{margin:6px 0 0; padding-left:20px;} .fx a{color:#7dd3fc; text-decoration:underline;}
   .cp-row{display:flex; gap:6px;} .cp-row #rider-sex{flex:0 0 auto; width:auto;} .cp-row #rider-cp{flex:1; min-width:0;}
   @media(max-width:560px){ .cp-row{flex-direction:column;} .cp-row #rider-sex{width:100%;} }
   .rider-item.water{width:150px;}
@@ -1004,6 +1006,10 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
         <select id="rider-cp"></select>
       </div>
     </div>
+    <div class="rider-item pump">
+      <label for="rider-pump" data-i18n="l-pump">🏄 Expérience en pumping</label>
+      <select id="rider-pump"></select>
+    </div>
     <span class="rider-hint" data-i18n="rh1">La <b>forme</b> fixe ton <b>seuil</b> : l'effort que tu tiens <b>~1 h</b> (pour plusieurs heures, compte ~10-15 % de moins). Au-dessus, tu puises dans ta réserve et tu finis par tomber. Repères tirés des normes de médecine du sport (VO2max par sexe et âge). <b>Sans cardio régulier, même la meilleure aile ne te mène qu'à quelques km d'affilée</b> (3 à 6 km avec une technique parfaite, plutôt 1 à 2 km en vrai) : 10 km demande un moteur entraîné.</span>
   </div>
 
@@ -1509,6 +1515,32 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
 
   </div><!-- /SLIDE E4 -->
   </details>
+  <details class="deep" id="formule"><summary><span class="deep-t"></span></summary>
+  <div class="shock fx">
+    <h3 data-i18n="fx-h3">📐 La formule, en clair</h3>
+    <div data-i18n="fx-body"><p class="lede">Tout ce que calcule cette page tient en <b>3 étapes</b>. Les chiffres sont écrits en clair pour être <b>vérifiés, contestés et améliorés</b> — par nous ou par toi.</p>
+<div class="fx-step"><b>① Ce que coûte l'aile</b> — la puissance pour voler à la vitesse v :
+<code>P(v) = (D<sub>induite</sub> + D<sub>frottement</sub> + D<sub>trim</sub>) × v ÷ η × 0,85</code>
+<ul>
+<li><b>Traînée induite</b> (le prix de la portance) : <code>D<sub>i</sub> = W² ÷ (½ρv² · π b² · e)</code> — ton poids W au carré, l'envergure b au carré. ρ = 1 025 kg/m³ (mer), e = 0,91.</li>
+<li><b>Frottement</b> : <code>D<sub>f</sub> = ½ρv² · (S·Cd0 + mât + fuselage + stab)</code> — Cd0 du profil (0,013 par défaut ; 0,011 profil fin, 0,016-0,018 épais), mât 0,065 m² × 55 % immergé × 0,008, fuselage 0,045 × 0,010, stab (aire mouillée) × 0,020.</li>
+<li><b>Trim</b> (l'assiette, quelques watts) : <code>D<sub>t</sub> = 2W·(6·Cd0 + 0,012)·(S/b)·S ÷ (0,65·π b² e)</code>.</li>
+<li><b>η, le rendement du pompage</b> (la part de ton effort qui devient de la poussée) : <code>η = min(0,80 ; 0,44 + 0,015 × AR)</code>.</li>
+<li><b>0,85</b> = calage sur des mesures terrain : GONG Sirus XL ≈ 240 W à 79 kg et Ultra Trail 4XL ≈ 198 W à 12,9 km/h (capteurs Foilmotion), RSX Carve 1100 = 5 min max à 78 kg (Paul).</li>
+<li><b>Vitesse de croisière</b> : la plus haute de ① la vitesse de traînée minimale, ② 1,3 × la vitesse de décrochage, ③ 11 km/h.</li>
+</ul></div>
+<div class="fx-step"><b>② Ce que tu peux donner</b>
+<ul>
+<li><b>Seuil cardio</b> (ton moteur, tenu ~1 h) : <code>CP<sub>cardio</sub> = (W/kg de ta forme) × 70 × (poids ÷ 70)<sup>0,67</sup></code> — 1,5 à 4,2 W/kg selon la forme (VO2max FRIEND × seuil × rendement vélo) ; l'exposant 0,67 : un rider plus lourd a plus de watts, mais pas en proportion.</li>
+<li><b>Seuil de pompage</b> (ta transmission) : <code>CP<sub>pump</sub> = CP<sub>cardio</sub> × f<sub>pump</sub></code> — le pumping est un autre geste (squats intermittents, technique) : seule une part du moteur devient du pompage. f<sub>pump</sub> = <b>0,75 « régulier » : mesuré</b> (78 kg, sportif régulier ~220 W cardio, Takoon Pump Pro 1750 + stab 75, lac sans vent : 25-30 min → 174 W − 12,3 kJ ÷ 27 min ≈ 166 W). <b>0,60 « débutant » et 0,90 « expert » : estimés</b>, à affiner.</li>
+<li><b>Réserve</b> W′ = 12,3 kJ : l'effort que tu peux fournir au-dessus de ton seuil avant d'être vidé.</li>
+</ul></div>
+<div class="fx-step"><b>③ Combien de temps tu tiens</b>
+<code>P &lt; 0,85 · CP<sub>pump</sub> → des heures · P &lt; CP<sub>pump</sub> → ~1 h · au-dessus → t = W′ ÷ (P − CP<sub>pump</sub>)</code></div>
+<div class="fx-step"><b>Ce que le modèle ne sait pas</b> : la houle et le clapot (en mer tu tiens moins), le vent, la flexion du mât, le poids des grandes envergures à chaque coup de pompe, ta technique en détail. C'est un modèle stationnaire calé sur quelques mesures : <b>±15 %</b> sur les watts, davantage sur les durées.</div>
+<div class="fx-step"><b>Aide-nous à l'améliorer</b> : envoie un repère terrain — <b>ton aile, ton poids, ta forme, combien de temps tu tiens, où</b> (lac, mer, houle) — à <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">@polofoil</a>. Chaque repère sert à recaler ces chiffres. Le code est ouvert : <a href="https://github.com/polomarcus/foilphysics" target="_blank" rel="noopener">github.com/polomarcus/foilphysics</a>.</div></div>
+  </div>
+  </details>
   <details class="deep"><summary><span class="deep-t"></span></summary>
   <div class="sslide" id="reglages"><!-- SLIDE E4b · réglages -->
   <div class="shock">
@@ -1715,7 +1747,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     {k:'trn',   m:3.4, f:2.95, fr:'Entraîné — 4 à 5 entraînements par semaine', en:'Trained — 4-5 workouts a week'},
     {k:'comp',  m:4.2, f:3.65, fr:'Compétiteur d\'endurance — 6 entraînements et + par semaine, avec un plan', en:'Endurance competitor — 6+ workouts a week, on a plan'}
   ];
-  const CP_DEF = 'avg';   // beaucoup de foilers (wing, kite) ne font pas de cardio : le vent les porte (retour Paul) → médiane de la population par défaut
+  const CP_DEF = 'act';   // « Actif » par défaut (depuis le seuil de POMPAGE, oct. 2026 : avec « de temps en temps », presque toute la carte était rouge — retour Paul)   // beaucoup de foilers (wing, kite) ne font pas de cardio : le vent les porte (retour Paul) → médiane de la population par défaut
   const cpWkg = () => { const L = CP_LV.find(l => l.k === document.getElementById('rider-cp').value) || CP_LV[1]; return document.getElementById('rider-sex').value === 'f' ? L.f : L.m; };
   // la puissance ne grandit pas en proportion du poids : un rider plus lourd à forme égale a un peu plus de watts, pas autant de plus
   // (loi d'échelle des muscles : puissance ∝ masse^0,67, autour d'un poids de référence) — retour Paul : « je monte le poids, le seuil monte »
@@ -1723,11 +1755,27 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   // 🎯 CALAGE TERRAIN (oct. 2026) : le modèle surestimait les watts d'~15 % face à 3 mesures — Paul RSX Carve 1100 à 78 kg = 5 min max,
   // Sirus XL à 79 kg ≈ 240 W (Foilmotion, modèle 285 W), Ultra Trail 4XL ≈ 198 W à 12,9 km/h (Foilmotion) → tous les watts × 0,85
   const CAL = 0.85;
-  const riderCP = () => cpAt(cpWkg(), parseFloat(document.getElementById('rider-w').value) || 75);   // puissance critique du rider (W)
+  // 🏄 SEUIL DE POMPAGE = seuil cardio × f_pump. La forme (course, vélo) est le MOTEUR ; le pumping est un autre geste (squats
+  // intermittents, muscles et technique propres) → seule une part de ce moteur devient du pompage. f_pump « régulier » = 0,75 MESURÉ
+  // (Paul, 78 kg, sportif régulier ~220 W cardio : Takoon Pump Pro 1750 + stab 75, lac sans vent, 25-30 min → 174 W − 12,3 kJ/27 min ≈ 166 W ≈ 0,75 × 220) ;
+  // débutant 0,60 et expert 0,90 = estimations à affiner avec d'autres repères terrain (voir « 📐 La formule » sur la page).
+  const PUMP_LV = [
+    {k:'deb', f:0.60, fr:'Débutant — je gaspille encore beaucoup d\'énergie', en:'Beginner — still wasting a lot of energy'},
+    {k:'reg', f:0.75, fr:'Régulier — je pompe souvent', en:'Regular — I pump often'},
+    {k:'exp', f:0.90, fr:'Expert — technique très propre', en:'Expert — very clean technique'}
+  ];
+  const PUMP_DEF = 'reg';
+  const fPump = () => (PUMP_LV.find(l => l.k === (document.getElementById('rider-pump') || {}).value) || PUMP_LV[1]).f;
+  const cpCardio = () => cpAt(cpWkg(), parseFloat(document.getElementById('rider-w').value) || 75);
+  const riderCP = () => Math.round(cpCardio()*fPump()/5)*5;   // puissance critique de POMPAGE du rider (W) — c'est elle qui fixe combien de temps tu tiens
+  function pumpOptions(){
+    const sel = document.getElementById('rider-pump'); if(!sel) return; const cur = sel.value || PUMP_DEF, cc = cpCardio();
+    sel.innerHTML = PUMP_LV.map(L => '<option value="'+L.k+'"'+(L.k === cur ? ' selected' : '')+'>'+t(L.fr, L.en)+' · '+t('seuil de pompage ~','pumping threshold ~')+Math.round(cc*L.f/5)*5+' W</option>').join('');
+  }
   function cpOptions(){
     const sel = document.getElementById('rider-cp'), cur = sel.value || CP_DEF, kg = parseFloat(document.getElementById('rider-w').value) || 75, f = document.getElementById('rider-sex').value === 'f';
     sel.innerHTML = CP_LV.map(L => { const w = f ? L.f : L.m, km = Math.round(50*2.9/w/5)*5;
-      return '<option value="'+L.k+'"'+(L.k === cur ? ' selected' : '')+'>'+t(L.fr, L.en)+' · ~'+cpAt(w, kg)+' W'+(L.k !== 'low' && L.k !== 'avg' ? t(' · 10 km en ~',' · 10 km in ~')+(km >= 60 ? Math.floor(km/60)+' h '+String(km % 60).padStart(2, '0') : km+' min') : '')+'</option>'; }).join('');
+      return '<option value="'+L.k+'"'+(L.k === cur ? ' selected' : '')+'>'+t(L.fr, L.en)+' · '+t('cardio ~','cardio ~')+cpAt(w, kg)+' W'+(L.k !== 'low' && L.k !== 'avg' ? t(' · 10 km en ~',' · 10 km in ~')+(km >= 60 ? Math.floor(km/60)+' h '+String(km % 60).padStart(2, '0') : km+' min') : '')+'</option>'; }).join('');
   }
 
   // C_D0 profil & C_L max propres à chaque colonne (profil fin = décroche plus tôt)
@@ -2177,6 +2225,8 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
 
   ['rider-w', 'rider-sex'].forEach(id => document.getElementById(id).addEventListener('input', cpOptions));
   cpOptions();
+  ['rider-w', 'rider-sex', 'rider-cp'].forEach(id => { const el = document.getElementById(id); el.addEventListener('input', pumpOptions); el.addEventListener('change', pumpOptions); });
+  pumpOptions();
 
   function render(){
     drawFriction();
@@ -2555,6 +2605,9 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
 
   /* ---------- Moteur i18n (statique FR conservé, dico EN) ---------- */
   const EN = {
+    'fx-h3':'📐 The formula, plainly',
+    'fx-body':'<p class="lede">Everything this page computes fits in <b>3 steps</b>. The numbers are written out so they can be <b>checked, challenged and improved</b> — by us or by you.</p><div class="fx-step"><b>① What the wing costs</b> — the power to fly at speed v:<code>P(v) = (D<sub>induced</sub> + D<sub>friction</sub> + D<sub>trim</sub>) × v ÷ η × 0.85</code><ul><li><b>Induced drag</b> (the price of lift): <code>D<sub>i</sub> = W² ÷ (½ρv² · π b² · e)</code> — your weight W squared, the span b squared. ρ = 1,025 kg/m³ (sea), e = 0.91.</li><li><b>Friction</b>: <code>D<sub>f</sub> = ½ρv² · (S·Cd0 + mast + fuselage + stab)</code> — profile Cd0 (0.013 default; 0.011 thin, 0.016-0.018 thick), mast 0.065 m² × 55% immersed × 0.008, fuselage 0.045 × 0.010, stab (wetted area) × 0.020.</li><li><b>Trim</b> (pitch balance, a few watts): <code>D<sub>t</sub> = 2W·(6·Cd0 + 0.012)·(S/b)·S ÷ (0.65·π b² e)</code>.</li><li><b>η, pumping efficiency</b> (the share of your effort that becomes thrust): <code>η = min(0.80; 0.44 + 0.015 × AR)</code>.</li><li><b>0.85</b> = calibration on field measurements: GONG Sirus XL ≈ 240 W at 79 kg and Ultra Trail 4XL ≈ 198 W at 12.9 km/h (Foilmotion sensors), RSX Carve 1100 = 5 min max at 78 kg (Paul).</li><li><b>Cruise speed</b>: the highest of ① the minimum-drag speed, ② 1.3 × stall speed, ③ 11 km/h.</li></ul></div><div class="fx-step"><b>② What you can give</b><ul><li><b>Cardio threshold</b> (your engine, held ~1 h): <code>CP<sub>cardio</sub> = (W/kg of your fitness) × 70 × (weight ÷ 70)<sup>0.67</sup></code> — 1.5 to 4.2 W/kg depending on fitness (FRIEND VO2max × threshold × cycling efficiency); the 0.67 exponent: a heavier rider has more watts, but not in proportion.</li><li><b>Pumping threshold</b> (your transmission): <code>CP<sub>pump</sub> = CP<sub>cardio</sub> × f<sub>pump</sub></code> — pumping is a different movement (intermittent squats, technique): only part of the engine becomes pumping. f<sub>pump</sub> = <b>0.75 "regular": measured</b> (78 kg, regular athlete ~220 W cardio, Takoon Pump Pro 1750 + stab 75, windless lake: 25-30 min → 174 W − 12.3 kJ ÷ 27 min ≈ 166 W). <b>0.60 "beginner" and 0.90 "expert": estimates</b>, to be refined.</li><li><b>Reserve</b> W′ = 12.3 kJ: the effort you can put out above your threshold before you\'re empty.</li></ul></div><div class="fx-step"><b>③ How long you last</b><code>P &lt; 0.85 · CP<sub>pump</sub> → hours · P &lt; CP<sub>pump</sub> → ~1 h · above → t = W′ ÷ (P − CP<sub>pump</sub>)</code></div><div class="fx-step"><b>What the model doesn\'t know</b>: swell and chop (you last less at sea), wind, mast flex, the weight of long spans at each pump, your technique in detail. It\'s a steady-state model calibrated on a few measurements: <b>±15%</b> on watts, more on durations.</div><div class="fx-step"><b>Help us improve it</b>: send a field data point — <b>your wing, your weight, your fitness, how long you last, where</b> (lake, sea, swell) — to <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">@polofoil</a>. Each data point is used to recalibrate these numbers. The code is open: <a href="https://github.com/polomarcus/foilphysics" target="_blank" rel="noopener">github.com/polomarcus/foilphysics</a>.</div>',
+    'l-pump':'🏄 Pumping experience',
     'deep-h3':'🔬 Going further',
     'deep-lede':'The model in detail, section by section — click to unfold.',
     'kid-anim-cap':'<span>🌀 below the wing it pushes, above it sucks → water <b>curls around the tips</b>: those vortices carry your energy away, they are <b>the brake</b></span><span>🟧 same weight on <b>less span</b> → stronger vortices → <b>2.5× more brake</b> to pump against</span>',
@@ -2942,6 +2995,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     });
     populatePresets();
     if(typeof cpOptions === 'function') cpOptions();   // niveaux de forme : texte généré en JS
+    if(typeof pumpOptions === 'function') pumpOptions();
     ['1','2'].forEach(i=>{               // re-traduit le sous-titre sans réinitialiser les réglages
       const p = FLAT[document.getElementById('preset'+i).value];
       if(p){ const ar=((p.b/100)*(p.b/100))/(p.s/10000);
@@ -3464,13 +3518,14 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   const ldMini = () => { const kg = ldKg(), f = $('rider-sex').value === 'f', cur = $('rider-cp').value || CP_DEF;
     return '<span class="rc"><button type="button" data-ld="kg-" aria-label="'+t('moins lourd','lighter')+'">−</button><b>🧍 '+kg+' kg</b><button type="button" data-ld="kg+" aria-label="'+t('plus lourd','heavier')+'">+</button></span>'
       + '<button type="button" class="mini-b" data-ld="sex" aria-label="'+t('changer homme / femme','switch man / woman')+'">'+(f ? t('♀ femme','♀ woman') : t('♂ homme','♂ man'))+'</button>'
-      + '<select class="mini-b" data-ld="cp" aria-label="'+t('Forme physique','Fitness')+'">'+CP_LV.map(Lv => '<option value="'+Lv.k+'"'+(Lv.k === cur ? ' selected' : '')+'>🫀 '+t(Lv.fr, Lv.en).split(/ — |, /)[0]+' · ~'+cpAt(f ? Lv.f : Lv.m, kg)+' W</option>').join('')+'</select>'; };
+      + '<select class="mini-b" data-ld="cp" aria-label="'+t('Forme physique','Fitness')+'">'+CP_LV.map(Lv => '<option value="'+Lv.k+'"'+(Lv.k === cur ? ' selected' : '')+'>🫀 '+t(Lv.fr, Lv.en).split(/ — |, /)[0]+' · '+t('cardio ~','cardio ~')+cpAt(f ? Lv.f : Lv.m, kg)+' W</option>').join('')+'</select>'
+      + '<select class="mini-b" data-ld="pump" aria-label="'+t('Expérience en pumping','Pumping experience')+'">'+PUMP_LV.map(Lv => '<option value="'+Lv.k+'"'+(Lv.k === ($('rider-pump').value || PUMP_DEF) ? ' selected' : '')+'>🏄 '+t(Lv.fr, Lv.en).split(' — ')[0]+' · ~'+Math.round(cpCardio()*Lv.f/5)*5+' W</option>').join('')+'</select>'; };
   document.addEventListener('click', e => { const b = e.target.closest('button[data-ld]'); if(!b) return;
     const v = b.dataset.ld, w = $('rider-w'), sx = $('rider-sex');
     if(v === 'kg-' || v === 'kg+'){ w.value = Math.max(+w.min || 30, Math.min(+w.max || 150, ldKg() + (v === 'kg+' ? 1 : -1))); w.dispatchEvent(new Event('input', {bubbles: true})); w.dispatchEvent(new Event('change', {bubbles: true})); }
     else if(v === 'sex'){ sx.value = sx.value === 'f' ? 'm' : 'f'; sx.dispatchEvent(new Event('change', {bubbles: true})); } });
-  document.addEventListener('change', e => { const s = e.target.closest('select[data-ld="cp"]'); if(!s) return;
-    const c = $('rider-cp'); c.value = s.value; c.dispatchEvent(new Event('change', {bubbles: true})); });
+  document.addEventListener('change', e => { const s = e.target.closest('select[data-ld="cp"], select[data-ld="pump"]'); if(!s) return;
+    const c = $(s.dataset.ld === 'pump' ? 'rider-pump' : 'rider-cp'); c.value = s.value; c.dispatchEvent(new Event('input', {bubbles: true})); c.dispatchEvent(new Event('change', {bubbles: true})); });
   function ldDraw(){
     const cv = $('atl-cv'); if(!cv || !LA.kit) return;
     const kg = ldKg(), cp = riderCP();
@@ -3658,7 +3713,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     LA.kit = atlKit({st: LA, redraw: ldDraw, pick, show, info, facts, row, page: 'longue-distance', canTry: inSl, tryIt, hash: () => ldHash(), mini: ldMini,
       slots: [['1', t('en Aile 1','as Wing 1')], ['2', t('en Aile 2','as Wing 2')]],
       layers: [['wh', '– – Wh/km', '– – Wh/km', 1], ['ar', '╱ AR', '╱ AR']]});
-    ['rider-w', 'rider-cp', 'rider-sex'].forEach(k => { const el = $(k); if(el){ el.addEventListener('input', ldDraw); el.addEventListener('change', ldDraw); } });
+    ['rider-w', 'rider-cp', 'rider-sex', 'rider-pump'].forEach(k => { const el = $(k); if(el){ el.addEventListener('input', ldDraw); el.addEventListener('change', ldDraw); } });
     addEventListener('resize', ldDraw);
     new MutationObserver(() => { ldBrandsUI(); ldDraw(); }).observe(document.documentElement, {attributes: true, attributeFilter: ['lang']});
     const duelSum = () => { const el = $('duel-sum'); if(!el) return; const nm = i => { const b = $('sub'+i) && $('sub'+i).querySelector('b'); return b ? b.textContent : '—'; };
@@ -3711,7 +3766,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     if(v === 'cp') return 'forme';
     return v.replace(/[^a-z]+/g, '') || 'autre';
   }
-  var FIELD = {'i-lvl':'niveau', 'i-kg':'poids', 'i-w':'poids', 'rider-w':'poids', 'rider-cp':'forme', 'rider-sex':'homme-femme', 'i-stab':'stab', 'i-stabd':'diedre-stab',
+  var FIELD = {'i-lvl':'niveau', 'i-kg':'poids', 'i-w':'poids', 'rider-w':'poids', 'rider-cp':'forme', 'rider-pump':'experience-pump', 'rider-sex':'homme-femme', 'i-stab':'stab', 'i-stabd':'diedre-stab',
     'i-fus':'fuselage', 'i-b':'envergure', 'i-s':'surface', 'i-stage':'etape', 'i-straps':'straps', 'i-p':'puissance', 'i-mast':'mat', 'i-prof':'profil', 'preset':'aile-preset', 'b':'envergure', 's':'surface',
     'v':'vitesse', 'prof':'profil', 'mst':'mat', 'mat':'materiau-mat', 'fus':'fuselage', 'stb':'stab'};
   document.addEventListener('change', function(e){ var el = e.target; if(!e.isTrusted || !el || !el.id || el.closest('[data-ld]') || el.matches('[data-ld]')) return;   // les réglages compacts (data-ld) sont déjà comptés

@@ -4,7 +4,7 @@
    Ce qui manque reste en anglais (jamais de trou). */
 (function(){
   var X = window.XL = {data: {}, s: {}, k: {}, tpl: [], cache: new Map(), lang: null, miss: new Set()};   // miss : textes anglais sans traduction (contrôle)
-  var V = '20261021';
+  var V = '20261024';
   X.def = function(lang, d){ X.data[lang] = d; };
   X.load = function(lang){
     if(X.data[lang]) return Promise.resolve();
