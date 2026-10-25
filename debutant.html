@@ -17,7 +17,7 @@ window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].ind
   if(!c){ c = document.createElement('link'); c.rel = 'canonical'; document.head.appendChild(c); }   // canonique posée par le script (jamais en dur) : toujours celle de la langue de l'adresse
   if(d) d.setAttribute('content', M.d); c.setAttribute('href', M.u); };
 seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   // dès le chargement, d'après ?lang=</script>
-<script src="lang/xl.js?v=20261026"></script>
+<script src="lang/xl.js?v=20261028"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Bien débuter en pump foil — le matos qui pardonne">
 <meta property="og:description" content="Quel foil pour apprendre ? Grande aile, gros stab, mât court — le matos de débutant expliqué par la physique, selon ton poids. Et la sécurité d'abord.">
@@ -223,6 +223,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     <details class="tb-more">
       <summary data-i18n="tb-more">Liens ▾</summary>
       <div class="tb-menu">
+        <a href="formules.html" data-i18n="tb-fx">📐 Nos formules</a>
         <a href="https://github.com/polomarcus/foilphysics" target="_blank" rel="noopener">🐙 Code</a>
         <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener" data-i18n="tb-model">💻 Modèle physique</a>
         <a href="https://piouz.org/" target="_blank" rel="noopener">⚡ Piouz</a>
@@ -586,7 +587,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   const num = (x,d=0)=> x.toLocaleString(XL.locale(LANG),{maximumFractionDigits:d, minimumFractionDigits:d});
   const FRC = {};
   const EN = {
-    'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve','tb-more':'Links ▾','tb-model':'💻 Physics model',
+    'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve','tb-more':'Links ▾','tb-model':'💻 Physics model','tb-fx':'📐 Our formulas',
     'h1a':'<span class="hi">Starting</span> pump foil right',
     'h1b':'🎓 the setup that forgives',
     'hsub':'Here we chase the opposite of performance: <b>the wing that gives you the right to be wrong</b>.',
@@ -681,12 +682,12 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   };
   function model(c){
     const AR = c.b*c.b/c.S;
-    const eta = 0.83*AR/(AR + 2);   // rendement du pompage : la formule de la page longue distance (forme Prandtl, η∞ 0,83 ajusté sur 2 mesures de puissance)
-    const K  = c.S*c.cd0 + A_MAST*CDM + A_FUS*CDF + c.As*CDS;
+    const eta = Math.min(0.85, 0.82*AR/(AR + 0.7));   // rendement du pompage : la formule de la page longue distance (v3, calée sur les traces GPS de Paul)
+    const K  = c.S*c.cd0*0.68 + A_MAST*CDM + A_FUS*CDF + c.As*CDS;   // profil × 0,68 : comme la page longue distance (C_D0 du catalogue pessimistes)
     const Ai = (c.W*c.W)/(0.5*RHO*Math.PI*c.b*c.b*E);
     const Dt = 2*c.W*(6*c.cd0+0.012)*(c.S/c.b)*c.S/(0.65*Math.PI*c.b*c.b*E);   // trim drag : Cm0 lié à la cambrure du profil
     const P  = v => ((Ai/(v*v) + 0.5*RHO*v*v*K + Dt)*v + 0.5*RHO_AIR*CDA*v*v*v)/eta;
-    const cl = Math.min((2*Math.PI/(1+2/AR))*(13*Math.PI/180), c.clMax);
+    const cl = Math.min((2*Math.PI/(1+2/AR))*(17*Math.PI/180), c.clMax);   // décrochage à 13° compté depuis la portance nulle (−4°, profil cambré), comme la page longue distance
     const vStall = Math.sqrt(c.W/(0.5*RHO*c.S*cl));
     return {AR, eta, P, vStall};
   }
@@ -697,7 +698,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     const b = Math.round(Math.sqrt(st.AR*S/10000)*100);   // cm
     const c = {S:S/10000, b:b/100, cd0:st.cd0, clMax:st.clMax, As:st.As, W:wkg*G};
     const m = model(c);
-    const vCruise = Math.max(m.vStall*1.15, 11/3.6);      // croisière douce (convention du comparateur)
+    const vCruise = Math.max(m.vStall*1.15, 11/3.6);      // croisière douce d'un débutant (la page longue distance, elle, vise 1,3 × décrochage et ≥ 13,5 km/h)
     const pIdeal = m.P(vCruise);                          // watts, technique parfaite
     return {S, b, st, m, vCruise, pIdeal, floored: S > raw};
   }

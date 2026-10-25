@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nos formules : la physique du pump foil, expliquée | Foil House</title>
+<meta name="description" content="Toutes les formules du simulateur de pump foil, en deux niveaux : en mots simples ou pour physicien. D'où vient chaque nombre (physique, mesuré, estimé) et ce que le modèle ne sait pas.">
+<link rel="alternate" hreflang="fr" href="https://simulator.foil-house.com/formules.html">
+<link rel="alternate" hreflang="en" href="https://simulator.foil-house.com/formules.html?lang=en">
+<link rel="alternate" hreflang="es" href="https://simulator.foil-house.com/formules.html?lang=es">
+<link rel="alternate" hreflang="it" href="https://simulator.foil-house.com/formules.html?lang=it">
+<link rel="alternate" hreflang="x-default" href="https://simulator.foil-house.com/formules.html">
+<script>/* 🔎 SEO : titre, description et adresse canonique suivent la langue (FR = adresse nue, EN = ?lang=en) */
+window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].indexOf(x) >= 0 ? x : 'fr'; }; var M = {"fr": {"t": "Nos formules : la physique du pump foil, expliquée | Foil House", "d": "Toutes les formules du simulateur de pump foil, en deux niveaux : en mots simples ou pour physicien. D'où vient chaque nombre (physique, mesuré, estimé) et ce que le modèle ne sait pas.", "u": "https://simulator.foil-house.com/formules.html"}, "en": {"t": "Our formulas: pump foil physics, explained | Foil House", "d": "Every formula behind the pump foil simulator, at two levels: plain words or for physicists. Where each number comes from (physics, measured, estimated) and what the model does not know.", "u": "https://simulator.foil-house.com/formules.html?lang=en"}, "es": {"t": "Nuestras fórmulas: la física del pump foil, explicada | Foil House", "d": "Todas las fórmulas del simulador de pump foil, en dos niveles: en palabras sencillas o para físicos. De dónde viene cada número (física, medido, estimado) y lo que el modelo no sabe.", "u": "https://simulator.foil-house.com/formules.html?lang=es"}, "it": {"t": "Le nostre formule: la fisica del pump foil, spiegata | Foil House", "d": "Tutte le formule del simulatore di pump foil, su due livelli: in parole semplici o per fisici. Da dove viene ogni numero (fisica, misurato, stimato) e cosa il modello non sa.", "u": "https://simulator.foil-house.com/formules.html?lang=it"}}[M_L(l)]; document.title = M.t;
+  var d = document.querySelector('meta[name="description"]'), c = document.querySelector('link[rel="canonical"]');
+  if(!c){ c = document.createElement('link'); c.rel = 'canonical'; document.head.appendChild(c); }   // canonique posée par le script (jamais en dur)
+  if(d) d.setAttribute('content', M.d); c.setAttribute('href', M.u); };
+seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');</script>
+<script src="lang/xl.js?v=20261028"></script>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Nos formules — la physique du pump foil, expliquée">
+<meta property="og:description" content="Toutes les formules du simulateur, en mots simples ou pour physicien, et d'où vient chaque nombre.">
+<meta property="og:url" content="https://simulator.foil-house.com/formules.html">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230f172a'/><text x='50' y='68' font-size='54' text-anchor='middle' fill='%23fbbf24' font-family='Georgia,serif' font-style='italic'>η</text></svg>">
+<style>
+  :root{ --bg:#0f172a; --panel:#1e293b; --panel-2:#16213a; --line:#334155; --txt:#e2e8f0; --muted:#94a3b8; --dim:#64748b; --sky:#38bdf8; --amber:#fbbf24; }
+  *{margin:0; padding:0; box-sizing:border-box;}
+  body{background:var(--bg); color:var(--txt); font-family:system-ui,-apple-system,"Segoe UI",sans-serif; line-height:1.6;}
+  a{color:var(--sky);}
+  .skip{position:absolute; left:-9999px; top:0; z-index:100; background:var(--sky); color:#04121f; font-weight:800; padding:10px 18px; border-radius:0 0 10px 0; text-decoration:none;}
+  .skip:focus{left:0;}
+  :focus-visible{outline:2px solid var(--sky); outline-offset:2px; border-radius:4px;}
+  .topbar{position:fixed; top:0; left:0; right:0; z-index:50; display:flex; gap:8px; flex-wrap:wrap; justify-content:space-between; padding:8px 12px;
+    background:linear-gradient(180deg, rgba(15,23,42,.96), rgba(15,23,42,.82)); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); border-bottom:1px solid rgba(51,65,85,.4);}
+  .topbar a, .topbar button{background:var(--panel); border:1px solid var(--line); color:var(--txt); border-radius:999px; padding:6px 12px; font-size:.78rem; font-weight:700; text-decoration:none; cursor:pointer;}
+  .topbar a:hover, .topbar button:hover{border-color:var(--sky); color:var(--sky);}
+  .topbar select#lang-btn{background:var(--panel); border:1px solid var(--line); color:var(--txt); border-radius:999px; padding:6px 10px; font:inherit; font-size:.78rem; font-weight:700; cursor:pointer; -webkit-appearance:none; appearance:none;}
+  .tb-nav{display:flex; background:var(--panel); border:1px solid var(--line); border-radius:999px; padding:3px; gap:2px;}
+  .tb-nav .tb-tab{background:none; border:none; color:var(--muted); border-radius:999px; padding:5px 12px; font-size:.78rem; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:5px; white-space:nowrap;}
+  .tb-nav .tb-tab:hover{color:var(--txt); border:none;}
+  .tb-ctrl{display:flex; gap:8px; align-items:center;}
+  .tb-more{position:relative;}
+  .tb-more summary{list-style:none; background:var(--panel); border:1px solid var(--line); color:var(--txt); border-radius:999px; padding:6px 12px; font-size:.78rem; font-weight:700; cursor:pointer;}
+  .tb-more summary::-webkit-details-marker{display:none;}
+  .tb-menu{position:absolute; right:0; top:calc(100% + 6px); background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:6px; display:flex; flex-direction:column; min-width:180px; box-shadow:0 10px 30px rgba(0,0,0,.4);}
+  .tb-menu a{background:none; border:none; color:var(--txt); border-radius:8px; padding:8px 10px;}
+  .tb-menu a:hover{background:var(--panel-2); color:var(--sky); border:none;}
+  @media(max-width:680px){ .topbar{position:static; justify-content:center; background:none; border:none;} .tb-nav{flex-wrap:wrap; justify-content:center;} .tb-menu{right:auto; left:50%; transform:translateX(-50%);} }
+
+  main{max-width:860px; margin:0 auto; padding:84px 16px 48px;}
+  @media(max-width:680px){ main{padding-top:12px;} }
+  header h1{font-size:clamp(1.8rem, 5vw, 2.6rem); line-height:1.15; font-weight:900; letter-spacing:-.01em;}
+  header h1 .hi{color:var(--amber);}
+  .hsub{margin-top:10px; color:var(--muted); font-size:1.02rem;}
+  .legend{margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; font-size:.85rem;}
+  .legend span{padding:4px 12px; border-radius:999px; background:var(--panel); border:1px solid var(--line); font-weight:700;}
+
+  .lvl{position:sticky; top:58px; z-index:20; margin:22px 0 8px; display:flex; gap:6px; padding:5px; background:var(--panel); border:1px solid var(--line); border-radius:999px; width:max-content; max-width:100%; box-shadow:0 8px 24px rgba(0,0,0,.35);}
+  @media(max-width:680px){ .lvl{top:8px;} }
+  .lvl button{border:none; background:none; color:var(--muted); font:inherit; font-weight:800; font-size:.95rem; padding:8px 18px; border-radius:999px; cursor:pointer;}
+  .lvl button.on{background:var(--amber); color:#1e1b0b;}
+
+  section.fx{margin-top:26px; padding:20px 22px; background:var(--panel-2); border:1px solid var(--line); border-radius:18px;}
+  @media(max-width:680px){ section.fx{padding:16px 14px;} }
+  section.fx h2{font-size:1.25rem; font-weight:900; margin-bottom:10px;}
+  section.fx h2 small{display:block; font-size:.78rem; font-weight:700; color:var(--dim); margin-top:2px;}
+  section.fx p{margin:8px 0;}
+  section.fx ul{margin:8px 0 8px 20px;}
+  section.fx li{margin:5px 0;}
+  section.fx b{color:#f8fafc;}
+  .eq{display:block; margin:10px 0; padding:10px 12px; background:#0b1222; border:1px solid var(--line); border-radius:10px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.9rem; overflow-x:auto; white-space:nowrap;}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.88em; background:#0b1222; padding:1px 5px; border-radius:5px;}
+  .ex{margin:10px 0; padding:10px 14px; border-left:4px solid var(--amber); background:rgba(251,191,36,.07); border-radius:0 10px 10px 0;}
+  table{border-collapse:collapse; width:100%; margin:10px 0; font-size:.86rem; display:block; overflow-x:auto;}
+  th, td{border:1px solid var(--line); padding:6px 8px; text-align:left; vertical-align:top;}
+  th{background:var(--panel); color:var(--muted); font-weight:800;}
+  .src{font-size:.8rem; color:var(--dim);}
+  body.phy .lay{display:none;} body:not(.phy) .phy{display:none;}
+  footer{margin-top:30px; color:var(--muted); font-size:.85rem; text-align:center;}
+</style>
+</head>
+<body>
+<a class="skip" href="#contenu" data-i18n="skip">Aller au contenu</a>
+<nav class="topbar">
+  <div class="tb-nav">
+    <a class="tb-tab" href="long-distance.html" data-i18n="tb-ld">⚡ Longue distance</a>
+    <a class="tb-tab" href="vitesse.html" data-i18n="tb-vit">🚀 Vitesse</a>
+    <a class="tb-tab" href="debutant.html" data-i18n="tb-deb">🎓 Débuter</a>
+    <a class="tb-tab" href="carve.html" data-i18n="tb-carve">🌊 Carve</a>
+  </div>
+  <div class="tb-ctrl">
+    <select id="lang-btn" aria-label="Langue · Language"><option value="fr">🇫🇷 FR</option><option value="en">🇬🇧 EN</option><option value="es">🇪🇸 ES</option><option value="it">🇮🇹 IT</option></select>
+    <details class="tb-more">
+      <summary data-i18n="tb-more">Liens ▾</summary>
+      <div class="tb-menu">
+        <a href="https://github.com/polomarcus/foilphysics" target="_blank" rel="noopener">🐙 Code</a>
+        <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener" data-i18n="tb-model">💻 Modèle physique</a>
+        <a href="https://piouz.org/" target="_blank" rel="noopener">⚡ Piouz</a>
+        <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">📸 PoloFoil</a>
+      </div>
+    </details>
+  </div>
+</nav>
+<main id="contenu">
+  <header>
+    <h1 data-i18n="h1">📐 Nos <span class="hi">formules</span></h1>
+    <p class="hsub" data-i18n="hsub">Tout ce que calcule le simulateur, écrit en clair pour être <b>vérifié, contesté et amélioré</b>. À côté de chaque nombre, d'où il vient :</p>
+    <div class="legend"><span data-i18n="lg-p">🔬 physique</span><span data-i18n="lg-m">📏 mesuré sur le terrain</span><span data-i18n="lg-e">🧪 estimé, à améliorer</span></div>
+  </header>
+
+  <div class="lvl" role="group" aria-label="Niveau">
+    <button type="button" id="lv-lay" class="on" aria-pressed="true" data-i18n="lv-lay">🙂 Non initié</button>
+    <button type="button" id="lv-phy" aria-pressed="false" data-i18n="lv-phy">🔬 Physicien</button>
+  </div>
+
+  <!-- ① cœur commun -->
+  <section class="fx" id="vol">
+    <h2 data-i18n="s1-h">① Ce que coûte le vol <small>toutes les pages</small></h2>
+    <div class="lay" data-i18n="s1-lay">
+      <p>Pour te porter, l'aile pousse de l'eau vers le bas, et ça a un prix : <b>tes watts servent à vaincre trois freins</b>.</p>
+      <ul>
+        <li><b>Porter ton poids</b> 🔬 : plus l'aile est <b>longue</b> (envergure), moins ça coûte. C'est pour ça que les ailes de longue distance sont si longues. Ce frein baisse quand tu vas plus vite.</li>
+        <li><b>Frotter dans l'eau</b> 🔬 : chaque cm² d'aile, de mât, de fuselage et de stab freine, et ça grimpe très vite avec la vitesse. Les coefficients exacts de chaque pièce sont 🧪 (fourchettes connues, calées sur des vitesses réelles).</li>
+        <li><b>Garder l'assiette</b> 🔬 : le stab corrige la tendance de l'aile à piquer du nez. Quelques watts seulement.</li>
+      </ul>
+      <p>Et ton pompage n'est pas parfait : <b>environ 75 à 80 % de ton effort devient de la poussée</b>, un peu plus avec une aile élancée 🔬 (simulations de foils oscillants).</p>
+      <div class="ex">Exemple, 75 kg à 13,5 km/h. Aile longue distance 1 750 cm² / 175 cm : <b>~160 W</b> (porter 41 W, frotter 121 W). Aile de carve 1 100 cm² / 112 cm : <b>~205 W</b> (porter 102 W, frotter 105 W) — la courte paie bien plus pour porter.</div>
+      <p>Il existe une vitesse où ces freins coûtent le moins : plus lent, porter devient cher ; plus vite, frotter devient cher.</p>
+    </div>
+    <div class="phy" data-i18n="s1-phy">
+      <p>Vol stationnaire (portance = poids), puissance à fournir :</p>
+      <span class="eq">P(v) = [ D<sub>i</sub> + D<sub>p</sub> + D<sub>t</sub> ] · v / η</span>
+      <ul>
+        <li>Traînée induite 🔬 : <code>D<sub>i</sub> = W² / (½ρv² · π b² · e)</code> — ρ = 1 025 kg/m³ (eau de mer ; lac : ±2,5 %), e = 0,91 🧪 (Oswald, aile effilée).</li>
+        <li>Traînée de profil et parasite 🔬 : <code>D<sub>p</sub> = ½ρv² · (S·C<sub>D0</sub>·0,68 + A<sub>mât</sub>·0,55·C<sub>mât</sub> + A<sub>fus</sub>·C<sub>fus</sub> + A<sub>stab</sub>·C<sub>stab</sub>)</code>. C<sub>D0</sub> du profil 0,008 à 0,018 (polaires XFOIL, 🔬), × 0,68 📏 en longue distance et débuter (calage GPS : les valeurs du catalogue sont pessimistes) ; mât immergé à 55 % 🧪 ; C<sub>mât</sub> 0,008, C<sub>fus</sub> 0,006-0,010, C<sub>stab</sub> 0,012-0,044 selon la page 🧪/📏 (voir ⑦).</li>
+        <li>Traînée de trim 🔬 : <code>D<sub>t</sub> = 2W · C<sub>m0</sub> · (S/b) · S / (ℓ · π b² e)</code>, avec <code>C<sub>m0</sub> ≈ 6·C<sub>D0</sub> + 0,012</code> (ajusté sur les polaires E817, NACA 4412/6412) et bras de levier ℓ = 0,65 m 🧪. 1 à 2,5 % du total.</li>
+        <li>Rendement de pompage (longue distance, débuter) : <code>η = min(0,85 ; η<sub>∞</sub> · AR / (AR + 0,7))</code>, AR = b²/S. La forme 🔬 : CFD de foils oscillants (Sani 2021 : η<sub>3D</sub>/η<sub>2D</sub> ≈ AR/(AR + 0,7)) ; η<sub>∞</sub> = 0,82 🔬 ≈ rendement 2D d'un foil pompé lentement (Garrick, fréquence réduite 0,12-0,15). Facteur rigidité de mât 0,90 / 1,00 / 1,06 🧪.</li>
+        <li>Portance max 🔬 (longue distance, débuter ; carve et vitesse : 13° sans α<sub>0</sub>) : <code>C<sub>L,max</sub> = min( 2π/(1 + 2/AR) · (13° − α<sub>0</sub>), plafond du profil )</code>, <code>v<sub>décroch</sub> = √(W / (½ρ S C<sub>L,max</sub>))</code>. α<sub>0</sub> ≈ −4° 🔬 : un profil cambré porte déjà à 0°, le décrochage se compte depuis la portance nulle. 13° et plafonds par profil 🧪 (ventilation réelle).</li>
+        <li>Vitesse de puissance minimale 🔬 : <code>v<sub>opt</sub> = (A / (3·½ρK))<sup>1/4</sup></code>, avec <code>A = W²/(½ρπb²e)</code> et K la somme des surfaces × coefficients.</li>
+      </ul>
+      <p class="src">Code : <code>powerModel()</code>, <code>compute()</code>, <code>ldEval()</code> dans long-distance.html ; <code>cruiseState()</code> dans carve.html ; <code>model()</code> dans debutant.html et vitesse.html.</p>
+    </div>
+  </section>
+
+  <!-- ② le rider -->
+  <section class="fx" id="toi">
+    <h2 data-i18n="s2-h">② Ce que tu peux donner <small>longue distance · carve</small></h2>
+    <div class="lay" data-i18n="s2-lay">
+      <ul>
+        <li><b>Ton moteur</b> 📏 : ce que tu tiens environ une heure, selon ta forme (tables de VO2max de la population). Un rider plus lourd a plus de watts, mais pas en proportion de son poids.</li>
+        <li><b>Ta technique</b> : seule une part de ce moteur devient du pompage. <b>81 % pour un régulier</b> 📏 (calé sur des traces GPS chronométrées jusqu'à épuisement : 78 kg, sportif régulier — Pump Pro 1750 sur un lac à 15,7 km/h pendant 22 min, Manta 2000 en mer à 14,4 km/h pendant 30 min). Débutant 65 %, expert 97 % 🧪.</li>
+        <li><b>Ta réserve</b> 📏 : l'effort que tu peux fournir au-dessus de ton seuil avant d'être vidé, comme un sprint. Calée sur les mêmes traces, dans le haut de la fourchette des sportifs entraînés.</li>
+      </ul>
+      <p><b>Combien de temps tu tiens</b> : bien sous ton seuil, des heures ; juste sous, environ une heure ; au-dessus, ta réserve se vide d'autant plus vite que tu dépasses.</p>
+      <div class="ex">Exemple : 75 kg, sportif régulier → moteur ~213 W → seuil de pompage ~172 W. L'aile longue distance ci-dessus (~160 W) : juste sous ton seuil, tu tiens environ une heure. L'aile de carve (~205 W) : ta réserve fond en ~8 min.</div>
+    </div>
+    <div class="phy" data-i18n="s2-phy">
+      <span class="eq">CP<sub>cardio</sub> = w · 70 · (m / 70)<sup>0,67</sup> &nbsp;·&nbsp; CP<sub>pump</sub> = CP<sub>cardio</sub> · f<sub>pump</sub></span>
+      <ul>
+        <li>w (W/kg) par niveau de forme : 1,5 / 1,9 / 2,4 / 2,9 / 3,4 / 4,2 (hommes ; femmes −13 % 🧪). 📏/littérature : VO2max FRIEND (Kaminsky 2017) × seuil 67-83 % × rendement mécanique ~20 %.</li>
+        <li>Exposant 0,67 🔬 : loi d'échelle allométrique (la puissance suit la masse musculaire, pas le poids total).</li>
+        <li>f<sub>pump</sub> = 0,81 📏 : calé avec W′ et le C<sub>D0</sub> × 0,68 sur 3 traces GPS de Paul (78 kg) — Pump Pro 1750 stab 50, lac, 15,7 km/h, 22,1 min · Manta 2000 stab 65, mer (+10 %), 14,3-14,4 km/h, 29,7 et 30,2 min. 0,65 et 0,97 🧪 (littérature : 0,65-0,8 pour un geste nouveau, 0,85-0,9 bien entraîné).</li>
+        <li>W′ = 16 kJ 📏 (capacité au-dessus de la puissance critique), calée sur les mêmes traces ; littérature 9-18 kJ chez les hommes entraînés (Vanhatalo 2007, 2011).</li>
+      </ul>
+      <span class="eq">t = W′ / (P − CP) si P &gt; CP &nbsp;·&nbsp; P &lt; CP → ~1 h &nbsp;·&nbsp; P &lt; 0,85·CP → des heures 🧪</span>
+      <p>Carve : sessions de vagues simulées en W′<sub>bal</sub> (Skiba) — au-dessus du seuil <code>W′ −= (P − CP)·dt</code> ; en dessous, recharge <code>W′ − (W′ − w)·e<sup>−dt/τ</sup></code>, <code>τ = 546·e<sup>−0,01(CP − P)</sup> + 316</code> s (littérature). Niveaux carve en watts absolus : 200 / 250 / 330 W, W′ 9 / 12,3 / 17 kJ, technique ×0,7 / ×1 / ×1,2 (« confirmé » = point de calage 📏).</p>
+      <p class="src">Code : <code>cpWkg()</code>, <code>cpCardio()</code>, <code>riderCP()</code>, <code>PUMP_LV</code> (long-distance.html) ; <code>riderLvl()</code>, <code>waveSession()</code> (carve.html).</p>
+    </div>
+  </section>
+
+  <!-- ③ longue distance -->
+  <section class="fx" id="ld">
+    <h2 data-i18n="s3-h">③ Longue distance <small>la page ⚡</small></h2>
+    <div class="lay" data-i18n="s3-lay">
+      <p>Chaque aile vole à <b>sa vitesse la plus économique</b>, sauf deux garde-fous :</p>
+      <ul>
+        <li>jamais trop près du décrochage (une marge de 30 % 🧪), sinon un coup de pompe raté et tu tombes ;</li>
+        <li>jamais sous <b>13,5 km/h</b> 📏 : entre les records de plusieurs heures (12,7-13,6 km/h) et les efforts de 20-30 min chronométrés au GPS (14-16 km/h).</li>
+      </ul>
+      <p>La carte compare toutes les ailes avec <b>le même matériel</b> (mât carbone, fuselage, stab standard) pour que seule l'aile change.</p>
+    </div>
+    <div class="phy" data-i18n="s3-phy">
+      <span class="eq">v<sub>croisière</sub> = max( v<sub>opt</sub>, 1,3 · v<sub>décroch</sub>, 13,5 km/h )</span>
+      <ul>
+        <li>1,3 🧪 (terrain : une 1 600 ne vole pas à 12 mais vers 14). 13,5 km/h 📏 (records : Iten 54,8 km en 4 h 02 à 13,6 km/h, Pimbel ~2 h à 13 km/h, Baudoux 44 km en 3 h 26 ; traces GPS de Paul : 14,3-15,7 km/h sur 20-30 min).</li>
+        <li>Carte : mât 0,065 m² carbone, fuselage 0,045 m², stab 0,060 m² ; profil de la gamme si connu, sinon C<sub>D0</sub> 0,013 / C<sub>L,max</sub> 1,3 — volontairement pas d'estimation par l'AR. « Trop petite » si 1,3·v<sub>décroch</sub> &gt; 17,5 km/h 🧪.</li>
+        <li>Wh/km = P / v. Au-delà d'AR ~18 : extrapolation (pas de mesure).</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ④ vitesse -->
+  <section class="fx" id="vit">
+    <h2 data-i18n="s4-h">④ Vitesse <small>la page 🚀</small></h2>
+    <div class="lay" data-i18n="s4-lay">
+      <p>Une course de 300 m avec deux virages. Tu donnes tout : ton seuil + ta réserve vidée sur ~40 s. Calé sur de <b>vraies courses</b> 📏 (30 à 38 km/h observés).</p>
+      <div class="ex">Même rider (75 kg, ~790 W), on change une seule chose : <b>−370 cm² d'aile → +2,2 km/h</b> · <b>stab −80 cm² → +1,8 km/h</b> · <b>straps → +1,9 km/h</b> · <b>+100 W → +1,2 km/h</b>.</div>
+      <p>À haute vitesse, c'est le <b>frottement</b> qui domine : moins de surface et un petit stab paient plus que l'envergure. Les straps te laissent tirer aussi en remontant 🧪 (+20 % de rendement).</p>
+    </div>
+    <div class="phy" data-i18n="s4-phy">
+      <span class="eq">P<sub>sprint</sub> = CP · m + W′ · m / 40 s &nbsp;·&nbsp; P = (A/v + ½ρ K v³) / (0,70 × straps)</span>
+      <ul>
+        <li>CP 2,8 / 3,5 / 4,5 W/kg, W′ 220 / 280 / 350 J/kg selon le niveau 🧪 (« régulier » = calage d'origine).</li>
+        <li>η fixe 0,70 et straps ×1,20 🧪 ; C<sub>D0</sub> 0,013, C<sub>fus</sub> 0,010, stab : 0,020 m² × 0,020 + (A<sub>stab</sub> − 0,020) × 0,012 — 📏 recalés sur les vitesses de course (sanglé sur une 600 : 30 km/h ≈ 750 W, 33 ≈ 1 000 W ; ~37 km/h ≈ 1 300 W en pointe).</li>
+        <li>Temps : <code>t = 50 / (0,8·v) + (D − 50) / v</code> (2 virages × 25 m à 80 % 🧪). Décroche en virage si 0,8·v &lt; 1,2·v<sub>décroch</sub>. « Ne décolle pas » si √(W/(½ρS·1,2))·1,15 &gt; 17 km/h 🧪.</li>
+        <li>Pas de traînée de trim ni de traînée d'air dans la course (simplification). Le simulateur « ta vitesse max » ajoute l'air (C<sub>D</sub>A 0,45 m², rider groupé 🧪) et la cavitation est ignorée sous ~45 km/h 🔬.</li>
+      </ul>
+      <p class="src">Code : <code>vaRace()</code>, <code>vaP30()</code>, <code>model()</code>/<code>vmax()</code> (vitesse.html).</p>
+    </div>
+  </section>
+
+  <!-- ⑤ carve -->
+  <section class="fx" id="carve">
+    <h2 data-i18n="s5-h">⑤ Carve <small>la page 🌊</small></h2>
+    <div class="lay" data-i18n="s5-lay">
+      <ul>
+        <li><b>Maniabilité</b> 🔬 : pour basculer d'un bord à l'autre, tu fais tourner l'aile autour de son axe. Ça résiste comme <b>surface × envergure²</b> : une aile courte et petite bascule vite, une grande aile longue est lente. Les bornes de l'échelle 0-100 sont 🧪, calées sur des ailes connues.</li>
+        <li><b>Décollage</b> 🧪 : la vitesse et l'effort pour décoller ; trop petite pour ton poids, elle ne part pas en pompant.</li>
+        <li><b>Vitesse de la vague</b> 🔬 : une vague qui casse avance à environ √(22 × hauteur) m/s — ~17 km/h pour 1 m.</li>
+        <li><b>Session</b> : des cycles — ~300 m portés par la vague (tu récupères), puis ~300 m à repomper (ta réserve se vide). On compte combien de cycles tu enchaînes.</li>
+      </ul>
+    </div>
+    <div class="phy" data-i18n="s5-phy">
+      <span class="eq">I<sub>roulis</sub> ∝ S · b² &nbsp;·&nbsp; maniabilité = 100 · (30 − S·b²/10⁶) / 26 − 4·max(0, AR − 12) + bonus arrière</span>
+      <ul>
+        <li>S en cm², b en cm ; bornes 30 / 26 🧪 (Jam 1600 ≈ 15, RSX Carve 1100 ≈ 62). Pénalité AR et bonus arrière 🧪 : stab ≤ 90 cm² → +(90 − A)/3, au-delà −(A − 90)·15/110 ; dièdre ∩ +5 / U −5 ; fuselage (65 − L)·0,7.</li>
+        <li>Croisière : <code>η = 0,72 · AR/(AR + 2) · min(1,03, (L<sub>fus</sub>/65)<sup>0,6</sup>)</code> ; η<sub>∞</sub> = 0,72 📏 calé sur RSX Carve 1100 ≈ 2 min à 85 kg (niveau « confirmé »). C<sub>D0</sub> 0,014, C<sub>stab</sub> 0,044 🧪, plancher 11 km/h.</li>
+        <li>Glisse : <code>clamp(0..100, (520 − P)/2,8)</code> 🧪.</li>
+        <li>Décollage : <code>v = √(W/(½ρS·1,2)) · 1,15</code> ; <code>P<sub>déc</sub> = (W·C<sub>L</sub>/(π·0,9·AR) + q(S·0,012 + 0,0008)) · v / 0,7</code> 🧪. « Poids plume » si v ≥ 16,5 km/h ou P<sub>déc</sub> ≥ 1,2·CP 📏 (calé : Sushi 740, RSX 700 trop petites à 75 kg ; DW 840 OK).</li>
+        <li>Vague 🔬 : <code>v<sub>w</sub> = √(g(d + H))</code> avec d ≈ 1,3·H 🧪 ⇒ <code>√(22·H)</code>. Ride 300 m à 1,3·v<sub>w</sub> 📏 (17-19 km/h mesurés sur la face en 0,5-0,8 m), retour 300 m 📏, coût du carve = P 🧪, fatigue lente −12 %/h 🧪. « Tu tiens » = ≥ 5 min.</li>
+      </ul>
+      <p class="src">Code : <code>cruiseState()</code>, <code>glideScore()</code>, <code>takeoffPower()</code>, <code>waveSession()</code>, <code>carveBest()</code> (carve.html).</p>
+    </div>
+  </section>
+
+  <!-- ⑥ débuter -->
+  <section class="fx" id="deb">
+    <h2 data-i18n="s6-h">⑥ Débuter <small>la page 🎓</small></h2>
+    <div class="lay" data-i18n="s6-lay">
+      <p>On cherche l'aile qui <b>te porte tôt</b> (un pump raté te ralentit au lieu de te faire tomber) : la surface suit ton poids, bornée par ce qui existe dans les gammes école 📏. Au début, <b>~30 % de tes watts sont gaspillés</b> 🧪 : c'est la technique, pas le matériel, qui fait le plus de différence.</p>
+    </div>
+    <div class="phy" data-i18n="s6-phy">
+      <span class="eq">S = clamp( arrondi<sub>50</sub>(m · k), S<sub>min</sub>, S<sub>max</sub> ) &nbsp;·&nbsp; b = √(AR · S) &nbsp;·&nbsp; P<sub>affichée</sub> = P(v) / tech</span>
+      <ul>
+        <li>k = 24 / 21 / 19 cm²/kg ; AR 9 / 9 / 10 ; S 1 500-2 100 / 1 350-2 000 / 1 200-1 900 cm² — 📏 chartes de deux gammes école (2025), k 🧪.</li>
+        <li>tech = 0,70 / 0,80 / 0,88 🧪 ; v = max(1,15·v<sub>décroch</sub>, 11 km/h) ; mât entièrement immergé (on vole bas) ; air sur le rider debout C<sub>D</sub>A 0,55 m² 🧪 ; η et C<sub>D0</sub> × 0,68 comme ③.</li>
+      </ul>
+      <p class="src">Code : <code>STAGES</code>, <code>reco()</code>, <code>model()</code> (debutant.html).</p>
+    </div>
+  </section>
+
+  <!-- ⑦ limites -->
+  <section class="fx" id="limites">
+    <h2 data-i18n="s7-h">⑦ Ce que le modèle ne sait pas (encore)</h2>
+    <div class="lay" data-i18n="s7-lay">
+      <ul>
+        <li>Le modèle suppose un vol <b>régulier</b> : il ne voit pas le rythme de tes coups de pompe, la houle, le clapot, le vent ni la flexion du mât. Compte <b>±15 %</b> sur les watts, davantage sur les durées.</li>
+        <li>Les pages ne sont <b>pas encore toutes alignées</b> : chacune est calée sur ses propres repères terrain (une course, une session de vagues, une sortie longue). Par exemple, la page Carve a encore son propre calage, sur une petite aile rapide.</li>
+        <li>Les nombres 🧪 sont ceux qui progressent le plus vite avec <b>tes repères</b> : envoie ton aile, ton poids, ta forme, combien de temps tu tiens et où à <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">@polofoil</a>.</li>
+      </ul>
+    </div>
+    <div class="phy" data-i18n="s7-phy">
+      <ul>
+        <li>Modèle stationnaire ; le pompage réel est instationnaire (fréquence réduite k ≈ 0,13, fonction de Theodorsen C(k) ≈ 0,80) — absorbé dans η.</li>
+        <li>η : 4 variantes coexistent — 0,82·AR/(AR+0,7) (longue distance, débuter), 0,72·AR/(AR+2) (carve, glisse de la page vitesse), 0,70 fixe (course vitesse), ancien <code>min(0,92 ; (0,44 + 0,015·AR)·1,06·straps)</code> (simulateur vitesse, calé sur les courses) ; plus /0,7 avec e = 0,9 pour l'effort de décollage carve.</li>
+        <li>RSX Carve 1100 (stab 130) : longue distance donne ~4 min (Paul, 78 kg, ≤ 5 min ressenties) ; carve est calé à ~2 min à 85 kg niveau « confirmé ».</li>
+        <li>Modèles rider différents : W/kg<sup>0,67</sup> × f<sub>pump</sub> (longue distance), watts absolus (carve), W/kg linéaire + W′ en J/kg (vitesse). Plancher 13,5 km/h (longue distance) vs 11 km/h (carve, débuter).</li>
+        <li>Trim absent de la course vitesse, de la sensibilité longue distance et du décollage carve ; air sur le rider seulement en vitesse et débuter ; C<sub>stab</sub> de 0,012 à 0,044 selon la page ; maniabilité (1,25/b)² en longue distance vs S·b² en carve.</li>
+        <li>Mesures publiques et code ouvert : <a href="https://github.com/polomarcus/foilphysics" target="_blank" rel="noopener">github.com/polomarcus/foilphysics</a>, d'après <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>.</li>
+      <li>Portance max : 17° depuis la portance nulle (longue distance, débuter) vs 13° (carve, vitesse) ; profil × 0,68 seulement en longue distance et débuter.</li></ul>
+    </div>
+  </section>
+
+  <footer data-i18n="foot">⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a></footer>
+</main>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  let LANG = 'fr';
+  const FRC = {};
+  const EN = {
+    'skip':'Skip to content','tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve','tb-more':'Links ▾','tb-model':'💻 Physics model',
+    'h1':'📐 Our <span class="hi">formulas</span>',
+    'hsub':'Everything the simulator computes, written out to be <b>checked, challenged and improved</b>. Next to each number, where it comes from:',
+    'lg-p':'🔬 physics','lg-m':'📏 measured in the field','lg-e':'🧪 estimated, to improve',
+    'lv-lay':'🙂 Non-specialist','lv-phy':'🔬 Physicist',
+    's1-h':'① What flying costs <small>all pages</small>',
+    's1-lay':'<p>To carry you, the wing pushes water down, and that has a price: <b>your watts fight three brakes</b>.</p><ul><li><b>Carrying your weight</b> 🔬: the <b>longer</b> the wing (span), the cheaper it is. That is why long-distance wings are so long. This brake drops as you go faster.</li><li><b>Rubbing through the water</b> 🔬: every cm² of wing, mast, fuselage and stab brakes, and it climbs very fast with speed. The exact coefficient of each part is 🧪 (known ranges, tuned on real speeds).</li><li><b>Keeping the trim</b> 🔬: the stab corrects the wing\'s tendency to nose down. Only a few watts.</li></ul><p>And your pumping is not perfect: <b>about 75 to 80% of your effort becomes thrust</b>, a bit more with a slender wing 🔬 (simulations of oscillating foils).</p><div class="ex">Example, 75 kg at 13.5 km/h. Long-distance wing 1,750 cm² / 175 cm: <b>~160 W</b> (carrying 41 W, rubbing 121 W). Carve wing 1,100 cm² / 112 cm: <b>~205 W</b> (carrying 102 W, rubbing 105 W) — the short one pays far more to carry you.</div><p>There is a speed where these brakes cost the least: slower, carrying gets expensive; faster, rubbing gets expensive.</p>',
+    's1-phy':'<p>Steady flight (lift = weight), power required:</p><span class="eq">P(v) = [ D<sub>i</sub> + D<sub>p</sub> + D<sub>t</sub> ] · v / η</span><ul><li>Induced drag 🔬: <code>D<sub>i</sub> = W² / (½ρv² · π b² · e)</code> — ρ = 1,025 kg/m³ (sea water; lake: ±2.5%), e = 0.91 🧪 (Oswald, tapered wing).</li><li>Profile and parasitic drag 🔬: <code>D<sub>p</sub> = ½ρv² · (S·C<sub>D0</sub>·0.68 + A<sub>mast</sub>·0.55·C<sub>mast</sub> + A<sub>fus</sub>·C<sub>fus</sub> + A<sub>stab</sub>·C<sub>stab</sub>)</code>. Profile C<sub>D0</sub> 0.008 to 0.018 (XFOIL polars, 🔬), × 0.68 📏 in long distance and beginner (GPS calibration: catalogue values are pessimistic); mast 55% immersed 🧪; C<sub>mast</sub> 0.008, C<sub>fus</sub> 0.006-0.010, C<sub>stab</sub> 0.012-0.044 depending on the page 🧪/📏 (see ⑦).</li><li>Trim drag 🔬: <code>D<sub>t</sub> = 2W · C<sub>m0</sub> · (S/b) · S / (ℓ · π b² e)</code>, with <code>C<sub>m0</sub> ≈ 6·C<sub>D0</sub> + 0.012</code> (fitted on E817, NACA 4412/6412 polars) and lever arm ℓ = 0.65 m 🧪. 1 to 2.5% of the total.</li><li>Pumping efficiency (long distance, beginner): <code>η = min(0.85; η<sub>∞</sub> · AR / (AR + 0.7))</code>, AR = b²/S. The shape 🔬: CFD of oscillating foils (Sani 2021: η<sub>3D</sub>/η<sub>2D</sub> ≈ AR/(AR + 0.7)); η<sub>∞</sub> = 0.82 🔬 ≈ 2D efficiency of a slowly pumped foil (Garrick, reduced frequency 0.12-0.15). Mast stiffness factor 0.90 / 1.00 / 1.06 🧪.</li><li>Max lift 🔬 (long distance, beginner; carve and speed: 13° without α<sub>0</sub>): <code>C<sub>L,max</sub> = min( 2π/(1 + 2/AR) · (13° − α<sub>0</sub>), profile cap )</code>, <code>v<sub>stall</sub> = √(W / (½ρ S C<sub>L,max</sub>))</code>. α<sub>0</sub> ≈ −4° 🔬: a cambered profile already lifts at 0°, so stall is counted from zero lift. 13° and per-profile caps 🧪 (real ventilation).</li><li>Minimum-power speed 🔬: <code>v<sub>opt</sub> = (A / (3·½ρK))<sup>1/4</sup></code>, with <code>A = W²/(½ρπb²e)</code> and K the sum of areas × coefficients.</li></ul><p class="src">Code: <code>powerModel()</code>, <code>compute()</code>, <code>ldEval()</code> in long-distance.html; <code>cruiseState()</code> in carve.html; <code>model()</code> in debutant.html and vitesse.html.</p>',
+    's2-h':'② What you can give <small>long distance · carve</small>',
+    's2-lay':'<ul><li><b>Your engine</b> 📏: what you hold for about an hour, for your fitness (population VO2max tables). A heavier rider has more watts, but not in proportion to their weight.</li><li><b>Your technique</b>: only part of that engine becomes pumping. <b>81% for a regular</b> 📏 (fitted on GPS tracks timed to exhaustion: 78 kg, regular athlete — Pump Pro 1750 on a lake at 15.7 km/h for 22 min, Manta 2000 at sea at 14.4 km/h for 30 min). Beginner 65%, expert 97% 🧪.</li><li><b>Your reserve</b> 📏: the effort you can give above your threshold before you are empty, like a sprint. Fitted on the same tracks, in the upper part of the range for trained athletes.</li></ul><p><b>How long you last</b>: well below your threshold, hours; just below, about an hour; above it, your reserve drains faster the more you exceed.</p><div class="ex">Example: 75 kg, regular athlete → engine ~213 W → pumping threshold ~172 W. The long-distance wing above (~160 W): just below your threshold, you last about an hour. The carve wing (~205 W): your reserve melts in ~8 min.</div>',
+    's2-phy':'<span class="eq">CP<sub>cardio</sub> = w · 70 · (m / 70)<sup>0.67</sup> &nbsp;·&nbsp; CP<sub>pump</sub> = CP<sub>cardio</sub> · f<sub>pump</sub></span><ul><li>w (W/kg) by fitness level: 1.5 / 1.9 / 2.4 / 2.9 / 3.4 / 4.2 (men; women −13% 🧪). 📏/literature: FRIEND VO2max (Kaminsky 2017) × threshold 67-83% × mechanical efficiency ~20%.</li><li>Exponent 0.67 🔬: allometric scaling (power follows muscle mass, not total weight).</li><li>f<sub>pump</sub> = 0.81 📏: fitted together with W′ and the C<sub>D0</sub> × 0.68 on 3 of Paul\'s GPS tracks (78 kg) — Pump Pro 1750 stab 50, lake, 15.7 km/h, 22.1 min · Manta 2000 stab 65, sea (+10%), 14.3-14.4 km/h, 29.7 and 30.2 min. 0.65 and 0.97 🧪 (literature: 0.65-0.8 for a new movement, 0.85-0.9 well trained).</li><li>W′ = 16 kJ 📏 (capacity above critical power), fitted on the same tracks; literature 9-18 kJ for trained men (Vanhatalo 2007, 2011).</li></ul><span class="eq">t = W′ / (P − CP) if P &gt; CP &nbsp;·&nbsp; P &lt; CP → ~1 h &nbsp;·&nbsp; P &lt; 0.85·CP → hours 🧪</span><p>Carve: wave sessions simulated with W′<sub>bal</sub> (Skiba) — above threshold <code>W′ −= (P − CP)·dt</code>; below, recovery <code>W′ − (W′ − w)·e<sup>−dt/τ</sup></code>, <code>τ = 546·e<sup>−0.01(CP − P)</sup> + 316</code> s (literature). Carve levels in absolute watts: 200 / 250 / 330 W, W′ 9 / 12.3 / 17 kJ, technique ×0.7 / ×1 / ×1.2 (“experienced” = calibration point 📏).</p><p class="src">Code: <code>cpWkg()</code>, <code>cpCardio()</code>, <code>riderCP()</code>, <code>PUMP_LV</code> (long-distance.html); <code>riderLvl()</code>, <code>waveSession()</code> (carve.html).</p>',
+    's3-h':'③ Long distance <small>the ⚡ page</small>',
+    's3-lay':'<p>Each wing flies at <b>its most economical speed</b>, with two safeguards:</p><ul><li>never too close to stalling (a 30% margin 🧪), otherwise one missed pump and you drop;</li><li>never below <b>13.5 km/h</b> 📏: between multi-hour records (12.7-13.6 km/h) and 20-30 min efforts timed by GPS (14-16 km/h).</li></ul><p>The map compares every wing with <b>the same gear</b> (carbon mast, standard fuselage and stab) so that only the wing changes.</p>',
+    's3-phy':'<span class="eq">v<sub>cruise</sub> = max( v<sub>opt</sub>, 1.3 · v<sub>stall</sub>, 13.5 km/h )</span><ul><li>1.3 🧪 (field: a 1600 does not fly at 12 but around 14). 13.5 km/h 📏 (records: Iten 54.8 km in 4 h 02 at 13.6 km/h, Pimbel ~2 h at 13 km/h, Baudoux 44 km in 3 h 26; Paul\'s GPS tracks: 14.3-15.7 km/h over 20-30 min).</li><li>Map: mast 0.065 m² carbon, fuselage 0.045 m², stab 0.060 m²; range profile when known, otherwise C<sub>D0</sub> 0.013 / C<sub>L,max</sub> 1.3 — deliberately no estimate from AR. “Too small” if 1.3·v<sub>stall</sub> &gt; 17.5 km/h 🧪.</li><li>Wh/km = P / v. Beyond AR ~18: extrapolation (no measurement).</li></ul>',
+    's4-h':'④ Speed <small>the 🚀 page</small>',
+    's4-lay':'<p>A 300 m race with two turns. You give everything: your threshold + your reserve emptied over ~40 s. Tuned on <b>real races</b> 📏 (30 to 38 km/h observed).</p><div class="ex">Same rider (75 kg, ~790 W), one change at a time: <b>−370 cm² of wing → +2.2 km/h</b> · <b>stab −80 cm² → +1.8 km/h</b> · <b>straps → +1.9 km/h</b> · <b>+100 W → +1.2 km/h</b>.</div><p>At high speed, <b>rubbing</b> dominates: less area and a small stab pay off more than span. Straps let you pull on the way up too 🧪 (+20% efficiency).</p>',
+    's4-phy':'<span class="eq">P<sub>sprint</sub> = CP · m + W′ · m / 40 s &nbsp;·&nbsp; P = (A/v + ½ρ K v³) / (0.70 × straps)</span><ul><li>CP 2.8 / 3.5 / 4.5 W/kg, W′ 220 / 280 / 350 J/kg by level 🧪 (“regular” = original calibration).</li><li>Fixed η 0.70 and straps ×1.20 🧪; C<sub>D0</sub> 0.013, C<sub>fus</sub> 0.010, stab: 0.020 m² × 0.020 + (A<sub>stab</sub> − 0.020) × 0.012 — 📏 re-tuned on race speeds (strapped on a 600: 30 km/h ≈ 750 W, 33 ≈ 1,000 W; ~37 km/h ≈ 1,300 W peak).</li><li>Time: <code>t = 50 / (0.8·v) + (D − 50) / v</code> (2 turns × 25 m at 80% 🧪). Stalls in the turn if 0.8·v &lt; 1.2·v<sub>stall</sub>. “Won\'t take off” if √(W/(½ρS·1.2))·1.15 &gt; 17 km/h 🧪.</li><li>No trim drag and no air drag in the race (simplification). The “your top speed” simulator adds air (C<sub>D</sub>A 0.45 m², tucked rider 🧪) and cavitation is ignored below ~45 km/h 🔬.</li></ul><p class="src">Code: <code>vaRace()</code>, <code>vaP30()</code>, <code>model()</code>/<code>vmax()</code> (vitesse.html).</p>',
+    's5-h':'⑤ Carve <small>the 🌊 page</small>',
+    's5-lay':'<ul><li><b>Maneuverability</b> 🔬: to switch from one edge to the other, you roll the wing around its axis. It resists like <b>area × span²</b>: a short, small wing rolls fast, a big long wing is slow. The bounds of the 0-100 scale are 🧪, tuned on known wings.</li><li><b>Take-off</b> 🧪: the speed and effort needed to take off; too small for your weight, it won\'t get going by pumping.</li><li><b>Wave speed</b> 🔬: a breaking wave travels at about √(22 × height) m/s — ~17 km/h for 1 m.</li><li><b>Session</b>: cycles — ~300 m carried by the wave (you recover), then ~300 m pumping back (your reserve drains). We count how many cycles you can link.</li></ul>',
+    's5-phy':'<span class="eq">I<sub>roll</sub> ∝ S · b² &nbsp;·&nbsp; maneuverability = 100 · (30 − S·b²/10⁶) / 26 − 4·max(0, AR − 12) + rear bonus</span><ul><li>S in cm², b in cm; bounds 30 / 26 🧪 (Jam 1600 ≈ 15, RSX Carve 1100 ≈ 62). AR penalty and rear bonus 🧪: stab ≤ 90 cm² → +(90 − A)/3, above −(A − 90)·15/110; dihedral ∩ +5 / U −5; fuselage (65 − L)·0.7.</li><li>Cruise: <code>η = 0.72 · AR/(AR + 2) · min(1.03, (L<sub>fus</sub>/65)<sup>0.6</sup>)</code>; η<sub>∞</sub> = 0.72 📏 tuned on RSX Carve 1100 ≈ 2 min at 85 kg (“experienced” level). C<sub>D0</sub> 0.014, C<sub>stab</sub> 0.044 🧪, 11 km/h floor.</li><li>Glide: <code>clamp(0..100, (520 − P)/2.8)</code> 🧪.</li><li>Take-off: <code>v = √(W/(½ρS·1.2)) · 1.15</code>; <code>P<sub>to</sub> = (W·C<sub>L</sub>/(π·0.9·AR) + q(S·0.012 + 0.0008)) · v / 0.7</code> 🧪. “Featherweight” if v ≥ 16.5 km/h or P<sub>to</sub> ≥ 1.2·CP 📏 (tuned: Sushi 740, RSX 700 too small at 75 kg; DW 840 OK).</li><li>Wave 🔬: <code>v<sub>w</sub> = √(g(d + H))</code> with d ≈ 1.3·H 🧪 ⇒ <code>√(22·H)</code>. Ride 300 m at 1.3·v<sub>w</sub> 📏 (17-19 km/h measured on the face in 0.5-0.8 m), paddle back 300 m 📏, carve cost = P 🧪, slow fatigue −12%/h 🧪. “You last” = ≥ 5 min.</li></ul><p class="src">Code: <code>cruiseState()</code>, <code>glideScore()</code>, <code>takeoffPower()</code>, <code>waveSession()</code>, <code>carveBest()</code> (carve.html).</p>',
+    's6-h':'⑥ Beginner <small>the 🎓 page</small>',
+    's6-lay':'<p>We look for the wing that <b>carries you early</b> (a missed pump slows you down instead of dropping you): the area follows your weight, bounded by what exists in school ranges 📏. At first, <b>~30% of your watts are wasted</b> 🧪: technique, not gear, makes the biggest difference.</p>',
+    's6-phy':'<span class="eq">S = clamp( round<sub>50</sub>(m · k), S<sub>min</sub>, S<sub>max</sub> ) &nbsp;·&nbsp; b = √(AR · S) &nbsp;·&nbsp; P<sub>shown</sub> = P(v) / tech</span><ul><li>k = 24 / 21 / 19 cm²/kg; AR 9 / 9 / 10; S 1,500-2,100 / 1,350-2,000 / 1,200-1,900 cm² — 📏 charts of two school ranges (2025), k 🧪.</li><li>tech = 0.70 / 0.80 / 0.88 🧪; v = max(1.15·v<sub>stall</sub>, 11 km/h); mast fully immersed (you fly low); air on the standing rider C<sub>D</sub>A 0.55 m² 🧪; η and C<sub>D0</sub> × 0.68 as in ③.</li></ul><p class="src">Code: <code>STAGES</code>, <code>reco()</code>, <code>model()</code> (debutant.html).</p>',
+    's7-h':'⑦ What the model does not know (yet)',
+    's7-lay':'<ul><li>The model assumes <b>steady</b> flight: it does not see the rhythm of your pumps, swell, chop, wind or mast flex. Count <b>±15%</b> on watts, more on durations.</li><li>The pages are <b>not all aligned yet</b>: each one is tuned on its own field references (a race, a wave session, a long outing). For example, the Carve page still has its own calibration, on a small fast wing.</li><li>The 🧪 numbers improve fastest with <b>your references</b>: send your wing, weight, fitness, how long you last and where to <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">@polofoil</a>.</li></ul>',
+    's7-phy':'<ul><li>Steady-state model; real pumping is unsteady (reduced frequency k ≈ 0.13, Theodorsen function C(k) ≈ 0.80) — absorbed into η.</li><li>η: 4 variants coexist — 0.82·AR/(AR+0.7) (long distance, beginner), 0.72·AR/(AR+2) (carve, speed-page glide), fixed 0.70 (speed race), old <code>min(0.92; (0.44 + 0.015·AR)·1.06·straps)</code> (speed simulator, tuned on races); plus /0.7 with e = 0.9 for the carve take-off effort.</li><li>RSX Carve 1100 (stab 130): long distance gives ~4 min (Paul, 78 kg, ≤ 5 min felt); carve is tuned at ~2 min at 85 kg, “experienced” level.</li><li>Different rider models: W/kg<sup>0.67</sup> × f<sub>pump</sub> (long distance), absolute watts (carve), linear W/kg + W′ in J/kg (speed). 13.5 km/h floor (long distance) vs 11 km/h (carve, beginner).</li><li>Trim missing from the speed race, the long-distance sensitivity and the carve take-off; air on the rider only in speed and beginner; C<sub>stab</sub> from 0.012 to 0.044 depending on the page; maneuverability (1.25/b)² in long distance vs S·b² in carve.</li><li>Open code: <a href="https://github.com/polomarcus/foilphysics" target="_blank" rel="noopener">github.com/polomarcus/foilphysics</a>, based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>.</li><li>Max lift: 17° from zero lift (long distance, beginner) vs 13° (carve, speed); profile × 0.68 only in long distance and beginner.</li></ul>'
+  };
+  // niveau : ?niveau=physicien / non-initie, sinon mémoire du navigateur
+  const setLvl = phy => { document.body.classList.toggle('phy', phy); $('lv-phy').classList.toggle('on', phy); $('lv-lay').classList.toggle('on', !phy);
+    $('lv-phy').setAttribute('aria-pressed', String(phy)); $('lv-lay').setAttribute('aria-pressed', String(!phy)); try{ localStorage.setItem('lcw-fx-lvl', phy ? 'phy' : 'lay'); }catch(e){} };
+  $('lv-lay').addEventListener('click', () => setLvl(false));
+  $('lv-phy').addEventListener('click', () => setLvl(true));
+  const q = /[?&]niveau=([\w-]+)/.exec(location.search); let m0 = null; try{ m0 = localStorage.getItem('lcw-fx-lvl'); }catch(e){}
+  setLvl(q ? /^phy/.test(q[1]) : m0 === 'phy');
+
+  function applyLang(l){
+    if((l === 'es' || l === 'it') && !XL.data[l]){ XL.load(l).then(() => applyLang(l), () => applyLang('en')); return; }
+    if(l === 'es' || l === 'it') XL.use(l);
+    LANG = l; document.documentElement.lang = l;
+    if(window.seoLang) seoLang(l);
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const k = el.getAttribute('data-i18n');
+      if(!(k in FRC)) FRC[k] = el.innerHTML;
+      if(l === 'en' && EN[k]) el.innerHTML = EN[k];
+      if(l === 'fr') el.innerHTML = FRC[k];
+      if(l === 'es' || l === 'it'){ const v = XL.key('formules', k); el.innerHTML = v !== undefined ? v : (EN[k] || FRC[k]); }
+    });
+    $('lang-btn').value = l;
+    XL.links(l);
+    try{ localStorage.setItem('lcw-lang', l); }catch(e){}
+  }
+  $('lang-btn').addEventListener('change', e => applyLang(e.target.value));
+  let L0 = XL.fromUrl(); if(!L0){ try{ L0 = localStorage.getItem('lcw-lang'); }catch(e){} }
+  applyLang(['fr','en','es','it'].indexOf(L0) >= 0 ? L0 : 'fr');
+})();
+</script>
+</body>
+</html>

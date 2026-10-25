@@ -17,7 +17,7 @@ window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].ind
   if(!c){ c = document.createElement('link'); c.rel = 'canonical'; document.head.appendChild(c); }   // canonique posée par le script (jamais en dur) : toujours celle de la langue de l'adresse
   if(d) d.setAttribute('content', M.d); c.setAttribute('href', M.u); };
 seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   // dès le chargement, d'après ?lang=</script>
-<script src="lang/xl.js?v=20261026"></script>
+<script src="lang/xl.js?v=20261028"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Le Carve — tourner serré en pump foil dans les vagues">
 <meta property="og:description" content="Envergure courte = faible résistance au roulis = virages vifs. La physique de la maniabilité, aile par aile.">
@@ -529,6 +529,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     <details class="tb-more">
       <summary data-i18n="tb-more">Liens ▾</summary>
       <div class="tb-menu">
+        <a href="formules.html" data-i18n="tb-fx">📐 Nos formules</a>
         <a href="https://github.com/polomarcus/foilphysics" target="_blank" rel="noopener">🐙 Code</a>
         <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener" data-i18n="tb-model">💻 Modèle physique</a>
         <a href="https://piouz.org/" target="_blank" rel="noopener">⚡ Piouz</a>
@@ -799,7 +800,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     'ws-1':'🌊 0.5 m<small>soft</small>','ws-2':'🌊 1 m<small>medium</small>','ws-3':'🌊 1.5-2 m<small>powerful</small>',
     'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve',
     'tune-btn':'🎛️ Fine-tune (fuselage, detailed aspect ratio)',
-    'tb-more':'Links ▾','tb-model':'💻 Physics model',
+    'tb-more':'Links ▾','tb-model':'💻 Physics model','tb-fx':'📐 Our formulas',
     'h1a':'The <span class="hi">Carve</span>','h1b':'🌊 pump foil: turning tight in the waves',
     'tldr-t':'Find the wing that <b>turns tight</b>… and <b>lasts your session</b>.',
     'tl1-h':'Turning', 'tl1-p':'<b>Short span</b> + <b>small area</b>: a wing 20% shorter goes rail to rail ~1.5× faster.', 'tl1-s':'roll resistance ≈ area × span²',

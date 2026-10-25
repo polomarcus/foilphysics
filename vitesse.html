@@ -17,7 +17,7 @@ window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].ind
   if(!c){ c = document.createElement('link'); c.rel = 'canonical'; document.head.appendChild(c); }   // canonique posée par le script (jamais en dur) : toujours celle de la langue de l'adresse
   if(d) d.setAttribute('content', M.d); c.setAttribute('href', M.u); };
 seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   // dès le chargement, d'après ?lang=</script>
-<script src="lang/xl.js?v=20261026"></script>
+<script src="lang/xl.js?v=20261028"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="La Course aux km/h — qu'est-ce qui fait aller un foil vite ?">
 <meta property="og:description" content="Simulateur pédagogique : surface, profil, stab, envergure, straps — et surtout tes watts de sprint. Calibré sur les vitesses de course réelles (30-38 km/h).">
@@ -498,6 +498,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     <details class="tb-more">
       <summary data-i18n="tb-more">Liens ▾</summary>
       <div class="tb-menu">
+        <a href="formules.html" data-i18n="tb-fx">📐 Nos formules</a>
         <a href="https://github.com/polomarcus/foilphysics" target="_blank" rel="noopener">🐙 Code</a>
         <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener" data-i18n="tb-model">💻 Modèle physique</a>
         <a href="https://piouz.org/" target="_blank" rel="noopener">⚡ Piouz</a>
@@ -824,7 +825,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     'rf-h2':'🏁 The race: fast AND agile is possible','rf-sub':'Two <b>twin courses</b> (they never cross — safety), 2 turns each, same effort. Surprise: the <b>speed blade turns almost as tight</b> as the carve — its roll resistance (<b>area × span²</b>) is nearly the same. It loses a hair at the buoys… and takes it all back on the straights.',
     'rf-c-name':'Carve wing','rf-c-tag':'<b>88 cm · 900 cm² · AR 8.6</b> — area × span² ≈ 7.0 → <b>turns tight</b>','rf-l-name':'Speed blade','rf-l-tag':'<b>100 cm · 750 cm² · AR 13.3</b> — area × span² ≈ 7.5 → <b>turns almost the same</b> (even better strapped); small area + thin profile = <b>faster in a straight line</b>','rf-btn':'↻ Replay the race',
     'rf-dt':'🏁 And who wins by distance? (2 turns, same effort)',
-    'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve','tb-more':'Links ▾','tb-model':'💻 Physics model',
+    'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve','tb-more':'Links ▾','tb-model':'💻 Physics model','tb-fx':'📐 Our formulas',
     'h1a':'The Race for <span class="hi">km/h</span> in pump foil',
     'h1b':'🚀 what makes a foil fast?',
         'tldr-t':'For pure speed: <b>small thin wing</b> + <b>small stab</b><br>+ your <b>sprint watts</b>.',
