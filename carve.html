@@ -310,14 +310,15 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   .atl-view button[aria-pressed="true"]{background:var(--txt); color:#0f172a; border-color:var(--txt);}
   body.atl-rankv #atlas .atl-box{display:none;}
   .atl-rank{max-width:720px; margin:0 auto 10px;}
-  .atl-rank ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px;}
-  .atl-rank li{display:grid; grid-template-columns:2.2em 1fr auto; gap:4px 10px; align-items:center; padding:9px 12px; border-radius:12px; background:var(--panel); border:1px solid var(--line); border-left:5px solid var(--zc, var(--line)); cursor:pointer;}
-  .atl-rank li.on{outline:2px solid var(--txt); outline-offset:-2px;}
-  .atl-rank .rk{font-weight:900; color:var(--muted); text-align:right;}
-  .atl-rank .rn{font-weight:800; min-width:0;} .atl-rank .rn small{display:block; font-weight:600; color:var(--muted); font-size:.78rem;}
-  .atl-rank .rs{font-weight:900; font-size:1.15rem; text-align:right;}
-  .atl-rank .rb{grid-column:2 / 4; height:7px; border-radius:4px; background:#0b1222; overflow:hidden;} .atl-rank .rb i{display:block; height:100%; border-radius:4px; background:var(--zc);}
-  .atl-rank .rz{grid-column:2 / 4; font-size:.8rem; color:var(--muted);} .atl-rank .rz b{color:var(--txt);}
+  .atl-rank ol{list-style:none; margin:0; padding:0; border-top:1px solid var(--line);}
+  .atl-rank li{display:grid; grid-template-columns:1.8em 1fr auto; column-gap:8px; align-items:center; padding:7px 10px 7px 8px; border-bottom:1px solid var(--line); border-left:4px solid var(--zc, var(--line)); cursor:pointer;
+    background:linear-gradient(90deg, color-mix(in srgb, var(--zc) 11%, transparent) var(--w), transparent var(--w));}
+  .atl-rank .rn a{color:inherit; text-decoration:underline; text-decoration-color:rgba(148,163,184,.5); text-underline-offset:3px;}
+  .atl-rank li.on{background-color:rgba(255,255,255,.07); box-shadow:inset 0 0 0 2px var(--txt);}
+  .atl-rank .rk{font-weight:800; color:var(--muted); text-align:right; font-size:.85rem; grid-row:1 / 3;}
+  .atl-rank .rn{font-weight:800; font-size:.95rem; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .atl-rank .rm{grid-column:2; font-size:.76rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .atl-rank .rs{font-weight:900; font-size:1.1rem; text-align:right; grid-row:1 / 3; grid-column:3;}
   .atl-rank .rmore{display:block; margin:10px auto 0; border:1px solid var(--line); background:none; color:var(--txt); font:inherit; font-weight:800; padding:9px 18px; border-radius:999px; cursor:pointer;}
   .atl-rank .rhint{text-align:center; color:var(--muted); font-size:.82rem; margin:0 0 8px;}
   .atl-pins{max-width:900px; margin:8px auto 10px; display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 270px), 1fr)); gap:10px 8px;}
@@ -2119,6 +2120,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     const ks = (m[2] || '').split('+').map(sl => (ATL_BRANDS.find(x => brandSlug(x) === sl) || {}).k).filter(Boolean);
     if(m[1] === 'carte'){ if(RANK.view === 'rank') rankView('map'); ATL.sel = ks; atlBrandsUI(); if(!ATL.full && ATL.kit) ATL.kit.full(true); else if(ATL.args) drawAtlas(...ATL.args); return; }
     if(!ks.length) return;
+    if(RANK.view === 'rank') rankView('map');   // lien partagé avec des marques → la carte, même sur téléphone
     ATL.sel = ks; atlBrandsUI(); if(ATL.args) drawAtlas(...ATL.args);
     const sec = $('atlas'); if(sec) setTimeout(() => sec.scrollIntoView(), 50);
   }
@@ -2242,12 +2244,11 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     const nPl = L.filter(q => q.z === 'plume').length; if(!RANK.plume) for(let i = L.length - 1; i >= 0; i--) if(L[i].z === 'plume') L.splice(i, 1);
     L.sort((x, y) => y.man - x.man || x.S - y.S);
     const pinned = q => (ATL.pins || []).some(p => p.n === q.n && Math.abs(p.b - q.b) < .01 && p.S === q.S);
-    box.innerHTML = '<p class="rhint">'+t('Les plus maniables en haut · touche une aile pour l\'ajouter au comparatif','Most maneuverable first · tap a wing to add it to the comparison')+'</p><ol>'
+    box.innerHTML = '<p class="rhint">'+t('Plus maniables en haut · touche une aile pour la comparer','Most maneuverable first · tap a wing to compare it')+'</p><ol>'
       + L.slice(0, RANK.n).map((q, i) => { const C = ATL_CAT[q.z], sesT = q.ses.unlimited ? t('longtemps','a long time') : '~'+Math.max(1, Math.round(q.ses.min))+'&nbsp;min';
-        return '<li data-r="'+i+'" style="--zc:'+C.c+'"'+(pinned(q) ? ' class="on"' : '')+' tabindex="0" role="button" aria-pressed="'+pinned(q)+'">'
-          + '<span class="rk">'+(i + 1)+'</span><span class="rn">'+(pinned(q) ? '📌 ' : '')+q.n+'<small>'+num(q.b, q.b % 1 ? 1 : 0)+'&nbsp;cm · '+num(q.S)+'&nbsp;cm²</small></span>'
-          + '<span class="rs">'+q.man+'</span><span class="rb"><i style="width:'+q.man+'%"></i></span>'
-          + '<span class="rz"><b>'+t(C.sfr, C.sen)+'</b> · '+t('session','session')+' '+sesT+'</span></li>'; }).join('')+'</ol>'
+        return '<li data-r="'+i+'" style="--zc:'+C.c+'; --w:'+q.man+'%"'+(pinned(q) ? ' class="on"' : '')+' tabindex="0" role="button" aria-pressed="'+pinned(q)+'" title="'+t(C.sfr, C.sen)+'">'
+          + '<span class="rk">'+(i + 1)+'</span><span class="rn">'+(pinned(q) ? '📌 ' : '')+(Lk => Lk ? '<a href="'+Lk.u+'" target="_blank" rel="noopener" data-w="'+q.n+'">'+q.n+window.wlTail(Lk)+'</a>' : q.n)(window.foilLink && window.foilLink(q.n, 'carve'))+'</span><span class="rs">'+q.man+'</span>'
+          + '<span class="rm">'+num(q.b, q.b % 1 ? 1 : 0)+'&nbsp;cm · '+num(q.S)+'&nbsp;cm² · '+t(C.xfr, C.xen)+' · '+sesT+'</span></li>'; }).join('')+'</ol>'
       + (L.length > RANK.n ? '<button type="button" class="rmore">'+t('Voir les '+(L.length - RANK.n)+' suivantes','Show the next '+(L.length - RANK.n))+'</button>' : '')
       + (nPl ? '<p class="rhint"><button type="button" class="rplume" style="background:none;border:none;color:inherit;font:inherit;text-decoration:underline;cursor:pointer">'
         + (RANK.plume ? t('Masquer les '+nPl+' ailes trop petites pour toi (🪶 poids plume)','Hide the '+nPl+' wings too small for you (🪶 featherweight)')
@@ -2258,13 +2259,14 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     const v = e.target.closest('#atl-view button'); if(v){ rankView(v.dataset.v); if(window.gcEv) gcEv('carte/vue-'+v.dataset.v); return; }
     if(e.target.closest('#atl-rank .rmore')){ RANK.n += 60; rankUI(); return; }
     if(e.target.closest('#atl-rank .rplume')){ RANK.plume = !RANK.plume; rankUI(); return; }
+    if(e.target.closest('#atl-rank a')) return;   // nom = lien vers la page de la marque (nouvel onglet), sans épingler
     const li = e.target.closest('#atl-rank li'); if(!li || !RANK.list) return;
     const q = RANK.list[+li.dataset.r], P = ATL.pins || (ATL.pins = []), i = P.findIndex(p => p.n === q.n && Math.abs(p.b - q.b) < .01 && p.S === q.S);
     if(i >= 0) P.splice(i, 1); else { P.push({n: q.n, b: q.b, S: q.S}); if(P.length > 8) P.shift(); if(window.gcEv) gcEv('fiche/'+q.n, 'Fiche épinglée : '+q.n); }
     if(ATL.args) drawAtlas(...ATL.args); rankUI(); });
   document.addEventListener('keydown', e => { if((e.key === 'Enter' || e.key === ' ') && e.target.closest && e.target.closest('#atl-rank li')){ e.preventDefault(); e.target.click(); } });
   { let v0 = null; try{ v0 = localStorage.getItem('lcw-carve-view'); }catch(e){}
-    if(/#carte/.test(location.hash)) v0 = 'map';   // lien partagé vers la carte plein écran
+    if(/^#(carte|atlas-.)/.test(location.hash)) v0 = 'map';   // lien partagé avec des marques (#atlas-takoon, #carte-…) → toujours la carte
     setTimeout(() => rankView(v0 === 'rank' || v0 === 'map' ? v0 : (matchMedia('(max-width: 680px)').matches ? 'rank' : 'map')), 0); }
   function drawAtlas(b, S, kg, H){
     ATL.args = [b, S, kg, H];
