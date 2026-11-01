@@ -2375,6 +2375,11 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
       dotDraw(c, multi ? act.indexOf(B) % 4 : 0, x, y, G.narrow ? 4.2 : VIDEO ? (ATL.focus && fIn ? 4.6 : 3.8) : 5, few ? famCol[f] : B.c, G.narrow ? 1.5 : 2);   // forme par marque en comparaison
       c.globalAlpha = 1;
     }));
+    // ailes épinglées d'une autre marque que celle affichée : on les garde (point + nom complet), sinon l'anneau n° reste vide (retour Paul)
+    (ATL.pins || []).forEach(q => { if(pts.some(p => p.n === q.n && Math.abs(p.b - q.b) < .01 && p.S === q.S)) return;
+      const B = ATL_BRANDS.find(B => q.n.indexOf(B.n + ' ') === 0); if(!B) return;
+      const x = px(q.b), y = py(q.S); pts.push({n: q.n, short: q.n, b: q.b, S: q.S, x, y, col: B.c, other: true});
+      dotDraw(c, 0, x, y, G.narrow ? 4.2 : 5, B.c, G.narrow ? 1.5 : 2); });
     const fl = $('atl-fam');
     if(fl) fl.innerHTML = few || multi ? (few ? Object.entries(famCol).map(([f, col]) => '<span><i style="background:'+col+'"></i>'+f+'</span>') : act.map((B, i) => '<span>'+shapeIco(i % 4, B.c)+B.n+'</span>')).join('')
       + '<span class="rleg">'+[['✨', t('compromis','compromise')], ['🔥', t('tourner','turning')], ['🌊', t('enchaîner','linking')]].map(([e, l]) => '<span><i class="rring" style="border-color:'+RECO_C[e]+'"></i>'+e+' '+l+'</span>').join('')+'</span>' : '';

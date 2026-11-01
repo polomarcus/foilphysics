@@ -1710,6 +1710,11 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
       dotDraw(c, multi ? act.indexOf(B) % 4 : 0, x, y, narrow ? 4.2 : VIDEO ? (VA.focus && fIn ? 4.6 : 3.8) : 5, few ? famCol[f] : B.c, narrow ? 1.5 : 2);   // forme par marque en comparaison
       c.globalAlpha = 1;
     }));
+    // ailes épinglées d'une autre marque que celle affichée : on les garde (point + nom complet), sinon l'anneau n° reste vide (retour Paul)
+    (VA.pins || []).forEach(q => { if(pts.some(p => p.n === q.n && Math.abs(p.b - q.b) < .01 && p.S === q.S)) return;
+      const B = VA_BRANDS.find(B => q.n.indexOf(B.n + ' ') === 0); if(!B) return;
+      const x = px(q.b), y = py(q.S); pts.push({n: q.n, short: q.n, b: q.b, S: q.S, x, y, col: B.c, other: true});
+      dotDraw(c, 0, x, y, narrow ? 4.2 : 5, B.c, narrow ? 1.5 : 2); });
     VA.pts = pts;
     drawVLab();
     vaStar(c, px, py, kg, narrow, act);

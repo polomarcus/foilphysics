@@ -3628,6 +3628,11 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
       const x = px(bb), y = py(ss); pts.push({n: B.n+' '+n, short: n, b: bb, S: ss, x, y, col: B.c});
       dotDraw(c, multi ? act.indexOf(B) % 4 : 0, x, y, narrow ? 4.2 : 4.6, B.c, narrow ? 1.5 : 2);
     }));
+    // ailes épinglées d'une autre marque que celle affichée : on les garde (point + nom complet), sinon l'anneau n° reste vide (retour Paul)
+    (LA.pins || []).forEach(q => { if(pts.some(p => p.n === q.n && Math.abs(p.b - q.b) < .01 && p.S === q.S)) return;
+      const B = LD_BRANDS.find(B => q.n.indexOf(B.n + ' ') === 0); if(!B) return;
+      const x = px(q.b), y = py(q.S); pts.push({n: q.n, short: q.n, b: q.b, S: q.S, x, y, col: B.c, other: true});
+      dotDraw(c, 0, x, y, narrow ? 4.2 : 5, B.c, narrow ? 1.5 : 2); });
     LA.pts = pts;
     // noms de zones (pastille) : la case de la zone la plus éloignée des autres zones et des points
     const boxes = pts.map(p => [p.x - 6, p.y - 6, 12, 12]), zBoxes = [];
