@@ -17,7 +17,7 @@ window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].ind
   if(!c){ c = document.createElement('link'); c.rel = 'canonical'; document.head.appendChild(c); }   // canonique posée par le script (jamais en dur) : toujours celle de la langue de l'adresse
   if(d) d.setAttribute('content', M.d); c.setAttribute('href', M.u); };
 seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   // dès le chargement, d'après ?lang=</script>
-<script src="lang/xl.js?v=20261029"></script>
+<script src="lang/xl.js?v=20261101"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Le Carve — tourner serré en pump foil dans les vagues">
 <meta property="og:description" content="Envergure courte = faible résistance au roulis = virages vifs. La physique de la maniabilité, aile par aile.">
@@ -304,6 +304,22 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   .atl-box.full #atl-zf{background:#dc2626; border-color:#f87171; color:#fff;}   /* ✕ quitter le plein écran : rouge, on le trouve tout de suite */
   .atl-zb b{min-width:30px; text-align:center; font-size:.8rem; color:var(--txt); font-variant-numeric:tabular-nums;}
   /* 📌 fiches épinglées : une par aile touchée, côte à côte pour comparer, fermables (×) */
+  /* 🏆 classement par maniabilité (vue par défaut sur téléphone) ↔ 🗺️ carte */
+  .atl-view{display:flex; justify-content:center; gap:6px; margin:6px auto 10px;}
+  .atl-view button{border:1px solid var(--line); background:var(--panel); color:var(--muted); font:inherit; font-weight:800; font-size:.9rem; padding:8px 16px; border-radius:999px; cursor:pointer; min-height:40px;}
+  .atl-view button[aria-pressed="true"]{background:var(--txt); color:#0f172a; border-color:var(--txt);}
+  body.atl-rankv #atlas .atl-box{display:none;}
+  .atl-rank{max-width:720px; margin:0 auto 10px;}
+  .atl-rank ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px;}
+  .atl-rank li{display:grid; grid-template-columns:2.2em 1fr auto; gap:4px 10px; align-items:center; padding:9px 12px; border-radius:12px; background:var(--panel); border:1px solid var(--line); border-left:5px solid var(--zc, var(--line)); cursor:pointer;}
+  .atl-rank li.on{outline:2px solid var(--txt); outline-offset:-2px;}
+  .atl-rank .rk{font-weight:900; color:var(--muted); text-align:right;}
+  .atl-rank .rn{font-weight:800; min-width:0;} .atl-rank .rn small{display:block; font-weight:600; color:var(--muted); font-size:.78rem;}
+  .atl-rank .rs{font-weight:900; font-size:1.15rem; text-align:right;}
+  .atl-rank .rb{grid-column:2 / 4; height:7px; border-radius:4px; background:#0b1222; overflow:hidden;} .atl-rank .rb i{display:block; height:100%; border-radius:4px; background:var(--zc);}
+  .atl-rank .rz{grid-column:2 / 4; font-size:.8rem; color:var(--muted);} .atl-rank .rz b{color:var(--txt);}
+  .atl-rank .rmore{display:block; margin:10px auto 0; border:1px solid var(--line); background:none; color:var(--txt); font:inherit; font-weight:800; padding:9px 18px; border-radius:999px; cursor:pointer;}
+  .atl-rank .rhint{text-align:center; color:var(--muted); font-size:.82rem; margin:0 0 8px;}
   .atl-pins{max-width:900px; margin:8px auto 10px; display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 270px), 1fr)); gap:10px 8px;}
   .atl-pins:empty{display:none;}
   .pin-bar{grid-column:1 / -1; display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:.8rem; color:var(--muted);}
@@ -562,6 +578,8 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     <p class="lede" data-i18n="atl-lede">🧍 <b>La carte s'adapte à toi</b> : les zones bougent avec <b>ton poids</b>, <b>ton niveau</b> et <b>la taille de la houle</b> — règle-les juste en dessous et regarde les frontières glisser. Touche une aile : sa fiche s'affiche sous la carte (plusieurs pour comparer). Pince pour zoomer.</p>
     <div class="rc-row" id="atl-rider"></div>
     <div class="atl-brands" id="atl-brands"></div>
+    <div class="atl-view" id="atl-view" role="group" aria-label="Vue"><button type="button" data-v="rank" aria-pressed="false" data-i18n="atl-v-rank">🏆 Classement</button><button type="button" data-v="map" aria-pressed="false" data-i18n="atl-v-map">🗺️ Visualiser sur la carte</button></div>
+    <div class="atl-rank" id="atl-rank" hidden></div>
     <div class="atl-box"><div class="atl-tools"><span class="atl-hint" id="atl-hint"></span><span class="atl-zb"><button type="button" id="atl-zm" aria-label="Zoom −">−</button><b id="atl-zl">1×</b><button type="button" id="atl-zp" aria-label="Zoom +">+</button><button type="button" id="atl-z1" aria-label="Zoom 1×">1:1</button><button type="button" id="atl-zf" aria-label="Plein écran">⛶</button><button type="button" id="atl-zs" aria-label="Partager la carte">🔗</button></span></div><div class="atl-lay" id="atl-lay"></div><div class="atl-scroll" id="atl-scroll"><canvas id="atl-cv" aria-hidden="true"></canvas></div><div class="win-tip" id="atl-tip" hidden></div></div>
     <div class="atl-pins" id="atl-pins" aria-live="polite"></div>
     <details class="atl-list" id="atl-list"><summary></summary><ul></ul></details>
@@ -800,7 +818,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     'ws-1':'🌊 0.5 m<small>soft</small>','ws-2':'🌊 1 m<small>medium</small>','ws-3':'🌊 1.5-2 m<small>powerful</small>',
     'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve',
     'tune-btn':'🎛️ Fine-tune (fuselage, detailed aspect ratio)',
-    'tb-more':'Links ▾','tb-model':'💻 Physics model','tb-fx':'📐 Our formulas',
+    'tb-more':'Links ▾','tb-model':'💻 Physics model','tb-fx':'📐 Our formulas','atl-v-rank':'🏆 Ranking','atl-v-map':'🗺️ Show on the map',
     'h1a':'The <span class="hi">Carve</span>','h1b':'🌊 pump foil: turning tight in the waves',
     'tldr-t':'Find the wing that <b>turns tight</b>… and <b>lasts your session</b>.',
     'tl1-h':'Turning', 'tl1-p':'<b>Short span</b> + <b>small area</b>: a wing 20% shorter goes rail to rail ~1.5× faster.', 'tl1-s':'roll resistance ≈ area × span²',
@@ -2099,7 +2117,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   function atlFromHash(){
     const m = /^#(atlas|carte)(?:-(.+))?$/.exec(location.hash); if(!m) return;
     const ks = (m[2] || '').split('+').map(sl => (ATL_BRANDS.find(x => brandSlug(x) === sl) || {}).k).filter(Boolean);
-    if(m[1] === 'carte'){ ATL.sel = ks; atlBrandsUI(); if(!ATL.full && ATL.kit) ATL.kit.full(true); else if(ATL.args) drawAtlas(...ATL.args); return; }
+    if(m[1] === 'carte'){ if(RANK.view === 'rank') rankView('map'); ATL.sel = ks; atlBrandsUI(); if(!ATL.full && ATL.kit) ATL.kit.full(true); else if(ATL.args) drawAtlas(...ATL.args); return; }
     if(!ks.length) return;
     ATL.sel = ks; atlBrandsUI(); if(ATL.args) drawAtlas(...ATL.args);
     const sec = $('atlas'); if(sec) setTimeout(() => sec.scrollIntoView(), 50);
@@ -2207,6 +2225,47 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
       + '</table></div>';
     atlTryBtns(box);
   }
+  // 🏆 CLASSEMENT par maniabilité (100 → 0) : même filtre de marques, mêmes scores et mêmes zones que la carte (poids, niveau, houle, stab).
+  // Vue par défaut sur téléphone (la carte y est dense), carte par défaut sur ordinateur ; toucher une ligne = épingler (même tableau que la carte).
+  const RANK = {n: 30, view: null, plume: false};   // plume : afficher aussi les ailes trop petites pour toi (masquées par défaut)
+  const rankView = v => { RANK.view = v; document.body.classList.toggle('atl-rankv', v === 'rank'); $('atl-rank').hidden = v !== 'rank';
+    { const pe = $('atl-pins'), bx = document.querySelector('#atlas .atl-box'); if(pe && bx){ if(v === 'rank') $('atl-rank').before(pe); else bx.after(pe); } }   // comparatif au-dessus du classement (sinon caché sous 30 lignes sur téléphone)
+    document.querySelectorAll('#atl-view button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === v)));
+    try{ localStorage.setItem('lcw-carve-view', v); }catch(e){}
+    if(v === 'map' && ATL.args) drawAtlas(...ATL.args); else rankUI(); };
+  function rankUI(){
+    const box = $('atl-rank'); if(!box || RANK.view !== 'rank') return;
+    const kg = riderKg(), H = waveH(), act = ATL_BRANDS.filter(B => !ATL.sel.length || ATL.sel.includes(B.k)), L = [];
+    act.forEach(B => B.w.forEach(([n, b, S]) => { const ar = b*b/S; if(ar < ATL.AR0 || ar > ATL.AR1) return;
+      const man = manOf(b, S), ses = waveSession(b, S, kg, H), z = atlCat(b, S, kg, man >= 45, ses.unlimited || ses.min >= SES_OK);
+      L.push({n: B.n+' '+n, b, S, man, ses, z}); }));
+    const nPl = L.filter(q => q.z === 'plume').length; if(!RANK.plume) for(let i = L.length - 1; i >= 0; i--) if(L[i].z === 'plume') L.splice(i, 1);
+    L.sort((x, y) => y.man - x.man || x.S - y.S);
+    const pinned = q => (ATL.pins || []).some(p => p.n === q.n && Math.abs(p.b - q.b) < .01 && p.S === q.S);
+    box.innerHTML = '<p class="rhint">'+t('Les plus maniables en haut · touche une aile pour l\'ajouter au comparatif','Most maneuverable first · tap a wing to add it to the comparison')+'</p><ol>'
+      + L.slice(0, RANK.n).map((q, i) => { const C = ATL_CAT[q.z], sesT = q.ses.unlimited ? t('longtemps','a long time') : '~'+Math.max(1, Math.round(q.ses.min))+'&nbsp;min';
+        return '<li data-r="'+i+'" style="--zc:'+C.c+'"'+(pinned(q) ? ' class="on"' : '')+' tabindex="0" role="button" aria-pressed="'+pinned(q)+'">'
+          + '<span class="rk">'+(i + 1)+'</span><span class="rn">'+(pinned(q) ? '📌 ' : '')+q.n+'<small>'+num(q.b, q.b % 1 ? 1 : 0)+'&nbsp;cm · '+num(q.S)+'&nbsp;cm²</small></span>'
+          + '<span class="rs">'+q.man+'</span><span class="rb"><i style="width:'+q.man+'%"></i></span>'
+          + '<span class="rz"><b>'+t(C.sfr, C.sen)+'</b> · '+t('session','session')+' '+sesT+'</span></li>'; }).join('')+'</ol>'
+      + (L.length > RANK.n ? '<button type="button" class="rmore">'+t('Voir les '+(L.length - RANK.n)+' suivantes','Show the next '+(L.length - RANK.n))+'</button>' : '')
+      + (nPl ? '<p class="rhint"><button type="button" class="rplume" style="background:none;border:none;color:inherit;font:inherit;text-decoration:underline;cursor:pointer">'
+        + (RANK.plume ? t('Masquer les '+nPl+' ailes trop petites pour toi (🪶 poids plume)','Hide the '+nPl+' wings too small for you (🪶 featherweight)')
+                      : t(nPl+' ailes trop petites pour toi (🪶 poids plume) masquées · les afficher', nPl+' wings too small for you (🪶 featherweight) hidden · show them'))+'</button></p>' : '');
+    RANK.list = L;
+  }
+  document.addEventListener('click', e => {
+    const v = e.target.closest('#atl-view button'); if(v){ rankView(v.dataset.v); if(window.gcEv) gcEv('carte/vue-'+v.dataset.v); return; }
+    if(e.target.closest('#atl-rank .rmore')){ RANK.n += 60; rankUI(); return; }
+    if(e.target.closest('#atl-rank .rplume')){ RANK.plume = !RANK.plume; rankUI(); return; }
+    const li = e.target.closest('#atl-rank li'); if(!li || !RANK.list) return;
+    const q = RANK.list[+li.dataset.r], P = ATL.pins || (ATL.pins = []), i = P.findIndex(p => p.n === q.n && Math.abs(p.b - q.b) < .01 && p.S === q.S);
+    if(i >= 0) P.splice(i, 1); else { P.push({n: q.n, b: q.b, S: q.S}); if(P.length > 8) P.shift(); if(window.gcEv) gcEv('fiche/'+q.n, 'Fiche épinglée : '+q.n); }
+    if(ATL.args) drawAtlas(...ATL.args); rankUI(); });
+  document.addEventListener('keydown', e => { if((e.key === 'Enter' || e.key === ' ') && e.target.closest && e.target.closest('#atl-rank li')){ e.preventDefault(); e.target.click(); } });
+  { let v0 = null; try{ v0 = localStorage.getItem('lcw-carve-view'); }catch(e){}
+    if(/#carte/.test(location.hash)) v0 = 'map';   // lien partagé vers la carte plein écran
+    setTimeout(() => rankView(v0 === 'rank' || v0 === 'map' ? v0 : (matchMedia('(max-width: 680px)').matches ? 'rank' : 'map')), 0); }
   function drawAtlas(b, S, kg, H){
     ATL.args = [b, S, kg, H];
     // rider lourd (> 95 kg) : le cadre s'agrandit (jusqu'à ~2 600 cm² et 190 cm) — sinon tout est « plume » et ses ailes sont hors carte (retour Stefan, 128 kg)
@@ -2484,6 +2543,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
       });
     }
     ATL.pts = pts;
+    rankUI();   // 🏆 le classement suit les mêmes réglages que la carte
     ATL.kit.after(c, px, py);   // 📌 repères des fiches épinglées + fiches sous la carte
     // 🎯 TON aile (celle des curseurs envergure / surface du simulateur) : grande cible blanche + étiquette blanche « ton aile »,
     // dessinées en dernier (par-dessus les points) — retour : on veut la retrouver sur la carte
