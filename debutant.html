@@ -17,7 +17,7 @@ window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].ind
   if(!c){ c = document.createElement('link'); c.rel = 'canonical'; document.head.appendChild(c); }   // canonique posée par le script (jamais en dur) : toujours celle de la langue de l'adresse
   if(d) d.setAttribute('content', M.d); c.setAttribute('href', M.u); };
 seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   // dès le chargement, d'après ?lang=</script>
-<script src="lang/xl.js?v=20261106"></script>
+<script src="lang/xl.js?v=20261106b"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Bien débuter en pump foil — le matos qui pardonne">
 <meta property="og:description" content="Quel foil pour apprendre ? Grande aile, gros stab, mât court — le matos de débutant expliqué par la physique, selon ton poids. Et la sécurité d'abord.">
@@ -242,7 +242,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   <div class="tldr">
     <div class="t" data-i18n="tldr-t">Pour apprendre : <b>grande aile épaisse</b> + <b>gros stab</b> + <b>mât court</b> + <b>sécurité</b>.</div>
     <div class="tl-cards">
-      <div class="tl-c"><span class="tl-e">🦺</span><b data-i18n="tl1-h">La sécurité</b><p data-i18n="tl1-p">Tombe <b>du côté opposé au foil</b>. <b>Casque</b>, gilet d'impact, chaussons, <b>1,5 m d'eau</b> minimum et personne dans ta zone de chute.</p></div>
+      <div class="tl-c"><span class="tl-e">🦺</span><b data-i18n="tl1-h">La sécurité</b><p data-i18n="tl1-p">Tombe <b>du côté opposé au foil</b>. <b>Casque</b>, gilet d'impact, chaussons, <b>plus d'eau que ton mât n'est long</b> et personne dans ta zone de chute.</p></div>
       <div class="tl-c"><span class="tl-e">🪽</span><b data-i18n="tl2-h">Le matos qui pardonne</b><p data-i18n="tl2-p"><b>Grande aile épaisse</b> + <b>gros stab</b> + <b>mât court</b> : elle te porte tôt, reste stable, et tu tombes de moins haut.</p></div>
       <div class="tl-c"><span class="tl-e">💸</span><b data-i18n="tl3-h">Patience + occasion</b><p data-i18n="tl3-p">Compte <b>5 à 15 sessions</b> pour le départ ponton. Achète d'<b>occasion</b> : ce matos se revend quand tu progresses.</p></div>
     </div>
@@ -274,7 +274,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
       </div>
       <div class="card" data-i18n="sc2">
         <div class="k">🌊 Un spot profond et dégagé</div>
-        <p>Au moins <b>1,5 m d'eau</b> (le mât + une vraie marge), un fond sans rochers, et
+        <p>Toujours <b>plus profond que ton mât</b> (sa longueur + une marge), un fond sans rochers, et
           <b>aucun baigneur</b> dans ta zone de chute. Vérifie la profondeur avant, pas après.</p>
       </div>
     </div>
@@ -469,7 +469,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
           validé par le marché.</p>
       </div>
       <div class="card you" data-i18n="vd5">
-        <div class="k">🩳 Mât court (60-70 cm)</div>
+        <div class="k">🩳 Mât court (70-75 cm)</div>
         <div class="big">tomber de moins haut</div>
         <p class="xpl">Moins de levier sous les pieds = foil <b>moins nerveux</b>, chutes plus douces, et l'eau peu
           profonde reste praticable. L'inconvénient (moins de marge pour pomper haut) ne te concernera que
@@ -593,7 +593,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     'hsub':'Here we chase the opposite of performance: <b>the wing that gives you the right to be wrong</b>.',
     'tldr-t':'To learn: <b>big thick wing</b> + <b>big stab</b> + <b>short mast</b> + <b>safety</b>.',
     'tl1-h':'Safety',
-    'tl1-p':'Fall <b>on the opposite side of the foil</b>. <b>Helmet</b>, impact vest, booties, <b>1.5 m of water</b> minimum and nobody in your fall zone.',
+    'tl1-p':'Fall <b>on the opposite side of the foil</b>. <b>Helmet</b>, impact vest, booties, <b>water deeper than your mast is long</b> and nobody in your fall zone.',
     'tl2-h':'Gear that forgives',
     'tl2-p':'<b>Big thick wing</b> + <b>big stab</b> + <b>short mast</b>: it lifts you early, stays stable, and you fall from lower.',
     'tl3-h':'Patience + second-hand',
@@ -610,7 +610,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     'secu-h3':'🦺 Safety first',
     'secu-lede':'A foil has <b>thin, hard edges</b>, and beginner falls are uncontrolled. Four non-negotiable rules before the first start.',
     'sc1':'<div class="k">🪖 Helmet, impact vest + booties</div><p>Always. When you fall, <b>the foil is somewhere below</b> — and you choose neither where nor how. Add <b>neoprene booties</b>: between the dock, the rocks and the wing\'s edges, your feet take it all. Helmet, vest and booties turn a bad memory into an anecdote.</p>',
-    'sc2':'<div class="k">🌊 A deep, clear spot</div><p>At least <b>1.5 m of water</b> (the mast + a real margin), a bottom free of rocks, and <b>no swimmers</b> in your fall zone. Check the depth before, not after.</p>',
+    'sc2':'<div class="k">🌊 A deep, clear spot</div><p>Always <b>deeper than your mast</b> (its length + a margin), a bottom free of rocks, and <b>no swimmers</b> in your fall zone. Check the depth before, not after.</p>',
     'sc3':'<div class="k">👥 Never alone</div><p>A partner on shore changes everything if something goes wrong — at the strict minimum, someone <b>knows where you are</b> and when you\'re due back. Cold water shrinks margins fast.</p>',
     'sc4':'<div class="k">🤸 Learn to fall well</div><p>Fall <b>on the opposite side of the foil</b>, arms around your head, and never surface «blind» under the board. Pushing the foil away from you is a reflex you train from day one.</p>',
     'method-h3':'🎯 The method that works — 4 principles',
@@ -638,7 +638,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     'vd2':'<div class="k">🛞 The big stab = your training wheels</div><div class="big">it calms pitch: the foil becomes predictable</div><p class="xpl">On <a href="vitesse.html?lang=en">the speed page</a> a stab 200 costs ~3.5 km/h — here it\'s your best ally: it <b>tames the pitch</b> (nose dive) and makes the foil predictable. And there\'s no rush: a big stab <b>stays with you a long time</b> — you\'ll size it down well after the wing, when it truly starts holding you back. It\'ll then be <b>the cheapest upgrade</b> on the whole foil.</p>',
     'vd3':'<div class="k">🍞 Thick profile = gentle stall</div><div class="big">it warns before letting go</div><p class="xpl">A thick profile (~15-17%) sinks <b>progressively</b> when you go too slow — you feel it and correct. A thin profile <b>lets go at once</b>, no warning. The extra drag? You don\'t care: you\'re not here for speed.</p>',
     'vd4':'<div class="k">📐 Moderate aspect ratio (AR ~9)</div><div class="big">docile before efficient</div><p class="xpl"><a href="long-distance.html?lang=en">The comparator</a> will tell you a wide span saves your watts — true, <b>later</b>. A very elongated wing (AR 11+) demands more precision: it flies faster and stalls from the tips. Modern school wings all sit at <b>AR ~9</b>: the docile/efficient sweet spot, validated by the market.</p>',
-    'vd5':'<div class="k">🩳 Short mast (60-70 cm)</div><div class="big">falling from lower</div><p class="xpl">Less leverage underfoot = a <b>calmer</b> foil, softer falls, and shallow water stays usable. The downside (less room to pump high) won\'t concern you for months — then you\'ll move to 75-85 cm.</p>',
+    'vd5':'<div class="k">🩳 Short mast (70-75 cm)</div><div class="big">falling from lower</div><p class="xpl">Less leverage underfoot = a <b>calmer</b> foil, softer falls, and shallow water stays usable. The downside (less room to pump high) won\'t concern you for months — then you\'ll move to 75-85 cm.</p>',
     'vd6':'<div class="k">💶 Alu and second-hand</div><div class="big">carbon can wait</div><p class="xpl">At first your foil will meet docks, rocks and sand. <b>Alu</b> takes the hits and forgives your wallet; second-hand, a full learning setup is easy to find — and <b>resells</b> at nearly the same price when you move on. Stiff carbon is for when your technique can feel it.</p>',
     'prog-h3':'🪜 What next? Sizing down',
     'fig-prog-l1':'wing','fig-prog-l2':'mast','fig-prog-l3':'stab',
@@ -676,8 +676,8 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   // Calibré sur les chartes de deux gammes école du marché (2025) : AR ~9,2-9,4 · ~13-15 % d'épaisseur ·
   // ~1500-2100 cm² · stabs ≤~220 cm². Plancher 1500 (même léger) + plafond ~2100 (un lourd décroche déjà bas vers 2000, pas besoin de démesuré).
   const STAGES = {
-    A: {k:24, minS:1500, maxS:2100, AR:9,  cd0:0.015, clMax:1.25, As:0.080, stab:'190-220', mast:'60-70', tech:0.70},
-    B: {k:21, minS:1350, maxS:2000, AR:9,  cd0:0.014, clMax:1.20, As:0.080, stab:'190-220', mast:'70-75', tech:0.80},
+    A: {k:24, minS:1500, maxS:2100, AR:9,  cd0:0.015, clMax:1.25, As:0.080, stab:'190-220', mast:'70-75', tech:0.70},
+    B: {k:21, minS:1350, maxS:2000, AR:9,  cd0:0.014, clMax:1.20, As:0.080, stab:'190-220', mast:'75-80', tech:0.80},
     C: {k:19, minS:1200, maxS:1900, AR:10, cd0:0.013, clMax:1.10, As:0.065, stab:'150-210', mast:'75-85', tech:0.88}
   };
   function model(c){

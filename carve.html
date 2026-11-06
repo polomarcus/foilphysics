@@ -17,7 +17,7 @@ window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].ind
   if(!c){ c = document.createElement('link'); c.rel = 'canonical'; document.head.appendChild(c); }   // canonique posée par le script (jamais en dur) : toujours celle de la langue de l'adresse
   if(d) d.setAttribute('content', M.d); c.setAttribute('href', M.u); };
 seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   // dès le chargement, d'après ?lang=</script>
-<script src="lang/xl.js?v=20261106"></script>
+<script src="lang/xl.js?v=20261106b"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Le Carve — tourner serré en pump foil dans les vagues">
 <meta property="og:description" content="Envergure courte = faible résistance au roulis = virages vifs. La physique de la maniabilité, aile par aile.">
@@ -3026,7 +3026,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     RC.before = null;   // le « avant » reste affiché jusqu'au prochain réglage
   });
   // 🪶 Maniabilité = AILE (résistance au roulis, surface × envergure²) + ARRIÈRE (stab, son dièdre, fuselage).
-  // Écarts (à affiner sur le terrain) : stab 60 cm² ≈ +10 · 90 = 0 · 200 ≈ −15 ; dièdre ∩ +5 / U −5 ; fuselage ±5 (58-72 cm).
+  // Écarts (à affiner sur le terrain) : stab 60 cm² ≈ +5 · 90 = 0 · 200 ≈ −7,5 (÷2 en nov. 2026, retours terrain) ; dièdre ∩ +5 / U −5 ; fuselage ±5 (58-72 cm).
   function rearParts(){
     const st = $('i-stab') ? +$('i-stab').value : 90, d = $('i-stabd') ? $('i-stabd').value : '0', L = $('i-fus') ? +$('i-fus').value : 65;
     // effet du stab sur la maniabilité DIVISÉ PAR 2 (nov. 2026, terrain Paul : RSX Carve 1100 stab 65 vs 130 curve « pas si différente »,
