@@ -17,7 +17,7 @@ window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].ind
   if(!c){ c = document.createElement('link'); c.rel = 'canonical'; document.head.appendChild(c); }   // canonique posée par le script (jamais en dur) : toujours celle de la langue de l'adresse
   if(d) d.setAttribute('content', M.d); c.setAttribute('href', M.u); };
 seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   // dès le chargement, d'après ?lang=</script>
-<script src="lang/xl.js?v=20261101"></script>
+<script src="lang/xl.js?v=20261106"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Le Carve — tourner serré en pump foil dans les vagues">
 <meta property="og:description" content="Envergure courte = faible résistance au roulis = virages vifs. La physique de la maniabilité, aile par aile.">
@@ -566,7 +566,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     <button type="button" class="tl-fold" aria-expanded="false" data-i18n="tl-fold">🔄 Tourner · 🪶 Le stab · ⏱️ La session <i>▾</i></button>
     <div class="tl-cards">
       <div class="tl-c"><span class="tl-e">🔄</span><b data-i18n="tl1-h">Tourner</b><p data-i18n="tl1-p"><b>Envergure courte</b> + <b>petite surface</b> : une aile 20 % plus courte passe d'un bord à l'autre ~1,5× plus vite.</p><small data-i18n="tl1-s">résistance au roulis ≈ surface × envergure²</small></div>
-      <div class="tl-c"><span class="tl-e">🪶</span><b data-i18n="tl2-h">Le stab</b><p data-i18n="tl2-p"><b>Petit stab</b> = plus vif dans les virages · <b>grand stab</b> = plus stable, mais ça tourne moins.</p></div>
+      <div class="tl-c"><span class="tl-e">🪶</span><b data-i18n="tl2-h">Le stab</b><p data-i18n="tl2-p"><b>Petit stab</b> = un peu plus vif, mais départ plus délicat · <b>grand stab</b> = plus stable et plus facile à démarrer, il tourne un peu moins.</p></div>
       <div class="tl-c"><span class="tl-e">⏱️</span><b data-i18n="tl3-h">Tenir la session</b><p data-i18n="tl3-p">Trop petite, tu t'épuises à <b>remonter</b> après chaque vague. Le bon choix = le <b>compromis</b> pour ton poids et ta houle.</p></div>
     </div>
     <div class="tl-go"><a href="#atlas" data-i18n="tl-go2">🗺️ Voir toutes les ailes</a><a href="#sim" data-i18n="tl-go1">🎛️ Tester mon aile</a></div>
@@ -823,7 +823,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     'h1a':'The <span class="hi">Carve</span>','h1b':'🌊 pump foil: turning tight in the waves',
     'tldr-t':'Find the wing that <b>turns tight</b>… and <b>lasts your session</b>.',
     'tl1-h':'Turning', 'tl1-p':'<b>Short span</b> + <b>small area</b>: a wing 20% shorter goes rail to rail ~1.5× faster.', 'tl1-s':'roll resistance ≈ area × span²',
-    'tl2-h':'The stab', 'tl2-p':'<b>Small stab</b> = livelier in turns · <b>big stab</b> = more stable, but turns less.',
+    'tl2-h':'The stab', 'tl2-p':'<b>Small stab</b> = a bit livelier, but trickier to start · <b>big stab</b> = more stable and easier to start, turns a bit less.',
     'tl3-h':'Lasting the session', 'tl3-p':'Too small and you wear yourself out <b>pumping back</b> after each wave. The right pick = the <b>compromise</b> for your weight and swell.',
     'tl-go1':'🎛️ Test my wing', 'tl-go2':'🗺️ See all the wings', 'tl-fold':'🔄 Turning · 🪶 The stab · ⏱️ The session <i>▾</i>',
     'sim-h3':'🎛️ Compare the wings',
@@ -1794,10 +1794,10 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   //    la vitesse de la vague, AR ~8,5.
   const WC_CACHE = {};
   function carveBest(kg){
-    const H = waveH(), key = kg+'|'+H+'|'+rearBonus(); if(WC_CACHE[key]) return WC_CACHE[key];   // la maniabilité affichée inclut le stab
+    const H = waveH(), key = kg+'|'+H+'|'+rearBonus()+'|'+stabStart(); if(WC_CACHE[key]) return WC_CACHE[key];   // la maniabilité affichée inclut le stab
     const AR = H <= 0.5 ? 9.5 : H <= 1 ? 9 : 8.5, vw = Math.sqrt(22*H);
     const ag = (b, S) => 100*(30 - S*b*b/1e6)/26;
-    const to = (b, S) => 50*(22 - Math.sqrt((kg*9.81)/(0.5*1025*(S/1e4)*1.2))*3.6*1.15)/13 + 50*(400 - takeoffPower(b, S, kg))/230;
+    const to = (b, S) => 50*(22 - Math.sqrt((kg*9.81)/(0.5*1025*(S/1e4)*1.2))*3.6*1.15)/13 + 50*(400 - takeoffPower(b, S, kg))/230 + stabStart();
     const Sfor = v => kg*9.81*1.3225/(0.5*1025*1.2*v*v)*1e4;              // surface qui te porte dès v (m/s)
     let lo = 500, hi = 2600;
     for(let i=0; i<50; i++){ const S = (lo+hi)/2, b = Math.sqrt(AR*S); (ag(b,S) > to(b,S)) ? lo = S : hi = S; }
@@ -3029,8 +3029,13 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   // Écarts (à affiner sur le terrain) : stab 60 cm² ≈ +10 · 90 = 0 · 200 ≈ −15 ; dièdre ∩ +5 / U −5 ; fuselage ±5 (58-72 cm).
   function rearParts(){
     const st = $('i-stab') ? +$('i-stab').value : 90, d = $('i-stabd') ? $('i-stabd').value : '0', L = $('i-fus') ? +$('i-fus').value : 65;
-    return {stab: Math.round(st <= 90 ? (90 - st)/3 : -(st - 90)*15/110), dih: d === 'a' ? 5 : d === 'u' ? -5 : 0, fus: Math.round((65 - L)*0.7)};
+    // effet du stab sur la maniabilité DIVISÉ PAR 2 (nov. 2026, terrain Paul : RSX Carve 1100 stab 65 vs 130 curve « pas si différente »,
+    // RSX 1400 G2 + stab 130 « j'ai pu tourner ») : stab 60 ≈ +5, 200 ≈ −7,5 ; dièdre ∩ +3 / U −3
+    return {stab: Math.round(st <= 90 ? (90 - st)/6 : -(st - 90)*7.5/110), dih: d === 'a' ? 3 : d === 'u' ? -3 : 0, fus: Math.round((65 - L)*0.7)};
   }
+  // démarrage : un grand stab porte un peu et calme le tangage → départ plus facile ; un petit stab demande plus de précision
+  // (terrain Paul, nov. 2026 : stab 65 « plus de mal à partir » qu'avec le 130) → stab 50 ≈ −7, 65 ≈ −4, 130 ≈ +6 points
+  const stabStart = () => { const st = $('i-stab') ? +$('i-stab').value : 90; return Math.max(-8, Math.min(6, (st - 90)/6)); };
   function rearBonus(){ const r = rearParts(); return r.stab + r.dih + r.fus; }
   const wingMan = (b, S) => 100*(30 - S*b*b/1e6)/26;
   // aile très fine (allongement > 12) : le bout intérieur décroche dans un virage serré, la corde fine décroche net,
@@ -3086,7 +3091,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     // (400 → 170 W). La vitesse seule recommandait une « brique » AR 4 ; les watts seuls, une lame AR 17 qui ne
     // démarre qu'à 17 km/h. Calage à 85 kg : LD 140 ≈ 90, Jam 1600 ≈ 82, RSX 1100 ≈ 62, Axis 890 ≈ 37, brique ≈ 40.
     const toW      = takeoffPower(b, S, kg);
-    const takeoff  = clamp(50*(22 - liftoffKmh(S, kg))/13 + 50*(400 - toW)/230);
+    const takeoff  = clamp(50*(22 - liftoffKmh(S, kg))/13 + 50*(400 - toW)/230 + stabStart());
     // Dièdre du stab (retour terrain) : ∩ inversé (stabs carve F-One) = foil instable en roulis → entre bien plus
     // facilement dans le virage, mais en ressort moins bien ; U = calme le foil et le ramène à plat.
     const stabD = $('i-stabd') ? $('i-stabd').value : '0';
