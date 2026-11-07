@@ -17,7 +17,7 @@ window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].ind
   if(!c){ c = document.createElement('link'); c.rel = 'canonical'; document.head.appendChild(c); }   // canonique posée par le script (jamais en dur) : toujours celle de la langue de l'adresse
   if(d) d.setAttribute('content', M.d); c.setAttribute('href', M.u); };
 seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   // dès le chargement, d'après ?lang=</script>
-<script src="lang/xl.js?v=20261106b"></script>
+<script src="lang/xl.js?v=20261107c"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Bien débuter en pump foil — le matos qui pardonne">
 <meta property="og:description" content="Quel foil pour apprendre ? Grande aile, gros stab, mât court — le matos de débutant expliqué par la physique, selon ton poids. Et la sécurité d'abord.">
@@ -348,13 +348,14 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   <!-- COMMENT ON APPREND -->
   <section id="dock" class="a-in">
     <h3 data-i18n="dock-h3">🪜 On apprend depuis un ponton</h3>
-    <p class="lede" data-i18n="dock-lede">Le « <b>dock start</b> » : tu pars d'un ponton avec de l'élan. L'énergie de départ est
-      <b>gratuite</b> — toute ta concentration va au vol, pas au décollage.</p>
+    <p class="lede" data-i18n="dock-lede">Le « <b>dock start</b> » : tu cours deux pas sur un ponton, tu sautes et tu poses la planche sur l'eau déjà
+      lancé : c'est ton élan qui te fait décoller. 🎥 <a href="https://www.youtube.com/watch?v=HOSYy9AlCl0" target="_blank" rel="noopener">Voir un bon départ en vidéo</a></p>
     <div class="steps">
       <div class="step" data-i18n="dk1">
         <div class="num">🚶</div>
         <div><h4>Le spot</h4>
-        <p>Un ponton haut <b>du genou à la hanche</b>, de l'eau profonde devant, un bord dégagé pour courir
+        <p>Un ponton d'<b>environ 20 cm</b> au-dessus de l'eau de préférence (ou plus haut pour un départ
+          dit « <b><a href="https://www.youtube.com/watch?v=WSXoRP9TB3U" target="_blank" rel="noopener">à la suisse</a></b> » 🎥), de l'eau profonde devant, un bord dégagé pour courir
           deux pas — et de l'<b>eau plate</b> : pas de vagues ni de vent pour commencer. Pas de ponton praticable ? Les <b>échelles
           <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz.org</a></b> transforment n'importe quel
           quai en spot (détail dans le matos, plus bas 👇).</p></div>
@@ -484,9 +485,10 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
       </div>
       <div class="card ok" data-i18n="vd8">
         <div class="k">🪜 Les accélérateurs d'apprentissage</div>
-        <div class="big">échelle de quai + trottinette de pump</div>
-        <p class="xpl">Une <b>échelle de mise à l'eau</b> transforme n'importe quel quai en spot : hauteur constante,
-          départs <b>répétables à volonté</b>. Et la <b>trottinette de pump</b> — un foil à <b>guidon</b> —
+        <div class="big">toujours le même spot et le même matos</div>
+        <p class="xpl">On progresse en <b>répétant le même départ</b> : même ponton, même hauteur, même foil. Si
+          tu changes tout à chaque session, tu réapprends tout à chaque fois. Pas de ponton ? Une <b>échelle de
+          mise à l'eau</b> transforme n'importe quel quai en spot, à hauteur constante. Et la <b>trottinette de pump</b> — un foil à <b>guidon</b> —
           offre un troisième appui : le geste s'apprend bien plus vite, puis se transfère tel quel sur la
           planche classique.</p>
       </div>
@@ -628,11 +630,11 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     'lx4':'<span class="dot" style="background:#34d399"></span><p><b>The front wing</b> — it\'s what carries you. <b>Big</b> = lift even at low speed; <b>long</b> (the span) = a stable, efficient flight.</p>',
     'lx5':'<span class="dot" style="background:#f59e0b"></span><p><b>The stab</b> — short for <b>stabiliser</b>: the small rear wing. Like the fletching of an arrow or a plane\'s tail, it keeps the foil straight. Big = predictable.</p>',
     'dock-h3':'🪜 You learn from a dock',
-    'dock-lede':'The «<b>dock start</b>»: you launch from a dock with momentum. The starting energy is <b>free</b> — all your focus goes to flying, not taking off.',
-    'dk1':'<div class="num">🚶</div><div><h4>The spot</h4><p>A dock <b>knee-to-hip high</b>, deep water in front, a clear edge for two running steps — and <b>flat water</b>: no waves, no wind to start with. No usable dock? The <b><a href="https://piouz.org/" target="_blank" rel="noopener">Piouz.org</a> ladders</b> turn any quay into a spot (details in the gear section below 👇).</p></div>',
+    'dock-lede':'The «<b>dock start</b>»: you run two steps on a dock, jump, and land the board on the water already moving: your run-up is what gets you flying. 🎥 <a href="https://www.youtube.com/watch?v=HOSYy9AlCl0" target="_blank" rel="noopener">Watch a good start</a>',
+    'dk1':'<div class="num">🚶</div><div><h4>The spot</h4><p>Ideally a dock about <b>20 cm</b> above the water (or higher for a so-called «<b><a href="https://www.youtube.com/watch?v=WSXoRP9TB3U" target="_blank" rel="noopener">Swiss-style</a></b>» start 🎥), deep water in front, a clear edge for two running steps — and <b>flat water</b>: no waves, no wind to start with. No usable dock? The <b><a href="https://piouz.org/" target="_blank" rel="noopener">Piouz.org</a> ladders</b> turn any quay into a spot (details in the gear section below 👇).</p></div>',
     'dk4':'<div class="num">🛫</div><div><h4>Why a big wing: the takeoff speed</h4><p>A foil only carries you <b>above a minimum speed</b> — the <b>takeoff speed</b>. The <b>bigger and thicker</b> the wing, the <b>lower</b> it is: a beginner wing lifts off around <b>~10 km/h</b>, the momentum of two dock steps is enough. That\'s <b>the whole reason to start big</b>: you lift off early, fly longer, learn faster.<br><b>You progress by succeeding, not by grinding</b>: better to string together <b>clean starts</b> on a big wing — every takeoff teaches you something — than to exhaust and discourage yourself on a <b>too-small</b> wing that won\'t fly. You\'ll size down soon enough.</p><div class="note-fig" aria-hidden="true"><svg viewBox="0 0 360 110"><rect x="20" y="64" width="176" height="9" rx="2" fill="#34d399" opacity=".18"/><text x="106" y="57" text-anchor="middle" font-size="10" font-weight="700" fill="#6ee7b7">2 dock steps of momentum</text><line x1="20" y1="73" x2="344" y2="73" stroke="#64748b" stroke-width="2"/><path d="M352 73 l-9 -4.5 v9 Z" fill="#64748b"/><g stroke="#475569" stroke-width="1.5"><line x1="20" y1="69" x2="20" y2="77"/><line x1="100" y1="69" x2="100" y2="77"/><line x1="180" y1="69" x2="180" y2="77"/><line x1="260" y1="69" x2="260" y2="77"/><line x1="340" y1="69" x2="340" y2="77"/></g><g font-size="11" font-weight="700" fill="#94a3b8" text-anchor="middle"><text x="20" y="92">0</text><text x="100" y="92">5</text><text x="180" y="92">10</text><text x="260" y="92">15</text><text x="340" y="92">20</text></g><text x="352" y="106" text-anchor="end" font-size="10" fill="#64748b">km/h</text><line x1="180" y1="22" x2="180" y2="70" stroke="#34d399" stroke-width="2.5"/><circle cx="180" cy="73" r="4.5" fill="#34d399"/><text x="180" y="16" text-anchor="middle" font-size="12" font-weight="800" fill="#6ee7b7">big wing lifts off here ✓</text><line x1="268" y1="44" x2="268" y2="70" stroke="#fb923c" stroke-width="2.5"/><circle cx="268" cy="73" r="4" fill="#fb923c"/><text x="270" y="38" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fdba74">small wing: out of reach</text></svg></div></div>',
     'vd7':'<div class="k">🛹 The board: small and light</div><div class="big">the dock does the carrying</div><p class="xpl">For dock starts, <b>no volume needed</b>: the energy comes from the dock, not from buoyancy. A short board (80-110 cm, usually ~90 cm), light, a grippy pad — and every kilo saved comes back as <a href="long-distance.html?lang=en">watts</a>. Second-hand too, obviously.</p>',
-    'vd8':'<div class="k">🪜 The learning accelerators</div><div class="big">dock ladder + pump scooter</div><p class="xpl">A <b>water-entry ladder</b> turns any quay into a spot: constant height, starts <b>repeatable at will</b>. And the <b>pump scooter</b> — a foil with a <b>handlebar</b> — gives a third point of contact: the motion is learned much faster, then transfers as-is to the regular board.</p>',
+    'vd8':'<div class="k">🪜 The learning accelerators</div><div class="big">always the same spot and the same gear</div><p class="xpl">You progress by <b>repeating the same start</b>: same dock, same height, same foil. Change everything every session and you relearn everything every time. No dock? A <b>water-entry ladder</b> turns any quay into a spot, at a constant height. And the <b>pump scooter</b> — a foil with a <b>handlebar</b> — gives a third point of contact: the motion is learned much faster, then transfers as-is to the regular board.</p>',
     'vd-h3':'🧾 The complete gear, in 8 cards',
     'vd1':'<div class="k">📏 Area = your margin for error</div><div class="big">~20-25 cm²/kg · never under ~1500</div><p class="xpl">A big wing stalls around <b>10 km/h</b>: when you miss a pump and slow down, it <b>catches you</b> instead of dropping you. A race blade stalls at 20+ km/h — zero room for error. Area means seconds of flight per session, which means learning per session.</p>',
     'vd2':'<div class="k">🛞 The big stab = your training wheels</div><div class="big">it calms pitch: the foil becomes predictable</div><p class="xpl">On <a href="vitesse.html?lang=en">the speed page</a> a stab 200 costs ~3.5 km/h — here it\'s your best ally: it <b>tames the pitch</b> (nose dive) and makes the foil predictable. And there\'s no rush: a big stab <b>stays with you a long time</b> — you\'ll size it down well after the wing, when it truly starts holding you back. It\'ll then be <b>the cheapest upgrade</b> on the whole foil.</p>',
