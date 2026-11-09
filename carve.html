@@ -17,7 +17,7 @@ window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].ind
   if(!c){ c = document.createElement('link'); c.rel = 'canonical'; document.head.appendChild(c); }   // canonique posée par le script (jamais en dur) : toujours celle de la langue de l'adresse
   if(d) d.setAttribute('content', M.d); c.setAttribute('href', M.u); };
 seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   // dès le chargement, d'après ?lang=</script>
-<script src="lang/xl.js?v=20261107c"></script>
+<script src="lang/xl.js?v=20261109a"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Le Carve — tourner serré en pump foil dans les vagues">
 <meta property="og:description" content="Envergure courte = faible résistance au roulis = virages vifs. La physique de la maniabilité, aile par aile.">
@@ -114,6 +114,9 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   .wp-list li.on, .wp-list li:hover{background:rgba(192,132,252,.18);}
   .wp-list li.none{color:var(--muted); cursor:default; background:none;}
   .wing-pick input{width:100%; max-width:420px; background:var(--panel-2); border:1px solid var(--carve); color:var(--txt); border-radius:999px; padding:8px 14px; font:inherit; font-size:.9rem;}
+  .atl-wp{margin:0 0 10px;}
+  .atl-pulse{position:absolute; width:16px; height:16px; margin:-8px 0 0 -8px; border-radius:50%; border:3px solid var(--carve); pointer-events:none; animation:atlPulse 1.1s ease-out 2;}
+  @keyframes atlPulse{from{transform:scale(1); opacity:1;} to{transform:scale(4.5); opacity:0;}}
   .wing-pick input:focus{outline:2px solid var(--carve); outline-offset:1px;}
   .wp-or{font-size:.75rem; color:var(--muted);}
   .split{font-size:.78rem; color:var(--muted); margin-top:8px; text-align:center; line-height:1.5;}
@@ -295,7 +298,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   .atl-box{position:relative; max-width:900px; margin:0 auto; background:var(--panel-2); border-radius:12px; padding:8px;}
   #atl-cv{display:block; width:100%; cursor:crosshair; touch-action:pan-x pan-y;}   /* pan-x/y : le doigt fait défiler, la pince à 2 doigts zoome la carte (pas la page) */
   /* 🔍 zoom : la carte est redessinée plus grande dans ce cadre, qui défile au doigt (ou à la souris, en glissant) */
-  .atl-scroll{overflow:auto; overscroll-behavior-x:contain; border-radius:8px; scrollbar-width:thin;}
+  .atl-scroll{position:relative; overflow:auto; overscroll-behavior-x:contain; border-radius:8px; scrollbar-width:thin;}
   .atl-scroll.zoomed #atl-cv{cursor:grab;} .atl-scroll.zoomed #atl-cv.grabbing{cursor:grabbing;}
   .atl-tools{display:flex; align-items:center; justify-content:space-between; gap:8px; margin:0 2px 6px; font-size:.76rem; line-height:1.3; color:var(--muted);}
   .atl-zb{display:inline-flex; align-items:center; gap:4px; flex:none;}
@@ -578,6 +581,9 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     <h3 data-i18n="atl-h3"><a class="h-anchor" href="#atlas">🗺️ Toutes les ailes sur la carte</a></h3>
     <p class="lede" data-i18n="atl-lede">🧍 <b>La carte s'adapte à toi</b> : les zones bougent avec <b>ton poids</b>, <b>ton niveau</b> et <b>la taille de la houle</b> — règle-les juste en dessous et regarde les frontières glisser. Touche une aile : sa fiche s'affiche sous la carte (plusieurs pour comparer). Pince pour zoomer.</p>
     <div class="rc-row" id="atl-rider"></div>
+    <div class="wing-pick atl-wp"><label for="atl-wq" id="atl-wq-l">🪽 Ton aile</label>
+      <div class="wp-box"><input type="text" id="atl-wq" role="combobox" aria-expanded="false" aria-controls="atl-wl" aria-autocomplete="list" autocomplete="off" spellcheck="false">
+        <ul class="wp-list" id="atl-wl" role="listbox" hidden></ul></div></div>
     <div class="atl-brands" id="atl-brands"></div>
     <div class="atl-view" id="atl-view" role="group" aria-label="Vue"><button type="button" data-v="rank" aria-pressed="false" data-i18n="atl-v-rank">🏆 Classement</button><button type="button" data-v="map" aria-pressed="false" data-i18n="atl-v-map">🗺️ Visualiser sur la carte</button></div>
     <div class="atl-rank" id="atl-rank" hidden></div>
@@ -2452,7 +2458,22 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
       c.font = (G.narrow ? 13 : 15)+'px system-ui, sans-serif'; c.textAlign = 'center'; c.fillText(r.e, x, y - (G.narrow ? 10 : 12));
     });
     // noms des zones posés SUR leur couleur : la place qui tient entièrement dans la zone, le plus loin possible des points
+    // 🎯 TON aile — seulement une fois choisie (ATL.mine) : retour Paul, la grosse cible « point noir » masquait les ailes voisines.
+    // Aile du catalogue visible sur la carte → on entoure SON point (violet du simulateur), pas de 2e point ;
+    // sinon (aile custom, ou marque non affichée) → petit point violet. L'étiquette porte le nom de l'aile (elle recouvre celui de la carte).
+    let MY = null;
+    if(!VIDEO && ATL.mine && b >= ATL.B0 && b <= ATL.B1 && S >= ATL.S0 && S <= ATL.S1){
+      const on = document.querySelector('.preset-btn.on'), nm = on ? on.getAttribute('aria-label') : '';
+      const hit = on && pts.find(p => p.n === nm || (Math.abs(p.b - b) < .6 && p.S === S));
+      const x = hit ? hit.x : px(b), y = hit ? hit.y : py(S), r = G.narrow ? 8 : 9, font = '800 '+(G.narrow ? 10.5 : 11)+'px system-ui, sans-serif';
+      c.save(); c.font = font;
+      const lab = '🎯 '+(hit ? hit.short : on ? nm : t('aile custom','custom wing')), tw = c.measureText(lab).width + 12, h = 17;
+      c.restore();
+      const lx = Math.max(X0, Math.min(X1 - tw, x - tw/2)), ly = y - r - 4 - h >= Y0 ? y - r - 4 - h : y + r + 4;   // au-dessus du point (sinon dessous)
+      MY = {x, y, r, hit, lab, lx, ly, tw, h, font};
+    }
     const boxes = pts.map(p => [p.x - 6, p.y - 6, 12, 12]);
+    if(MY) boxes.push([MY.lx, MY.ly, MY.tw, MY.h]);   // les noms de zones et d'ailes évitent l'étiquette « ton aile »
     ATL.manTop = [];
     if(VIDEO){ ATL.placed = []; ATL.leaders = []; } else {
     c.font = (G.narrow ? '900 11.5px' : '900 12px')+' system-ui, sans-serif'; c.textAlign = 'center'; c.lineWidth = 4; c.lineJoin = 'round';
@@ -2547,18 +2568,13 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     ATL.pts = pts;
     rankUI();   // 🏆 le classement suit les mêmes réglages que la carte
     ATL.kit.after(c, px, py);   // 📌 repères des fiches épinglées + fiches sous la carte
-    // 🎯 TON aile (celle des curseurs envergure / surface du simulateur) : grande cible blanche + étiquette blanche « ton aile »,
-    // dessinées en dernier (par-dessus les points) — retour : on veut la retrouver sur la carte
-    if(!VIDEO && b >= ATL.B0 && b <= ATL.B1 && S >= ATL.S0 && S <= ATL.S1){
-      const x = px(b), y = py(S), r = G.narrow ? 10 : 11;
-      c.save(); c.lineWidth = 6; c.strokeStyle = '#0f172a'; c.beginPath(); c.arc(x, y, r, 0, 7); c.stroke();
-      c.lineWidth = 3; c.strokeStyle = '#fff'; c.beginPath(); c.arc(x, y, r, 0, 7); c.stroke();
-      c.beginPath(); c.arc(x, y, 2.5, 0, 7); c.fillStyle = '#fff'; c.fill();
-      c.font = '900 '+(G.narrow ? 11.5 : 12)+'px system-ui, sans-serif';
-      const lab = '🎯 '+(document.querySelector('.preset-btn.on') ? t('ton aile','your wing') : t('aile custom','custom wing')), tw = c.measureText(lab).width + 14, h = 19;
-      const lx = x + r + 6 + tw <= X1 + 8 ? x + r + 6 : x - r - 6 - tw, ly = Math.max(Y0, Math.min(Y1 - h, y - h/2));
-      c.fillStyle = '#fff'; c.strokeStyle = '#0f172a'; c.lineWidth = 2; c.beginPath(); if(c.roundRect) c.roundRect(lx, ly, tw, h, h/2); else c.rect(lx, ly, tw, h); c.fill(); c.stroke();
-      c.fillStyle = '#0f172a'; c.textAlign = 'left'; c.fillText(lab, lx + 7, ly + 14);
+    // 🎯 TON aile : dessinée en dernier (géométrie calculée avant les noms de zones, qui l'évitent)
+    if(MY){ const {x, y, r, hit, lab, lx, ly, tw, h} = MY, PUR = '#c084fc';
+      c.save();
+      if(hit){ c.lineWidth = 3; c.strokeStyle = PUR; c.beginPath(); c.arc(x, y, r, 0, 7); c.stroke(); }
+      else { c.beginPath(); c.arc(x, y, G.narrow ? 4.5 : 5.5, 0, 7); c.fillStyle = PUR; c.fill(); c.lineWidth = 1.5; c.strokeStyle = '#fff'; c.stroke(); }
+      c.font = MY.font; c.fillStyle = PUR; c.beginPath(); if(c.roundRect) c.roundRect(lx, ly, tw, h, h/2); else c.rect(lx, ly, tw, h); c.fill();
+      c.fillStyle = '#1e1033'; c.textAlign = 'left'; c.fillText(lab, lx + 6, ly + 12.5);
       c.restore(); }
     // ⏱️ trait ambre : on écrit DE CHAQUE CÔTÉ ce qu'il sépare (« tu t'épuises » / « tu tiens 5 min et + »)
     if(!VIDEO && ATL.endSeg && ATL.endSeg.length){
@@ -3135,7 +3151,9 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     const ang = vl > vw ? Math.round(Math.acos(vw/vl)*180/Math.PI) : 0, near = !ok && ang <= 40;
     const vcol = ok ? '#6ee7b7' : near ? '#fcd34d' : '#fca5a5';
     const wq = $('wing-q'); if(wq) wq.placeholder = t('tape une marque ou un modèle : RSX, Surge 9…','type a brand or model: RSX, Surge 9…');
-    if(wq && document.activeElement !== wq) wq.value = wingName();   // aile du catalogue : son nom ; réglée à la main : « Aile custom · 122 cm · 1 420 cm² »
+    if(wq && document.activeElement !== wq) wq.value = wingName();
+    const aq = $('atl-wq'); if(aq){ aq.placeholder = t('cherche ton aile pour la placer : RSX, Surge 9…','find your wing to place it: RSX, Surge 9…');
+      $('atl-wq-l').textContent = t('🪽 Ton aile','🪽 Your wing'); if(document.activeElement !== aq) aq.value = ATL.mine ? wingName() : ''; }   // aile du catalogue : son nom ; réglée à la main : « Aile custom · 122 cm · 1 420 cm² »
     $('o-ctx').innerHTML = '<span class="cx">🪽 '+wingName()+'</span>'+riderCtl(false)
       + '<button type="button" class="cx-edit js-edit">'+t('✎ aile','✎ wing')+'</button>';
     $('wave-info').innerHTML = '<div class="wi-tiles">'
@@ -3197,28 +3215,52 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   (window.FOIL_WINGS || []).forEach(B => B.w.forEach(([n, b, S]) => { WING_IDX[B.n+' '+n] = [b, S]; }));
   // recherche maison (pas de <datalist> : Safari l'affiche mal) — tous les mots tapés doivent apparaître, accents ignorés
   const norm = x => x.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-  const WP = {hits:[], on:0};
-  const wpPick = nm => { const hit = WING_IDX[nm]; if(!hit) return; const bt = $('wing-cur');
-    bt.dataset.p = Math.round(hit[0])+'|'+hit[1]; bt.setAttribute('aria-label', nm); $('wing-q').value = nm; wpClose(); applyPresetBtn(bt); $('wing-q').blur(); };
-  const wpClose = () => { $('wing-list').hidden = true; $('wing-q').setAttribute('aria-expanded', 'false'); };
-  const wpShow = () => {
-    const q = norm($('wing-q').value.trim()), words = q.split(/\s+/).filter(Boolean), ul = $('wing-list');
-    WP.hits = Object.keys(WING_IDX).filter(nm => { const n = norm(nm); return words.every(w => n.includes(w)); }).slice(0, 40); WP.on = 0;
-    ul.innerHTML = WP.hits.length ? WP.hits.map((nm, i) => '<li role="option" data-nm="'+nm+'" class="'+(i ? '' : 'on')+'">'+nm+'<small>'+WING_IDX[nm][0]+' cm · '+WING_IDX[nm][1]+' cm²</small></li>').join('')
-      : '<li class="none">'+t('Aucune aile trouvée','No wing found')+'</li>';
-    ul.hidden = false; $('wing-q').setAttribute('aria-expanded', 'true');
-  };
-  $('wing-q').addEventListener('input', wpShow);
-  $('wing-q').addEventListener('focus', () => { if(!document.querySelector('.preset-btn.on')) $('wing-q').value = ''; $('wing-q').select(); wpShow(); });   // aile custom : champ vidé pour chercher
-  $('wing-q').addEventListener('keydown', e => {
-    const ul = $('wing-list'); if(ul.hidden) return;
-    if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){ e.preventDefault(); WP.on = (WP.on + (e.key === 'ArrowDown' ? 1 : -1) + WP.hits.length) % Math.max(1, WP.hits.length);
-      ul.querySelectorAll('li').forEach((li, i) => li.classList.toggle('on', i === WP.on)); const li = ul.children[WP.on]; if(li) li.scrollIntoView({block:'nearest'}); }
-    else if(e.key === 'Enter'){ e.preventDefault(); if(WP.hits[WP.on]) wpPick(WP.hits[WP.on]); }
-    else if(e.key === 'Escape') wpClose();
-  });
-  $('wing-list').addEventListener('pointerdown', e => { const li = e.target.closest('li[data-nm]'); if(li){ e.preventDefault(); wpPick(li.dataset.nm); } });
-  $('wing-q').addEventListener('blur', () => setTimeout(wpClose, 150));
+  // deux champs de recherche : celui du simulateur (#wing-q) et celui au-dessus de la carte (#atl-wq) — mêmes ailes, synchronisés
+  const wpClose = () => [['wing-q', 'wing-list'], ['atl-wq', 'atl-wl']].forEach(([q, l]) => { if($(l)){ $(l).hidden = true; $(q).setAttribute('aria-expanded', 'false'); } });
+  const wpPick = (nm, src) => { const hit = WING_IDX[nm]; if(!hit) return; const bt = $('wing-cur');
+    bt.dataset.p = Math.round(hit[0])+'|'+hit[1]; bt.setAttribute('aria-label', nm); $('wing-q').value = nm; wpClose(); myWing(); applyPresetBtn(bt);
+    if(src){ src.value = nm; src.blur(); } if(src && src.id === 'atl-wq') atlPulse(); };
+  function wpBind(qId, lId){
+    const q = $(qId), ul = $(lId), WP = {hits:[], on:0}; if(!q || !ul) return;
+    const show = () => {
+      const words = norm(q.value.trim()).split(/\s+/).filter(Boolean);
+      WP.hits = Object.keys(WING_IDX).filter(nm => { const n = norm(nm); return words.every(w => n.includes(w)); }).slice(0, 40); WP.on = 0;
+      ul.innerHTML = WP.hits.length ? WP.hits.map((nm, i) => '<li role="option" data-nm="'+nm+'" class="'+(i ? '' : 'on')+'">'+nm+'<small>'+WING_IDX[nm][0]+' cm · '+WING_IDX[nm][1]+' cm²</small></li>').join('')
+        : '<li class="none">'+t('Aucune aile trouvée','No wing found')+'</li>';
+      ul.hidden = false; q.setAttribute('aria-expanded', 'true');
+    };
+    q.addEventListener('input', show);
+    q.addEventListener('focus', () => { if(!document.querySelector('.preset-btn.on')) q.value = ''; q.select(); show(); });   // aile custom : champ vidé pour chercher
+    q.addEventListener('keydown', e => {
+      if(ul.hidden) return;
+      if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){ e.preventDefault(); WP.on = (WP.on + (e.key === 'ArrowDown' ? 1 : -1) + WP.hits.length) % Math.max(1, WP.hits.length);
+        ul.querySelectorAll('li').forEach((li, i) => li.classList.toggle('on', i === WP.on)); const li = ul.children[WP.on]; if(li) li.scrollIntoView({block:'nearest'}); }
+      else if(e.key === 'Enter'){ e.preventDefault(); if(WP.hits[WP.on]) wpPick(WP.hits[WP.on], q); }
+      else if(e.key === 'Escape') wpClose();
+    });
+    ul.addEventListener('pointerdown', e => { const li = e.target.closest('li[data-nm]'); if(li){ e.preventDefault(); wpPick(li.dataset.nm, q); } });
+    q.addEventListener('blur', () => setTimeout(() => { ul.hidden = true; q.setAttribute('aria-expanded', 'false'); if(!ATL.mine || document.activeElement === q) return; q.value = wingName(); }, 150));
+  }
+  wpBind('wing-q', 'wing-list'); wpBind('atl-wq', 'atl-wl');
+  // 🎯 « ton aile » sur la carte : seulement une fois que le visiteur a CHOISI une aile (liste, carte, curseurs envergure/surface) ;
+  // mémorisée (nom du catalogue, sinon dimensions) pour la visite suivante
+  function myWing(){
+    ATL.mine = true;
+    try{ const on = document.querySelector('.preset-btn.on');
+      localStorage.setItem('lcw-carve-wing', JSON.stringify(on ? {n: on.getAttribute('aria-label')} : {b: +$('i-b').value, S: +$('i-s').value})); }catch(e){}
+  }
+  // petit anneau qui pulse sur la carte, à l'endroit de ton aile (CSS : la carte n'est pas redessinée)
+  function atlPulse(){
+    const g = ATL.geo, cv = $('atl-cv'), sc = $('atl-scroll'); if(!g || !cv || !sc || document.body.classList.contains('atl-rankv')) return;
+    const b = +$('i-b').value, S = +$('i-s').value; if(b < ATL.B0 || b > ATL.B1 || S < ATL.S0 || S > ATL.S1) return;
+    const k = cv.clientWidth/g.W, x = cv.offsetLeft + g.px(b)*k, y = cv.offsetTop + g.py(S)*k;
+    sc.querySelectorAll('.atl-pulse').forEach(d => d.remove());
+    const d = document.createElement('div'); d.className = 'atl-pulse'; d.style.left = x+'px'; d.style.top = y+'px'; sc.appendChild(d);
+    setTimeout(() => d.remove(), 2400);
+    if(sc.scrollWidth > sc.clientWidth || sc.scrollHeight > sc.clientHeight) sc.scrollTo({left: x - sc.clientWidth/2, top: y - sc.clientHeight/2, behavior:'smooth'});   // carte zoomée : on centre ton aile
+    const box = document.querySelector('#atlas .atl-box'), r = box && box.getBoundingClientRect();
+    if(r && (r.bottom < 80 || r.top > innerHeight - 80)) window.scrollTo({top: r.top + scrollY - 70, behavior:'smooth'});
+  }
   function applyPresetBtn(btn){
     // Les presets règlent l'AILE seule — fuselage et stab restent tes réglages (sinon l'axe « pivot » semblait figé).
     const [b,s] = btn.dataset.p.split('|');
@@ -3232,15 +3274,18 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     btn.addEventListener('click', ()=> applyPresetBtn(btn));
   });
   const onSetting = el => ()=>{
-    if(el.id === 'wing-q') return;                                                        // la recherche d'aile a son propre traitement
+    if(el.id === 'wing-q' || el.id === 'atl-wq') return;                                                        // la recherche d'aile a son propre traitement
     if(el.id === 'i-b' || el.id === 'i-s')                                                // seuls envergure / surface changent l'AILE (stab, fuselage, rider : non)                                              // poids et niveau : réglages du rider, pas de l'aile
-      document.querySelectorAll('.preset-btn.on').forEach(x => x.classList.remove('on'));  // réglage d'aile manuel = config custom
+      { document.querySelectorAll('.preset-btn.on').forEach(x => x.classList.remove('on')); myWing(); }  // réglage d'aile manuel = config custom
     render(); if(typeof wcCarve === 'function') wcCarve();   // la session du combo dépend du niveau et du stab
   };
   document.querySelectorAll('input,select').forEach(el => el.addEventListener('input', onSetting(el)));
   document.querySelectorAll('select').forEach(el => el.addEventListener('change', onSetting(el)));   // certains navigateurs n'envoient que « change »
   try{ const kg0 = localStorage.getItem('lcw-carve-kg'); if(kg0) $('i-kg').value = kg0; }catch(e){}   // poids mémorisé
   applyPresetBtn($('wing-cur'));   // défaut : Axis Surge 890
+  try{ const w = JSON.parse(localStorage.getItem('lcw-carve-wing') || 'null');   // ton aile de la visite précédente
+    if(w && w.n && WING_IDX[w.n]) wpPick(w.n);
+    else if(w && w.b && w.S){ $('i-b').value = w.b; $('i-s').value = w.S; document.querySelectorAll('.preset-btn.on').forEach(x => x.classList.remove('on')); ATL.mine = true; render(); } }catch(e){}
   atlFromHash();                   // lien direct vers une marque de la carte
   /* ---------- explications repliables (UX : compact par défaut, mémorisé) ---------- */
     function setXp(on){
