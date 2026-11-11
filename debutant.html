@@ -17,16 +17,16 @@ window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].ind
   if(!c){ c = document.createElement('link'); c.rel = 'canonical'; document.head.appendChild(c); }   // canonique posée par le script (jamais en dur) : toujours celle de la langue de l'adresse
   if(d) d.setAttribute('content', M.d); c.setAttribute('href', M.u); };
 seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   // dès le chargement, d'après ?lang=</script>
-<script src="lang/xl.js?v=20261109a"></script>
+<script src="lang/xl.js?v=20261111e"></script>
 <meta property="og:type" content="website">
-<meta property="og:title" content="Bien débuter en pump foil — le matos qui pardonne">
-<meta property="og:description" content="Quel foil pour apprendre ? Grande aile, gros stab, mât court — le matos de débutant expliqué par la physique, selon ton poids. Et la sécurité d'abord.">
+<meta property="og:title" content="Bien débuter en pump foil : le matos qui pardonne">
+<meta property="og:description" content="Quel foil pour apprendre ? Grande aile, gros stab, mât court : le matos de débutant expliqué par la physique, selon ton poids. Et la sécurité d'abord.">
 <meta property="og:url" content="https://simulator.foil-house.com/debutant.html">
 <meta property="og:image" content="https://simulator.foil-house.com/og-debutant.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Bien débuter en pump foil — le matos qui pardonne">
+<meta property="og:image:alt" content="Bien débuter en pump foil : le matos qui pardonne">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://simulator.foil-house.com/og-debutant.png">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230f172a'/><rect x='9' y='33' width='82' height='13' rx='6.5' fill='%2334d399'/><path d='M52 50 L74 58 V70 Q74 84 52 92 Q30 84 30 70 V58 Z' fill='%2338bdf8'/><path d='M43 69 L50 76 L63 61' fill='none' stroke='%230f172a' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/></svg>">
@@ -242,9 +242,9 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   <div class="tldr">
     <div class="t" data-i18n="tldr-t">Pour apprendre : <b>grande aile épaisse</b> + <b>gros stab</b> + <b>mât court</b> + <b>sécurité</b>.</div>
     <div class="tl-cards">
-      <div class="tl-c"><span class="tl-e">🦺</span><b data-i18n="tl1-h">La sécurité</b><p data-i18n="tl1-p">Tombe <b>du côté opposé au foil</b>. <b>Casque</b>, gilet d'impact, chaussons, <b>plus d'eau que ton mât n'est long</b> et personne dans ta zone de chute.</p></div>
-      <div class="tl-c"><span class="tl-e">🪽</span><b data-i18n="tl2-h">Le matos qui pardonne</b><p data-i18n="tl2-p"><b>Grande aile épaisse</b> + <b>gros stab</b> + <b>mât court</b> : elle te porte tôt, reste stable, et tu tombes de moins haut.</p></div>
-      <div class="tl-c"><span class="tl-e">💸</span><b data-i18n="tl3-h">Patience + occasion</b><p data-i18n="tl3-p">Compte <b>5 à 15 sessions</b> pour le départ ponton. Achète d'<b>occasion</b> : ce matos se revend quand tu progresses.</p></div>
+      <div class="tl-c"><span class="tl-e">🦺</span><b data-i18n="tl1-h">La sécurité</b><p data-i18n="tl1-p">1. Tombe <b>du côté opposé au foil</b>.<br>2. <b>Casque</b>, gilet d'impact, chaussons, <b>pantalon et t-shirt long anti-coupure</b> sous la combi.<br>3. De l'<b>eau calme</b> et une <b>zone de chute profonde</b>.</p></div>
+      <div class="tl-c"><span class="tl-e">🪽</span><b data-i18n="tl2-h">Le matos qui pardonne</b><p data-i18n="tl2-p"><b>Grande aile</b> + <b>gros stab</b> : tu décolles avec <b>peu d'élan</b>. Du <b>matos fait pour progresser</b> t'apprend plus vite : oublie les petites ailes et les ailes de wing d'occasion.</p></div>
+      <div class="tl-c"><span class="tl-e">💸</span><b data-i18n="tl3-h">Patience</b><p data-i18n="tl3-p">Compte <b>10 à 20 sessions</b> pour apprendre le départ et tes premiers vols.</p></div>
     </div>
     <div class="tl-go"><a href="#reco" data-i18n="tl-go1">🎛️ Ton matos pour apprendre</a><a href="#secu" data-i18n="tl-go2">🦺 La sécurité d'abord</a></div>
   </div>
@@ -253,12 +253,12 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   <section id="secu" class="a-in">
     <h3 data-i18n="secu-h3">🦺 La sécurité d'abord</h3>
     <p class="lede" data-i18n="secu-lede">Un foil a des <b>bords fins et durs</b>, et les chutes de débutant sont incontrôlées.
-      Quatre règles non négociables avant le premier départ.</p>
+      Six règles non négociables avant le premier départ.</p>
     <div class="cards secu-cards">
       <div class="card" data-i18n="sc1">
         <div class="k">🪖 Casque, gilet d'impact + chaussures</div>
-        <p>Toujours. Quand tu tombes, <b>le foil est quelque part en dessous</b> — et tu ne choisis ni où,
-          ni comment. Ajoute des <b>chaussons néoprène</b> : entre le ponton, les cailloux et les bords de
+        <p>Toujours. Quand tu tombes, <b>le foil est quelque part en dessous</b>, et tu ne choisis ni où,
+          ni comment. Ajoute des <b>chaussons néoprène</b> à <b>semelle rigide et antidérapante</b> : entre le ponton, les cailloux et les bords de
           l'aile, tes pieds encaissent tout. Casque, gilet et chaussures transforment un mauvais souvenir
           en anecdote.</p>
       </div>
@@ -269,7 +269,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
       </div>
       <div class="card" data-i18n="sc3">
         <div class="k">👥 Jamais seul</div>
-        <p>Un partenaire au bord change tout en cas de pépin — au strict minimum, quelqu'un
+        <p>Un partenaire au bord change tout en cas de pépin. Au strict minimum, quelqu'un
           <b>sait où tu es</b> et quand tu rentres. L'eau froide raccourcit vite les marges.</p>
       </div>
       <div class="card" data-i18n="sc2">
@@ -277,13 +277,19 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
         <p>Toujours <b>plus profond que ton mât</b> (sa longueur + une marge), un fond sans rochers, et
           <b>aucun baigneur</b> dans ta zone de chute. Vérifie la profondeur avant, pas après.</p>
       </div>
+      <div class="card" data-i18n="sc5">
+        <div class="k">🦵 Protège tes jambes des coupures</div><p>Le <b>bord arrière du mât</b> et de l'aile coupe comme une lame, et au départ sauté c'est le <b>genou</b> et le <b>tibia</b> qui passent juste à côté. Un <b>pantalon</b> (et un <b>t-shirt long</b>) <b>anti-coupure</b> sous la combi protège exactement là. Par exemple <a href="https://www.ion-products.com/fr/water/protection/surf-shield-series?utm_source=simulator.foil-house.com&utm_medium=referral&utm_campaign=debutant" target="_blank" rel="noopener">ION Surf Shield</a> ou <a href="https://www.gong-galaxy.com/en/collections/surf-foil-protections-bodyguard-wear?utm_source=simulator.foil-house.com&utm_medium=referral&utm_campaign=debutant" target="_blank" rel="noopener">Gong Bodyguard</a>.</p>
+      </div>
+      <div class="card" data-i18n="sc6">
+        <div class="k">🪜 Le départ sauté s'apprend en bas</div><p>D'un <b>ponton bas</b>, sur <b>eau plate</b>, et tant que tu es <b>frais</b>. Jamais dans les vagues ni sur un matos que tu ne connais pas. Après quelques départs ratés, <b>arrête de sauter</b> : c'est là que le pied rate la planche.</p>
+      </div>
     </div>
   </section>
 
   <!-- ANATOMIE -->
   <section id="anatomie" class="a-in">
     <h3 data-i18n="lex-h3">🧩 C'est quoi, un foil ? Les 5 pièces</h3>
-    <p class="lede" data-i18n="lex-lede">Deux minutes de vocabulaire — tout le reste de la page s'appuie dessus.</p>
+    <p class="lede" data-i18n="lex-lede">Deux minutes de vocabulaire : tout le reste de la page s'appuie dessus.</p>
     <svg class="anat" viewBox="0 0 620 260" role="img" aria-label="Schéma d'un foil vu de côté : la planche vole au-dessus de l'eau, le mât traverse la surface, fuselage, aile avant et stab portent sous l'eau">
       <!-- pièces (couleurs synchronisées avec les pastilles du lexique) -->
       <rect x="236" y="34" width="290" height="16" rx="8" fill="#94a3b8"/>
@@ -317,31 +323,31 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     </svg>
     <div class="lex">
       <div class="lexr" data-i18n="lx1"><span class="dot" style="background:#94a3b8"></span>
-        <p><b>La planche</b> — tu poses les pieds dessus : elle transmet ton geste au foil. Au dock start,
-          pas besoin qu'elle flotte — juste qu'elle soit légère.</p></div>
+        <p><b>La planche</b> : tu poses les pieds dessus et elle transmet ton geste au foil. Au dock start,
+          pas besoin qu'elle flotte, juste qu'elle soit légère.</p></div>
       <div class="lexr" data-i18n="lx2"><span class="dot" style="background:#38bdf8"></span>
-        <p><b>Le mât</b> — la colonne verticale. Sa hauteur, c'est ta marge pour pomper… et la hauteur
+        <p><b>Le mât</b> : la colonne verticale. Sa hauteur, c'est ta marge pour pomper… et la hauteur
           de laquelle tu tombes. Court pour apprendre.</p></div>
       <div class="lexr" data-i18n="lx3"><span class="dot" style="background:#9085e9"></span>
-        <p><b>Le fuselage</b> — l'épine dorsale : il relie l'aile avant au stab, sous le mât.
+        <p><b>Le fuselage</b> : l'épine dorsale : il relie l'aile avant au stab, sous le mât.
           Plus il est long, plus le foil est calme.</p></div>
       <div class="lexr" data-i18n="lx4"><span class="dot" style="background:#34d399"></span>
-        <p><b>L'aile avant</b> — c'est elle qui te porte. <b>Grande</b> = de la portance même à faible
+        <p><b>L'aile avant</b> : c'est elle qui te porte. <b>Grande</b> = de la portance même à faible
           vitesse ; <b>longue</b> (l'envergure) = un vol stable et économe.</p></div>
       <div class="lexr" data-i18n="lx5"><span class="dot" style="background:#f59e0b"></span>
-        <p><b>Le stab</b> — abréviation de <b>stabilisateur</b> : la petite aile arrière. Comme l'empennage
+        <p><b>Le stab</b> : abréviation de <b>stabilisateur</b> : la petite aile arrière. Comme l'empennage
           d'une flèche ou d'un avion, il remet le foil droit. Gros = prévisible.</p></div>
     </div>
   </section>
 
   <section id="methode" class="a-in">
-    <h3 data-i18n="method-h3">🎯 La méthode qui marche — 4 principes</h3>
+    <h3 data-i18n="method-h3">🎯 La méthode qui marche : 4 principes</h3>
     <p class="lede" data-i18n="method-lede">Le matos aide, mais l'apprentissage tient surtout à ça. Applique les quatre, tu voleras bien plus vite.</p>
     <div class="cards">
-      <div class="card" data-i18n="m1"><div class="k">🔁 ~10 sessions</div><div class="big">la répétition fait tout</div><p>Compte <b>~10 sessions</b> avant de tenir 30 s de vol. Les premiers vols durent 5-20 s. Les premiers essais finissent dans l'eau — normal, c'est pareil pour tout le monde. Ce sont des <b>dizaines de départs courts</b> qui t'apprennent, pas quelques grands vols.</p></div>
+      <div class="card" data-i18n="m1"><div class="k">🔁 ~10 sessions</div><div class="big">la répétition fait tout</div><p>Compte <b>~10 sessions</b> avant de tenir 30 s de vol. Les premiers vols durent 5-20 s. Les premiers essais finissent dans l'eau. Normal, c'est pareil pour tout le monde. Ce sont des <b>dizaines de départs courts</b> qui t'apprennent, pas quelques grands vols.</p></div>
       <div class="card" data-i18n="m2"><div class="k">🎯 Toujours le même matos</div><div class="big">un seul setup, maîtrisé</div><p>Garde <b>la même aile, le même stab, le même mât</b>. Chaque changement te fait <b>repartir de zéro</b> (feeling, décollage, équilibre). Tu descendras de taille bien plus tard, une fois que tu tiens 30-60 s.</p></div>
       <div class="card" data-i18n="m3"><div class="k">📍 Toujours au même endroit</div><div class="big">moins d'inconnues = plus de vol</div><p>Un <b>spot que tu connais</b> (profondeur, bord, vent, courant) enlève des variables. Tes repères se construisent vite : tu te concentres sur <b>le geste</b>, pas sur le lieu. Eau plate, pas de vagues pour commencer.</p></div>
-      <div class="card" data-i18n="m4"><div class="k">👥 Avec du monde autour</div><div class="big">plus fun ET plus sûr</div><p>Jamais seul : quelqu'un qui te <b>voit</b>, qui te <b>file l'astuce</b>, qui filme et partage la bonne rigolade. On progresse <b>mieux à plusieurs</b> — et une session encadrée (club, pote qui gère) en vaut cinq en solo.</p></div>
+      <div class="card" data-i18n="m4"><div class="k">👥 Avec du monde autour</div><div class="big">plus fun ET plus sûr</div><p>Jamais seul : quelqu'un qui te <b>voit</b>, qui te <b>file l'astuce</b>, qui filme et partage la bonne rigolade. On progresse <b>mieux à plusieurs</b>, et une session encadrée (club, pote qui gère) en vaut cinq en solo.</p></div>
     </div>
   </section>
 
@@ -355,20 +361,20 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
         <div class="num">🚶</div>
         <div><h4>Le spot</h4>
         <p>Un ponton d'<b>environ 20 cm</b> au-dessus de l'eau de préférence (ou plus haut pour un départ
-          dit « <b><a href="https://www.youtube.com/watch?v=WSXoRP9TB3U" target="_blank" rel="noopener">à la suisse</a></b> » 🎥), de l'eau profonde devant, un bord dégagé pour courir
-          deux pas — et de l'<b>eau plate</b> : pas de vagues ni de vent pour commencer. Pas de ponton praticable ? Les <b>échelles
+          dit « <b><a href="https://www.youtube.com/watch?v=WSXoRP9TB3U" target="_blank" rel="noopener">à la suisse</a></b> » 🎥, ⚠️ à apprendre d'un ponton bas, sur eau plate et frais : voir la <a href="#secu">sécurité</a>), de l'eau profonde devant, un bord dégagé pour courir
+          deux pas, et de l'<b>eau plate</b> : pas de vagues ni de vent pour commencer. Pas de ponton praticable ? Les <b>échelles
           <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz.org</a></b> transforment n'importe quel
           quai en spot (détail dans le matos, plus bas 👇).</p></div>
       </div>
       <div class="step" data-i18n="dk4">
         <div class="num">🛫</div>
         <div><h4>Pourquoi une grande aile : la vitesse de décollage</h4>
-        <p>Le foil te porte seulement <b>au-dessus d'une vitesse mini</b> — la <b>vitesse de décollage</b>. Plus
+        <p>Le foil te porte seulement <b>au-dessus d'une vitesse mini</b> : la <b>vitesse de décollage</b>. Plus
           l'aile est <b>grande et épaisse</b>, plus cette vitesse est <b>basse</b> : une aile de débutant décolle
           vers <b>~10 km/h</b>, l'élan de deux pas de ponton suffit. C'est <b>toute la raison de commencer grand</b> :
           tu décolles tôt, tu voles plus longtemps, tu apprends plus vite.<br><b>On progresse en réussissant, pas en
-          s'acharnant</b> : mieux vaut enchaîner des <b>départs réussis</b> sur une grande aile — chaque décollage
-          t'apprend quelque chose — que de t'épuiser et te dégoûter sur une aile <b>trop petite</b> qui ne veut pas
+          s'acharnant</b> : mieux vaut enchaîner des <b>départs réussis</b> sur une grande aile, chaque décollage
+          t'apprend quelque chose, que de t'épuiser et te dégoûter sur une aile <b>trop petite</b> qui ne veut pas
           voler. Tu passeras au plus petit bien assez tôt.</p>
         <div class="note-fig" aria-hidden="true">
           <svg viewBox="0 0 360 110">
@@ -402,7 +408,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   <section id="reco" class="a-in">
     <h3 data-i18n="reco-h3">🎛️ Ton matos pour apprendre</h3>
     <p class="lede" data-i18n="reco-lede">Une seule règle physique derrière tout ça : il faut que l'aile <b>te porte dès ~10 km/h</b>
-      — assez bas pour qu'un pump raté ne soit pas une chute. La surface nécessaire dépend surtout de ton poids.</p>
+, assez bas pour qu'un pump raté ne soit pas une chute. La surface nécessaire dépend surtout de ton poids.</p>
     <div class="panel">
       <div class="inputs">
         <div class="field"><label for="i-w"><span data-i18n="l-w">Ton poids</span> : <span class="fval" id="v-w">75</span> kg</label>
@@ -428,7 +434,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
       <p id="o-delta" style="font-size:.82rem;color:#6ee7b7;text-align:center;margin:12px auto 0;font-weight:600" aria-live="polite"></p>
       <p class="xpl" style="font-size:.76rem;color:var(--muted);text-align:center;margin:12px auto 0;max-width:560px" data-i18n="reco-ref">
         Cohérent avec les chartes des grandes marques (pour 75-85 kg : <b>~1800-2050 cm²</b>, AR ~9, stab
-        <b>~190-220 cm²</b>) — et on <b>vise volontairement grand</b> pour l'aile : <b>tout le monde gagne à démarrer
+        <b>~190-220 cm²</b>), et on <b>vise volontairement grand</b> pour l'aile : <b>tout le monde gagne à démarrer
         entre ~1500 et 2000+ cm²</b>, même léger. Plus grand = décroche plus bas = plus tolérant = tu apprends plus
         vite. (Un stab <b>~220 cm² suffit</b> ; au-delà, surtout plus de traînée.)</p>
       <div class="bk xpl" id="o-eff"></div>
@@ -443,28 +449,28 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
         <div class="k">📏 La surface = ta marge d'erreur</div>
         <div class="big">~20-25 cm²/kg · jamais moins de ~1500</div>
         <p class="xpl">Une grande aile décroche vers <b>10 km/h</b> : quand tu rates un pump et que tu ralentis, elle
-          <b>te rattrape</b> au lieu de tomber. Une lame de course décroche à 20+ km/h — zéro droit à l'erreur.
+          <b>te rattrape</b> au lieu de tomber. Une lame de course décroche à 20+ km/h : zéro droit à l'erreur.
           La surface, c'est du temps de vol par session, donc de l'apprentissage par session.</p>
       </div>
       <div class="card ok" data-i18n="vd2">
         <div class="k">🛞 Le gros stab = tes roues d'entraînement</div>
         <div class="big">il calme le tangage : le foil devient prévisible</div>
-        <p class="xpl">Sur <a href="vitesse.html">la page vitesse</a>, un stab 200 coûte ~3,5 km/h — ici c'est ton meilleur
+        <p class="xpl">Sur <a href="vitesse.html">la page vitesse</a>, un stab 200 coûte ~3,5 km/h. Ici c'est ton meilleur
           allié : il <b>calme le tangage</b> (piqué du nez) et rend le foil prévisible. Et rien ne presse : un gros stab
-          <b>se garde longtemps</b> — tu le réduiras bien après l'aile, quand il commencera vraiment à te
+          <b>se garde longtemps</b> : tu le réduiras bien après l'aile, quand il commencera vraiment à te
           freiner. Ce sera alors <b>l'upgrade le moins cher</b> de tout le foil.</p>
       </div>
       <div class="card meh" data-i18n="vd3">
         <div class="k">🍞 Le profil épais = décrochage gentil</div>
         <div class="big">il prévient avant de lâcher</div>
-        <p class="xpl">Un profil épais (~15-17 %) s'enfonce <b>progressivement</b> quand tu vas trop lentement — tu le sens
+        <p class="xpl">Un profil épais (~15-17 %) s'enfonce <b>progressivement</b> quand tu vas trop lentement : tu le sens
           et tu corriges. Un profil fin <b>lâche d'un coup</b>, sans préavis. Le supplément de traînée, tu t'en
           fiches : tu n'es pas là pour la vitesse.</p>
       </div>
       <div class="card meh" data-i18n="vd4">
         <div class="k">📐 Aspect Ratio modéré (AR ~9)</div>
         <div class="big">docile avant efficace</div>
-        <p class="xpl"><a href="long-distance.html">Le comparateur</a> te dira qu'une grande envergure économise tes watts — c'est vrai,
+        <p class="xpl"><a href="long-distance.html">Le comparateur</a> te dira qu'une grande envergure économise tes watts, c'est vrai,
           <b>plus tard</b>. Une aile très allongée (AR 11+) demande plus de précision : elle vole plus vite et décroche du bout d'aile.
           Les ailes d'école modernes font toutes <b>AR ~9</b> : c'est le bon compromis docile/efficace,
           validé par le marché.</p>
@@ -474,13 +480,13 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
         <div class="big">tomber de moins haut</div>
         <p class="xpl">Moins de levier sous les pieds = foil <b>moins nerveux</b>, chutes plus douces, et l'eau peu
           profonde reste praticable. L'inconvénient (moins de marge pour pomper haut) ne te concernera que
-          dans quelques mois — tu passeras alors à 75-85 cm.</p>
+          dans quelques mois. Tu passeras alors à 75-85 cm.</p>
       </div>
       <div class="card meh" data-i18n="vd7">
         <div class="k">🛹 La planche : petite et légère</div>
         <div class="big">c'est le ponton qui porte</div>
         <p class="xpl">Au dock start, <b>pas besoin de volume</b> : l'énergie vient du ponton, pas de la flottaison.
-          Une planche courte (80-110 cm, ~90 cm en général), légère, un pad antidérapant — et chaque kilo économisé
+          Une planche courte (80-110 cm, ~90 cm en général), légère, un pad antidérapant. Et chaque kilo économisé
           se retrouve dans <a href="long-distance.html">tes watts</a>. D'occasion aussi, évidemment.</p>
       </div>
       <div class="card ok" data-i18n="vd8">
@@ -488,7 +494,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
         <div class="big">toujours le même spot et le même matos</div>
         <p class="xpl">On progresse en <b>répétant le même départ</b> : même ponton, même hauteur, même foil. Si
           tu changes tout à chaque session, tu réapprends tout à chaque fois. Pas de ponton ? Une <b>échelle de
-          mise à l'eau</b> transforme n'importe quel quai en spot, à hauteur constante. Et la <b>trottinette de pump</b> — un foil à <b>guidon</b> —
+          mise à l'eau</b> transforme n'importe quel quai en spot, à hauteur constante. Et la <b>trottinette de pump</b>, un foil à <b>guidon</b>, 
           offre un troisième appui : le geste s'apprend bien plus vite, puis se transfère tel quel sur la
           planche classique.</p>
       </div>
@@ -496,7 +502,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
         <div class="k">💶 Alu et occasion</div>
         <div class="big">le carbone attendra</div>
         <p class="xpl">Au début, ton foil rencontrera des quais, des cailloux et du sable. L'<b>alu</b> encaisse et pardonne
-          au portefeuille ; d'occasion, un setup complet d'apprentissage se trouve — et se <b>revend</b> presque
+          au portefeuille ; d'occasion, un setup complet d'apprentissage se trouve, et se <b>revend</b> presque
           au même prix quand tu changes. Le carbone rigide, c'est quand ta technique saura le sentir.</p>
       </div>
     </div>
@@ -542,34 +548,34 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
       <div class="step" data-i18n="p1">
         <div class="num">🐣</div>
         <div><h4>Dock start & premiers vols</h4>
-        <p>Objectif : <b>8 départs réussis sur 10</b> et des vols de 10-20 s. Reste sur la grande aile — chaque
+        <p>Objectif : <b>8 départs réussis sur 10</b> et des vols de 10-20 s. Reste sur la grande aile : chaque
           seconde de vol vaut plus que n'importe quel upgrade. C'est ici que ta technique gagne le plus vite.</p></div>
       </div>
       <div class="step" data-i18n="p2">
         <div class="num">🐥</div>
         <div><h4>Tu tiens 30-60 s et l'aile te semble « lente »</h4>
-        <p>C'est le signal : descends <b>d'une taille (~150 cm²)</b>. Le stab, lui, <b>peut rester</b> — il se
+        <p>C'est le signal : descends <b>d'une taille (~150 cm²)</b>. Le stab, lui, <b>peut rester</b> : il se
           garde longtemps et se changera bien après l'aile. L'aile décrochera un peu plus haut, volera un peu
-          plus vite — ta technique a payé cette marge.</p></div>
+          plus vite : ta technique a payé cette marge.</p></div>
       </div>
       <div class="step" data-i18n="p3">
         <div class="num">🐦</div>
         <div><h4>Tu pompes loin : le matos devient un choix</h4>
-        <p>À partir de là, la question n'est plus « quoi acheter pour apprendre » mais <b>« optimiser quoi ? »</b> —
+        <p>À partir de là, la question n'est plus « quoi acheter pour apprendre » mais <b>« optimiser quoi ? »</b> : 
           l'endurance ou la vitesse. Bonne nouvelle : il y a une page pour chaque réponse.</p></div>
       </div>
     </div>
     <div class="next">
-      <a href="long-distance.html" data-i18n="next-ld">⚡ Voler loin — le comparateur d'ailes</a>
-      <a href="vitesse.html" data-i18n="next-vit">🚀 Voler vite — la course aux km/h</a>
+      <a href="long-distance.html" data-i18n="next-ld">⚡ Voler loin : le comparateur d'ailes</a>
+      <a href="vitesse.html" data-i18n="next-vit">🚀 Voler vite : la course aux km/h</a>
     </div>
   </section>
 
   <footer data-i18n="foot">
-    <b style="color:var(--txt)">Modèle</b> — vol stabilisé (portance = poids), d'après
+    <b style="color:var(--txt)">Modèle</b> : vol stabilisé (portance = poids), d'après
     <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a> :
     la surface recommandée vise un décrochage vers ~10 km/h (<code>S ≈ poids / (½ρv²·C_Lmax)</code>) ;
-    l'effort estimé inclut une <b>pénalité de technique débutant</b> (~30 % de watts gaspillés au début —
+    l'effort estimé inclut une <b>pénalité de technique débutant</b> (~30 % de watts gaspillés au début, 
     c'est le plus gros levier quand tu débutes, et il ne coûte que du temps). Estimations pédagogiques, pas un banc d'essai.<br>
     ⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> ·
     📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> ·
@@ -595,63 +601,65 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     'hsub':'Here we chase the opposite of performance: <b>the wing that gives you the right to be wrong</b>.',
     'tldr-t':'To learn: <b>big thick wing</b> + <b>big stab</b> + <b>short mast</b> + <b>safety</b>.',
     'tl1-h':'Safety',
-    'tl1-p':'Fall <b>on the opposite side of the foil</b>. <b>Helmet</b>, impact vest, booties, <b>water deeper than your mast is long</b> and nobody in your fall zone.',
+    'tl1-p':'1. Fall <b>on the opposite side of the foil</b>.<br>2. <b>Helmet</b>, impact vest, booties, <b>cut-resistant leggings and long-sleeve top</b> under your wetsuit.<br>3. <b>Calm water</b> and a <b>deep fall zone</b>.',
     'tl2-h':'Gear that forgives',
-    'tl2-p':'<b>Big thick wing</b> + <b>big stab</b> + <b>short mast</b>: it lifts you early, stays stable, and you fall from lower.',
-    'tl3-h':'Patience + second-hand',
-    'tl3-p':'Count <b>5 to 15 sessions</b> for the dock start. Buy <b>second-hand</b>: this gear resells when you progress.',
+    'tl2-p':'<b>Big wing</b> + <b>big stab</b>: you take off with <b>little momentum</b>. <b>Gear made for progressing</b> teaches you faster: forget small wings and second-hand wing-foil wings.',
+    'tl3-h':'Patience',
+    'tl3-p':'Count <b>10 to 20 sessions</b> to learn the start and your first flights.',
     'tl-go1':'🎛️ Your learning setup',
     'tl-go2':'🦺 Safety first',
     'reco-h3':'🎛️ Your learning setup',
-    'reco-lede':'One physical rule behind it all: the wing must <b>carry you from ~10 km/h</b> — low enough that a missed pump isn\'t a crash. The required area mostly depends on your weight.',
+    'reco-lede':'One physical rule behind it all: the wing must <b>carry you from ~10 km/h</b>, low enough that a missed pump isn\'t a crash. The required area mostly depends on your weight.',
     'l-w':'Your weight','l-stage':'Where you are',
     'xp-lbl':'Explanations',
     'g-lo':'◄ too small to learn','g-hi':'rare &amp; bulky ►',
     'o-st1':'🐣 Never flown / first dock starts','o-st2':'🐥 I fly for a few seconds','o-st3':'🐦 I hold 30 s and start pumping away',
-    'reco-ref':'Consistent with the major brands\' size charts (for 75-85 kg: <b>~1800-2050 cm²</b>, AR ~9, <b>~190-220 cm²</b> stab) — and we <b>deliberately aim big</b> for the wing: <b>everyone is better off starting between ~1500 and 2000+ cm²</b>, even light riders. Bigger = stalls lower = more forgiving = you learn faster. (A <b>~220 cm² stab is plenty</b>; beyond that, mostly extra drag.)',
+    'reco-ref':'Consistent with the major brands\' size charts (for 75-85 kg: <b>~1800-2050 cm²</b>, AR ~9, <b>~190-220 cm²</b> stab), and we <b>deliberately aim big</b> for the wing: <b>everyone is better off starting between ~1500 and 2000+ cm²</b>, even light riders. Bigger = stalls lower = more forgiving = you learn faster. (A <b>~220 cm² stab is plenty</b>; beyond that, mostly extra drag.)',
     'secu-h3':'🦺 Safety first',
-    'secu-lede':'A foil has <b>thin, hard edges</b>, and beginner falls are uncontrolled. Four non-negotiable rules before the first start.',
-    'sc1':'<div class="k">🪖 Helmet, impact vest + booties</div><p>Always. When you fall, <b>the foil is somewhere below</b> — and you choose neither where nor how. Add <b>neoprene booties</b>: between the dock, the rocks and the wing\'s edges, your feet take it all. Helmet, vest and booties turn a bad memory into an anecdote.</p>',
+    'secu-lede':'A foil has <b>thin, hard edges</b>, and beginner falls are uncontrolled. Six non-negotiable rules before the first start.',
+    'sc1':'<div class="k">🪖 Helmet, impact vest + booties</div><p>Always. When you fall, <b>the foil is somewhere below</b>, and you choose neither where nor how. Add <b>neoprene booties</b> with a <b>stiff, non-slip sole</b>: between the dock, the rocks and the wing\'s edges, your feet take it all. Helmet, vest and booties turn a bad memory into an anecdote.</p>',
     'sc2':'<div class="k">🌊 A deep, clear spot</div><p>Always <b>deeper than your mast</b> (its length + a margin), a bottom free of rocks, and <b>no swimmers</b> in your fall zone. Check the depth before, not after.</p>',
-    'sc3':'<div class="k">👥 Never alone</div><p>A partner on shore changes everything if something goes wrong — at the strict minimum, someone <b>knows where you are</b> and when you\'re due back. Cold water shrinks margins fast.</p>',
+    'sc3':'<div class="k">👥 Never alone</div><p>A partner on shore changes everything if something goes wrong. At the strict minimum, someone <b>knows where you are</b> and when you\'re due back. Cold water shrinks margins fast.</p>',
+    'sc5':'<div class="k">🦵 Protect your legs from cuts</div><p>The <b>back edge of the mast</b> and of the wing cuts like a blade, and on a jump start your <b>knee</b> and <b>shin</b> pass right next to it. <b>Cut-resistant leggings</b> (and a <b>long-sleeve top</b>) under your wetsuit protect exactly there. For example <a href="https://www.ion-products.com/fr/water/protection/surf-shield-series?utm_source=simulator.foil-house.com&utm_medium=referral&utm_campaign=debutant" target="_blank" rel="noopener">ION Surf Shield</a> or <a href="https://www.gong-galaxy.com/en/collections/surf-foil-protections-bodyguard-wear?utm_source=simulator.foil-house.com&utm_medium=referral&utm_campaign=debutant" target="_blank" rel="noopener">Gong Bodyguard</a>.</p>',
+    'sc6':'<div class="k">🪜 The jump start is learned low</div><p>From a <b>low dock</b>, on <b>flat water</b>, while you\'re <b>fresh</b>. Never in waves or on gear you don\'t know. After a few failed starts, <b>stop jumping</b>: that\'s when your foot misses the board.</p>',
     'sc4':'<div class="k">🤸 Learn to fall well</div><p>Fall <b>on the opposite side of the foil</b>, arms around your head, and never surface «blind» under the board. Pushing the foil away from you is a reflex you train from day one.</p>',
-    'method-h3':'🎯 The method that works — 4 principles',
+    'method-h3':'🎯 The method that works: 4 principles',
     'method-lede':'Gear helps, but learning comes down mostly to this. Apply all four and you\'ll fly far sooner.',
-    'm1':'<div class="k">🔁 ~10 sessions</div><div class="big">repetition is everything</div><p>Count on <b>~10 sessions</b> before you hold 30 s of flight. First flights last 5-20 s. The first tries end in the water — normal, same for everyone. It\'s <b>dozens of short starts</b> that teach you, not a few long flights.</p>',
+    'm1':'<div class="k">🔁 ~10 sessions</div><div class="big">repetition is everything</div><p>Count on <b>~10 sessions</b> before you hold 30 s of flight. First flights last 5-20 s. The first tries end in the water. Normal, same for everyone. It\'s <b>dozens of short starts</b> that teach you, not a few long flights.</p>',
     'm2':'<div class="k">🎯 Always the same gear</div><div class="big">one setup, mastered</div><p>Keep <b>the same wing, stab and mast</b>. Every change sends you <b>back to zero</b> (feel, takeoff, balance). You\'ll size down much later, once you hold 30-60 s.</p>',
     'm3':'<div class="k">📍 Always the same spot</div><div class="big">fewer unknowns = more flight</div><p>A <b>spot you know</b> (depth, edge, wind, current) removes variables. Your bearings build fast: you focus on <b>the movement</b>, not the place. Flat water, no waves to begin.</p>',
-    'm4':'<div class="k">👥 With people around</div><div class="big">more fun AND safer</div><p>Never alone: someone who <b>watches</b> you, <b>gives you the tip you need</b>, films and shares the laugh. You progress <b>better together</b> — and one coached session is worth five solo.</p>',
+    'm4':'<div class="k">👥 With people around</div><div class="big">more fun AND safer</div><p>Never alone: someone who <b>watches</b> you, <b>gives you the tip you need</b>, films and shares the laugh. You progress <b>better together</b>, and one coached session is worth five solo.</p>',
     'lex-h3':'🧩 What is a foil? The 5 parts',
-    'lex-lede':'Two minutes of vocabulary — the whole page builds on it.',
+    'lex-lede':'Two minutes of vocabulary: the whole page builds on it.',
     'lxs1':'board','lxs2':'mast','lxs3':'fuselage','lxs4':'front wing','lxs5':'stab','lxs6':'direction of travel',
-    'lx1':'<span class="dot" style="background:#94a3b8"></span><p><b>The board</b> — your feet go on it: it transmits your motion to the foil. For dock starts it doesn\'t need to float — just to be light.</p>',
-    'lx2':'<span class="dot" style="background:#38bdf8"></span><p><b>The mast</b> — the vertical column. Its height is your room to pump… and the height you fall from. Short to learn.</p>',
-    'lx3':'<span class="dot" style="background:#9085e9"></span><p><b>The fuselage</b> — the backbone: it links the front wing to the stab, under the mast. The longer it is, the calmer the foil.</p>',
-    'lx4':'<span class="dot" style="background:#34d399"></span><p><b>The front wing</b> — it\'s what carries you. <b>Big</b> = lift even at low speed; <b>long</b> (the span) = a stable, efficient flight.</p>',
-    'lx5':'<span class="dot" style="background:#f59e0b"></span><p><b>The stab</b> — short for <b>stabiliser</b>: the small rear wing. Like the fletching of an arrow or a plane\'s tail, it keeps the foil straight. Big = predictable.</p>',
+    'lx1':'<span class="dot" style="background:#94a3b8"></span><p><b>The board</b>: your feet go on it and it transmits your motion to the foil. For dock starts it doesn\'t need to float, just to be light.</p>',
+    'lx2':'<span class="dot" style="background:#38bdf8"></span><p><b>The mast</b>: the vertical column. Its height is your room to pump… and the height you fall from. Short to learn.</p>',
+    'lx3':'<span class="dot" style="background:#9085e9"></span><p><b>The fuselage</b>: the backbone: it links the front wing to the stab, under the mast. The longer it is, the calmer the foil.</p>',
+    'lx4':'<span class="dot" style="background:#34d399"></span><p><b>The front wing</b>: it\'s what carries you. <b>Big</b> = lift even at low speed; <b>long</b> (the span) = a stable, efficient flight.</p>',
+    'lx5':'<span class="dot" style="background:#f59e0b"></span><p><b>The stab</b>: short for <b>stabiliser</b>: the small rear wing. Like the fletching of an arrow or a plane\'s tail, it keeps the foil straight. Big = predictable.</p>',
     'dock-h3':'🪜 You learn from a dock',
     'dock-lede':'The «<b>dock start</b>»: you run two steps on a dock, jump, and land the board on the water already moving: your run-up is what gets you flying. 🎥 <a href="https://www.youtube.com/watch?v=HOSYy9AlCl0" target="_blank" rel="noopener">Watch a good start</a>',
-    'dk1':'<div class="num">🚶</div><div><h4>The spot</h4><p>Ideally a dock about <b>20 cm</b> above the water (or higher for a so-called «<b><a href="https://www.youtube.com/watch?v=WSXoRP9TB3U" target="_blank" rel="noopener">Swiss-style</a></b>» start 🎥), deep water in front, a clear edge for two running steps — and <b>flat water</b>: no waves, no wind to start with. No usable dock? The <b><a href="https://piouz.org/" target="_blank" rel="noopener">Piouz.org</a> ladders</b> turn any quay into a spot (details in the gear section below 👇).</p></div>',
-    'dk4':'<div class="num">🛫</div><div><h4>Why a big wing: the takeoff speed</h4><p>A foil only carries you <b>above a minimum speed</b> — the <b>takeoff speed</b>. The <b>bigger and thicker</b> the wing, the <b>lower</b> it is: a beginner wing lifts off around <b>~10 km/h</b>, the momentum of two dock steps is enough. That\'s <b>the whole reason to start big</b>: you lift off early, fly longer, learn faster.<br><b>You progress by succeeding, not by grinding</b>: better to string together <b>clean starts</b> on a big wing — every takeoff teaches you something — than to exhaust and discourage yourself on a <b>too-small</b> wing that won\'t fly. You\'ll size down soon enough.</p><div class="note-fig" aria-hidden="true"><svg viewBox="0 0 360 110"><rect x="20" y="64" width="176" height="9" rx="2" fill="#34d399" opacity=".18"/><text x="106" y="57" text-anchor="middle" font-size="10" font-weight="700" fill="#6ee7b7">2 dock steps of momentum</text><line x1="20" y1="73" x2="344" y2="73" stroke="#64748b" stroke-width="2"/><path d="M352 73 l-9 -4.5 v9 Z" fill="#64748b"/><g stroke="#475569" stroke-width="1.5"><line x1="20" y1="69" x2="20" y2="77"/><line x1="100" y1="69" x2="100" y2="77"/><line x1="180" y1="69" x2="180" y2="77"/><line x1="260" y1="69" x2="260" y2="77"/><line x1="340" y1="69" x2="340" y2="77"/></g><g font-size="11" font-weight="700" fill="#94a3b8" text-anchor="middle"><text x="20" y="92">0</text><text x="100" y="92">5</text><text x="180" y="92">10</text><text x="260" y="92">15</text><text x="340" y="92">20</text></g><text x="352" y="106" text-anchor="end" font-size="10" fill="#64748b">km/h</text><line x1="180" y1="22" x2="180" y2="70" stroke="#34d399" stroke-width="2.5"/><circle cx="180" cy="73" r="4.5" fill="#34d399"/><text x="180" y="16" text-anchor="middle" font-size="12" font-weight="800" fill="#6ee7b7">big wing lifts off here ✓</text><line x1="268" y1="44" x2="268" y2="70" stroke="#fb923c" stroke-width="2.5"/><circle cx="268" cy="73" r="4" fill="#fb923c"/><text x="270" y="38" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fdba74">small wing: out of reach</text></svg></div></div>',
-    'vd7':'<div class="k">🛹 The board: small and light</div><div class="big">the dock does the carrying</div><p class="xpl">For dock starts, <b>no volume needed</b>: the energy comes from the dock, not from buoyancy. A short board (80-110 cm, usually ~90 cm), light, a grippy pad — and every kilo saved comes back as <a href="long-distance.html?lang=en">watts</a>. Second-hand too, obviously.</p>',
-    'vd8':'<div class="k">🪜 The learning accelerators</div><div class="big">always the same spot and the same gear</div><p class="xpl">You progress by <b>repeating the same start</b>: same dock, same height, same foil. Change everything every session and you relearn everything every time. No dock? A <b>water-entry ladder</b> turns any quay into a spot, at a constant height. And the <b>pump scooter</b> — a foil with a <b>handlebar</b> — gives a third point of contact: the motion is learned much faster, then transfers as-is to the regular board.</p>',
+    'dk1':'<div class="num">🚶</div><div><h4>The spot</h4><p>Ideally a dock about <b>20 cm</b> above the water (or higher for a so-called «<b><a href="https://www.youtube.com/watch?v=WSXoRP9TB3U" target="_blank" rel="noopener">Swiss-style</a></b>» start 🎥, ⚠️ learn it from a low dock, on flat water, fresh: see <a href="#secu">safety</a>), deep water in front, a clear edge for two running steps, and <b>flat water</b>: no waves, no wind to start with. No usable dock? The <b><a href="https://piouz.org/" target="_blank" rel="noopener">Piouz.org</a> ladders</b> turn any quay into a spot (details in the gear section below 👇).</p></div>',
+    'dk4':'<div class="num">🛫</div><div><h4>Why a big wing: the takeoff speed</h4><p>A foil only carries you <b>above a minimum speed</b>: the <b>takeoff speed</b>. The <b>bigger and thicker</b> the wing, the <b>lower</b> it is: a beginner wing lifts off around <b>~10 km/h</b>, the momentum of two dock steps is enough. That\'s <b>the whole reason to start big</b>: you lift off early, fly longer, learn faster.<br><b>You progress by succeeding, not by grinding</b>: better to string together <b>clean starts</b> on a big wing, every takeoff teaches you something, than to exhaust and discourage yourself on a <b>too-small</b> wing that won\'t fly. You\'ll size down soon enough.</p><div class="note-fig" aria-hidden="true"><svg viewBox="0 0 360 110"><rect x="20" y="64" width="176" height="9" rx="2" fill="#34d399" opacity=".18"/><text x="106" y="57" text-anchor="middle" font-size="10" font-weight="700" fill="#6ee7b7">2 dock steps of momentum</text><line x1="20" y1="73" x2="344" y2="73" stroke="#64748b" stroke-width="2"/><path d="M352 73 l-9 -4.5 v9 Z" fill="#64748b"/><g stroke="#475569" stroke-width="1.5"><line x1="20" y1="69" x2="20" y2="77"/><line x1="100" y1="69" x2="100" y2="77"/><line x1="180" y1="69" x2="180" y2="77"/><line x1="260" y1="69" x2="260" y2="77"/><line x1="340" y1="69" x2="340" y2="77"/></g><g font-size="11" font-weight="700" fill="#94a3b8" text-anchor="middle"><text x="20" y="92">0</text><text x="100" y="92">5</text><text x="180" y="92">10</text><text x="260" y="92">15</text><text x="340" y="92">20</text></g><text x="352" y="106" text-anchor="end" font-size="10" fill="#64748b">km/h</text><line x1="180" y1="22" x2="180" y2="70" stroke="#34d399" stroke-width="2.5"/><circle cx="180" cy="73" r="4.5" fill="#34d399"/><text x="180" y="16" text-anchor="middle" font-size="12" font-weight="800" fill="#6ee7b7">big wing lifts off here ✓</text><line x1="268" y1="44" x2="268" y2="70" stroke="#fb923c" stroke-width="2.5"/><circle cx="268" cy="73" r="4" fill="#fb923c"/><text x="270" y="38" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fdba74">small wing: out of reach</text></svg></div></div>',
+    'vd7':'<div class="k">🛹 The board: small and light</div><div class="big">the dock does the carrying</div><p class="xpl">For dock starts, <b>no volume needed</b>: the energy comes from the dock, not from buoyancy. A short board (80-110 cm, usually ~90 cm), light, a grippy pad. And every kilo saved comes back as <a href="long-distance.html?lang=en">watts</a>. Second-hand too, obviously.</p>',
+    'vd8':'<div class="k">🪜 The learning accelerators</div><div class="big">always the same spot and the same gear</div><p class="xpl">You progress by <b>repeating the same start</b>: same dock, same height, same foil. Change everything every session and you relearn everything every time. No dock? A <b>water-entry ladder</b> turns any quay into a spot, at a constant height. And the <b>pump scooter</b>, a foil with a <b>handlebar</b>, gives a third point of contact: the motion is learned much faster, then transfers as-is to the regular board.</p>',
     'vd-h3':'🧾 The complete gear, in 8 cards',
-    'vd1':'<div class="k">📏 Area = your margin for error</div><div class="big">~20-25 cm²/kg · never under ~1500</div><p class="xpl">A big wing stalls around <b>10 km/h</b>: when you miss a pump and slow down, it <b>catches you</b> instead of dropping you. A race blade stalls at 20+ km/h — zero room for error. Area means seconds of flight per session, which means learning per session.</p>',
-    'vd2':'<div class="k">🛞 The big stab = your training wheels</div><div class="big">it calms pitch: the foil becomes predictable</div><p class="xpl">On <a href="vitesse.html?lang=en">the speed page</a> a stab 200 costs ~3.5 km/h — here it\'s your best ally: it <b>tames the pitch</b> (nose dive) and makes the foil predictable. And there\'s no rush: a big stab <b>stays with you a long time</b> — you\'ll size it down well after the wing, when it truly starts holding you back. It\'ll then be <b>the cheapest upgrade</b> on the whole foil.</p>',
-    'vd3':'<div class="k">🍞 Thick profile = gentle stall</div><div class="big">it warns before letting go</div><p class="xpl">A thick profile (~15-17%) sinks <b>progressively</b> when you go too slow — you feel it and correct. A thin profile <b>lets go at once</b>, no warning. The extra drag? You don\'t care: you\'re not here for speed.</p>',
-    'vd4':'<div class="k">📐 Moderate aspect ratio (AR ~9)</div><div class="big">docile before efficient</div><p class="xpl"><a href="long-distance.html?lang=en">The comparator</a> will tell you a wide span saves your watts — true, <b>later</b>. A very elongated wing (AR 11+) demands more precision: it flies faster and stalls from the tips. Modern school wings all sit at <b>AR ~9</b>: the docile/efficient sweet spot, validated by the market.</p>',
-    'vd5':'<div class="k">🩳 Short mast (70-75 cm)</div><div class="big">falling from lower</div><p class="xpl">Less leverage underfoot = a <b>calmer</b> foil, softer falls, and shallow water stays usable. The downside (less room to pump high) won\'t concern you for months — then you\'ll move to 75-85 cm.</p>',
-    'vd6':'<div class="k">💶 Alu and second-hand</div><div class="big">carbon can wait</div><p class="xpl">At first your foil will meet docks, rocks and sand. <b>Alu</b> takes the hits and forgives your wallet; second-hand, a full learning setup is easy to find — and <b>resells</b> at nearly the same price when you move on. Stiff carbon is for when your technique can feel it.</p>',
+    'vd1':'<div class="k">📏 Area = your margin for error</div><div class="big">~20-25 cm²/kg · never under ~1500</div><p class="xpl">A big wing stalls around <b>10 km/h</b>: when you miss a pump and slow down, it <b>catches you</b> instead of dropping you. A race blade stalls at 20+ km/h: zero room for error. Area means seconds of flight per session, which means learning per session.</p>',
+    'vd2':'<div class="k">🛞 The big stab = your training wheels</div><div class="big">it calms pitch: the foil becomes predictable</div><p class="xpl">On <a href="vitesse.html?lang=en">the speed page</a> a stab 200 costs ~3.5 km/h. Here it\'s your best ally: it <b>tames the pitch</b> (nose dive) and makes the foil predictable. And there\'s no rush: a big stab <b>stays with you a long time</b>: you\'ll size it down well after the wing, when it truly starts holding you back. It\'ll then be <b>the cheapest upgrade</b> on the whole foil.</p>',
+    'vd3':'<div class="k">🍞 Thick profile = gentle stall</div><div class="big">it warns before letting go</div><p class="xpl">A thick profile (~15-17%) sinks <b>progressively</b> when you go too slow: you feel it and correct. A thin profile <b>lets go at once</b>, no warning. The extra drag? You don\'t care: you\'re not here for speed.</p>',
+    'vd4':'<div class="k">📐 Moderate aspect ratio (AR ~9)</div><div class="big">docile before efficient</div><p class="xpl"><a href="long-distance.html?lang=en">The comparator</a> will tell you a wide span saves your watts, true, <b>later</b>. A very elongated wing (AR 11+) demands more precision: it flies faster and stalls from the tips. Modern school wings all sit at <b>AR ~9</b>: the docile/efficient sweet spot, validated by the market.</p>',
+    'vd5':'<div class="k">🩳 Short mast (70-75 cm)</div><div class="big">falling from lower</div><p class="xpl">Less leverage underfoot = a <b>calmer</b> foil, softer falls, and shallow water stays usable. The downside (less room to pump high) won\'t concern you for months. Then you\'ll move to 75-85 cm.</p>',
+    'vd6':'<div class="k">💶 Alu and second-hand</div><div class="big">carbon can wait</div><p class="xpl">At first your foil will meet docks, rocks and sand. <b>Alu</b> takes the hits and forgives your wallet; second-hand, a full learning setup is easy to find, and <b>resells</b> at nearly the same price when you move on. Stiff carbon is for when your technique can feel it.</p>',
     'prog-h3':'🪜 What next? Sizing down',
     'fig-prog-l1':'wing','fig-prog-l2':'mast','fig-prog-l3':'stab',
     'fig-prog-cap':'<span>🟢 wing ↓ at each step</span><span>🔵 mast ↑</span><span>🟠 stab = (a long time)</span>',
     'prog-lede':'Beginner gear isn\'t a bad buy: it\'s a <b>rocket stage</b>. Here\'s when to drop each stage.',
-    'p1':'<div class="num">🐣</div><div><h4>Dock start & first flights</h4><p>Goal: <b>8 successful starts out of 10</b> and 10-20 s flights. Stay on the big wing — every second of flight is worth more than any upgrade. This is where your technique improves fastest.</p></div>',
-    'p2':'<div class="num">🐥</div><div><h4>You hold 30-60 s and the wing feels «slow»</h4><p>That\'s the signal: go down <b>one size (~150 cm²)</b>. The stab <b>can stay</b> — it stays with you a long time and gets changed well after the wing. The wing will stall a bit higher, fly a bit faster — your technique paid for that margin.</p></div>',
-    'p3':'<div class="num">🐦</div><div><h4>You pump away: gear becomes a choice</h4><p>From here the question is no longer «what to buy to learn» but <b>«optimise for what?»</b> — endurance or speed. Good news: there\'s a page for each answer.</p></div>',
-    'next-ld':'⚡ Fly far — the wing comparator',
-    'next-vit':'🚀 Fly fast — the race for km/h',
-    'foot':'<b style="color:var(--txt)">Model</b> — steady flight (lift = weight), based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>: the recommended area targets a stall around ~10 km/h (<code>S ≈ weight / (½ρv²·C_Lmax)</code>); the estimated effort includes a <b>beginner-technique penalty</b> (~30% wasted watts at first — the biggest lever when you start, and it only costs time). Educational estimates, not a test bench.<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
+    'p1':'<div class="num">🐣</div><div><h4>Dock start & first flights</h4><p>Goal: <b>8 successful starts out of 10</b> and 10-20 s flights. Stay on the big wing: every second of flight is worth more than any upgrade. This is where your technique improves fastest.</p></div>',
+    'p2':'<div class="num">🐥</div><div><h4>You hold 30-60 s and the wing feels «slow»</h4><p>That\'s the signal: go down <b>one size (~150 cm²)</b>. The stab <b>can stay</b>: it stays with you a long time and gets changed well after the wing. The wing will stall a bit higher, fly a bit faster: your technique paid for that margin.</p></div>',
+    'p3':'<div class="num">🐦</div><div><h4>You pump away: gear becomes a choice</h4><p>From here the question is no longer «what to buy to learn» but <b>«optimise for what?»</b>: endurance or speed. Good news: there\'s a page for each answer.</p></div>',
+    'next-ld':'⚡ Fly far: the wing comparator',
+    'next-vit':'🚀 Fly fast: the race for km/h',
+    'foot':'<b style="color:var(--txt)">Model</b>: steady flight (lift = weight), based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>: the recommended area targets a stall around ~10 km/h (<code>S ≈ weight / (½ρv²·C_Lmax)</code>); the estimated effort includes a <b>beginner-technique penalty</b> (~30% wasted watts at first, the biggest lever when you start, and it only costs time). Educational estimates, not a test bench.<br>⚡ Powered by <a href="https://piouz.org/" target="_blank" rel="noopener">Piouz</a> · 📸 <a href="https://www.instagram.com/polofoil/" target="_blank" rel="noopener">PoloFoil</a> · ⚙️ based on <a href="https://lsegessemann.github.io/foilphysics/" target="_blank" rel="noopener">foilphysics</a>'
   };
   function applyLang(l){
     if((l === 'es' || l === 'it') && !XL.data[l]){ XL.load(l).then(() => applyLang(l), () => applyLang('en')); return; }   // dictionnaire chargé à la demande
@@ -717,14 +725,14 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     $('o-why').innerHTML =
       t('Elle décrochera vers <b>','It will stall around <b>') + num(r.m.vStall*3.6) +
       t(' km/h</b> et croisera tranquillement à <b>~',' km/h</b> and cruise gently at <b>~') + num(r.vCruise*3.6) +
-      ' km/h</b> — ' + t('un pump raté te fait ralentir, pas tomber.','a missed pump slows you down, it doesn\'t drop you.') +
+      ' km/h</b>, ' + t('un pump raté te fait ralentir, pas tomber.','a missed pump slows you down, it doesn\'t drop you.') +
       (r.floored ? '<br><span style="color:var(--dim);font-size:.82rem">' +
-        t('(le plus petit des gammes école — pour les gabarits légers, les marques ne font guère plus petit)',
-          '(the smallest in school ranges — for light riders, brands hardly make smaller)') + '</span>' : '');
+        t('(le plus petit des gammes école : pour les gabarits légers, les marques ne font guère plus petit)',
+          '(the smallest in school ranges: for light riders, brands hardly make smaller)') + '</span>' : '');
 
     const recs = [
       [t('Envergure','Span'), '~'+num(r.b)+' cm'],
-      ['Aspect Ratio (AR)', 'AR ~'+r.st.AR, t('envergure²/surface — élancé ou trapu','span²/area — slender or stubby')],
+      ['Aspect Ratio (AR)', 'AR ~'+r.st.AR, t('envergure²/surface : élancé ou trapu','span²/area: slender or stubby')],
       ['Stab', r.st.stab+' cm²'],
       [t('Mât','Mast'), r.st.mast+' cm']
     ];
@@ -736,10 +744,10 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     const delta = {
       A: t('Le point de départ : tout est réglé pour pardonner.',
            'The starting point: everything is set to forgive.'),
-      B: t('Ce qui change : l\'aile descend d\'une taille, le mât s\'allonge d\'un cran — le stab reste.',
-           'What changes: the wing drops one size, the mast grows a notch — the stab stays.'),
-      C: t('Ce qui change : encore une taille de moins, mât 75-85 — le stab peut enfin descendre.',
-           'What changes: one more size down, 75-85 mast — the stab can finally shrink.')
+      B: t('Ce qui change : l\'aile descend d\'une taille, le mât s\'allonge d\'un cran : le stab reste.',
+           'What changes: the wing drops one size, the mast grows a notch: the stab stays.'),
+      C: t('Ce qui change : encore une taille de moins, mât 75-85 : le stab peut enfin descendre.',
+           'What changes: one more size down, 75-85 mast: the stab can finally shrink.')
     }[stage];
     $('o-delta').innerHTML = '↳ ' + delta;
 
@@ -751,16 +759,16 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     const cur = {A:0, B:1, C:2}[stage];
     const mx = Math.max(...rows.map(x=>x[1]));
     $('o-eff').innerHTML =
-      '<div class="bk-cat">' + t('L\'effort pendant tes vols — la technique est ton vrai premier upgrade',
-                                  'The effort during your flights — technique is your real first upgrade') + '</div>' +
+      '<div class="bk-cat">' + t('L\'effort pendant tes vols : la technique est ton vrai premier upgrade',
+                                  'The effort during your flights: technique is your real first upgrade') + '</div>' +
       rows.map(([lab,w,col],i) =>
         '<div class="bkr'+(i===cur?' cur':'')+'"><span class="lab">'+lab+'</span><span class="trk"><span class="fil" style="width:'+
         (100*w/mx).toFixed(1)+'%;background:'+col+'"></span></span><span class="v">~'+num(w)+' W</span></div>'
       ).join('') +
       '<p style="font-size:.78rem;color:var(--muted);margin-top:8px;text-align:center">' +
       t('C\'est pour ça que les premiers vols durent 5-20 s : personne ne tient ','That\'s why first flights last 5-20 s: nobody holds ') + num(rows[0][1]) +
-      t(' W longtemps. La bonne nouvelle : ces watts fondent avec la technique — gratuitement, et ça continue encore après.',
-        ' W for long. Good news: those watts melt away with technique — for free, and they keep melting after that.') + '</p>';
+      t(' W longtemps. La bonne nouvelle : ces watts fondent avec la technique, gratuitement, et ça continue encore après.',
+        ' W for long. Good news: those watts melt away with technique, for free, and they keep melting after that.') + '</p>';
   }
 
   document.querySelectorAll('input,select').forEach(el => el.addEventListener('input', render));
