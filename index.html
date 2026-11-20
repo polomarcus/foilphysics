@@ -134,7 +134,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   .pvpanel{background:transparent; border:none; padding:0; margin-bottom:0;}
   .pvpanel h3{font-size:1.4rem; font-weight:800; text-align:center; letter-spacing:-.015em; margin-bottom:8px;}
   .pvpanel .pvsub{color:var(--muted); font-size:.9rem; text-align:center; margin-bottom:16px;}
-  .pvlegend{display:flex; gap:18px; justify-content:center; font-size:.82rem; margin-bottom:4px; flex-wrap:wrap;}
+  .pvlegend{display:none; gap:18px; justify-content:center; font-size:.82rem; margin-bottom:4px; flex-wrap:wrap;}
   .pvlegend span{display:inline-flex; align-items:center; gap:7px; color:var(--muted);}
   .pvlegend i{width:18px; height:3px; border-radius:2px; display:inline-block;}
   #pvGraph{width:100%; height:270px; display:block;}
@@ -1711,14 +1711,15 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
 
 </main>
 
-<script src="ailes.js?v=20261101"></script>
+<script src="ailes.js?v=20261118"></script>
 <script>
 (function(){
   const G = 9.81, E = 0.91;  // span efficiency réaliste (foil de pump : haut CL + épais). Cf. taper/AR + lifting-line.
   // Trim drag : Cm0 lié à la cambrure du profil — Cm0(cd0)=6·cd0+0,012 → fin ~−0,06, épais ~−0,12 (chaque aile diffère). Bras stab ~0,65 m. Terme dominant = surcroît d'induite de l'aile (~1-2,5 %).
   const V_FLOOR = 13.5/3.6;  // plancher de croisière (oct. 2026) : traces GPS de Paul 14,3-15,7 km/h (efforts de 20-30 min), records de plusieurs heures 12,7-13,6 km/h (Iten, Pimbel, Baudoux) → 13,5
   const rho = () => 1025;   // eau de mer (le choix mer/lac ne changeait presque rien : ±2,5 %)
-  const VIDEO = /[?&]video=1/.test(location.search);   // 🎬 ?video=1 : la page sert de moteur à la vidéo Insta (insta-longue.html) — sans ce paramètre, rien ne change
+  const VIDEO = /[?&]video=1/.test(location.search);
+  if(VIDEO){ const lg = document.querySelector('.pvlegend'); if(lg) lg.style.display = 'flex'; }   // vidéo : la légende reste (pas de noms au bout des courbes)   // 🎬 ?video=1 : la page sert de moteur à la vidéo Insta (insta-longue.html) — sans ce paramètre, rien ne change
 
   let LANG = 'fr';
   const t = (fr, en) => LANG === 'fr' ? fr : LANG === 'en' ? en : XL.tr(en);   // helper i18n pour le texte généré en JS
@@ -2076,10 +2077,8 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     const X = vk => gx0 + (vk-vmin)/(vmax-vmin)*(gx1-gx0);
     const Y = p  => gy0 - Math.min(p,ymax)/ymax*(gy0-gy1);
 
-    // grille (verticale : vitesse · horizontale : puissance tous les 50 W)
+    // grille : seulement l'horizontale (puissance tous les 50 W) — les verticales n'aidaient pas à lire (audit dataviz nov. 2026)
     ctx.strokeStyle = cLine; ctx.lineWidth = 1;
-    [10,15,20,25].forEach(vk=>{ const x=X(vk);
-      ctx.globalAlpha=.35; ctx.beginPath(); ctx.moveTo(x,gy1); ctx.lineTo(x,gy0); ctx.stroke(); });
     for(let p=0;p<=ymax+1;p+=50){ const y=Y(p);
       ctx.globalAlpha=.35; ctx.beginPath(); ctx.moveTo(gx0,y); ctx.lineTo(gx1,y); ctx.stroke(); }
     ctx.globalAlpha=1;
@@ -2106,24 +2105,29 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     ctx.beginPath(); ctx.moveTo(gx0, cpY); ctx.lineTo(gx1, cpY); ctx.stroke();
     ctx.restore();
     const cpLab = (VIDEO ? '' : '🫀 ') + t('ton seuil','your threshold');   // vidéo : pas d'emoji
-    const cpX = VIDEO ? gx1-6 : gx0+6;   // vidéo : étiquette à droite (à gauche, le point de l'aile classique la recouvre)
-    ctx.font = '700 '+(12*VZ)+'px system-ui,sans-serif'; ctx.textAlign = VIDEO ? 'right' : 'left'; ctx.textBaseline = 'bottom';
+    const cpX = gx1-6;   // à droite : à gauche, la courbe et le point de l'aile classique la recouvraient
+    ctx.font = '700 '+(12*VZ)+'px system-ui,sans-serif'; ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
     ctx.lineWidth = 3.5*VZ; ctx.strokeStyle = '#0f172a'; ctx.strokeText(cpLab, cpX, cpY-3);   // halo
     ctx.fillStyle = '#f8fafc'; ctx.fillText(cpLab, cpX, cpY-3);
 
     drawPowerCurve.geo = {X, Y, vmin, vmax, ymax, gx0, gx1, gy0, gy1};   // pour le survol
     const vEnd = vmin + (vmax-vmin)*prog;   // tracé progressif gauche → droite
-    const curve = (m,col)=>{
+    const curve = (m,col,name)=>{
       ctx.strokeStyle=col; ctx.lineWidth=2.6*VZ; ctx.beginPath();
-      let started=false;
+      let started=false, ex=0, ey=0;
       for(let vk=Math.max(vmin, m.vStall*3.6); vk<=vEnd; vk+=0.25){
         const p=m.P(vk/3.6);
         if(p>ymax){ if(!started) continue; break; }   // sort du cadre : on coupe, pas de plateau
         const x=X(vk), y=Y(p);
         if(!started){ ctx.moveTo(x,y); started=true; } else ctx.lineTo(x,y);
+        ex=x; ey=y;
       }
       ctx.stroke();
       if(prog < 1) return;
+      // nom de l'aile au bout de sa courbe, dans sa couleur (au lieu d'une légende à part)
+      if(!VIDEO && name && started){ ctx.font='700 '+(12*VZ)+'px system-ui,sans-serif'; ctx.textBaseline='top'; ctx.textAlign='right';
+        const lx = Math.min(ex - 18, gx1 - 2), ly = Math.min(ey + 2, gy0 - 16);   // à gauche du bout de la courbe (elle monte : la place est libre)
+        ctx.lineWidth=3.5; ctx.strokeStyle='#0f172a'; ctx.strokeText(name, lx, ly); ctx.fillStyle=col; ctx.fillText(name, lx, ly); }
       // point croisière conseillée + valeur en W directement sur le point
       const xs=X(m.vSweet*3.6), ys=Y(m.Psweet);
       ctx.fillStyle=col; ctx.beginPath(); ctx.arc(xs,ys,5*VZ,0,7); ctx.fill();
@@ -2133,7 +2137,8 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
       ctx.lineWidth=3.5*VZ; ctx.strokeStyle='#0f172a'; ctx.strokeText(lab, xs, ys-9*VZ);   // halo pour la lisibilité
       ctx.fillStyle=col; ctx.fillText(lab, xs, ys-9*VZ);
     };
-    curve(m1, PV1); curve(m2, PV2);
+    const nm = id => { const e = document.getElementById(id); return e ? e.textContent.trim() : ''; };
+    curve(m1, PV1, nm('pvl1')); curve(m2, PV2, nm('pvl2'));
   }
 
   // Analyse de sensibilité (mode Expert) : effet marginal poids (W²) & envergure (1/b²) sur la puissance, à vitesse fixée
@@ -3584,6 +3589,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     const xA = px(LA.B0) - (X1 - X0)/(nI - 1)/2, yA = py(LA.S1) - (Y1 - Y0)/(nJ - 1)/2, wA = (X1 - X0)*nI/(nI - 1), hA = (Y1 - Y0)*nJ/(nJ - 1);
     c.imageSmoothingEnabled = true; c.drawImage(img, xA, yA, wA, hA);
     if('filter' in c){ c.filter = 'blur('+(narrow ? 4 : 6)*(LA.z || 1)+'px)'; c.drawImage(img, xA, yA, wA, hA); c.filter = 'none'; }
+    c.fillStyle = 'rgba(11,18,34,.3)'; c.fillRect(X0, Y0, X1 - X0, Y1 - Y0);   // zones adoucies : les points et les lignes ressortent
     // ⚡ lignes de même Wh/km (ta « conso » par km) : tirets blancs, chiffrés au bout droit visible
     const vLab = [], vCand = [];   // étiquettes Wh/km : placées APRÈS les noms de zones, sur un point libre de leur ligne
     if(LA.lay.wh){
@@ -3626,6 +3632,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     act.forEach(B => B.w.forEach(([n, bb, ss]) => {
       if(bb < LA.B0 || bb > LA.B1 || ss < LA.S0 || ss > LA.S1) return;
       const x = px(bb), y = py(ss); pts.push({n: B.n+' '+n, short: n, b: bb, S: ss, x, y, col: B.c});
+      if(!LA.sel.length){ c.globalAlpha = .75; dotPath(c, 0, x, y, narrow ? 3.2 : 3.6); c.fillStyle = '#e2e8f0'; c.fill(); c.lineWidth = 1; c.strokeStyle = '#0f172a'; c.stroke(); c.globalAlpha = 1; return; }
       dotDraw(c, multi ? act.indexOf(B) % 4 : 0, x, y, narrow ? 4.2 : 4.6, B.c, narrow ? 1.5 : 2);
     }));
     // ailes épinglées d'une autre marque que celle affichée : on les garde (point + nom complet), sinon l'anneau n° reste vide (retour Paul)

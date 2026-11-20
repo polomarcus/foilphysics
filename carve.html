@@ -805,7 +805,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   </footer>
 </main>
 
-<script src="ailes.js?v=20261101"></script>
+<script src="ailes.js?v=20261118"></script>
 <script>
 (function(){
   const $ = id => document.getElementById(id);
@@ -2320,6 +2320,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     c.imageSmoothingEnabled = true; c.imageSmoothingQuality = 'high';
     c.drawImage(img, xA, yA, wA, hA);                                  // fond net (évite un bord qui pâlit au flou)
     if('filter' in c){ c.filter = 'blur('+(G.narrow ? 7 : 11)*(ATL.z || 1)+'px)'; c.drawImage(img, xA, yA, wA, hA); c.filter = 'none'; }   // puis le fondu
+    if(!VIDEO){ c.fillStyle = 'rgba(11,18,34,.22)'; c.fillRect(X0, Y0, X1 - X0, Y1 - Y0); }   // zones adoucies (audit dataviz : couleurs trop vives face aux points)
     c.restore();
     // liseré fin le long des deux courbes limites (la frontière « hors gamme » se lit comme une ligne, pas comme des marches)
     c.save(); c.beginPath(); c.rect(X0, Y0, X1 - X0, Y1 - Y0); c.clip(); c.strokeStyle = 'rgba(148,163,184,.55)'; c.lineWidth = 1;
@@ -2400,17 +2401,17 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     const exits = [];
     manLab.forEach(([inR, m, all]) => { (all || []).forEach(([b1, s1], k) => { const nx = all[k + 1]; if(!nx) return; const [b2, s2] = nx;
       if((s1 - ATL.S0)*(s2 - ATL.S0) <= 0 && s1 !== s2){ const bb = b1 + (b2 - b1)*(ATL.S0 - s1)/(s2 - s1), x = px(bb); if(x > X0 + 4 && x < X1 - 4) exits.push([x, m]); } }); });
-    c.strokeStyle = '#fff'; c.lineWidth = 2;
-    // le tiret blanc continue SOUS le cadre jusqu'à son chiffre (en évitant les chiffres d'envergure) → on voit que ce chiffre est le sien
-    c.save(); c.setLineDash([4, 3]); c.lineWidth = 1.6; c.strokeStyle = 'rgba(255,255,255,.85)';
-    exits.forEach(([x]) => { c.beginPath(); c.moveTo(x, Y1); c.lineTo(x, Y1 + 3); c.moveTo(x, Y1 + 17); c.lineTo(x, Y1 + 34); c.stroke(); });
+    // audit dataviz (nov. 2026) : plus de 2e rangée de chiffres sous l'axe (deux échelles sur le même axe) → une pastille
+    // posée SUR chaque tiret, juste au-dessus du bas du cadre : le chiffre est collé à sa ligne
+    c.save(); c.font = '800 '+(G.narrow ? 10 : 11)+'px system-ui, sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle';
+    exits.forEach(([x, m]) => { const tx = String(m), w = c.measureText(tx).width + 10, y = Y1 - 11;
+      c.beginPath(); if(c.roundRect) c.roundRect(x - w/2, y - 8, w, 16, 8); else c.rect(x - w/2, y - 8, w, 16);
+      c.fillStyle = '#f8fafc'; c.fill(); c.lineWidth = 1.5; c.strokeStyle = '#0f172a'; c.stroke(); c.fillStyle = '#0f172a'; c.fillText(tx, x, y + .5); });
     c.restore();
-    c.font = '800 10px system-ui, sans-serif'; c.fillStyle = '#e2e8f0'; c.textAlign = 'center';
-    exits.forEach(([x, m]) => c.fillText(m, x, Y1 + 46));
     // explication de la rangée, sur sa propre ligne en dessous (centrée)
     c.font = '700 '+(G.narrow ? 9 : 10)+'px system-ui, sans-serif'; c.textAlign = 'center'; c.fillStyle = '#94a3b8';
     if(!VIDEO && (ATL.lay.man || ATL.lay.ses)){ // légende sous la carte, une ligne par calque affiché : tiret blanc = maniabilité · trait ambre = limite des 5 min de session
-      const sw = 26, yA = Y1 + (ATL.lay.man ? 58 : 42), yB = yA + (ATL.lay.man ? 16 : 0);
+      const sw = 26, yA = Y1 + 42, yB = yA + (ATL.lay.man ? 16 : 0);
       let t1 = t(' = maniabilité (résistance au roulis : surface × envergure²)',' = maneuverability (roll resistance: area × span²)');
       let t2 = t(' = limite des '+SES_OK+' min de session : d\'un côté tu t\'épuises, de l\'autre tu tiens '+SES_OK+' min +',' = '+SES_OK+'-min session limit: on one side you tire, on the other you last '+SES_OK+' min+');
       if(Math.max(c.measureText(t1).width, c.measureText(t2).width) + sw + 14 > G.W){   // téléphone : version courte (le détail est dans la légende sous la carte)
@@ -2439,6 +2440,8 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
         fIn = ar >= ATL.AR0 && ar <= ATL.AR1 && atlCat(bb, ss, kg, manOf(bb, ss) >= 45, ses.unlimited || ses.min >= SES_OK) === ATL.focus;
         pts[pts.length - 1].focus = fIn; }
       c.globalAlpha = fIn ? 1 : .18;
+      // toutes marques : points neutres, plus petits, semi-transparents (audit dataviz : 15 couleurs de marque = confettis + points empilés)
+      if(!ATL.sel.length && !VIDEO){ c.globalAlpha *= .75; dotPath(c, 0, x, y, G.narrow ? 3.2 : 3.8); c.fillStyle = '#e2e8f0'; c.fill(); c.lineWidth = 1; c.strokeStyle = '#0f172a'; c.stroke(); c.globalAlpha = 1; return; }
       dotDraw(c, multi ? act.indexOf(B) % 4 : 0, x, y, G.narrow ? 4.2 : VIDEO ? (ATL.focus && fIn ? 4.6 : 3.8) : 5, few ? famCol[f] : B.c, G.narrow ? 1.5 : 2);   // forme par marque en comparaison
       c.globalAlpha = 1;
     }));
@@ -2473,6 +2476,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
       MY = {x, y, r, hit, lab, lx, ly, tw, h, font};
     }
     const boxes = pts.map(p => [p.x - 6, p.y - 6, 12, 12]);
+    exits.forEach(([x]) => boxes.push([x - 16, Y1 - 21, 32, 20]));   // pastilles de maniabilité au bas du cadre : les noms de zones les évitent
     if(MY) boxes.push([MY.lx, MY.ly, MY.tw, MY.h]);   // les noms de zones et d'ailes évitent l'étiquette « ton aile »
     ATL.manTop = [];
     if(VIDEO){ ATL.placed = []; ATL.leaders = []; } else {
