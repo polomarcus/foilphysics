@@ -120,4 +120,6 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://simulator.foil-house.com/formules.html?lang=es"/>
     <xhtml:link rel="alternate" hreflang="it" href="https://simulator.foil-house.com/formules.html?lang=it"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://simulator.foil-house.com/formules.html"/></url>
+  <url><loc>https://simulator.foil-house.com/dock.html</loc><lastmod>2026-11-21</lastmod></url>
+  <url><loc>https://simulator.foil-house.com/dock.html?lang=en</loc><lastmod>2026-11-21</lastmod></url>
 </urlset>
