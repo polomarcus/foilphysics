@@ -518,3 +518,12 @@ window.DOCK_I18N_EXTRA = {
   it: {pumpUpTap: '👆 TOCCA PER POMPARE!', pumpUpKey: '␣ SPAZIO PER POMPARE!'},
   de: {pumpUpTap: '👆 TIPPEN ZUM PUMPEN!', pumpUpKey: '␣ LEERTASTE ZUM PUMPEN!'}};
   for(const l in add) window.DOCK_I18N_EXTRA[l] = Object.assign(window.DOCK_I18N_EXTRA[l] || {}, add[l]); })();
+
+// 🌊 la houle change pendant le run
+(function(){ const add = {
+  fr: {swellUp: '🌊 La houle forcit : {h}', swellDown: '🌊 La houle se calme : {h}'},
+  en: {swellUp: '🌊 The swell is building: {h}', swellDown: '🌊 The swell is easing: {h}'},
+  es: {swellUp: '🌊 Las olas crecen: {h}', swellDown: '🌊 Las olas se calman: {h}'},
+  it: {swellUp: '🌊 L\'onda cresce: {h}', swellDown: '🌊 L\'onda si calma: {h}'},
+  de: {swellUp: '🌊 Die Dünung legt zu: {h}', swellDown: '🌊 Die Dünung lässt nach: {h}'}};
+  for(const l in add) window.DOCK_I18N_EXTRA[l] = Object.assign(window.DOCK_I18N_EXTRA[l] || {}, add[l]); })();

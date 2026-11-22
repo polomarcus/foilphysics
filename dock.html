@@ -405,7 +405,7 @@ seoLang((/[?&]lang=(en|es|it|de)\b/i.exec(location.search) || [])[1] || 'fr');</
 <div class="dlg" id="dlg"><div class="face" id="face"></div><div class="box"><div class="whorow"><div class="who">Prof. Foil</div><div class="langs" id="langs" role="group" aria-label="Langue"></div></div><div class="say" id="say"></div><div class="ch" id="ch"></div><div class="next" id="nx">▼ clique pour continuer</div></div></div>
 <div class="tip hide" id="tip"><div class="mini" id="mini"></div><div class="bub" id="bub"></div></div>
 
-<script src="dock-i18n.js?v=49"></script>
+<script src="dock-i18n.js?v=50"></script>
 <script src="ailes.js?v=20261118"></script>
 <script type="module">
 import * as THREE from 'three';
@@ -1332,6 +1332,16 @@ addEventListener('keydown', e => { if(e.key === 'Escape' && !$('wpick').classLis
 try{ const h0 = +localStorage.getItem('dock-houle'); if(WAVES.some(w => w.h === h0)){ ST.H = h0; $('swell').querySelectorAll('button').forEach(x => { const on = +x.dataset.v === h0; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on ? 'true' : 'false'); }); } }catch(e){}
 $('test').onclick = () => MODE === 'carve' && !VID ? pickWave(playTest) : playTest();
 if(/[?&]debug=1/.test(location.search)) { window.__dockTest = () => test; window.__dockSW = SW; window.__dockShare = () => { const d = shareData(); return d ? shareCanvas(d) : null; }; window.__dockSET = SET; window.__dockSWG = SWG; window.__dockCam = (x, y, z, tx, ty, tz) => { cam.position.set(x, y, z); cam.lookAt(tx, ty, tz); }; window.__dockFoil = () => foil; window.__dockHold = b => { DBG_HOLD = !!b; }; window.__dockInfo = () => { let meshes = 0, vis = 0; scene.traverse(o => { if(o.isMesh || o.isLine || o.isPoints){ meshes++; let v = true; for(let q = o; q; q = q.parent) if(!q.visible){ v = false; break; } if(v) vis++; } }); return {calls: gl.info.render.calls, tris: gl.info.render.triangles, meshes, visibles: vis, geoms: gl.info.memory.geometries}; }; window.__dockTURN = TURN; window.__dockH = h => { if(h !== undefined) seaU.H.value = h; return seaU.H.value; }; window.__dockK = (k, b) => { SW.K = k; if(b !== undefined) SW.back = b; }; window.__dockFrame = (now, t) => { if(t !== undefined) clock.elapsedTime = t; testFrame(now); }; }   // tests locaux : placer le rider
+// 🌊 la houle change pendant le run (retour Paul) : la vague choisie est celle du départ, puis toutes les 25 à 37 s elle forcit ou se calme
+// d'un cran (au plus un cran autour du choix), en douceur (0,25 m/s). Seule la hauteur varie : la vitesse des vagues reste (sinon elles « sauteraient »).
+const SWELL_LV = [0.5, 1, 1.75, 2.5];
+function swellTick(dt){ const S = test.sw || (test.sw = {h: ST.H, to: ST.H, next: 25 + 8*Math.random(), i0: Math.max(0, SWELL_LV.indexOf(ST.H))});
+  S.next -= dt;
+  if(S.next <= 0){ S.next = 25 + 12*Math.random(); const i = SWELL_LV.indexOf(S.to), opts = [i - 1, i + 1].filter(j => j >= 0 && j < SWELL_LV.length && Math.abs(j - S.i0) <= 1);
+    if(opts.length){ const j = opts[Math.floor(Math.random()*opts.length)], up = j > i; S.to = SWELL_LV[j];
+      popUp(fill(up ? (T.swellUp || '🌊 La houle forcit : {h}') : (T.swellDown || '🌊 La houle se calme : {h}'), {h: T.swells[j]})); beep(up ? 392 : 523, 0.25, 'sine', 0.12); setTimeout(() => beep(up ? 523 : 392, 0.25, 'sine', 0.12), 180);
+      $('tcap').textContent = $('tcap').textContent.replace(/🌊 [^·]*$/, '🌊 ' + (((T.waveCards || [])[j] || {}).n || '') + ' ' + T.swells[j]); } }
+  if(Math.abs(S.to - S.h) > 1e-3){ S.h += Math.sign(S.to - S.h)*Math.min(Math.abs(S.to - S.h), dt*0.25); seaU.H.value = 2*S.h; test.swM = swGain(S.h); } }
 function testFrame(now){
   { const fd = Math.max(0, Math.min(0.05, (now - (test.fxT || now))/1000)); test.fxT = now; fxStep(fd, clock.elapsedTime); objFx(clock.elapsedTime);
     // 💦 gerbes sur les rouleaux du shore break, autour de là où on regarde (même phase que le shader de la bande d'écume)
@@ -1352,6 +1362,7 @@ function testFrame(now){
     // 🏄 virage réaliste en Carve (tests de réalisme, demande Paul) : le coût d'un virage vient de la portance en plus qu'il faut pour tourner penché.
     // Traînée induite ajoutée ≈ TURN.k·(1,15·v_décollage/v)²·tan²(gîte) en m/s² : un carve serré (45-50°) coûte ~0,3 à 0,4 m/s², un carve large (20°) presque rien.
     // (avant : 0,0035·|ω|·v², quasi gratuit : 180° à 57° de gîte ne coûtait que 0,6 km/h de plus qu'aller tout droit)
+    if(test.surf && !VID) swellTick(dt);
     const surf = test.surf, gH = surf ? test.swM : 1, tanB = test.om*test.v/9.81, aOld = 0.0035*Math.abs(test.om)*test.v*test.v,
       aTurn = surf ? aOld + Math.max(0, TURN.k*Math.pow(1.15*test.vl/Math.max(test.v, 0.5), 2)*tanB*tanB - aOld)*Math.max(0, Math.min(1, (test.v/test.vl - TURN.fade0)/TURN.fadeW)) : 0;   // près du décrochage on retombe sur l'ancien coût (le virage ralentit, il ne fait pas tomber)   // Carve : force de houle calibrée (gH = gain selon la hauteur) ; slalom et eau plate : inchangés
     // les freins ajoutés par le calibrage (dos de vague, creux plus marqué) s'effacent près du décrochage : ils ralentissent, ils ne font pas tomber
