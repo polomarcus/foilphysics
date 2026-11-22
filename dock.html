@@ -159,7 +159,7 @@ seoLang((/[?&]lang=(en|es|it|de)\b/i.exec(location.search) || [])[1] || 'fr');</
   .beat{position:fixed; z-index:7; left:50%; top:17%; bottom:auto; transform:translateX(-50%) skewX(-8deg); width:min(1000px, 92vw); background:rgba(11,18,34,.88); border:2px solid #fbbf24; border-radius:18px; padding:14px 22px 16px 16px; display:grid; grid-template-columns:164px 1fr; column-gap:20px; align-items:center;}
   /* le Prof en grand DANS le panneau (colonne de gauche, buste entier : tête, lunettes, moustache, médaillon), le rythme à droite */
   .bface{grid-column:1; grid-row:1 / span 3; width:164px; height:164px; border-radius:16px; overflow:hidden; background:radial-gradient(circle at 50% 38%, #fff1c9, #ffc08a 55%, #e07a5f); border:3px solid #fbbf24; box-shadow:0 6px 18px rgba(0,0,0,.4); transform:skewX(8deg); transform-origin:50% 100%;}
-  .bface img, .bface svg{width:100%; height:100%; display:block; object-fit:fill;} .bface.talk{animation:btalk .3s ease-in-out infinite alternate;} @keyframes btalk{to{transform:skewX(8deg) translateY(-7px) rotate(-2.5deg) scale(1.03);}}
+  .bface img, .bface svg{width:100%; height:100%; display:block; object-fit:fill;} .bface.ouch{animation:rshake .25s linear 3; border-color:#ef4444 !important;} .bface.yay{animation:rwin .35s ease-out; border-color:#22c55e !important;} .bface.talk{animation:btalk .3s ease-in-out infinite alternate;} @keyframes btalk{to{transform:skewX(8deg) translateY(-7px) rotate(-2.5deg) scale(1.03);}}
   .beat > .beatlbl, .beat > .lane, .beat > .brate{grid-column:2;}
   body.touch .beat{grid-template-columns:76px 1fr; column-gap:10px;} body.touch .bface{width:76px; height:76px; border-width:2px; border-radius:10px;}
   .beatlbl{font-weight:900; font-style:italic; color:#fde68a; text-align:center; font-size:1.15rem; margin-bottom:12px;}
@@ -1168,7 +1168,10 @@ function beginTakeoff(){ setKeys('step'); swimHud(false); if(test.didDemo) camCu
   test.x = RUN_X; test.z = RUN_Z0; test.h = 0; test.v = 0; test.pumpUp = null; test.beat0 = 0; $('plane').classList.add('hide'); rider.visible = false; runner.visible = true; runner.rotation.set(0, 0, 0); runner.position.set(RUN_X, DECK, RUN_Z0); runnerPose('run', 0, 0);
   $('beat').classList.remove('hide'); $('nfs').classList.add('hide'); $('brate').textContent = ''; $('brate').className = 'brate';
   document.querySelectorAll('#beat .note').forEach((n, i) => { n.className = 'note' + (i === 3 ? ' hop' : ''); n.style.left = bX(STEPS[i]) + '%'; }); { const im = $('mini').querySelector('img'); $('bface').innerHTML = im ? '<img src="' + im.src + '" alt="">' : $('mini').innerHTML; } }
-function judge(k, q){ const tk = test.takeoff; tk.hits[k] = q; const el = document.querySelectorAll('#beat .note')[k];
+// 😬 la Prof réagit à tes notes : grimace sur un raté, ravie sur un PARFAIT (images calculées par prof3d.js)
+const profReact = (mood, ms) => { const f = $('bface'), im = f && f.querySelector('img'), F = window.PROF_FACES; if(!im || !F || !F[mood]) return; im.src = F[mood];
+  f.classList.remove('ouch', 'yay'); void f.offsetWidth; f.classList.add(mood); clearTimeout(profReact.h); profReact.h = setTimeout(() => { im.src = F.ok; f.classList.remove('ouch', 'yay'); }, ms || 900); };
+function judge(k, q){ const tk = test.takeoff; tk.hits[k] = q; profReact(q >= 1 ? 'yay' : q < 0.6 ? 'ouch' : ''); const el = document.querySelectorAll('#beat .note')[k];
   el.className = 'note' + (k === 3 ? ' hop' : '') + ' ' + (q >= 1 ? 'p' : q >= 0.6 ? 'g' : q > 0 ? 'b' : 'm');
   popUp(q >= 1 ? (T.pPerfect || 'PERFECT') : q >= 0.6 ? (T.pGood || 'GOOD') : q > 0 ? (T.pMeh || 'MEH') : (T.pMiss || 'MISS'), 0, q < 0.6);
   if(q > 0){ beep(NOTE_F[k], k === 3 ? 0.25 : 0.1); tk.step = k; } else beep(150, 0.18, 'sawtooth');
@@ -1196,7 +1199,7 @@ function takeoffFrame(now, dt, t){ const tk = test.takeoff, s = (now - tk.t0)/10
     STEPS.forEach((n, i) => { if(tk.hits[i] === null && ps - LAT > n + 0.25) judge(i, 0); });
     if(tk.hits.every(h => h !== null)){ const q = tk.hits.reduce((a, b) => a + b, 0); tk.q = q; tk.jt = now; tk.z0 = runner.position.z;
       if(q >= 2.2){ if(tk.hits.every(h => h >= 1)) objDone('p4'); if(!test.ploufs && !test.tkOk) objDone('first'); test.tkOk = 1; test.puPumps = 0; } else test.ploufs = (test.ploufs || 0) + 1;
-      if(q >= 2.2){ tk.phase = 'jump'; popUp(q >= 3.6 ? (T.pLaunchTop || 'TOP!') : (T.pLaunch || 'GO!')); } else { tk.phase = 'plouf'; popUp(T.pPlouf || 'SPLASH', 0, true); } } }
+      if(q >= 2.2){ tk.phase = 'jump'; popUp(q >= 3.6 ? (T.pLaunchTop || 'TOP!') : (T.pLaunch || 'GO!')); } else { tk.phase = 'plouf'; popUp(T.pPlouf || 'SPLASH', 0, true); profReact('ouch', 1800); } } }
   if(tk.phase === 'show' || tk.phase === 'run'){
     const target = RUN_Z0 - (tk.step >= 0 ? STEP_D[Math.min(2, tk.step)] : 0), moving = Math.abs(runner.position.z - target) > 0.05;
     runner.position.z += (target - runner.position.z)*(1 - Math.exp(-dt*7)); const ph = now/1000*Math.PI*3.2;
@@ -1625,7 +1628,7 @@ $('face').style.display = 'none';
 // 🧑‍🔬 Prof. Foil en 3D (prof3d.js) ; l'ancien dessin SVG seulement en secours (sinon il apparaît une fraction de seconde à chaque chargement, ex. changement de langue)
 { const bg = 'radial-gradient(circle at 50% 38%, #fff1c9, #ffc08a 55%, #e07a5f)'; $('big').style.background = bg; $('mini').style.background = '#ffd7a8';
   const svg = () => { $('mini').innerHTML = FACE; $('big').innerHTML = FACE; };
-  import('./prof3d.js?v=18').then(m => { if(!m.mountProf($('big'), $('mini'), {pr: MOB ? 1.25 : 2})) svg(); }).catch(svg); }
+  import('./prof3d.js?v=19').then(m => { if(!m.mountProf($('big'), $('mini'), {pr: MOB ? 1.25 : 2})) svg(); }).catch(svg); }
 const hud = on => { document.querySelectorAll('.sel,.right,.go,.statsbar').forEach(e => e.classList.toggle('hide', !on)); document.body.classList.toggle('indock', on); };
 hud(false);
 const GO = {carve: 'carve.html', vite: 'vitesse.html', loin: 'long-distance.html', apprendre: 'debutant.html'};
