@@ -405,7 +405,7 @@ seoLang((/[?&]lang=(en|es|it|de)\b/i.exec(location.search) || [])[1] || 'fr');</
 <div class="dlg" id="dlg"><div class="face" id="face"></div><div class="box"><div class="whorow"><div class="who">Prof. Foil</div><div class="langs" id="langs" role="group" aria-label="Langue"></div></div><div class="say" id="say"></div><div class="ch" id="ch"></div><div class="next" id="nx">▼ clique pour continuer</div></div></div>
 <div class="tip hide" id="tip"><div class="mini" id="mini"></div><div class="bub" id="bub"></div></div>
 
-<script src="dock-i18n.js?v=48"></script>
+<script src="dock-i18n.js?v=49"></script>
 <script src="ailes.js?v=20261118"></script>
 <script type="module">
 import * as THREE from 'three';
@@ -1036,7 +1036,7 @@ const award = (key, base, extra) => { const pts = Math.round(base*mult()); test.
 const bumpFlow = d => { test.flow = Math.max(0, Math.min(100, test.flow + d)); if(d > 0){ const m = $('nmult'); m.classList.remove('up'); void m.offsetWidth; m.classList.add('up'); } };
 /* ---------- 🎯 objectifs de session (demande Paul) : une liste par mode, cochée en jeu, mémorisée pour toujours par aile et par mode ----------
    Rien ici ne touche à la physique : on observe l'état du test (score, virages, position, cœur...) et on coche. Désactivé en mode vidéo. */
-const OBJ_LIST = {carve: ['s1', 's2', 's3', 'carve', 'big', 'cut', 'snake', 'x3', 'face', 'waves', 'read70', 'set', 'foil', 'shore', 'tamed', 'nofall', 'kiss', 'tour', 'secret'],
+const OBJ_LIST = {carve: ['s1', 's2', 's3', 'carve', 'big', 'cut', 'snake', 'x3', 'face', 'waves', 'read70', 'set', 'foil', 'pump', 'shore', 'tamed', 'nofall', 'kiss', 'tour', 'secret'],
   vite: ['t30', 't25', 't21', 'nopen', 'peak'], flat: ['d1', 'd2', 'd3', 'perf8', 'zen', 'cardio', 'tempo']}, OBJ_DOCK = ['p4', 'first', 'pumps'];
 const OBJ = {score: [5000, 12000, 20000], dist: [150, 300, 450], shoreIn: 30, shoreOut: 45, catchR: 1.7, peak: 1.12};   // seuils (dist en m : en 2 min on ne dépasse pas ~550 m en eau plate)
 let OBJ_SAVE = {}; try{ OBJ_SAVE = JSON.parse(localStorage.getItem('dock-obj') || '{}') || {}; }catch(e){ OBJ_SAVE = {}; }
@@ -1053,7 +1053,7 @@ function objPanel(on, ms){ const p = $('objp'); if(!test || !test.objList){ p.cl
   p.classList.toggle('off', !on); $('objc').classList.toggle('off', on); objCount(); }
 function objCount(){ if(!test || !test.objList) return; const saved = OBJ_SAVE[test.objKey] || []; $('objc').innerHTML = '🎯 <small>' + (T.objTitle || 'OBJECTIFS') + '</small> <b>' + test.objList.filter(id => saved.includes(id)).length + '/' + test.objList.length + '</b>'; }
 function objStart(){ if(VID && !VID.obj){ test.objList = null; return; } test.objKey = VID ? 'vid-defi' : objKey(); if(VID) OBJ_SAVE[test.objKey] = []; test.objList = objIds(test.S); test.objNew = []; test.objT0 = performance.now();
-  Object.assign(test, {snake: 0, wavesRow: 0, objShore: 0, tourS: 0, dist: 0, perfRow: 0, cardioT: 0, tempoUps: 0, ploufs: 0, tkOk: 0, puPumps: 0, letters: [0, 0, 0, 0], coin: 0});
+  Object.assign(test, {snake: 0, wavesRow: 0, objShore: 0, tourS: 0, dist: 0, perfRow: 0, cardioT: 0, tempoUps: 0, ploufs: 0, tkOk: 0, puPumps: 0, letters: Array(OBJ_POS.length).fill(0), coin: 0});
   objPanel(true); }
 function objDone(id){ if(!test || (VID && !VID.obj) || !test.objList || !test.objList.includes(id)) return; const saved = OBJ_SAVE[test.objKey] || (OBJ_SAVE[test.objKey] = []); if(saved.includes(id)) return;
   saved.push(id); test.objNew.push(id); if(!VID) try{ localStorage.setItem('dock-obj', JSON.stringify(OBJ_SAVE)); }catch(e){} OBJ_FRESH[test.objKey] = true;
@@ -1109,23 +1109,24 @@ function objEnd(){ const e = $('eobj'); if(!test || !test.objList){ e.innerHTML 
   e.innerHTML = '<span class="eo-n">🎯 ' + n + '/' + test.objList.length + '</span>' + (test.objNew.length ? ' <span class="eo-new">' + (T.objNew || 'nouveau !') + '</span><span class="eo-l">' + test.objNew.map(id => '✅ ' + objName(id, test.S, true)).join(' · ') + '</span>' : ''); }
 // les objets à attraper en vol (Carve) : 4 bouées-lettres F-O-I-L dans la zone de surf et le médaillon du Prof caché derrière le ponton.
 // 1 InstancedMesh pour les bouées + 1 nuage de 5 points texturés (atlas dessiné au canvas) : 2 appels de dessin.
-const OBJ_POS = [[-16, -24], [14, -44], [-13, -66], [17, -88]], OBJ_COIN = [3.9, 13];
-const objTex = (() => { const k = document.createElement('canvas'); k.width = 320; k.height = 64; const c = k.getContext('2d'); c.textAlign = 'center'; c.textBaseline = 'middle';
-  'FOIL'.split('').forEach((ch, i) => { const x = i*64 + 32; c.fillStyle = '#0b1222'; c.beginPath(); c.arc(x, 32, 29, 0, 7); c.fill(); c.fillStyle = ['#f97316', '#22d3ee', '#a3e635', '#f472b6'][i]; c.beginPath(); c.arc(x, 32, 25, 0, 7); c.fill();
+// + 4 bouées P-U-M-P (retour Paul), plus au large sur les côtés, loin du ponton et des rouleaux
+const OBJ_POS = [[-16, -24], [14, -44], [-13, -66], [17, -88], [-38, -12], [36, -30], [-40, -52], [38, -74]], OBJ_WORDS = ['FOIL', 'PUMP'], OBJ_COIN = [3.9, 13], OBJ_N = 9;
+const objTex = (() => { const k = document.createElement('canvas'); k.width = 64*OBJ_N; k.height = 64; const c = k.getContext('2d'); c.textAlign = 'center'; c.textBaseline = 'middle';
+  'FOILPUMP'.split('').forEach((ch, i) => { const x = i*64 + 32; c.fillStyle = '#0b1222'; c.beginPath(); c.arc(x, 32, 29, 0, 7); c.fill(); c.fillStyle = ['#f97316', '#22d3ee', '#a3e635', '#f472b6', '#facc15', '#60a5fa', '#fb7185', '#34d399'][i]; c.beginPath(); c.arc(x, 32, 25, 0, 7); c.fill();
     c.fillStyle = '#0b1222'; c.font = '900 40px system-ui, sans-serif'; c.fillText(ch, x, 35); });
-  { const x = 4*64 + 32, g = c.createRadialGradient(x - 8, 24, 3, x, 32, 28); g.addColorStop(0, '#fff7c2'); g.addColorStop(0.5, '#fbbf24'); g.addColorStop(1, '#b45309'); c.fillStyle = '#78350f'; c.beginPath(); c.arc(x, 32, 29, 0, 7); c.fill(); c.fillStyle = g; c.beginPath(); c.arc(x, 32, 26, 0, 7); c.fill();
+  { const x = 8*64 + 32, g = c.createRadialGradient(x - 8, 24, 3, x, 32, 28); g.addColorStop(0, '#fff7c2'); g.addColorStop(0.5, '#fbbf24'); g.addColorStop(1, '#b45309'); c.fillStyle = '#78350f'; c.beginPath(); c.arc(x, 32, 29, 0, 7); c.fill(); c.fillStyle = g; c.beginPath(); c.arc(x, 32, 26, 0, 7); c.fill();
     c.fillStyle = '#78350f'; c.font = '900 34px system-ui, sans-serif'; c.fillText('P', x, 35); }
   const t = new THREE.CanvasTexture(k); t.colorSpace = THREE.SRGBColorSpace; return t; })();
-const objGeo = new THREE.BufferGeometry(); objGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(15).fill(-99), 3)); objGeo.setAttribute('idx', new THREE.BufferAttribute(new Float32Array([0, 1, 2, 3, 4]), 1));
+const objGeo = new THREE.BufferGeometry(); objGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(3*OBJ_N).fill(-99), 3)); objGeo.setAttribute('idx', new THREE.BufferAttribute(new Float32Array([...Array(OBJ_N).keys()]), 1));
 const objPts = new THREE.Points(objGeo, new THREE.ShaderMaterial({uniforms: {map: {value: objTex}, sc: {value: 400}}, transparent: true,
   vertexShader: 'attribute float idx; uniform float sc; varying float vI; void main(){ vI = idx; vec4 mv = modelViewMatrix*vec4(position, 1.0); gl_PointSize = sc/max(0.5, -mv.z); gl_Position = projectionMatrix*mv; }',
-  fragmentShader: 'uniform sampler2D map; varying float vI; void main(){ vec4 c = texture2D(map, vec2((gl_PointCoord.x + vI)/5.0, 1.0 - gl_PointCoord.y)); if(c.a < 0.4) discard; gl_FragColor = c; }'}));
+  fragmentShader: 'uniform sampler2D map; varying float vI; void main(){ vec4 c = texture2D(map, vec2((gl_PointCoord.x + vI)/9.0, 1.0 - gl_PointCoord.y)); if(c.a < 0.4) discard; gl_FragColor = c; }'}));
 objPts.frustumCulled = false; objPts.visible = false; scene.add(objPts);
-const objBuoys = new THREE.InstancedMesh(new THREE.SphereGeometry(0.2, 12, 8), new THREE.MeshStandardMaterial({color: '#f59e0b', roughness: 0.5}), 4); objBuoys.frustumCulled = false; objBuoys.visible = false; scene.add(objBuoys);
+const objBuoys = new THREE.InstancedMesh(new THREE.SphereGeometry(0.2, 12, 8), new THREE.MeshStandardMaterial({color: '#f59e0b', roughness: 0.5}), OBJ_POS.length); objBuoys.frustumCulled = false; objBuoys.visible = false; scene.add(objBuoys);
 const objM4 = new THREE.Matrix4();
 function objFx(t){ const on = !!(test && test.objList && test.surf); objPts.visible = objBuoys.visible = on; if(!on) return; const a = objGeo.attributes.position.array;
   OBJ_POS.forEach(([x, z], i) => { const y = seaH(x, z, t); objBuoys.setMatrixAt(i, objM4.makeTranslation(x, y + 0.05, z)); a[3*i] = x; a[3*i + 1] = test.letters[i] ? -99 : y + 1.0 + 0.08*Math.sin(t*2 + i); a[3*i + 2] = z; });
-  a[12] = OBJ_COIN[0]; a[13] = test.coin ? -99 : seaH(OBJ_COIN[0], OBJ_COIN[1], t) + 0.95 + 0.06*Math.sin(t*2.4); a[14] = OBJ_COIN[1];
+  const ci = 3*OBJ_POS.length; a[ci] = OBJ_COIN[0]; a[ci + 1] = test.coin ? -99 : seaH(OBJ_COIN[0], OBJ_COIN[1], t) + 0.95 + 0.06*Math.sin(t*2.4); a[ci + 2] = OBJ_COIN[1];
   objBuoys.instanceMatrix.needsUpdate = true; objGeo.attributes.position.needsUpdate = true; objPts.material.uniforms.sc.value = 0.85*gl.domElement.height/(2*Math.tan(cam.fov*Math.PI/360)); }
 // à chaque image de vol : les objectifs qui se lisent dans l'état du test
 function objTick(dt, v, ride, fx, fz){ if(!test.objList || test.pumpUp) return;
@@ -1135,7 +1136,7 @@ function objTick(dt, v, ride, fx, fz){ if(!test.objList || test.pumpUp) return;
     // le tour du propriétaire : longer un côté du ponton, passer devant sa tête, longer l'autre côté (on ne peut pas passer côté plage : c'est le shore break)
     { const side = test.z > 4 && Math.abs(test.x) > 2.1 && Math.abs(test.x) < 14 ? Math.sign(test.x) : 0; if(side){ if(test.tourS && side === -test.tourS && test.tourF) objDone('tour'); if(side !== test.tourS){ test.tourS = side; test.tourF = 0; } }
       else if(test.tourS && test.z < DOCK_END - 0.8 && Math.abs(test.x) < 2.1) test.tourF = 1; }
-    OBJ_POS.forEach(([x, z], i) => { if(!test.letters[i] && Math.hypot(test.x - x, test.z - z) < OBJ.catchR){ test.letters[i] = 1; popUp('FOIL'.split('').map((c, j) => test.letters[j] ? c : '·').join(' ')); beep(660 + 110*i, 0.1, 'triangle', 0.13); splash(x, seaH(x, z, clock.elapsedTime) + 1, z, 8, 1.6); if(test.letters.every(Boolean)) objDone('foil'); } });
+    OBJ_POS.forEach(([x, z], i) => { if(!test.letters[i] && Math.hypot(test.x - x, test.z - z) < OBJ.catchR){ test.letters[i] = 1; const w = Math.floor(i/4); popUp(OBJ_WORDS[w].split('').map((c, j) => test.letters[4*w + j] ? c : '·').join(' ')); beep(660 + 110*i, 0.1, 'triangle', 0.13); splash(x, seaH(x, z, clock.elapsedTime) + 1, z, 8, 1.6); if(test.letters.slice(0, 4).every(Boolean)) objDone('foil'); if(test.letters.slice(4, 8).every(Boolean)) objDone('pump'); } });
     if(!test.coin && Math.hypot(test.x - OBJ_COIN[0], test.z - OBJ_COIN[1]) < OBJ.catchR){ test.coin = 1; objDone('secret'); } }
   else if(test.slalom){ if(v*3.6 >= objVars(test.S).v) objDone('peak'); }
   else { test.dist += v*dt; OBJ.dist.forEach((d, i) => { if(test.dist >= d) objDone('d' + (i + 1)); }); test.cardioT = (test.hr || 110) >= 180 ? test.cardioT + dt : 0; if(test.cardioT >= 10) objDone('cardio'); } }
@@ -1864,7 +1865,7 @@ if(/[?&]video=1/.test(location.search)){
         else if(VID.leg === 'out' && test.z < -6){ VID.leg = 'in'; VID.side = -VID.side; }   // court retour au large, puis on repart sur la vague suivante
         const want = VID.leg === 'in' ? Math.PI - 0.3*VID.side : 0.55*VID.side, e = wrapA(want - test.h);
         keys.l = e > 0.08; keys.r = e < -0.08; test.sta = 100;
-        if(test.v < test.vl*(VID.leg === 'in' ? 1.6 : 1.2) && now - VID.lp > 360){ VID.lp = now; pump(); } }   // aller plus vite que la vague (≈ 17 km/h) pour rester devant la crête
+        if(test.v < test.vl*(VID.leg === 'in' ? 1.8 : 1.25) && now - VID.lp > 360){ VID.lp = now; test.lastPump = 0; pump(); } }   // aller plus vite que la vague (≈ 17 km/h) pour rester devant la crête
       else { keys.l = keys.r = false; } }
     else if(go('end')){ keys.l = keys.r = false; }
     if(s > 26 && !ended){ ended = true; if(rec) rec.stop(); }
@@ -1910,24 +1911,38 @@ if(/[?&]video=1/.test(location.search)){
 
   // ⏱ scène « Le défi des 2 minutes » (v2, retour Paul : « l'accéléré donne la gerbe ») : une VRAIE session de 2 min, montrée en 4 extraits
   // à vitesse normale. Entre deux extraits, le jeu tourne en coulisse (même pilote, pas d'image) : le chrono saute, score et objectifs sont ceux de la partie.
-  const CLIPS = [{s: 0, g: 0}, {s: 5.6, g: 38}, {s: 11.2, g: 74}, {s: 16.8, g: 112}];   // s : début de l'extrait (vidéo), g : temps de jeu à ce moment
+  // v3 (retour Paul : « capturer quand on attrape les lettres, ou quand il y a des actions ») : le pilote vise les bouées F-O-I-L puis enchaîne les cutbacks ;
+  // le montage coupe JUSTE AVANT chaque action (lettre en approche, cutback avant les rouleaux) et reprend 1,3 s après.
+  const nextLetter = () => test.letters ? OBJ_POS.findIndex((p, j) => !test.letters[j]) : -1;
   function defiBot(vnow){ if(!test || test.done) return;
     if(test.swim || test.crashA || test.takeoff){ keys.l = keys.r = false; if(test.takeoff){ test.takeoff = null; runner.visible = false; rider.visible = true; $('beat').classList.add('hide'); test.x = -30; test.z = -38; test.h = Math.PI - 0.3; test.v = test.vl*1.35; test.last = vnow; VID.leg = 'in'; } return; }
-    if(VID.leg === 'in' && test.z > 4){ VID.leg = 'out'; } else if(VID.leg === 'out' && test.z < -6){ VID.leg = 'in'; VID.side = -VID.side; }
-    const want = VID.leg === 'in' ? Math.PI - 0.3*VID.side : 0.55*VID.side, e = wrapA(want - test.h); keys.l = e > 0.08; keys.r = e < -0.08; test.sta = 100;
-    if(test.v < test.vl*(VID.leg === 'in' ? 1.6 : 1.3) && vnow - VID.lp > 330){ VID.lp = vnow; test.lastPump = 0; pump(); } }
+    const li = nextLetter(); let want;
+    if(li >= 0){ const [tx, tz] = OBJ_POS[li]; want = Math.atan2(-(tx - test.x), -(tz - test.z)); }
+    else { VID.side = test.x >= 0 ? -1 : 1;   // on s'éloigne toujours du ponton (sinon « bisou au ponton » en pleine vidéo)
+      if(VID.leg === 'in' && test.z > -10){ VID.leg = 'out'; } else if(VID.leg === 'out' && test.z < -40){ VID.leg = 'in'; }
+      want = VID.leg === 'in' ? Math.PI - 0.3*VID.side : 0.55*VID.side; }
+    const e = wrapA(want - test.h); keys.l = e > 0.08; keys.r = e < -0.08; test.sta = 100;
+    if(test.v < test.vl*1.55 && vnow - VID.lp > 330){ VID.lp = vnow; test.lastPump = 0; pump(); } }
+  // une action arrive-t-elle ? (pour démarrer un extrait juste avant)
+  const actionSoon = () => { if(!test || test.swim || test.crashA || test.takeoff) return false; const li = nextLetter();
+    if(li >= 0){ const [tx, tz] = OBJ_POS[li], d = Math.hypot(tx - test.x, tz - test.z); return d < 10; }
+    return (VID.turnClips || 0) < 1 && VID.leg === 'in' && test.z > -13; };   // UN extrait de cutback juste avant les rouleaux, puis on file vers la fin
+  const evCount = () => (test.letters ? test.letters.reduce((a, b) => a + b, 0) : 0) + test.turns;
   function defiFrame(now, s){
     const go = p => { if(phase !== p){ phase = p; ph0 = now; return true; } return false; };
     go('ride');
     if(!VID.started){ if(/[?&]debug=1/.test(location.search)) window.__vid = VID; VID.started = true; MODE = 'carve'; ST.H = 1; goW('Alpine Foil RSX Carve 1100'); $('big').classList.add('hide'); VID.obj = true; startTest(); SET.on = SET.gain; SET.period = 13; waveSync();   // houle 1 m, quelle que soit la vague mémorisée
       test.takeoff = null; test.pumpUp = null; runner.visible = false; rider.visible = true; $('beat').classList.add('hide'); $('nfs').classList.remove('hide');
-      VID.toff = 0; test.x = -30; test.z = -38; test.h = Math.PI - 0.3; test.v = test.vl*1.35; test.manual = true; test.mt0 = now; test.last = now; test.t0 = now; test.sta = 100; VID.leg = 'in'; VID.side = 1; VID.lp = 0; VID.nObj = 0; VID.clip = 0;
+      VID.toff = 0; test.x = -30; test.z = -38; test.h = Math.PI - 0.3; test.v = test.vl*1.35; test.manual = true; test.mt0 = now; test.last = now; test.t0 = now; test.sta = 100; VID.leg = 'in'; VID.side = 1; VID.lp = 0; VID.nObj = 0; VID.clip = 0; VID.clipT0 = now; VID.ev0 = 0; VID.evT = 0;
       VID.cam = (fx, fz, dt) => { VID.ch = VID.ch ?? test.h; VID.ch += wrapA(test.h - VID.ch)*(1 - Math.exp(-dt*1.8)); const gx = -Math.sin(VID.ch), gz = -Math.cos(VID.ch);
         cam.position.set(test.x - gx*7.2, 1.6, test.z - gz*7.2); cam.lookAt(test.x + gx*1.5, 0.75, test.z + gz*1.5); }; }
-    // coupe vers l'extrait suivant : on fait tourner le jeu en coulisse jusqu'au temps de jeu prévu
-    const nx = CLIPS[VID.clip + 1]; if(nx && s >= nx.s && !test.done){ VID.clip++; let vnow = now + VID.toff; const target = test.mt0 + nx.g*1000;
-      const k0 = performance.now(); while(vnow < target && !test.done){ vnow += 1000/30; clock.elapsedTime += 1/30; defiBot(vnow); testFrame(vnow); } VID.skipMs = (VID.skipMs || []).concat(Math.round(performance.now() - k0));
-      seaU.t.value = clock.elapsedTime; const lag = performance.now() - now; VID.toff = vnow - now - lag; now = performance.now(); VID.pops = []; VID.cutT = now; VID.ch = test.h; whoosh(); }   // le calcul prend du temps : on repart de l'heure réelle
+    // extrait en cours : il s'arrête 1,3 s après l'action (ou au bout de 5,5 s) ; puis on fait tourner le jeu en coulisse jusqu'à la prochaine action
+    if(!test.done && !VID.endT){ const ev = evCount(); if(ev > VID.ev0 && !VID.evT){ VID.evT = now; } 
+      const clipOver = (VID.evT && now - VID.evT > 950) || now - VID.clipT0 > 4500;
+      if(clipOver && s > 3){ let vnow = now + VID.toff; const k0 = performance.now(), gEnd = test.mt0 + 114.5*1000;
+        let n = 0; while(!test.done && vnow < gEnd){ vnow += 1000/30; clock.elapsedTime += 1/30; defiBot(vnow); testFrame(vnow); if(++n > 15 && actionSoon()){ if(nextLetter() < 0) VID.turnClips = (VID.turnClips || 0) + 1; break; } }   // au moins 0,5 s de jeu sauté
+        seaU.t.value = clock.elapsedTime; VID.skipMs = (VID.skipMs || []).concat(Math.round(performance.now() - k0)); const lag = performance.now() - now; VID.toff = vnow - now - lag; now = performance.now();
+        VID.pops = []; VID.cutT = now; VID.ch = test.h; VID.clipT0 = now; VID.ev0 = evCount(); VID.evT = 0; whoosh(); } }
     const vnow = now + VID.toff; defiBot(vnow);
     if(test && test.done && !VID.endT){ VID.endT = now; keys.l = keys.r = false; }
     if(VID.endT && now - VID.endT > 4600 && !ended){ ended = true; if(rec) rec.stop(); }
