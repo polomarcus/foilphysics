@@ -18,7 +18,7 @@ window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].ind
   if(!c){ c = document.createElement('link'); c.rel = 'canonical'; document.head.appendChild(c); }   // canonique posée par le script (jamais en dur) : toujours celle de la langue de l'adresse
   if(d) d.setAttribute('content', M.d); c.setAttribute('href', M.u); };
 seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   // dès le chargement, d'après ?lang=</script>
-<script src="lang/xl.js?v=20261111e"></script>
+<script src="lang/xl.js?v=20261122a"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Le Choc des Watts · The Watts Showdown — foil wing comparator">
 <meta property="og:description" content="Classique vs longue distance : où partent tes watts ? · Classic vs long-distance: where do your watts go? AR, traînée/drag, Wh/km. FR/EN.">
@@ -730,6 +730,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   .pin-card .tt-h a{color:inherit; text-decoration:underline; text-decoration-color:#93c5fd; text-decoration-thickness:2px; text-underline-offset:3px;}
   .pin-card .tt-h small{display:block; font-size:.7rem; font-weight:600; color:#93c5fd;}
   .pin-try + .pin-try{margin-top:6px;}
+  .pin-game{display:block; margin-top:6px; text-align:center; border-radius:999px; padding:6px 10px; font-size:.76rem; font-weight:800; text-decoration:none; color:#0b1222; background:#fbbf24;} .pin-game:hover{background:#fde68a;}
   .pin-try{display:block; margin-top:8px; background:transparent; border:1.5px solid currentColor; color:var(--txt); border-radius:999px; padding:6px 10px; font:inherit; font-size:.76rem; font-weight:800; cursor:pointer;}
   .atl-lay{display:flex; flex-wrap:wrap; align-items:center; gap:5px; margin:0 2px 6px; font-size:.74rem; color:var(--muted);}
   .atl-lay:empty{display:none;}
@@ -844,6 +845,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     <a class="tb-tab" href="vitesse.html" data-i18n="tb-vit">🚀 Vitesse</a>
     <a class="tb-tab" href="debutant.html" data-i18n="tb-deb">🎓 Débuter</a>
     <a class="tb-tab" href="carve.html" data-i18n="tb-carve">🌊 Carve</a>
+    <a class="tb-tab" href="dock.html" data-i18n="tb-dock">🎮 Le jeu : Le Dock</a>
   </div>
   <div class="tb-ctrl">
     <button id="xp-btn" type="button" aria-pressed="true">💡 <span data-i18n="xp-lbl">Explications</span><span class="xp-state"></span></button>
@@ -2634,7 +2636,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     'deep-h3':'🔬 Going further',
     'deep-lede':'The model in detail, section by section — click to unfold.',
     'kid-anim-cap':'<span>🌀 below the wing it pushes, above it sucks → water <b>curls around the tips</b>: those vortices carry your energy away, they are <b>the brake</b></span><span>🟧 same weight on <b>less span</b> → stronger vortices → <b>2.5× more brake</b> to pump against</span>',
-    'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve','tb-more':'Links ▾','tb-model':'💻 Physics model','tb-fx':'📐 Our formulas',
+    'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve','tb-dock':'🎮 The game: The Dock','tb-more':'Links ▾','tb-model':'💻 Physics model','tb-fx':'📐 Our formulas',
     'xp-lbl':'Explanations',
     'deb-cta':'🎓 Never flown yet? Start here — the learning setup',
     'h1':'<span class="h1a">The <span class="hi">Watts</span> Showdown</span><span class="h1b">🌊 in pump foil</span>',
@@ -3400,7 +3402,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
                   const nm = L ? '<a href="'+L.u+'" target="_blank" rel="noopener" data-w="'+q.n+'">'+q.n.replace(/ (\S+)$/, '&nbsp;$1')+window.wlTail(L)+'</a>' : q.n;
                   return '<th scope="col" style="'+(f.zc ? 'border-top:4px solid '+f.zc+';' : '')+(f.col ? 'box-shadow:inset 0 0 0 2px '+f.col+';' : '')+'"><button type="button" class="pin-x" data-pin="'+i+'" aria-label="'+t('Retirer de la comparaison','Remove from comparison')+'">×</button><span class="pin-n">'+(i + 1)+'</span>'+nm+'</th>'; }).join('')+'</tr></thead><tbody>'
               + F[0].map((r0, j) => '<tr><th scope="row">'+r0.k+'</th>'+ord.map(i => cell(F[i][j], j)).join('')+'</tr>').join('')
-              + '<tr><th scope="row"></th>'+ord.map(i => { const q = S.pins[i]; return '<td>'+(K.canTry(q.b, q.S) ? (K.slots || [['', t('l\'essayer','try it')]]).map(([sl, lab]) => '<button type="button" class="pin-try" data-try-pin="'+i+'" data-slot="'+sl+'">▶ '+lab+'</button>').join('') : '')+'</td>'; }).join('')+'</tr>'
+              + '<tr><th scope="row"></th>'+ord.map(i => { const q = S.pins[i]; return '<td>'+(K.canTry(q.b, q.S) ? (K.slots || [['', t('l\'essayer','try it')]]).map(([sl, lab]) => '<button type="button" class="pin-try" data-try-pin="'+i+'" data-slot="'+sl+'">▶ '+lab+'</button>').join('') : '')+(K.game ? '<a class="pin-game" href="'+K.game(q)+'">🎮 '+t('en jeu','play it')+'</a>' : '')+'</td>'; }).join('')+'</tr>'
               + '</tbody></table></div>'; } else S._tbl = '';
           return S._tbl; })()
         + (S._tbl ? '' : S.pins.map((q, i) => { const f = K.info(q.b, q.S, q.n);
@@ -3416,12 +3418,12 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
             return '<div class="pin-card pf-card" data-i="'+i+'" style="'+style+' grid-row:span '+(rows.length + 2)+';">'
               + '<div class="pf-head"><button type="button" class="pin-x" data-pin="'+i+'" aria-label="'+t('Fermer la fiche','Close card')+'">×</button>'+rec+head+'</div>'
               + rows.map(r => '<div class="pf"'+(typeof r.q === 'number' ? ' style="--qc:'+qCol(r.q)+'"' : '')+'><span>'+r.k+'</span>'+qVal(r)+'</div>').join('')
-              + '<div class="pf-foot">'+(K.canTry(q.b, q.S) ? (K.slots || [['', t('l\'essayer','try it')]]).map(([sl, lab]) => '<button type="button" class="pin-try" data-try-pin="'+i+'" data-slot="'+sl+'">▶ '+lab+'</button>').join('') : '')+'</div></div>'; }
+              + '<div class="pf-foot">'+(K.canTry(q.b, q.S) ? (K.slots || [['', t('l\'essayer','try it')]]).map(([sl, lab]) => '<button type="button" class="pin-try" data-try-pin="'+i+'" data-slot="'+sl+'">▶ '+lab+'</button>').join('') : '')+(K.game ? '<a class="pin-game" href="'+K.game(q)+'">🎮 '+t('en jeu','play it')+'</a>' : '')+'</div></div>'; }
           return '<div class="pin-card" data-i="'+i+'" style="'+style+'">'
             + '<button type="button" class="pin-x" data-pin="'+i+'" aria-label="'+t('Fermer la fiche','Close card')+'">×</button>'
             + f.html.replace('<div class="tt-h">'+q.n+'</div>', head)
             // un ou plusieurs boutons (page longue distance : « en Aile 1 » / « en Aile 2 » du duel)
-            + (K.canTry(q.b, q.S) ? (K.slots || [['', t('l\'essayer','try it')]]).map(([sl, lab]) => '<button type="button" class="pin-try" data-try-pin="'+i+'" data-slot="'+sl+'">▶ '+lab+'</button>').join('') : '')+'</div>'; }).join(''));
+            + (K.canTry(q.b, q.S) ? (K.slots || [['', t('l\'essayer','try it')]]).map(([sl, lab]) => '<button type="button" class="pin-try" data-try-pin="'+i+'" data-slot="'+sl+'">▶ '+lab+'</button>').join('') : '')+(K.game ? '<a class="pin-game" href="'+K.game(q)+'">🎮 '+t('en jeu','play it')+'</a>' : '')+'</div>'; }).join(''));
       if(stEl && K.mini) stEl.innerHTML = K.mini();
       // plein écran : les fiches ont changé de hauteur → la carte se recale sur la place restante
       if(S.full) requestAnimationFrame(() => { if(Math.abs(sc.clientHeight - S.lastH) > 4) K.redraw(); });
@@ -3744,7 +3746,8 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
       render();
       const tgt = document.body.classList.contains('tune') ? $('card-'+i) : $('duel-sum'); if(tgt) window.scrollTo({top: tgt.getBoundingClientRect().top + scrollY - 70, behavior: 'smooth'});
     };
-    LA.kit = atlKit({st: LA, redraw: ldDraw, pick, show, info, facts, row, page: 'longue-distance', canTry: inSl, tryIt, hash: () => ldHash(), mini: ldMini,
+    LA.kit = atlKit({st: LA, redraw: ldDraw, pick, show, info, facts, row, page: 'longue-distance', canTry: inSl, tryIt,
+      game: q => 'dock.html?mode=loin&wing=' + encodeURIComponent(q.n),   // 🎮 essayer l'aile dans le Dock (eau plate, partition du pump) hash: () => ldHash(), mini: ldMini,
       slots: [['1', t('en Aile 1','as Wing 1')], ['2', t('en Aile 2','as Wing 2')]],
       layers: [['wh', '– – Wh/km', '– – Wh/km', 1], ['ar', '╱ AR', '╱ AR']]});
     ['rider-w', 'rider-cp', 'rider-sex', 'rider-pump', 'rider-vo2'].forEach(k => { const el = $(k); if(el){ el.addEventListener('input', ldDraw); el.addEventListener('change', ldDraw); } });
