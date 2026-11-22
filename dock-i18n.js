@@ -8,7 +8,7 @@ fr: {
     tabs: {carve: '🔥 Carver à fond', vite: '🚀 Aller vite', loin: '🌊 Me balader longtemps', apprendre: '🎓 Apprendre'}, tabsAria: 'Que veux-tu faire ?',
     pages: {carve: 'Carve', vite: 'Vitesse', loin: 'Longue distance', apprendre: 'Débuter'}, detail: '📖 Le détail : page {p} →',
     stats: ['🔄 Tourner', '🚀 Décoller', '🌊 Glisser', '⏱️ Tenir la session'], hourPlus: '1 h +',
-    stab: 'Stab', weight: 'Ton poids', swell: 'La houle', swells: ['0,5 m', '1 m', '1,5-2 m'],
+    stab: 'Stab', weight: 'Ton poids', swell: 'La houle', swells: ['0,5 m', '1 m', '1,5-2 m', '2,5 m'],
     note: 'Point blanc : l\'aile d\'avant, pour comparer. Mêmes calculs que la page Carve.',
     verdict: ['Elle s\'enroule au quart de tour : surf radical.', 'Elle tourne bien et relance encore : le bon compromis carve.', 'Elle tourne, mais en grandes courbes : faite pour enchaîner.', 'Elle est faite pour glisser loin, pas pour tourner court.'],
     prof: '◀ Prof. Foil', test: '🌊 Tester dans la vague', cont: 'Continuer ▶', back: '↩ Revenir au ponton',
@@ -82,7 +82,7 @@ en: {
     tabs: {carve: '🔥 Carve hard', vite: '🚀 Go fast', loin: '🌊 Cruise for ages', apprendre: '🎓 Learn'}, tabsAria: 'What do you want to do?',
     pages: {carve: 'Carve', vite: 'Speed', loin: 'Long distance', apprendre: 'Beginner'}, detail: '📖 The details: {p} page →',
     stats: ['🔄 Turning', '🚀 Take-off', '🌊 Glide', '⏱️ Session length'], hourPlus: '1 h +',
-    stab: 'Stab', weight: 'Your weight', swell: 'The swell', swells: ['0.5 m', '1 m', '1.5-2 m'],
+    stab: 'Stab', weight: 'Your weight', swell: 'The swell', swells: ['0.5 m', '1 m', '1.5-2 m', '2.5 m'],
     note: 'White dot: the previous wing, to compare. Same maths as the Carve page.',
     verdict: ['It rolls in on a dime: radical surfing.', 'It turns well and still pumps back: the right carving compromise.', 'It turns, but in wide arcs: made for linking waves.', 'It is built to glide far, not to turn tight.'],
     prof: '◀ Prof. Foil', test: '🌊 Try it in the wave', cont: 'Continue ▶', back: '↩ Back to the dock',
@@ -156,7 +156,7 @@ es: {
     tabs: {carve: '🔥 Carvear a tope', vite: '🚀 Ir rápido', loin: '🌊 Pasear un buen rato', apprendre: '🎓 Aprender'}, tabsAria: '¿Qué quieres hacer?',
     pages: {carve: 'Carve', vite: 'Velocidad', loin: 'Larga distancia', apprendre: 'Principiantes'}, detail: '📖 Todos los detalles: página {p} →',
     stats: ['🔄 Girar', '🚀 Despegar', '🌊 Planear', '⏱️ Aguantar la sesión'], hourPlus: '1 h +',
-    stab: 'Stab', weight: 'Tu peso', swell: 'Las olas', swells: ['0,5 m', '1 m', '1,5-2 m'],
+    stab: 'Stab', weight: 'Tu peso', swell: 'Las olas', swells: ['0,5 m', '1 m', '1,5-2 m', '2,5 m'],
     note: 'Punto blanco: el ala anterior, para comparar. Los mismos cálculos que en la página Carve.',
     verdict: ['Gira en un pañuelo: surf radical.', 'Gira bien y aún relanza: el buen equilibrio para carvear.', 'Gira, pero en curvas amplias: hecha para encadenar olas.', 'Está hecha para planear lejos, no para girar cerrado.'],
     prof: '◀ Prof. Foil', test: '🌊 Probar en la ola', cont: 'Seguir ▶', back: '↩ Volver al pantalán',
@@ -230,7 +230,7 @@ it: {
     tabs: {carve: '🔥 Carvare a manetta', vite: '🚀 Andare veloce', loin: '🌊 Girovagare a lungo', apprendre: '🎓 Imparare'}, tabsAria: 'Cosa vuoi fare?',
     pages: {carve: 'Carve', vite: 'Velocità', loin: 'Lunga distanza', apprendre: 'Principianti'}, detail: '📖 Tutti i dettagli: pagina {p} →',
     stats: ['🔄 Girare', '🚀 Decollare', '🌊 Scivolare', '⏱️ Reggere la sessione'], hourPlus: '1 h +',
-    stab: 'Stab', weight: 'Il tuo peso', swell: 'L\'onda', swells: ['0,5 m', '1 m', '1,5-2 m'],
+    stab: 'Stab', weight: 'Il tuo peso', swell: 'L\'onda', swells: ['0,5 m', '1 m', '1,5-2 m', '2,5 m'],
     note: 'Punto bianco: l\'ala di prima, per confrontare. Stessi calcoli della pagina Carve.',
     verdict: ['Gira su un fazzoletto: surf radicale.', 'Gira bene e rilancia ancora: il giusto compromesso per carvare.', 'Gira, ma con curve ampie: fatta per concatenare le onde.', 'È fatta per scivolare lontano, non per girare stretto.'],
     prof: '◀ Prof. Foil', test: '🌊 Provala sull\'onda', cont: 'Continua ▶', back: '↩ Torna al pontile',
@@ -304,7 +304,7 @@ de: {
     tabs: {carve: '🔥 Voll carven', vite: '🚀 Schnell fahren', loin: '🌊 Lange cruisen', apprendre: '🎓 Lernen'}, tabsAria: 'Was willst du machen?',
     pages: {carve: 'Carve', vite: 'Speed', loin: 'Langstrecke', apprendre: 'Einsteiger'}, detail: '📖 Alle Details: Seite {p} →',
     stats: ['🔄 Drehen', '🚀 Abheben', '🌊 Gleiten', '⏱️ Session-Ausdauer'], hourPlus: '1 h +',
-    stab: 'Stab', weight: 'Dein Gewicht', swell: 'Die Welle', swells: ['0,5 m', '1 m', '1,5-2 m'],
+    stab: 'Stab', weight: 'Dein Gewicht', swell: 'Die Welle', swells: ['0,5 m', '1 m', '1,5-2 m', '2,5 m'],
     note: 'Weißer Punkt: der vorherige Flügel, zum Vergleichen. Gleiche Rechnung wie auf der Carve-Seite.',
     verdict: ['Er dreht auf dem Bierdeckel: radikales Surfen.', 'Er dreht gut und pumpt noch gut nach: der richtige Carve-Kompromiss.', 'Er dreht, aber in weiten Bögen: gemacht, um Wellen aneinanderzureihen.', 'Er ist zum weiten Gleiten gemacht, nicht für enge Kurven.'],
     prof: '◀ Prof. Foil', test: '🌊 In der Welle testen', cont: 'Weiter ▶', back: '↩ Zurück zum Steg',
@@ -499,4 +499,13 @@ window.DOCK_I18N_EXTRA = {
 
 // ⬇️ ressortir au large en descendant l'arrière d'une crête
 (function(){ const add = {fr: {backDown: '⬇️ derrière la crête : la pente t\'aide'}, en: {backDown: '⬇️ behind the crest: the slope helps you'}, es: {backDown: '⬇️ detrás de la cresta: la pendiente te ayuda'}, it: {backDown: '⬇️ dietro la cresta: la pendenza ti aiuta'}, de: {backDown: '⬇️ hinter dem Kamm: das Gefälle hilft dir'}};
+  for(const l in add) window.DOCK_I18N_EXTRA[l] = Object.assign(window.DOCK_I18N_EXTRA[l] || {}, add[l]); })();
+
+// 🌊 choix de la vague (Carve)
+(function(){ const add = {
+  fr: {waveTitle: '🌊 Choisis ta vague', waveCards: [{n: 'Mollo', d: 'Houle douce : la vague aide peu, il faut pumper.', l: 'TRANQUILLE'}, {n: 'Classique', d: 'La bonne houle pour apprendre à la lire.', l: 'NORMAL'}, {n: 'Ça pousse', d: 'Grosses faces, gros carves, ça va vite.', l: 'COSTAUD'}, {n: 'Grosse session', d: 'La vague file à 27 km/h : faut suivre !', l: 'EXPERT'}]},
+  en: {waveTitle: '🌊 Pick your wave', waveCards: [{n: 'Mellow', d: 'Soft swell: the wave barely helps, you pump.', l: 'EASY'}, {n: 'Classic', d: 'The right swell to learn to read it.', l: 'NORMAL'}, {n: 'Pushing', d: 'Big faces, big carves, it gets fast.', l: 'HARD'}, {n: 'Big session', d: 'The wave runs at 27 km/h: keep up!', l: 'EXPERT'}]},
+  es: {waveTitle: '🌊 Elige tu ola', waveCards: [{n: 'Suave', d: 'Mar de fondo suave: la ola ayuda poco, hay que pumpear.', l: 'FÁCIL'}, {n: 'Clásica', d: 'La ola ideal para aprender a leerla.', l: 'NORMAL'}, {n: 'Empuja', d: 'Caras grandes, carves grandes, va rápido.', l: 'DURO'}, {n: 'Sesión grande', d: 'La ola va a 27 km/h: ¡síguela!', l: 'EXPERTO'}]},
+  it: {waveTitle: '🌊 Scegli la tua onda', waveCards: [{n: 'Tranquilla', d: 'Onda dolce: aiuta poco, devi pompare.', l: 'FACILE'}, {n: 'Classica', d: 'L\'onda giusta per imparare a leggerla.', l: 'NORMALE'}, {n: 'Spinge', d: 'Pareti grandi, carve grandi, si va veloci.', l: 'TOSTA'}, {n: 'Sessione grossa', d: 'L\'onda corre a 27 km/h: stalle dietro!', l: 'ESPERTO'}]},
+  de: {waveTitle: '🌊 Wähle deine Welle', waveCards: [{n: 'Gemütlich', d: 'Sanfte Dünung: die Welle hilft kaum, du pumpst.', l: 'LEICHT'}, {n: 'Klassisch', d: 'Die richtige Dünung, um sie lesen zu lernen.', l: 'NORMAL'}, {n: 'Schiebt', d: 'Große Wände, große Carves, es wird schnell.', l: 'STARK'}, {n: 'Große Session', d: 'Die Welle läuft 27 km/h: dranbleiben!', l: 'EXPERTE'}]}};
   for(const l in add) window.DOCK_I18N_EXTRA[l] = Object.assign(window.DOCK_I18N_EXTRA[l] || {}, add[l]); })();
