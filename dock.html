@@ -1024,11 +1024,11 @@ function objPanel(on, ms){ const p = $('objp'); if(!test || !test.objList){ p.cl
     objPanel.h = setTimeout(() => objPanel(false), ms || 6500); }
   p.classList.toggle('off', !on); $('objc').classList.toggle('off', on); objCount(); }
 function objCount(){ if(!test || !test.objList) return; const saved = OBJ_SAVE[test.objKey] || []; $('objc').innerHTML = '🎯 <small>' + (T.objTitle || 'OBJECTIFS') + '</small> <b>' + test.objList.filter(id => saved.includes(id)).length + '/' + test.objList.length + '</b>'; }
-function objStart(){ if(VID){ test.objList = null; return; } test.objKey = objKey(); test.objList = objIds(test.S); test.objNew = []; test.objT0 = performance.now();
+function objStart(){ if(VID && !VID.obj){ test.objList = null; return; } test.objKey = VID ? 'vid-defi' : objKey(); if(VID) OBJ_SAVE[test.objKey] = []; test.objList = objIds(test.S); test.objNew = []; test.objT0 = performance.now();
   Object.assign(test, {snake: 0, wavesRow: 0, objShore: 0, tourS: 0, dist: 0, perfRow: 0, cardioT: 0, tempoUps: 0, ploufs: 0, tkOk: 0, puPumps: 0, letters: [0, 0, 0, 0], coin: 0});
   objPanel(true); }
-function objDone(id){ if(!test || VID || !test.objList || !test.objList.includes(id)) return; const saved = OBJ_SAVE[test.objKey] || (OBJ_SAVE[test.objKey] = []); if(saved.includes(id)) return;
-  saved.push(id); test.objNew.push(id); try{ localStorage.setItem('dock-obj', JSON.stringify(OBJ_SAVE)); }catch(e){} OBJ_FRESH[test.objKey] = true;
+function objDone(id){ if(!test || (VID && !VID.obj) || !test.objList || !test.objList.includes(id)) return; const saved = OBJ_SAVE[test.objKey] || (OBJ_SAVE[test.objKey] = []); if(saved.includes(id)) return;
+  saved.push(id); test.objNew.push(id); if(!VID) try{ localStorage.setItem('dock-obj', JSON.stringify(OBJ_SAVE)); }catch(e){} OBJ_FRESH[test.objKey] = true;
   popUp('🎯 ' + (T.objWin || 'OBJECTIF !') + ' ' + objName(id, test.S, true)); buzz(70); beep(784, 0.09, 'triangle', 0.14); setTimeout(() => beep(1047, 0.09, 'triangle', 0.14), 90); setTimeout(() => beep(1319, 0.16, 'triangle', 0.14), 180);
   objCount(); const c = $('objc'); c.classList.remove('opop'); void c.offsetWidth; c.classList.add('opop'); }   // pas « pop » : c'est déjà la classe des popups (décalage −50 %, penché)
 // garage : compteur d'objectifs de l'aile affichée, pour le mode choisi, à côté du badge ; « nouveau ! » si la dernière session en a coché
@@ -1654,12 +1654,12 @@ addEventListener('resize', resize); resize();
 render(false);
 const clock = new THREE.Clock();
 gl.setAnimationLoop(now => {
-  const dt = clock.getDelta(); if(DBG_HOLD) clock.elapsedTime -= dt;   // en pause debug la houle est figée elle aussi (sinon la mer continue de bouger sous des objets figés)
+  const dt = clock.getDelta(); if(DBG_HOLD) clock.elapsedTime -= dt; if(VID && VID.warp) clock.elapsedTime += dt*(VID.warp - 1);   // vidéo « défi » : accéléré   // en pause debug la houle est figée elle aussi (sinon la mer continue de bouger sous des objets figés)
   const t = clock.elapsedTime; seaU.t.value = t; seaU.cam.value.copy(cam.position);
   sea.position.x = Math.round(cam.position.x/SEA_CELL)*SEA_CELL; sea.position.z = Math.round(cam.position.z/SEA_CELL)*SEA_CELL; sky.position.set(cam.position.x, 0, cam.position.z);
   if(!test || test.done || test.swim || test.takeoff || test.crashA) windSnd(0);
   if(test && document.body.classList.contains('rotating')){ const d = now - (test.lastRaf || now); if(test.mt0) test.mt0 += d; test.t0 += d; if(test.takeoff) test.takeoff.t0 += d; if(test.slalom && test.slalom.t0) test.slalom.t0 += d; if(test.beat0) test.beat0 += d; test.last = now; }   // 📱 écran « tourne ton téléphone » : partie en pause
-  else if(test){ if(!DBG_HOLD) testFrame(now); } if(test) test.lastRaf = now;   // DBG_HOLD (?debug=1) : la simulation est avancée à la main, la boucle ne fait qu'afficher
+  else if(test){ if(!DBG_HOLD) testFrame(VID && VID.warp ? VID.w0 + (now - VID.w0)*VID.warp : now); } if(test) test.lastRaf = now;   // DBG_HOLD (?debug=1) : la simulation est avancée à la main, la boucle ne fait qu'afficher
   else { if(autoSpin) turn.rotation.y += dt*0.35;
     // pendant l'accueil, le foil flotte plus haut pour ne pas être caché par le portrait du Prof (retour Paul)
     // + caméra reculée pendant l'accueil (le foil entier tient au-dessus du portrait), puis retour à la vue garage
@@ -1706,6 +1706,7 @@ if(/[?&]video=1/.test(location.search)){
     VID.punch *= 0.86;
     if(SCENE === 'loin') return loinFrame(now, s);
     if(SCENE === 'houle') return houleFrame(now, s);
+    if(SCENE === 'defi') return defiFrame(now, s);
     // ---- pilotage ----
     const go = p => { if(phase !== p){ phase = p; ph0 = now; return true; } return false; };
     if(s < 2.2){ if(go('hook')){ MODE = 'carve'; goW(WINGS[0]); } }
@@ -1863,11 +1864,56 @@ if(/[?&]video=1/.test(location.search)){
       txt('Et toi,', W/2, 850, {s: 110, sk: true, st: 14, z: pop(ph0 + 200, now)}); txt('tu sais lire la houle ? 👇', W/2, 980, {s: 96, sk: true, st: 14, c: '#fde68a', z: pop(ph0 + 350, now)});
       txt('🎮 Le Dock : lien dans la bio de @polofoil', W/2, 1220, {s: 46, w: 800, c: '#7dd3fc'}); x.globalAlpha = 1; }
   }
+
+  // ⏱ scène « Le défi des 2 minutes » : une vraie session de 2 min en accéléré (×5,5), objectifs qui se cochent, carte de fin, « Tu penses y arriver ?? »
+  function defiFrame(now, s){
+    const go = p => { if(phase !== p){ phase = p; ph0 = now; return true; } return false; };
+    if(go('ride') || false){}
+    if(phase === 'ride' && !VID.started){ VID.started = true; MODE = 'carve'; goW('Alpine Foil RSX Carve 1100'); $('big').classList.add('hide'); VID.obj = true; startTest(); SET.on = SET.gain; SET.period = 13; waveSync();
+      test.takeoff = null; test.pumpUp = null; runner.visible = false; rider.visible = true; $('beat').classList.add('hide'); $('nfs').classList.remove('hide');
+      VID.warp = 5.5; VID.w0 = now; test.x = -30; test.z = -38; test.h = Math.PI - 0.3; test.v = test.vl*1.35; test.manual = true; test.mt0 = now; test.last = now; test.t0 = now; test.sta = 100; VID.leg = 'in'; VID.side = 1; VID.lp = 0; VID.nObj = 0;
+      VID.cam = (fx, fz, dt) => { VID.ch = VID.ch ?? test.h; VID.ch += wrapA(test.h - VID.ch)*(1 - Math.exp(-dt*1.8)); const gx = -Math.sin(VID.ch), gz = -Math.cos(VID.ch);
+        cam.position.set(test.x - gx*7.2, 1.6, test.z - gz*7.2); cam.lookAt(test.x + gx*1.5, 0.75, test.z + gz*1.5); }; }
+    const vnow = VID.w0 + (now - VID.w0)*VID.warp;
+    if(test && !test.done){
+      if(test.swim || test.crashA || test.takeoff){ keys.l = keys.r = false; if(test.takeoff){ test.takeoff = null; runner.visible = false; rider.visible = true; $('beat').classList.add('hide'); test.x = -30; test.z = -38; test.h = Math.PI - 0.3; test.v = test.vl*1.35; test.last = vnow; VID.leg = 'in'; } }
+      else { if(VID.leg === 'in' && test.z > 4){ VID.leg = 'out'; } else if(VID.leg === 'out' && test.z < -6){ VID.leg = 'in'; VID.side = -VID.side; }
+        const want = VID.leg === 'in' ? Math.PI - 0.3*VID.side : 0.55*VID.side, e = wrapA(want - test.h); keys.l = e > 0.08; keys.r = e < -0.08; test.sta = 100;
+        if(test.v < test.vl*(VID.leg === 'in' ? 1.6 : 1.3) && now - VID.lp > 60){ VID.lp = now; test.lastPump = 0; pump(); } } }   // en accéléré : ~1 pump / 0,33 s de jeu, comme à vitesse normale
+    if(test && test.done && !VID.endT){ VID.endT = now; VID.warp = 0; keys.l = keys.r = false; }
+    if(VID.endT && now - VID.endT > 4600 && !ended){ ended = true; if(rec) rec.stop(); }
+    // ---- image ----
+    const z = 1 + 0.07*VID.punch; x.drawImage(cv, W*(1 - z)/2, H*(1 - z)/2, W*z, H*z);
+    const g = x.createLinearGradient(0, 0, 0, 560); g.addColorStop(0, 'rgba(11,18,34,.85)'); g.addColorStop(1, 'rgba(11,18,34,0)'); x.fillStyle = g; x.fillRect(0, 0, W, 560);
+    if(!test) return;
+    const left = Math.max(0, 120 - (vnow - test.mt0)/1000), mm = Math.floor(left/60), ss = String(Math.floor(left % 60)).padStart(2, '0');
+    if(!VID.endT){
+      txt('LE DÉFI DES 2 MINUTES', W/2, 170, {s: 66, sk: true, st: 12, c: '#fde68a'});
+      txt('⏱ ' + mm + ':' + ss, W/2, 330, {s: 170, sk: true, st: 18, c: left < 15 ? '#fca5a5' : '#fff'}); pill(W/2 + 230, 250, 150, 70, '#ef4444'); txt('×5', W/2 + 305, 300, {s: 48, sh: false});
+      // objectifs cochés
+      const n = test.objNew ? test.objNew.length : 0, tot = test.objList ? test.objList.length : 21;
+      if(n > VID.nObj){ VID.nObj = n; VID.objT = now; VID.objName = objName(test.objNew[n - 1], test.S, true); VID.punch = 1; }
+      pill(70, H - 420, 330, 96, 'rgba(11,18,34,.85)'); txt('🎯 ' + n + '/' + tot, 235, H - 352, {s: 64, sh: false, c: '#fde68a'});
+      if(VID.objT && now - VID.objT < 1600){ const k = pop(VID.objT, now); pill(W/2 - 450, 470, 900, 110, 'rgba(34,197,94,.95)'); txt('✅ ' + VID.objName, W/2, 545, {s: 52, sh: false, z: k, max: 860}); }
+      txt('SCORE', 90, H - 230, {s: 34, a: 'left', c: '#fde68a'}); txt(Math.round(test.score).toLocaleString('fr'), 90, H - 140, {s: 100, a: 'left', sk: true, st: 10});
+      pill(W - 300, H - 230, 210, 80, '#fbbf24'); txt('×' + mult().toFixed(1).replace('.', ','), W - 195, H - 172, {s: 52, c: '#0b1222', sh: false});
+      VID.pops = VID.pops.filter(p => now - p.t0 < 900 && !/OBJECTIF/.test(p.txt)); VID.pops.slice(-1).forEach(p => { const k = (now - p.t0)/900; x.globalAlpha = Math.min(1, 2*(1 - k));
+        txt(p.txt + (p.pts ? '  +' + p.pts : ''), W/2, 1000 - k*100, {s: 80, sk: true, st: 12, c: p.bad ? '#fca5a5' : '#fde68a', z: pop(p.t0, now)}); x.globalAlpha = 1; });
+      if(s < 2.6){ x.fillStyle = 'rgba(11,18,34,.45)'; x.fillRect(0, 0, W, H); txt('POV :', W/2, 640, {s: 90, sk: true, c: '#fde68a', z: pop(ph0, now)});
+        txt('2 minutes', W/2, 780, {s: 130, sk: true, st: 16, z: pop(ph0 + 150, now)}); txt('pour tout cocher 🎯', W/2, 910, {s: 96, sk: true, st: 14, c: '#7dd3fc', z: pop(ph0 + 450, now)}); }
+    } else {
+      const a = Math.min(1, (now - VID.endT)/300), sc = Math.round(test.score), md = MEDALS.find(([k]) => sc >= k)[1], n = test.objNew.length, tot = test.objList.length;
+      x.globalAlpha = a; x.fillStyle = 'rgba(11,18,34,.86)'; x.fillRect(0, 0, W, H);
+      txt('⏱ 2:00 TERMINÉ', W/2, 330, {s: 80, sk: true, st: 12, c: '#fde68a', z: pop(VID.endT, now)}); txt(md, W/2, 500, {s: 130, sh: false, z: pop(VID.endT + 150, now)});
+      txt(sc.toLocaleString('fr'), W/2, 680, {s: 170, sk: true, st: 16, z: pop(VID.endT + 300, now)}); txt('🎯 ' + n + '/' + tot + ' objectifs', W/2, 800, {s: 64, w: 800, c: '#86efac', z: pop(VID.endT + 450, now)});
+      if(now - VID.endT > 1100){ txt('Tu penses', W/2, 1020, {s: 130, sk: true, st: 16, z: pop(VID.endT + 1100, now)}); txt('y arriver ?? 👇', W/2, 1170, {s: 130, sk: true, st: 16, c: '#7dd3fc', z: pop(VID.endT + 1300, now)}); }
+      if(now - VID.endT > 1800) txt('🎮 Le Dock : lien dans la bio de @polofoil', W/2, 1400, {s: 46, w: 800, c: '#fde68a'}); x.globalAlpha = 1; }
+  }
   function startRec(){ const mime = ['video/mp4;codecs=avc1,mp4a.40.2', 'video/mp4', 'video/webm'].find(m => MediaRecorder.isTypeSupported(m)) || '';
     const dest = AC.createMediaStreamDestination(); BUS.connect(dest);
     rec = new MediaRecorder(new MediaStream([...comp.captureStream(30).getVideoTracks(), ...dest.stream.getAudioTracks()]), mime ? {mimeType: mime, videoBitsPerSecond: 10e6, audioBitsPerSecond: 160000} : {}); rec.ondataavailable = e => e.data.size && chunks.push(e.data);
     rec.onstop = () => { const blob = new Blob(chunks, {type: rec.mimeType}), ext = rec.mimeType.includes('mp4') ? 'mp4' : 'webm';
-      fetch('/__save/fr-insta-' + (SCENE === 'loin' ? 'longue-distance' : SCENE === 'houle' ? 'lire-la-houle' : 'dock') + '.' + ext, {method: 'PUT', body: blob}).then(() => { document.title = 'SAVED ' + ext + ' ' + Math.round(blob.size/1e5)/10 + ' Mo'; }); };
+      fetch('/__save/fr-insta-' + ({loin: 'longue-distance', houle: 'lire-la-houle', defi: 'defi-2-minutes'}[SCENE] || 'dock') + '.' + ext, {method: 'PUT', body: blob}).then(() => { document.title = 'SAVED ' + ext + ' ' + Math.round(blob.size/1e5)/10 + ' Mo'; }); };
     rec.start(500); }
 }
 </script>
