@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Le Dock : jeu de pump foil, choisis ton aile et lis la houle | Foil House</title>
 <meta name="description" content="Jeu gratuit de pump foil dans le navigateur : choisis ton aile parmi plus de 300 modèles, départ ponton en rythme, pump et carve dans la houle. Mêmes calculs que le simulateur Foil House.">
 <link rel="alternate" hreflang="fr" href="https://simulator.foil-house.com/dock.html">
@@ -272,7 +272,7 @@ seoLang((/[?&]lang=(en|es|it|de)\b/i.exec(location.search) || [])[1] || 'fr');</
 
   /* ====================== 📱 MOBILE (P0 jeu en paysage · P1 accueil et garage en portrait · P2 confort) ====================== */
   #scene{height:100vh; height:100dvh;}
-  html{touch-action:manipulation;}
+  html, body{touch-action:pan-x pan-y;}   /* 🔒 pas de zoom dans le jeu (retour Paul) : ni pincement, ni double tap */
   body.touch{-webkit-user-select:none; user-select:none; -webkit-touch-callout:none; -webkit-tap-highlight-color:transparent;} body.touch input{-webkit-user-select:text; user-select:text;}
   body.playing, body.playing *{touch-action:none;}
   .pad #tu, .pad #td{display:none;} .pad[data-k="flat"] #tu, .pad[data-k="flat"] #td, .pad[data-k="wave"][data-ff="1"] #td{display:block;} .pad .hide2{display:none !important;}
@@ -420,8 +420,16 @@ seoLang((/[?&]lang=(en|es|it|de)\b/i.exec(location.search) || [])[1] || 'fr');</
     if(window.goatcounter && window.goatcounter.count) window.goatcounter.count({path: p, title: title || p, event: true}); };
 })();
 </script>
+<script>
+/* 🔒 pas de zoom dans le Dock (retour Paul) : Safari iPhone ignore user-scalable=no, on bloque donc le pincement et le double tap à la main */
+(function(){ var no = function(e){ e.preventDefault(); };
+  ['gesturestart', 'gesturechange', 'gestureend'].forEach(function(t){ document.addEventListener(t, no, {passive: false}); });
+  document.addEventListener('touchmove', function(e){ if(e.touches.length > 1) e.preventDefault(); }, {passive: false});
+  var last = 0; document.addEventListener('touchend', function(e){ var n = Date.now(); if(n - last < 300 && !(e.target.closest && e.target.closest('button, a, input, select, [role=button]'))) e.preventDefault(); last = n; }, {passive: false});
+  document.addEventListener('wheel', function(e){ if(e.ctrlKey) e.preventDefault(); }, {passive: false}); })();
+</script>
 <script src="dock-i18n.js?v=50"></script>
-<script src="ailes.js?v=20261118"></script>
+<script src="ailes.js?v=20261122"></script>
 <script type="module">
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';

@@ -72,7 +72,8 @@ window.FOIL_WINGS = [{k:'alp', n:'Alpine Foil', c:'#f472b6', w:[['RSX Carve 700'
       ['Sonar HA 750',87,750],['Sonar HA 850',92,850],['Sonar HA 950',100,950],['Sonar HA 1050',105,1050],['Sonar HA 1150',110,1150],['Sonar HA 1250',112,1250],['Sonar HA 1450',120,1450],
       ['Sonar SF 830',86.5,830],['Sonar SF 930',90,930],['Sonar SF 1080',91.5,1080],['Sonar SF 1230',93,1230],
       ['Sonar MA 850 V2',78,850],['Sonar MA 1050 V2',85,1050],['Sonar MA 1200 V2',87.5,1200],['Sonar MA 1500 V2',92,1500],['Sonar MA 1850 V2',96,1850],['Sonar MA 2100 V2',100,2100],['Sonar MA 2400 V2',104,2400]]},   // ajout 16 oct. 2026 d'après selectyourfoil.com (modèles 2023+, ≥ 750 cm²)
-  {k:'kt', n:'KT Foiling', c:'#fda4af', w:[['Atlas 790',92,790],['Atlas 960',102,960],['Atlas 1130',111,1130],['Atlas 1340',122,1340]]}
+  {k:'kt', n:'KT Foiling', c:'#fda4af', w:[['Atlas 790',92,790],['Atlas 960',102,960],['Atlas 1130',111,1130],['Atlas 1340',122,1340]]},
+  {k:'hor', n:'Horue', c:'#4ade80', w:[['Kala 700',77,722],['Kala 900',89,924],['Kala 1100',97.1,1116],['Kala 1400',108,1402]]}   // ajout 22 nov. 2026 : horue.fr/foils-complets (surface réelle, envergure)
   ];
 
 // 🔗 Pages OFFICIELLES des fabricants (vérifiées une à une le 17 oct. 2026, HTTP 200 + titre de la gamme) : site = page des ailes
@@ -94,7 +95,8 @@ window.FOIL_URLS = {
   duo:{site:"https://www.duotonesports.com/en/foiling/foils", fam:{"Crest SLS":"https://www.duotonesports.com/en/products/duotone-front-wing-crest-sls-2027-42270-3854", "Glide 3.0 SLS":"https://www.duotonesports.com/en/products/duotone-front-wing-glide-3-0-sls-2027-42270-3843", "AMP 2.0 SLS":"https://www.duotonesports.com/en/products/duotone-front-wing-amp-2-0-sls-2026-42260-3834", "Hyperglide D/LAB":"https://www.duotonesports.com/en/products/duotone-foilpart-front-wing-hyperglide-d-lab-2025-42250-3839"}},
   srk:{site:"https://srokacompany.com/en/collections/wing-foil-front-wings", fam:{"UHA":"https://srokacompany.com/en/products/uha-foil-front-wing", "PF":"https://srokacompany.com/en/products/pump-foil-front-wing-1500-1750-2200", "DW":"https://srokacompany.com/en/products/dw-foil-front-wings", "810 S HA":"https://srokacompany.com/en/products/front-wing-high-aspect-810-s-ha", "950 S HA":"https://srokacompany.com/en/products/front-wing-high-aspect-810-s-ha", "1190 HA":"https://srokacompany.com/en/products/front-wing-high-aspect-810-s-ha", "1350 L HA":"https://srokacompany.com/en/products/front-wing-high-aspect-810-s-ha", "HA Lift":"https://srokacompany.com/en/products/s-foil-high-aspect-front-wing-2000-l"}},
   nor:{site:"https://northactionsports.com/collections/front-wings", fam:{"Sonar P":"https://northactionsports.com/products/sonar-p1800-front-wing", "Sonar DW":"https://northactionsports.com/products/sonar-dw900-front-wing", "Sonar HA":"https://northactionsports.com/products/sonar-ha950-front-wing", "Sonar SF":"https://northactionsports.com/products/sonar-sf930-front-wing", "Sonar MA":"https://northactionsports.com/products/sonar-ma1200v2-front-wing"}},
-  kt:{site:"https://ktfoiling.com/foils/wings/", fam:{"Atlas":"https://ktfoiling.com/foils/wings/atlas-1/"}}
+  kt:{site:"https://ktfoiling.com/foils/wings/", fam:{"Atlas":"https://ktfoiling.com/foils/wings/atlas-1/"}},
+  hor:{site:"https://www.horue.fr/ailesavants", fam:{"Kala":"https://www.horue.fr/product-page/aile-avant-kala"}}
 };
 // 🔗 Page de CHAQUE TAILLE (17 oct. 2026), toutes vérifiées (HTTP 200 + la taille sur la page) : catalogues Shopify officiels
 // (Axis, F4, GONG, Takoon, Armstrong, North, Sroka) + recherche page par page (Alpine, Sabfoil, Ketos, AFS, Indiana, Duotone) :
