@@ -1585,7 +1585,7 @@ $('face').style.display = 'none';
 // 🧑‍🔬 Prof. Foil en 3D (prof3d.js) ; l'ancien dessin SVG seulement en secours (sinon il apparaît une fraction de seconde à chaque chargement, ex. changement de langue)
 { const bg = 'radial-gradient(circle at 50% 38%, #fff1c9, #ffc08a 55%, #e07a5f)'; $('big').style.background = bg; $('mini').style.background = '#ffd7a8';
   const svg = () => { $('mini').innerHTML = FACE; $('big').innerHTML = FACE; };
-  import('./prof3d.js?v=12').then(m => { if(!m.mountProf($('big'), $('mini'), {pr: MOB ? 1.25 : 2})) svg(); }).catch(svg); }
+  import('./prof3d.js?v=18').then(m => { if(!m.mountProf($('big'), $('mini'), {pr: MOB ? 1.25 : 2})) svg(); }).catch(svg); }
 const hud = on => { document.querySelectorAll('.sel,.right,.go,.statsbar').forEach(e => e.classList.toggle('hide', !on)); document.body.classList.toggle('indock', on); };
 hud(false);
 const GO = {carve: 'carve.html', vite: 'vitesse.html', loin: 'long-distance.html', apprendre: 'debutant.html'};
@@ -1808,12 +1808,12 @@ if(/[?&]video=1/.test(location.search)){
   const wrapA = a => Math.atan2(Math.sin(a), Math.cos(a));
   function houleFrame(now, s){
     const go = p => { if(phase !== p){ phase = p; ph0 = now; return true; } return false; };
-    if(s < 2.6){ if(go('hook')){ MODE = 'carve'; goW('Alpine Foil RSX Carve 1100'); } }
-    else if(s < 4.4){ if(go('wing')){ $('big').classList.add('hide'); VID.punch = 1; whoosh(); } }
-    else if(s < 21.5){
-      if(go('ride')){ MODE = 'carve'; goW('Alpine Foil RSX Carve 1100'); startTest(); SET.on = SET.gain; SET.period = 13; waveSync();   // séries plus rapprochées pour la vidéo
+    // retour Paul : « monotone au début » → on ouvre directement dans l'action, l'accroche s'écrit PAR-DESSUS le ride
+    if(s < 21.5){
+      if(go('ride')){ $('big').classList.add('hide'); VID.punch = 1; whoosh(); MODE = 'carve'; goW('Alpine Foil RSX Carve 1100'); startTest(); SET.on = SET.gain; SET.period = 13; waveSync();   // séries plus rapprochées pour la vidéo
         test.takeoff = null; test.pumpUp = null; runner.visible = false; rider.visible = true; $('beat').classList.add('hide'); $('nfs').classList.remove('hide');
-        VID.cam = (fx, fz, dt) => { const want = new THREE.Vector3(test.x - fx*6 + fz*2.2, 3.4, test.z - fz*6 - fx*2.2); cam.position.lerp(want, 1 - Math.exp(-dt*2.5)); cam.lookAt(test.x + fx*2, 0.9, test.z + fz*2); };
+        VID.cam = (fx, fz, dt) => { VID.ch = VID.ch ?? test.h; VID.ch += wrapA(test.h - VID.ch)*(1 - Math.exp(-dt*1.8)); const gx = -Math.sin(VID.ch), gz = -Math.cos(VID.ch);   // cap lissé : le rider reste dans l'axe même en virage
+          cam.position.set(test.x - gx*7.2, 1.6, test.z - gz*7.2); cam.lookAt(test.x + gx*1.5, 0.75, test.z + gz*1.5); };   // caméra basse : l'horizon et la houle (retour Paul)
         test.x = -30; test.z = -38; test.h = Math.PI - 0.3; test.v = test.vl*1.35; test.manual = true; test.mt0 = now; test.last = now; test.sta = 100; VID.leg = 'in'; VID.side = 1; VID.lp = 0; }
       if(test && !test.done && !test.swim && !test.crashA){
         if(VID.leg === 'in' && test.z > 4){ VID.leg = 'out'; VID.cutT = now; }
@@ -1831,6 +1831,9 @@ if(/[?&]video=1/.test(location.search)){
       txt('ou te freine.', W/2, 580, {s: 92, sk: true, st: 14, z: pop(ph0 + 400, now)}); if(now - ph0 > 1000) txt('Apprends à la LIRE 🌊', W/2, 740, {s: 100, sk: true, st: 16, c: '#7dd3fc', z: pop(ph0 + 1000, now)}); }
     if(phase === 'wing'){ const [n, b, S2] = current(); txt('TON AILE', W/2, 210, {s: 60, sk: true, c: '#fde68a'}); txt(n, W/2, 340, {s: 130, sk: true, st: 14, z: pop(ph0, now)});
       txt(b + ' cm · ' + S2 + ' cm²', W/2, 430, {s: 48, w: 800}); pill(W/2 - 280, 470, 560, 80, '#22c55e'); txt('✅ FAITE POUR CARVER', W/2, 528, {s: 44, sh: false}); }
+    if(phase === 'ride' && s < 2.6){ x.fillStyle = 'rgba(11,18,34,.35)'; x.fillRect(0, 0, W, H); txt('POV :', W/2, 520, {s: 90, sk: true, c: '#fde68a', z: pop(ph0, now)}); txt('la houle te pousse…', W/2, 650, {s: 96, sk: true, st: 14, z: pop(ph0 + 150, now)});
+      txt('ou te freine.', W/2, 770, {s: 96, sk: true, st: 14, z: pop(ph0 + 450, now)}); if(s > 1.1) txt('Apprends à la LIRE 🌊', W/2, 930, {s: 104, sk: true, st: 16, c: '#7dd3fc', z: pop(ph0 + 1100, now)}); return; }
+    if(phase === 'ride' && s < 4.4){ const [n] = current(); pill(W/2 - 340, 1180, 680, 96, 'rgba(34,197,94,.92)'); txt('✅ ' + n + ' · faite pour carver', W/2, 1244, {s: 44, sh: false, z: pop(ph0 + 2600, now)}); }
     if(phase === 'ride' && test){ const t = clock.elapsedTime, kmh = Math.round(test.v*3.6);
       // ce que dit la houle, là, maintenant
       if(!test.setWarn) VID.swT = 0; let msg, col;
@@ -1840,7 +1843,8 @@ if(/[?&]video=1/.test(location.search)){
       else if(test.onFace){ msg = '✅ Devant la crête : ça pousse'; col = '#86efac'; }
       else if(test.inTrough){ msg = '❌ Dans le creux : ça freine'; col = '#fca5a5'; }
       else { msg = VID.leg === 'out' ? 'Retour au large, pumpe 💪' : 'Place-toi devant la crête'; col = '#fff'; }
-      txt('LIS LA HOULE 🌊', W/2, 190, {s: 74, sk: true, st: 12, c: '#fde68a'}); if(VID.msg !== msg){ VID.msg = msg; VID.msgT = now; } txt(msg, W/2, 300, {s: 62, sk: true, st: 12, c: col, z: pop(VID.msgT, now)});
+      txt('LIS LA HOULE 🌊', W/2, 190, {s: 74, sk: true, st: 12, c: '#fde68a'}); if(VID.msg !== msg && (!VID.msgT || now - VID.msgT > 1800)){ VID.msg = msg; VID.msgC = col; VID.msgT = now; }   // chaque message reste au moins 1,8 s (retour Paul : « un peu rapide »)
+      txt(VID.msg, W/2, 300, {s: 62, sk: true, st: 12, c: VID.msgC, z: pop(VID.msgT, now)});
       // profil de la houle autour du rider (sens de la houle →), le point = toi
       const PX = 120, PY = 380, PW = W - 240, PH = 170; x.fillStyle = 'rgba(11,18,34,.75)'; x.beginPath(); x.roundRect(PX - 20, PY - 10, PW + 40, PH + 40, 26); x.fill();
       const ys = []; for(let i = 0; i <= 60; i++){ const d = -15 + 30*i/60; ys.push(seaH(test.x, test.z + d, t)); } const y0 = sea.position.y, A = Math.max(0.3, Math.max(...ys.map(v => Math.abs(v - y0))));
