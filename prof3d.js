@@ -4,11 +4,11 @@
 // et un vrai foil (mât, fuselage, aile avant, stab) comme bâton de sage. Idle : respire, cligne des yeux, hoche la tête.
 import * as THREE from 'three';
 
-export function mountProf(bigEl, miniEl){
+export function mountProf(bigEl, miniEl, opt = {}){
   let renderer;
   try{ renderer = new THREE.WebGLRenderer({antialias: true, alpha: true, preserveDrawingBuffer: true}); }catch(e){ return false; }
   const W = 330, H = 330, RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  renderer.setPixelRatio(Math.min(2, devicePixelRatio || 1)); renderer.setSize(W, H); renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.setPixelRatio(Math.min(opt.pr || 2, devicePixelRatio || 1));   // 📱 plus léger sur téléphone renderer.setSize(W, H); renderer.outputColorSpace = THREE.SRGBColorSpace;
   const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(30, W/H, 0.1, 50);
   cam.position.set(0.45, 0.7, 7.6); cam.lookAt(0, 0.35, 0);
 
