@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" rx="22" fill="#0f172a"/>
+  <!-- aile (foil) -->
+  <rect x="9" y="33" width="82" height="13" rx="6.5" fill="#38bdf8"/>
+  <!-- éclair (les watts) -->
+  <path d="M57 53 L40 76 h10 l-6 18 18-24 h-10 z" fill="#f59e0b"/>
+</svg>
