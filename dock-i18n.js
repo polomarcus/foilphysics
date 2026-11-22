@@ -509,3 +509,12 @@ window.DOCK_I18N_EXTRA = {
   it: {waveTitle: '🌊 Scegli la tua onda', waveCards: [{n: 'Tranquilla', d: 'Onda dolce: aiuta poco, devi pompare.', l: 'FACILE'}, {n: 'Classica', d: 'L\'onda giusta per imparare a leggerla.', l: 'NORMALE'}, {n: 'Spinge', d: 'Pareti grandi, carve grandi, si va veloci.', l: 'TOSTA'}, {n: 'Sessione grossa', d: 'L\'onda corre a 27 km/h: stalle dietro!', l: 'ESPERTO'}]},
   de: {waveTitle: '🌊 Wähle deine Welle', waveCards: [{n: 'Gemütlich', d: 'Sanfte Dünung: die Welle hilft kaum, du pumpst.', l: 'LEICHT'}, {n: 'Klassisch', d: 'Die richtige Dünung, um sie lesen zu lernen.', l: 'NORMAL'}, {n: 'Schiebt', d: 'Große Wände, große Carves, es wird schnell.', l: 'STARK'}, {n: 'Große Session', d: 'Die Welle läuft 27 km/h: dranbleiben!', l: 'EXPERTE'}]}};
   for(const l in add) window.DOCK_I18N_EXTRA[l] = Object.assign(window.DOCK_I18N_EXTRA[l] || {}, add[l]); })();
+
+// 💪 après le saut du ponton : consigne claire pour pumper jusqu'au décollage
+(function(){ const add = {
+  fr: {pumpUpTap: '👆 TAPE POUR PUMPER !', pumpUpKey: '␣ ESPACE POUR PUMPER !'},
+  en: {pumpUpTap: '👆 TAP TO PUMP!', pumpUpKey: '␣ SPACE TO PUMP!'},
+  es: {pumpUpTap: '👆 ¡TOCA PARA BOMBEAR!', pumpUpKey: '␣ ¡ESPACIO PARA BOMBEAR!'},
+  it: {pumpUpTap: '👆 TOCCA PER POMPARE!', pumpUpKey: '␣ SPAZIO PER POMPARE!'},
+  de: {pumpUpTap: '👆 TIPPEN ZUM PUMPEN!', pumpUpKey: '␣ LEERTASTE ZUM PUMPEN!'}};
+  for(const l in add) window.DOCK_I18N_EXTRA[l] = Object.assign(window.DOCK_I18N_EXTRA[l] || {}, add[l]); })();
