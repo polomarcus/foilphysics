@@ -841,7 +841,10 @@ const fitGrade = (B, w) => MODE === 'carve' ? carveGrade(w[1], w[2]) : isFit(B, 
 const isFit = (B, w) => RULE[MODE] ? RULE[MODE](w[1], w[2]) : fitOf(B, w) >= fitTable().thr;
 const listW = B => { const a = sortW(B); if(showAll) return a; const f = a.filter(w => isFit(B, w)); return f.length ? f : a; };
 const brandHasFit = B => B.w.some(w => isFit(B, w));
-function bestIn(B){ const l = listW(B); let k = 0; l.forEach((w, i) => { if(fitOf(B, w) > fitOf(B, l[k])) k = i; }); return k; }
+// 🟢 aile proposée par défaut (retour Paul) : la mieux adaptée au mode PARMI les ailes de 1000 cm² et plus (plus faciles) ; sinon parmi toutes
+const EASY_S = 1000;
+function bestIn(B){ const l = listW(B), ok = l.some(w => w[2] >= EASY_S); let k = -1;
+  l.forEach((w, i) => { if(ok && w[2] < EASY_S) return; if(k < 0 || fitOf(B, w) > fitOf(B, l[k])) k = i; }); return Math.max(0, k); }
 const initials = n => n.split(/\s+/).map(w => w[0]).join('').slice(0, 3).toUpperCase();
 let shownBrand = -1;
 function drawBrands(){ const box = $('brands');
