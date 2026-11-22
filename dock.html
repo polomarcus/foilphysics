@@ -129,6 +129,19 @@
   .rface[data-e="win"]{animation:rwin .3s ease-out; background:#dcfce7;}
   @keyframes rshake{25%{transform:translateX(-5px) rotate(-6deg);} 75%{transform:translateX(5px) rotate(6deg);}} @keyframes rwin{50%{transform:scale(1.15);}} @keyframes rsweat{to{transform:translateY(6px); opacity:.4;}}
   body.touch .rface{width:54px; height:54px; border-width:3px;} body.touch .plane{gap:8px;}
+
+  /* 🌊 choix de la vague avant un test Carve (retour Paul : « de la houle de force différente pour qu'on choisisse notre vague ») */
+  .wpick{position:fixed; inset:0; z-index:40; display:grid; place-items:center; background:rgba(11,18,34,.72); backdrop-filter:blur(4px); padding:16px;} .wpick.hide{display:none;}
+  .wp-box{width:min(980px, 100%); background:#0f172a; border:3px solid #fbbf24; border-radius:22px; padding:20px; box-shadow:0 20px 60px rgba(0,0,0,.5); text-align:center; position:relative;}
+  .wp-t{display:block; font-size:1.6rem; font-style:italic; font-weight:900; color:#fde68a; margin-bottom:14px;}
+  .wp-row{display:grid; grid-template-columns:repeat(4, 1fr); gap:12px;}
+  .wp-c{border:3px solid #334155; border-radius:16px; background:linear-gradient(#13203f, #0b1222); color:#fff; padding:14px 10px; cursor:pointer; text-align:center; font:inherit; transition:transform .12s, border-color .12s;}
+  .wp-c:hover, .wp-c:focus-visible{transform:translateY(-3px); border-color:#fbbf24; outline:none;} .wp-c.on{border-color:#22c55e; box-shadow:0 0 0 3px rgba(34,197,94,.35);}
+  .wp-c svg{width:100%; height:64px; display:block;} .wp-c b{display:block; font-size:1.15rem; font-weight:900; margin-top:6px;} .wp-c em{display:block; font-style:normal; color:#7dd3fc; font-weight:800; font-size:.95rem;}
+  .wp-c small{display:block; color:#cbd5e1; font-size:.8rem; line-height:1.3; margin-top:6px; min-height:2.6em;} .wp-c i{display:inline-block; margin-top:6px; font-style:normal; font-size:.72rem; font-weight:900; padding:2px 8px; border-radius:999px;}
+  .wp-x{position:absolute; top:10px; right:12px; border:0; border-radius:999px; padding:6px 12px; background:#334155; color:#fff; font-weight:900; cursor:pointer;}
+  @media (max-height:500px){ .wp-box{padding:12px;} .wp-t{font-size:1.15rem; margin-bottom:8px;} .wp-c{padding:8px 6px;} .wp-c svg{height:40px;} .wp-c small{display:none;} }
+  @media (max-width:700px) and (orientation:portrait){ .wp-row{grid-template-columns:1fr 1fr;} }
   .beat{position:fixed; z-index:7; left:50%; top:17%; bottom:auto; transform:translateX(-50%) skewX(-8deg); width:min(1000px, 92vw); background:rgba(11,18,34,.88); border:2px solid #fbbf24; border-radius:18px; padding:14px 22px 16px 16px; display:grid; grid-template-columns:164px 1fr; column-gap:20px; align-items:center;}
   /* le Prof en grand DANS le panneau (colonne de gauche, buste entier : tête, lunettes, moustache, médaillon), le rythme à droite */
   .bface{grid-column:1; grid-row:1 / span 3; width:164px; height:164px; border-radius:16px; overflow:hidden; background:radial-gradient(circle at 50% 38%, #fff1c9, #ffc08a 55%, #e07a5f); border:3px solid #fbbf24; box-shadow:0 6px 18px rgba(0,0,0,.4); transform:skewX(8deg); transform-origin:50% 100%;}
@@ -334,7 +347,7 @@
   <div class="verdict" id="verdict">…</div>
   <div><div class="k">Stab</div><div class="seg" id="stab"><button data-v="65">65</button><button data-v="90">90</button><button data-v="130" class="on">130</button><button data-v="175">175</button></div></div>
   <div><div class="k">Ton poids · <span id="kgv">80</span> kg</div><input type="range" id="kg" min="50" max="110" value="80" aria-label="Ton poids"></div>
-  <div><div class="k">La houle</div><div class="seg" id="swell"><button data-v="0.5">0,5 m</button><button data-v="1" class="on">1 m</button><button data-v="1.75">1,5-2 m</button></div></div>
+  <div><div class="k">La houle</div><div class="seg" id="swell"><button data-v="0.5">0,5 m</button><button data-v="1" class="on">1 m</button><button data-v="1.75">1,5-2 m</button><button data-v="2.5">2,5 m</button></div></div>
   <p class="sub">Point blanc : l'aile d'avant, pour comparer. Mêmes calculs que la page Carve.</p>
 </aside>
 <footer class="statsbar"><div id="stats"></div><div class="cmp" id="cmp"></div></footer>
@@ -367,6 +380,7 @@
 <div class="pops" id="pops"></div>
 <div class="endc hide" id="endc"><div class="etitle" id="etitle"></div><div class="medal" id="emedal">🥇</div><small id="esl">SCORE</small><b id="escore">0</b><div class="rec" id="erec"></div><div class="eread" id="eread"></div><div class="eobj" id="eobj"></div><button class="eshare" id="eshare" type="button"></button></div>
 <div class="pad hide" id="pad" data-k="step"><button id="tl" class="steer" aria-label="gauche">⬅️</button><button id="td" class="steer lk" aria-label="appuie">↓</button><button id="tu" class="steer lk" aria-label="déleste">↑</button><button id="tp" class="steer pump">💪 Pump</button><button id="tr" class="steer" aria-label="droite">➡️</button></div>
+<div class="wpick hide" id="wpick" role="dialog" aria-modal="true" aria-labelledby="wpt"><div class="wp-box"><b class="wp-t" id="wpt">🌊 Choisis ta vague</b><div class="wp-row" id="wprow"></div><button class="wp-x" id="wpx">↩</button></div></div>
 <div class="rot hide" id="rot"><div><b class="rot-ico">📱</b><p id="rotTxt">Tourne ton téléphone</p><button id="rotOk">Jouer en portrait quand même</button><button id="rotBack" class="alt">↩</button></div></div>
 <div class="tbar hide" id="tbar"><span class="tmid"><b id="tcap">🌊 Test</b><span class="keys" id="tkeys"></span><small id="thint" class="thint" hidden></small><span id="thud" class="thud hide2"><b id="tspd">0 km/h</b><small id="twhy" class="tlab twhy"></small><small id="tstall" class="tlab"></small><span id="tenl" class="tlab">💪</span><i class="tst"><i id="tsta"></i></i></span></span><button id="treplay" class="hide2">🔁</button><button id="tsnd" class="steer" aria-label="son">🔇</button><button id="tback">↩ Revenir au ponton</button></div>
 <nav class="tabs" id="tabs" aria-label="Que veux-tu faire ?">
@@ -377,7 +391,7 @@
 <div class="dlg" id="dlg"><div class="face" id="face"></div><div class="box"><div class="whorow"><div class="who">Prof. Foil</div><div class="langs" id="langs" role="group" aria-label="Langue"></div></div><div class="say" id="say"></div><div class="ch" id="ch"></div><div class="next" id="nx">▼ clique pour continuer</div></div></div>
 <div class="tip hide" id="tip"><div class="mini" id="mini"></div><div class="bub" id="bub"></div></div>
 
-<script src="dock-i18n.js?v=46"></script>
+<script src="dock-i18n.js?v=47"></script>
 <script src="ailes.js?v=20261118"></script>
 <script type="module">
 import * as THREE from 'three';
@@ -1254,7 +1268,7 @@ function startTest(){ $('ntime').classList.remove('hide');
   $('nfswave').style.display = test.flat ? 'none' : ''; $('prhy').style.display = 'none'; $('plane').classList.add('hide'); test.beat0 = 0; $('prz').style.left = (100*(test.I - 0.14)/2.5) + '%'; $('prz').style.width = (100*0.28/2.5) + '%';
   objStart(); if(!VID) beginTakeoff(); document.body.classList.add('playing');
   document.querySelectorAll('.sel,.right,.statsbar,.tabs,.go').forEach(e => e.classList.add('hide')); $('tip').classList.add('hide');
-  $('tcap').textContent = fill(T.testCap, {n, k: T.turnKinds[m >= 55 ? 0 : m >= 35 ? 1 : 2]}); setKeys('step'); $('pad').classList.remove('hide'); $('tenl').textContent = T.energy || '💪'; $('tstall').textContent = fill(T.stall || '< {v}', {v: Math.round(vs*3.6)}); $('tbar').classList.remove('hide');
+  $('tcap').textContent = fill(T.testCap, {n, k: T.turnKinds[m >= 55 ? 0 : m >= 35 ? 1 : 2]}) + (MODE === 'carve' ? ' · 🌊 ' + (((T.waveCards || [])[[0.5, 1, 1.75, 2.5].indexOf(ST.H)] || {}).n || '') + ' ' + (T.swells[[0.5, 1, 1.75, 2.5].indexOf(ST.H)] || '') : '');   // la vague choisie setKeys('step'); $('pad').classList.remove('hide'); $('tenl').textContent = T.energy || '💪'; $('tstall').textContent = fill(T.stall || '< {v}', {v: Math.round(vs*3.6)}); $('tbar').classList.remove('hide');
 }
 function endTest(silent, keep){ ['good', 'shore', 'slow', 'foot'].forEach(id => $(id) && $(id).classList.remove('on')); $('ntime').classList.add('hide'); objPts.visible = objBuoys.visible = false; clearTimeout(objPanel.h); $('objp').classList.add('off'); $('objc').classList.add('off'); $('eobj').innerHTML = ''; $('eread').innerHTML = '';
   showRot(needRotate()); document.body.classList.remove('playing');   // on reste en paysage (plein écran gardé) : tout le Dock se joue à l'horizontale
@@ -1286,7 +1300,18 @@ const canLock = !!(screen.orientation && screen.orientation.lock && document.doc
 $('rotOk').style.display = canLock ? '' : 'none'; $('rotBack').style.display = 'none';
 $('rotOk').onclick = () => { lockLandscape(); };
 if(needRotate()) showRot(true);
-$('test').onclick = playTest;
+// 🌊 choix de la vague (Carve) : 4 houles, de la douce à l'énorme ; mémorisé
+const WAVES = [{h: 0.5, lv: 0}, {h: 1, lv: 1}, {h: 1.75, lv: 2}, {h: 2.5, lv: 3}], LVC = ['#22c55e', '#3b82f6', '#f59e0b', '#ef4444'];
+const waveSvg = h => { const A = 6 + 9*h, pts = []; for(let x = 0; x <= 200; x += 5) pts.push(x + ',' + (40 - A*Math.sin(x/200*Math.PI*3 + .6)).toFixed(1)); return '<svg viewBox="0 0 200 70" aria-hidden="true"><polyline points="' + pts.join(' ') + ' 200,70 0,70" fill="rgba(56,189,248,.35)" stroke="#7dd3fc" stroke-width="4" stroke-linejoin="round"/></svg>'; };
+function pickWave(then){ const L = T.waveCards || [], row = $('wprow'); $('wpt').textContent = T.waveTitle || '🌊 Choisis ta vague';
+  row.innerHTML = WAVES.map((w, i) => { const c = L[i] || {}; return '<button class="wp-c' + (Math.abs(ST.H - w.h) < 0.01 ? ' on' : '') + '" data-h="' + w.h + '">' + waveSvg(w.h) + '<b>' + (c.n || '') + '</b><em>' + T.swells[i] + '</em><small>' + (c.d || '') + '</small><i style="background:' + LVC[w.lv] + '">' + (c.l || '') + '</i></button>'; }).join('');
+  $('wpick').classList.remove('hide'); row.querySelector('.on, .wp-c').focus();
+  row.querySelectorAll('.wp-c').forEach(b => b.onclick = () => { const h = +b.dataset.h; const sb = [...$('swell').querySelectorAll('button')].find(x => +x.dataset.v === h); if(sb) sb.click(); else ST.H = h;
+    try{ localStorage.setItem('dock-houle', String(h)); }catch(e){} $('wpick').classList.add('hide'); then(); }); }
+$('wpx').onclick = () => $('wpick').classList.add('hide');
+addEventListener('keydown', e => { if(e.key === 'Escape' && !$('wpick').classList.contains('hide')) $('wpick').classList.add('hide'); });
+try{ const h0 = +localStorage.getItem('dock-houle'); if(WAVES.some(w => w.h === h0)){ const sb = [...$('swell').querySelectorAll('button')].find(x => +x.dataset.v === h0); if(sb) sb.click(); } }catch(e){}
+$('test').onclick = () => MODE === 'carve' && !VID ? pickWave(playTest) : playTest();
 if(/[?&]debug=1/.test(location.search)) { window.__dockTest = () => test; window.__dockSW = SW; window.__dockShare = () => { const d = shareData(); return d ? shareCanvas(d) : null; }; window.__dockSET = SET; window.__dockSWG = SWG; window.__dockCam = (x, y, z, tx, ty, tz) => { cam.position.set(x, y, z); cam.lookAt(tx, ty, tz); }; window.__dockFoil = () => foil; window.__dockHold = b => { DBG_HOLD = !!b; }; window.__dockInfo = () => { let meshes = 0, vis = 0; scene.traverse(o => { if(o.isMesh || o.isLine || o.isPoints){ meshes++; let v = true; for(let q = o; q; q = q.parent) if(!q.visible){ v = false; break; } if(v) vis++; } }); return {calls: gl.info.render.calls, tris: gl.info.render.triangles, meshes, visibles: vis, geoms: gl.info.memory.geometries}; }; window.__dockTURN = TURN; window.__dockH = h => { if(h !== undefined) seaU.H.value = h; return seaU.H.value; }; window.__dockK = (k, b) => { SW.K = k; if(b !== undefined) SW.back = b; }; window.__dockFrame = (now, t) => { if(t !== undefined) clock.elapsedTime = t; testFrame(now); }; }   // tests locaux : placer le rider
 function testFrame(now){
   { const fd = Math.max(0, Math.min(0.05, (now - (test.fxT || now))/1000)); test.fxT = now; fxStep(fd, clock.elapsedTime); objFx(clock.elapsedTime);
