@@ -17,7 +17,7 @@ window.seoLang = function(l){ var M_L = function(x){ return ['en','es','it'].ind
   if(!c){ c = document.createElement('link'); c.rel = 'canonical'; document.head.appendChild(c); }   // canonique posée par le script (jamais en dur) : toujours celle de la langue de l'adresse
   if(d) d.setAttribute('content', M.d); c.setAttribute('href', M.u); };
 seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   // dès le chargement, d'après ?lang=</script>
-<script src="lang/xl.js?v=20261121a"></script>
+<script src="lang/xl.js?v=20261122a"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Bien débuter en pump foil : le matos qui pardonne">
 <meta property="og:description" content="Quel foil pour apprendre ? Grande aile, gros stab, mât court : le matos de débutant expliqué par la physique, selon ton poids. Et la sécurité d'abord.">
@@ -216,7 +216,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
     <a class="tb-tab" href="vitesse.html" data-i18n="tb-vit">🚀 Vitesse</a>
     <span class="tb-tab on" aria-current="page" data-i18n="tb-deb">🎓 Débuter</span>
     <a class="tb-tab" href="carve.html" data-i18n="tb-carve">🌊 Carve</a>
-    <a class="tb-tab" href="dock.html" data-i18n="tb-dock">🎮 Le Dock</a>
+    <a class="tb-tab" href="dock.html" data-i18n="tb-dock">🎮 Le jeu : Le Dock</a>
   </div>
   <div class="tb-ctrl">
     <button type="button" id="xp-btn" aria-pressed="false">💡 <span data-i18n="xp-lbl">Explications</span><span class="xp-state"></span></button>
@@ -596,7 +596,7 @@ seoLang((/[?&]lang=(en|es|it)\b/i.exec(location.search) || [])[1] || 'fr');   //
   const num = (x,d=0)=> x.toLocaleString(XL.locale(LANG),{maximumFractionDigits:d, minimumFractionDigits:d});
   const FRC = {};
   const EN = {
-    'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve','tb-dock':'🎮 The Dock','tb-more':'Links ▾','tb-model':'💻 Physics model','tb-fx':'📐 Our formulas',
+    'tb-ld':'⚡ Long distance','tb-vit':'🚀 Speed','tb-deb':'🎓 Beginner','tb-carve':'🌊 Carve','tb-dock':'🎮 The game: The Dock','tb-more':'Links ▾','tb-model':'💻 Physics model','tb-fx':'📐 Our formulas',
     'h1a':'<span class="hi">Starting</span> pump foil right',
     'h1b':'🎓 the setup that forgives',
     'hsub':'Here we chase the opposite of performance: <b>the wing that gives you the right to be wrong</b>.',
