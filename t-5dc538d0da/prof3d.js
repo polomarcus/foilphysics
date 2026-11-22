@@ -1,22 +1,22 @@
-// 🧑‍🔬 Prof. Foil en 3D (repris de zéro, retour Paul : « repars de 0 », « si tu peux le faire en 3D c'est cool »)
-// Figurine façon jouet : grosse tête, rendu toon + contour noir, crâne dégarni et touffes blanches sur les côtés,
-// lunettes rondes, moustache relevée, blouse blanche sur chemise turquoise, collier avec un foil en or,
-// et un vrai foil (mât, fuselage, aile avant, stab) comme bâton de sage. Idle : respire, cligne des yeux, hoche la tête.
+// 👩‍🔬 la Prof. Foil en 3D (retour Paul : « j'ai envie que le Prof. Foil soit une femme », « elle doit nous regarder dans les yeux »)
+// Figurine façon jouet : grosse tête, rendu toon + contour noir, cheveux blancs en chignon avec une frange, lunettes rondes,
+// cils, rouge à lèvres, boucles d'oreilles dorées, blouse blanche sur chemise turquoise, médaillon foil en or.
+// De face, caméra dans l'axe : elle regarde le joueur. Idle : respire, cligne des yeux, hoche la tête.
 import * as THREE from 'three';
 
 export function mountProf(bigEl, miniEl, opt = {}){
   let renderer;
   try{ renderer = new THREE.WebGLRenderer({antialias: true, alpha: true, preserveDrawingBuffer: true}); }catch(e){ return false; }
   const W = 330, H = 330, RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  renderer.setPixelRatio(Math.min(opt.pr || 2, devicePixelRatio || 1));   // 📱 plus léger sur téléphone renderer.setSize(W, H); renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.setPixelRatio(Math.min(opt.pr || 2, devicePixelRatio || 1)); renderer.setSize(W, H); renderer.outputColorSpace = THREE.SRGBColorSpace;   // 📱 pixel ratio plus léger sur téléphone
   const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(30, W/H, 0.1, 50);
-  cam.position.set(0.45, 0.7, 7.6); cam.lookAt(0, 0.35, 0);
+  cam.position.set(0, 0.7, 7.6); cam.lookAt(0, 0.35, 0);   // dans l'axe : elle nous regarde dans les yeux
 
   // matériaux toon (3 tons) + contours
   const ramp = new THREE.DataTexture(new Uint8Array([90, 90, 90, 255, 185, 185, 185, 255, 255, 255, 255, 255]), 3, 1);
   ramp.minFilter = ramp.magFilter = THREE.NearestFilter; ramp.needsUpdate = true;
   const toon = (c, o = {}) => new THREE.MeshToonMaterial(Object.assign({color: c, gradientMap: ramp}, o));
-  const M = {skin: toon('#f2b48c'), nose: toon('#ee9a7c'), white: toon('#f8fafc'), hair: toon('#f1f5f9'), dark: toon('#111827'),
+  const M = {skin: toon('#f2b48c'), nose: toon('#f0a888'), lips: toon('#db2777'), white: toon('#f8fafc'), hair: toon('#f1f5f9'), dark: toon('#111827'),
     coat: toon('#f8fafc'), shirt: toon('#14b8a6'), gold: toon('#fbbf24', {emissive: '#7c4a03', emissiveIntensity: .25}), metal: toon('#64748b'),
     wing: toon('#0ea5e9'), cheek: new THREE.MeshBasicMaterial({color: '#fb7185', transparent: true, opacity: .35}), mouth: toon('#7f1d1d'),
     lens: new THREE.MeshBasicMaterial({color: '#e0f2fe', transparent: true, opacity: .28})};
@@ -24,18 +24,22 @@ export function mountProf(bigEl, miniEl, opt = {}){
   const outlined = (mesh, k = 1.06) => { const o = new THREE.Mesh(mesh.geometry, lineMat); o.scale.setScalar(k); mesh.add(o); return mesh; };
   const sph = (r, m, seg = 32) => new THREE.Mesh(new THREE.SphereGeometry(r, seg, seg/2), m);
 
-  const prof = new THREE.Group(); scene.add(prof); prof.rotation.y = -0.22;
+  const prof = new THREE.Group(); scene.add(prof); prof.rotation.y = 0;
   const head = new THREE.Group(); head.position.set(0, 0.95, 0); prof.add(head);
 
   // tête + oreilles
   const skull = outlined(sph(1, M.skin, 48)); skull.scale.set(1, 1.02, .95); head.add(skull);
   [-1, 1].forEach(s => { const e = outlined(sph(.2, M.skin), 1.12); e.position.set(s*.98, -.02, 0); e.scale.set(.6, 1, .8); head.add(e); });
-  // touffes blanches : couronne sur les côtés et derrière, crâne dégarni (le savant)
-  [[-.92, .32, -.1, .36], [-1.02, .02, -.25, .3], [-.75, .62, -.35, .3], [.92, .32, -.1, .36], [1.02, .02, -.25, .3], [.75, .62, -.35, .3],
-   [-.4, .55, -.75, .34], [.4, .55, -.75, .34], [0, .45, -.9, .36], [-.85, -.25, -.4, .26], [.85, -.25, -.4, .26]].forEach(([x, y, z, r]) => {
-    const t = outlined(sph(r, M.hair), 1.1); t.position.set(x, y, z); head.add(t); });
-  // trois mèches rebelles sur le dessus
-  [[-.18, .98, .1, .16], [.05, 1.04, .05, .18], [.26, .96, .08, .14]].forEach(([x, y, z, r]) => { const t = outlined(sph(r, M.hair), 1.12); t.position.set(x, y, z); head.add(t); });
+  // chevelure blanche : calotte qui laisse le front libre, volumes sur les côtés, chignon, frange balayée
+  { const cap = outlined(new THREE.Mesh(new THREE.SphereGeometry(1.07, 48, 24, 0, Math.PI*2, 0, Math.PI*.5), M.hair), 1.05); cap.rotation.x = -.5; cap.position.set(0, .05, -.04); head.add(cap);
+    [-1, 1].forEach(sd => { const side = outlined(sph(.42, M.hair), 1.08); side.position.set(sd*.86, .18, -.25); side.scale.set(.75, 1.25, 1); head.add(side);
+      const low = outlined(sph(.3, M.hair), 1.08); low.position.set(sd*.8, -.32, -.38); low.scale.set(.8, 1.1, 1); head.add(low); });
+    const bun = outlined(sph(.42, M.hair), 1.07); bun.position.set(0, 1.02, -.42); head.add(bun);
+    const band = new THREE.Mesh(new THREE.TorusGeometry(.3, .05, 10, 32), M.shirt); band.position.set(0, .86, -.3); band.rotation.x = Math.PI/2 - .55; head.add(band);
+    const fringe = outlined(sph(.5, M.hair), 1.06); fringe.position.set(-.28, .74, .52); fringe.scale.set(1.15, .42, .55); fringe.rotation.z = .3; head.add(fringe);
+    const fr2 = outlined(sph(.36, M.hair), 1.06); fr2.position.set(.34, .78, .5); fr2.scale.set(1, .38, .55); fr2.rotation.z = -.35; head.add(fr2); }
+  // boucles d'oreilles : petites gouttes dorées
+  [-1, 1].forEach(sd => { const ear = outlined(sph(.075, M.gold), 1.15); ear.position.set(sd*1.0, -.3, .08); ear.scale.set(1, 1.3, 1); head.add(ear); });
 
   // yeux (ovales noirs + reflet), paupières pour cligner
   const eyes = [];
@@ -43,22 +47,19 @@ export function mountProf(bigEl, miniEl, opt = {}){
     const e = sph(.11, M.dark); e.scale.set(1, 1.35, .6); g.add(e);
     const h = sph(.035, M.white); h.position.set(.035, .06, .06); g.add(h); eyes.push(g);
     // sourcils blancs broussailleux, levés (bienveillant)
-    const b = outlined(new THREE.Mesh(new THREE.CapsuleGeometry(.07, .26, 6, 12), M.hair), 1.15); b.rotation.z = Math.PI/2 - s*.3; b.position.set(s*.36, .46, .86); head.add(b); });
+    const b = outlined(new THREE.Mesh(new THREE.CapsuleGeometry(.035, .26, 6, 12), M.metal), 1.12); b.rotation.z = Math.PI/2 - s*.22; b.position.set(s*.35, .45, .88); head.add(b);
+    [0, 1, 2].forEach(i => { const l = new THREE.Mesh(new THREE.CapsuleGeometry(.014, .07, 4, 6), M.dark); l.position.set(s*(.07 + .045*i), .14 + .02*i, .07); l.rotation.z = -s*(.6 + .35*i); g.add(l); }); });   // cils
   // lunettes rondes
   [-1, 1].forEach(s => { const r = new THREE.Mesh(new THREE.TorusGeometry(.22, .028, 10, 40), M.dark); r.position.set(s*.34, .1, .98); head.add(r);
     const l = new THREE.Mesh(new THREE.CircleGeometry(.21, 32), M.lens); l.position.set(s*.34, .1, .975); head.add(l);
     const arm = new THREE.Mesh(new THREE.CylinderGeometry(.02, .02, .5, 8), M.dark); arm.rotation.x = Math.PI/2; arm.position.set(s*.6, .12, .78); arm.rotation.y = s*.5; head.add(arm); });
   { const br = new THREE.Mesh(new THREE.TorusGeometry(.1, .024, 8, 20, Math.PI), M.dark); br.position.set(0, .14, 1.0); head.add(br); }
   // nez rond, joues
-  { const n = outlined(sph(.17, M.nose), 1.1); n.position.set(0, -.08, 1.02); n.scale.set(1, .9, 1); head.add(n); }
+  { const n = outlined(sph(.12, M.nose), 1.1); n.position.set(0, -.08, 1.0); n.scale.set(.9, .9, 1); head.add(n); }
   [-1, 1].forEach(s => { const c = sph(.17, M.cheek); c.position.set(s*.55, -.2, .8); c.scale.set(1, .6, .3); head.add(c); });
-  // moustache relevée (deux virgules) + sourire
-  [-1, 1].forEach(s => { const m = outlined(new THREE.Mesh(new THREE.CapsuleGeometry(.09, .3, 6, 14), M.hair), 1.12);
-    m.rotation.z = Math.PI/2 - s*.35; m.position.set(s*.2, -.27, .97); head.add(m);
-    const tip = outlined(sph(.075, M.hair), 1.14); tip.position.set(s*.42, -.17, .9); head.add(tip); });
   // grand sourire ouvert : demi-disque bordeaux, rangée de dents en haut, langue rose
-  { const mouth = new THREE.Group(); mouth.position.set(0, -.4, .955); mouth.rotation.x = -.3; head.add(mouth);
-    const lip = new THREE.Mesh(new THREE.CircleGeometry(.27, 40, Math.PI, Math.PI), new THREE.MeshBasicMaterial({color: '#0b1222'})); lip.position.z = -.002; mouth.add(lip);
+  { const mouth = new THREE.Group(); mouth.position.set(0, -.36, .955); mouth.rotation.x = -.3; head.add(mouth);
+    const lip = new THREE.Mesh(new THREE.CircleGeometry(.29, 40, Math.PI, Math.PI), new THREE.MeshBasicMaterial({color: '#db2777'})); lip.position.z = -.002; mouth.add(lip);
     mouth.add(new THREE.Mesh(new THREE.CircleGeometry(.24, 40, Math.PI, Math.PI), new THREE.MeshBasicMaterial({color: '#7f1d1d'})));
     const teeth = new THREE.Mesh(new THREE.PlaneGeometry(.42, .06), new THREE.MeshBasicMaterial({color: '#ffffff'})); teeth.position.set(0, -.035, .002); mouth.add(teeth);
     const tongue = new THREE.Mesh(new THREE.CircleGeometry(.1, 24, 0, Math.PI), new THREE.MeshBasicMaterial({color: '#f87171'})); tongue.position.set(0, -.22, .002); mouth.add(tongue); }

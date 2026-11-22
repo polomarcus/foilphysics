@@ -15,7 +15,7 @@ fr: {
     testCap: '🌊 Test : {n} · {k}', turnKinds: ['virages serrés', 'courbes moyennes', 'grandes courbes'],
     next: '▼ clique pour continuer', pick: '◀ choisis dans le menu à gauche', open: '▶ ouvrir le Dock', who: 'Prof. Foil'},
   script: {
-    intro: ['Bonjour foiler ! Bienvenue au Dock.', 'Moi, c\'est le Prof. Foil. J\'étudie les ailes de pump foil depuis que la mer est mouillée.', 'Que veux-tu faire aujourd\'hui ?'],
+    intro: ['Bonjour foiler ! Bienvenue au Dock.', 'Moi, c\'est la Prof. Foil. J\'étudie les ailes de pump foil depuis que la mer est mouillée.', 'Que veux-tu faire aujourd\'hui ?'],
     carve: ['Pour carver, ce qui compte d\'abord, c\'est l\'envergure : plus elle est courte, plus l\'aile tourne vite.', 'Choisis ton aile avec les flèches. Je te dis ce que j\'en pense à chaque fois.'],
     vite: ['Ah, la vitesse ! Une petite surface, un petit stab… et des sangles pour pousser fort.', 'Choisis ton aile : ici je classe la glisse en premier. Pour les km/h précis, mon labo Vitesse est à un clic.'],
     loin: ['Se balader longtemps, c\'est l\'art de l\'envergure : beaucoup d\'envergure pour peu de surface, ça glisse et ça fatigue moins.', 'Choisis ton aile : ici je classe la durée de session en premier. Le comparateur complet est à un clic.'],
@@ -163,7 +163,7 @@ es: {
     testCap: '🌊 Prueba: {n} · {k}', turnKinds: ['giros cerrados', 'curvas medias', 'curvas amplias'],
     next: '▼ haz clic para seguir', pick: '◀ elige en el menú de la izquierda', open: '▶ abrir el Dock', who: 'Prof. Foil'},
   script: {
-    intro: ['¡Hola, foiler! Bienvenido al Dock.', 'Soy el Prof. Foil. Estudio las alas de pump foil desde que el mar está mojado.', '¿Qué quieres hacer hoy?'],
+    intro: ['¡Hola, foiler! Bienvenido al Dock.', 'Soy la Prof. Foil. Estudio las alas de pump foil desde que el mar está mojado.', '¿Qué quieres hacer hoy?'],
     carve: ['Para carvear, lo primero es la envergadura: cuanto más corta, más rápido gira el ala.', 'Elige tu ala con las flechas. Cada vez te digo lo que pienso.'],
     vite: ['¡Ah, la velocidad! Poca superficie, un stab pequeño… y straps para empujar fuerte.', 'Elige tu ala: aquí pongo el planeo primero. Para los km/h exactos, mi laboratorio de Velocidad está a un clic.'],
     loin: ['Pasear un buen rato es el arte de la envergadura: mucha envergadura para poca superficie planea y te cansa menos.', 'Elige tu ala: aquí pongo primero la duración de la sesión. El comparador completo está a un clic.'],
@@ -237,7 +237,7 @@ it: {
     testCap: '🌊 Test: {n} · {k}', turnKinds: ['curve strette', 'curve medie', 'curve ampie'],
     next: '▼ clicca per continuare', pick: '◀ scegli nel menu a sinistra', open: '▶ apri il Dock', who: 'Prof. Foil'},
   script: {
-    intro: ['Ciao foiler! Benvenuto al Dock.', 'Io sono il Prof. Foil. Studio le ali da pump foil da quando il mare è bagnato.', 'Cosa vuoi fare oggi?'],
+    intro: ['Ciao foiler! Benvenuto al Dock.', 'Io sono la Prof. Foil. Studio le ali da pump foil da quando il mare è bagnato.', 'Cosa vuoi fare oggi?'],
     carve: ['Per carvare, la prima cosa è l\'apertura alare: più è corta, più l\'ala gira in fretta.', 'Scegli la tua ala con le frecce. Ogni volta ti dico cosa ne penso.'],
     vite: ['Ah, la velocità! Poca superficie, uno stab piccolo… e gli strap per spingere forte.', 'Scegli la tua ala: qui metto al primo posto la scivolata. Per i km/h precisi, il mio laboratorio Velocità è a un clic.'],
     loin: ['Girovagare a lungo è l\'arte dell\'apertura alare: tanta apertura per poca superficie scivola e ti stanca meno.', 'Scegli la tua ala: qui metto al primo posto la durata della sessione. Il comparatore completo è a un clic.'],
@@ -429,7 +429,7 @@ window.DOCK_I18N_EXTRA = {
   fr: {objTitle: 'OBJECTIFS', objWin: 'OBJECTIF !', objNew: 'nouveau !', objSecret: '???', objN: {
     s1: 'Score 5 000', s2: 'Score 12 000', s3: 'Score 20 000', carve: 'Petit carve (50°)', big: 'Gros carve (100°)', cut: 'Cutback (160°)', snake: 'Le serpent : 3 carves alternés', x3: 'Multiplicateur ×3',
     face: 'Avale la face : {f} × ta vitesse de décollage', waves: '3 vagues d\'affilée sans toucher l\'eau', foil: 'Attrape les lettres F-O-I-L', shore: 'Frôle le shore break et ressors', tamed: 'Foil dompté au pied avant',
-    nofall: 'Zéro chute en 2 min', kiss: 'Bisou au ponton 💥', tour: 'Tour du propriétaire (tête du ponton)', secret: 'Le médaillon du Prof',
+    nofall: 'Zéro chute en 2 min', kiss: 'Bisou au ponton 💥', tour: 'Tour du propriétaire (tête du ponton)', secret: 'Le médaillon de la Prof',
     t30: 'Finir le slalom (moins de 30 s)', t25: 'Slalom en moins de 25 s', t21: 'Slalom en moins de 21 s', nopen: '8/8 portes, zéro pénalité', peak: 'Pointe à {v} km/h',
     d1: '{a} m', d2: '{b} m', d3: '{c} m', perf8: 'Mesure parfaite : 8 PARFAIT d\'affilée', zen: 'Cœur zen : finir sous 130 BPM', cardio: 'Cardio : 10 s au-dessus de 180 BPM', tempo: 'Tenir 4 accélérations de tempo',
     p4: '4 PARFAIT au départ', first: 'Décoller du premier coup', pumps: 'Décoller en moins de 3 pumps'}},
@@ -443,21 +443,21 @@ window.DOCK_I18N_EXTRA = {
   es: {objTitle: 'OBJETIVOS', objWin: '¡OBJETIVO!', objNew: '¡nuevo!', objSecret: '???', objN: {
     s1: 'Puntuación 5 000', s2: 'Puntuación 12 000', s3: 'Puntuación 20 000', carve: 'Carve pequeño (50°)', big: 'Gran carve (100°)', cut: 'Cutback (160°)', snake: 'La serpiente: 3 carves alternos', x3: 'Multiplicador ×3',
     face: 'Trágate la pared: {f} × tu velocidad de despegue', waves: '3 olas seguidas sin tocar el agua', foil: 'Atrapa las letras F-O-I-L', shore: 'Roza la rompiente y sal', tamed: 'Foil domado con el pie delantero',
-    nofall: 'Cero caídas en 2 min', kiss: 'Beso al muelle 💥', tour: 'Vuelta del propietario (punta del muelle)', secret: 'El medallón del Profe',
+    nofall: 'Cero caídas en 2 min', kiss: 'Beso al muelle 💥', tour: 'Vuelta del propietario (punta del muelle)', secret: 'El medallón de la Profe',
     t30: 'Terminar el slalom (menos de 30 s)', t25: 'Slalom en menos de 25 s', t21: 'Slalom en menos de 21 s', nopen: '8/8 puertas, sin penalización', peak: 'Punta de {v} km/h',
     d1: '{a} m', d2: '{b} m', d3: '{c} m', perf8: 'Compás perfecto: 8 PERFECTO seguidos', zen: 'Corazón zen: terminar por debajo de 130 BPM', cardio: 'Cardio: 10 s por encima de 180 BPM', tempo: 'Aguantar 4 aceleraciones de tempo',
     p4: '4 PERFECTO en la salida', first: 'Despegar a la primera', pumps: 'Despegar con menos de 3 bombeos'}},
   it: {objTitle: 'OBIETTIVI', objWin: 'OBIETTIVO!', objNew: 'nuovo!', objSecret: '???', objN: {
     s1: 'Punteggio 5 000', s2: 'Punteggio 12 000', s3: 'Punteggio 20 000', carve: 'Piccolo carve (50°)', big: 'Grande carve (100°)', cut: 'Cutback (160°)', snake: 'Il serpente: 3 carve alternati', x3: 'Moltiplicatore ×3',
     face: 'Divora la parete: {f} × la tua velocità di decollo', waves: '3 onde di fila senza toccare l\'acqua', foil: 'Prendi le lettere F-O-I-L', shore: 'Sfiora lo shore break ed esci', tamed: 'Foil domato col piede anteriore',
-    nofall: 'Zero cadute in 2 min', kiss: 'Bacio al pontile 💥', tour: 'Giro del proprietario (testa del pontile)', secret: 'Il medaglione del Prof',
+    nofall: 'Zero cadute in 2 min', kiss: 'Bacio al pontile 💥', tour: 'Giro del proprietario (testa del pontile)', secret: 'Il medaglione della Prof',
     t30: 'Finire lo slalom (meno di 30 s)', t25: 'Slalom in meno di 25 s', t21: 'Slalom in meno di 21 s', nopen: '8/8 porte, zero penalità', peak: 'Punta a {v} km/h',
     d1: '{a} m', d2: '{b} m', d3: '{c} m', perf8: 'Battuta perfetta: 8 PERFETTO di fila', zen: 'Cuore zen: finire sotto i 130 BPM', cardio: 'Cardio: 10 s sopra i 180 BPM', tempo: 'Reggere 4 accelerazioni di tempo',
     p4: '4 PERFETTO alla partenza', first: 'Decollare al primo colpo', pumps: 'Decollare con meno di 3 pompate'}},
   de: {objTitle: 'ZIELE', objWin: 'ZIEL!', objNew: 'neu!', objSecret: '???', objN: {
     s1: 'Punktzahl 5 000', s2: 'Punktzahl 12 000', s3: 'Punktzahl 20 000', carve: 'Kleiner Carve (50°)', big: 'Großer Carve (100°)', cut: 'Cutback (160°)', snake: 'Die Schlange: 3 Carves im Wechsel', x3: 'Multiplikator ×3',
     face: 'Friss die Welle: {f} × dein Abhebetempo', waves: '3 Wellen am Stück ohne Aufsetzen', foil: 'Schnapp dir die Buchstaben F-O-I-L', shore: 'Streif den Shorebreak und komm raus', tamed: 'Foil gezähmt mit dem vorderen Fuß',
-    nofall: 'Kein Sturz in 2 min', kiss: 'Küsschen für den Steg 💥', tour: 'Große Runde um den Stegkopf', secret: 'Das Medaillon vom Prof',
+    nofall: 'Kein Sturz in 2 min', kiss: 'Küsschen für den Steg 💥', tour: 'Große Runde um den Stegkopf', secret: 'Das Medaillon der Professorin',
     t30: 'Slalom beenden (unter 30 s)', t25: 'Slalom unter 25 s', t21: 'Slalom unter 21 s', nopen: '8/8 Tore, keine Strafe', peak: 'Spitze {v} km/h',
     d1: '{a} m', d2: '{b} m', d3: '{c} m', perf8: 'Perfekter Takt: 8 PERFEKT am Stück', zen: 'Zen-Herz: unter 130 BPM ins Ziel', cardio: 'Cardio: 10 s über 180 BPM', tempo: '4 Tempo-Steigerungen durchhalten',
     p4: '4 PERFEKT beim Anlauf', first: 'Beim ersten Versuch abheben', pumps: 'Mit weniger als 3 Pumps abheben'}}};
@@ -490,9 +490,13 @@ window.DOCK_I18N_EXTRA = {
     readLbl: 'Lettura dell\'onda', readShort: 'Onda', readW: ['l\'onda ti comanda: guardala arrivare', 'cominci a sentirla', 'leggi l\'onda come un libro'], setSoon: '🌊 Serie al largo', setNow: '🌊🌊 SERIE!', pSet: 'SERIE SURFATA',
     kRead: 'leggi l\'onda: mettiti davanti alla cresta', readTip: 'Leggi l\'onda: guardala arrivare e mettiti davanti alla cresta. Ogni 25 s arriva una serie più grossa.',
     readLines: ['Con la {n} conta la lettura: guarda l\'onda arrivare, mettiti davanti alla cresta e lasciati spingere.', 'Un consiglio per la {n}: tieni d\'occhio le serie al largo. Due o tre onde più grosse, ed è lì che si fanno i punti.']},
-  de: {shareBtn: '📲 Session teilen', shareSaved: 'Bild gespeichert: füg es deiner Instagram-Story hinzu', shareCta: '🎮 Spiel The Dock: Link in der Bio von @polofoil', shareBeat: 'Schlag meinen Score!', shareText: '{v} im Dock mit dem {n}. Schlag meinen Score!', shDist: 'DISTANZ',
+  de: {shareBtn: '📲 Session teilen', shareSaved: 'Bild gespeichert: füg es deiner Instagram-Story hinzu', shareCta: '🎮 Spiel den Dock: Link in der Bio von @polofoil', shareBeat: 'Schlag meinen Score!', shareText: '{v} im Dock mit dem {n}. Schlag meinen Score!', shDist: 'DISTANZ',
     readLbl: 'Dünung lesen', readShort: 'Dünung', readW: ['die Welle bestimmt: schau ihr entgegen', 'du fängst an, sie zu spüren', 'du liest die Dünung wie ein Buch'], setSoon: '🌊 Set draußen', setNow: '🌊🌊 SET!', pSet: 'SET GESURFT',
     kRead: 'lies die Dünung: bleib vor dem Kamm', readTip: 'Lies die Dünung: schau der Welle entgegen und bleib vor dem Kamm. Alle 25 s kommt ein größeres Set.',
     readLines: ['Mit dem {n} zählt das Lesen: schau der Welle entgegen, bleib vor dem Kamm und lass dich schieben.', 'Ein Tipp für den {n}: achte auf die Sets draußen. Zwei, drei größere Wellen, und genau da holst du Punkte.']}};
   const objN = {fr: {read70: 'Lecteur de houle : 70/100', set: 'Surfer une série'}, en: {read70: 'Swell reader: 70/100', set: 'Surf a set'}, es: {read70: 'Lector de swell: 70/100', set: 'Surfear una serie'}, it: {read70: 'Lettore d\'onda: 70/100', set: 'Surfare una serie'}, de: {read70: 'Dünungsleser: 70/100', set: 'Ein Set surfen'}};
   for(const l in add){ const E = window.DOCK_I18N_EXTRA[l] = Object.assign(window.DOCK_I18N_EXTRA[l] || {}, add[l]); E.objN = Object.assign(E.objN || {}, objN[l]); } })();
+
+// ⬇️ ressortir au large en descendant l'arrière d'une crête
+(function(){ const add = {fr: {backDown: '⬇️ derrière la crête : la pente t\'aide'}, en: {backDown: '⬇️ behind the crest: the slope helps you'}, es: {backDown: '⬇️ detrás de la cresta: la pendiente te ayuda'}, it: {backDown: '⬇️ dietro la cresta: la pendenza ti aiuta'}, de: {backDown: '⬇️ hinter dem Kamm: das Gefälle hilft dir'}};
+  for(const l in add) window.DOCK_I18N_EXTRA[l] = Object.assign(window.DOCK_I18N_EXTRA[l] || {}, add[l]); })();
