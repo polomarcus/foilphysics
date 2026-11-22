@@ -76,21 +76,22 @@ export function mountProf(bigEl, miniEl, opt = {}){
     const g = new THREE.ExtrudeGeometry(sh, {depth, bevelEnabled: true, bevelThickness: depth*.6, bevelSize: depth*.5, bevelSegments: 3, curveSegments: 40}); g.center(); return g; };
   // collier : cordon doré + médaillon en or, foil gravé (aile + mât + fuselage) en bleu nuit
   { const cord = new THREE.Mesh(new THREE.TorusGeometry(.5, .02, 8, 48, Math.PI), M.gold); cord.rotation.set(-.35, 0, Math.PI); cord.position.set(0, .3, .2); cord.scale.set(.75, 1, 1); body.add(cord);
-    const med = new THREE.Group(); med.position.set(0, -.12, .74); med.rotation.x = -.12; med.scale.setScalar(1.7); body.add(med);
+    const med = new THREE.Group(); med.position.set(0, -.1, .84); med.rotation.x = -.2; med.scale.setScalar(1.6); body.add(med);   // posé plus en avant : avant, le bas du médaillon rentrait dans la blouse
     const disc = outlined(new THREE.Mesh(new THREE.CylinderGeometry(.19, .19, .05, 40), M.gold), 1.1); disc.rotation.x = Math.PI/2; med.add(disc);
     const ink = new THREE.MeshBasicMaterial({color: '#0b1222'}), glyph = new THREE.Group(); glyph.position.z = .03; med.add(glyph);
-    // foil vu de face : planche en haut, mât, aile avant en mouette en bas
-    const board = new THREE.Shape(); board.moveTo(-.12, .1); board.lineTo(.12, .1); board.quadraticCurveTo(.14, .125, .11, .135); board.lineTo(-.11, .135); board.quadraticCurveTo(-.14, .125, -.12, .1); glyph.add(new THREE.Mesh(new THREE.ShapeGeometry(board), ink));
-    const mast = new THREE.Mesh(new THREE.PlaneGeometry(.03, .17), ink); mast.position.y = .015; glyph.add(mast);
-    const wg = new THREE.Shape(); wg.moveTo(-.15, -.1); wg.quadraticCurveTo(0, -.03, .15, -.1); wg.quadraticCurveTo(.155, -.085, .14, -.08); wg.quadraticCurveTo(0, -.025, -.14, -.08); wg.quadraticCurveTo(-.155, -.085, -.15, -.1);
-    const wm = new THREE.Mesh(new THREE.ShapeGeometry(wg, 24), ink); glyph.add(wm); glyph.scale.setScalar(.95); }
+    // foil vu de profil (lisible, ne ressemble pas à un visage) : planche, mât, fuselage, aile avant, stab
+    const P = (w, h, x, y, r = 0) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), ink); m.position.set(x, y, 0); m.rotation.z = r; glyph.add(m); };
+    P(.27, .045, 0, .1); P(.03, .19, .02, 0); P(.3, .022, .01, -.09);
+    const wing = new THREE.Mesh(new THREE.CircleGeometry(.05, 24), ink); wing.scale.set(1.5, .45, 1); wing.position.set(-.1, -.09, 0); glyph.add(wing);
+    P(.07, .018, .15, -.083, -.08); glyph.scale.setScalar(.95); }
 
-  // bras le long du corps, mains jointes devant (posture de prof qui écoute)
+  // bras le long du corps, légèrement écartés, mains visibles (retour Paul : « c'est quoi ces mains ? » : les manches se rejoignaient sur le médaillon)
   const staff = new THREE.Group(); prof.add(staff);
-  [-1, 1].forEach(s => { const sh = new THREE.Vector3(s*.72, -.5, 0), hd = new THREE.Vector3(s*.35, -1.25, .6), len = sh.distanceTo(hd);
-    const sl = outlined(new THREE.Mesh(new THREE.CapsuleGeometry(.17, len - .1, 6, 14), M.coat), 1.08);
-    sl.position.copy(sh).add(hd).multiplyScalar(.5); sl.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), hd.clone().sub(sh).normalize()); prof.add(sl);
-  });
+  [-1, 1].forEach(s => { const sh = new THREE.Vector3(s*.78, -.5, 0), hd = new THREE.Vector3(s*1.02, -1.3, .22), len = sh.distanceTo(hd);
+    const sl = outlined(new THREE.Mesh(new THREE.CapsuleGeometry(.16, len - .1, 6, 14), M.coat), 1.08);
+    sl.position.copy(sh).add(hd).multiplyScalar(.5); sl.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), hd.clone().sub(sh).normalize()); staff.add(sl);
+    const hand = outlined(sph(.15, M.skin), 1.12); hand.position.set(s*1.06, -1.42, .26); hand.scale.set(.9, 1.1, .8); staff.add(hand);
+    const thumb = outlined(sph(.06, M.skin), 1.15); thumb.position.set(s*.94, -1.36, .36); staff.add(thumb); });
 
   // lumières : douce + soleil couchant + contre-jour
   scene.add(new THREE.HemisphereLight('#fff7ed', '#7c2d12', 1.3));
