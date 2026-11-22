@@ -385,11 +385,11 @@ window.DOCK_I18N_EXTRA = {
 
 // 📱 mobile : écran « tourne ton téléphone », bouton du départ au doigt
 (function(){ const add = {
-  fr: {rotTxt: 'Tourne ton téléphone à l\'horizontale : sur l\'eau on joue à deux pouces.', rotOk: 'Jouer en portrait quand même', kTap: 'TAPE'},
-  en: {rotTxt: 'Turn your phone sideways: on the water you play with both thumbs.', rotOk: 'Play in portrait anyway', kTap: 'TAP'},
-  es: {rotTxt: 'Gira el móvil en horizontal: en el agua se juega con los dos pulgares.', rotOk: 'Jugar en vertical igualmente', kTap: 'TOCA'},
-  it: {rotTxt: 'Gira il telefono in orizzontale: in acqua si gioca con due pollici.', rotOk: 'Gioca in verticale comunque', kTap: 'TOCCA'},
-  de: {rotTxt: 'Dreh dein Handy quer: auf dem Wasser spielst du mit beiden Daumen.', rotOk: 'Trotzdem hochkant spielen', kTap: 'TIPP'}};
+  fr: {rotTxt: 'Tourne ton téléphone à l\'horizontale : Le Dock se joue à deux pouces.', rotOk: '⛶ Plein écran', kTap: 'TAPE'},
+  en: {rotTxt: 'Turn your phone sideways: The Dock is played with both thumbs.', rotOk: '⛶ Full screen', kTap: 'TAP'},
+  es: {rotTxt: 'Gira el móvil en horizontal: El Dock se juega con los dos pulgares.', rotOk: '⛶ Pantalla completa', kTap: 'TOCA'},
+  it: {rotTxt: 'Gira il telefono in orizzontale: Il Dock si gioca con due pollici.', rotOk: '⛶ Schermo intero', kTap: 'TOCCA'},
+  de: {rotTxt: 'Dreh dein Handy quer: Der Dock wird mit beiden Daumen gespielt.', rotOk: '⛶ Vollbild', kTap: 'TIPP'}};
   for(const l in add) window.DOCK_I18N_EXTRA[l] = Object.assign(window.DOCK_I18N_EXTRA[l] || {}, add[l]); })();
 
 // 🌊 force de houle + 🦶 gros foils (≥ 1300 cm²) qui veulent sortir de l'eau : pied avant, ventilation
