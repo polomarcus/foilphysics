@@ -405,6 +405,21 @@ seoLang((/[?&]lang=(en|es|it|de)\b/i.exec(location.search) || [])[1] || 'fr');</
 <div class="dlg" id="dlg"><div class="face" id="face"></div><div class="box"><div class="whorow"><div class="who">Prof. Foil</div><div class="langs" id="langs" role="group" aria-label="Langue"></div></div><div class="say" id="say"></div><div class="ch" id="ch"></div><div class="next" id="nx">▼ clique pour continuer</div></div></div>
 <div class="tip hide" id="tip"><div class="mini" id="mini"></div><div class="bub" id="bub"></div></div>
 
+<!-- 📊 GoatCounter (comme les autres pages) : mesure d'audience SANS cookie, foilhouse.goatcounter.com. Rien n'est compté en local ni en mode vidéo (?video=1).
+     Le ?ref= des liens (ex. ref=polofoil_bio) est lu par GoatCounter comme source. Événements du jeu : gcEv('action'), chacun compté UNE fois par visite. -->
+<script>
+(function(){
+  window.gcEv = function(){};
+  var dbg = /[?&]gcdebug=1/.test(location.search);
+  if(!dbg && (location.protocol === 'file:' || /^(localhost|127\.|192\.168\.|10\.|\[::1\]$)/.test(location.hostname) || /[?&]video=1/.test(location.search))) return;
+  if(!dbg){ window.goatcounter = {path: function(){ return location.pathname; }};
+    var s = document.createElement('script'); s.async = true; s.src = 'https://gc.zgo.at/count.js'; s.setAttribute('data-goatcounter', 'https://foilhouse.goatcounter.com/count'); document.head.appendChild(s); }
+  var seen = {};
+  window.gcEv = function(p, title){ p = 'dock/' + p; if(seen[p]) return; seen[p] = 1;
+    if(dbg) return console.info('📊 GoatCounter (test, non envoyé) :', p);
+    if(window.goatcounter && window.goatcounter.count) window.goatcounter.count({path: p, title: title || p, event: true}); };
+})();
+</script>
 <script src="dock-i18n.js?v=50"></script>
 <script src="ailes.js?v=20261118"></script>
 <script type="module">
@@ -1055,7 +1070,8 @@ function objCount(){ if(!test || !test.objList) return; const saved = OBJ_SAVE[t
 function objStart(){ if(VID && !VID.obj){ test.objList = null; return; } test.objKey = VID ? 'vid-defi' : objKey(); if(VID) OBJ_SAVE[test.objKey] = []; test.objList = objIds(test.S); test.objNew = []; test.objT0 = performance.now();
   Object.assign(test, {snake: 0, wavesRow: 0, objShore: 0, tourS: 0, dist: 0, perfRow: 0, cardioT: 0, tempoUps: 0, ploufs: 0, tkOk: 0, puPumps: 0, letters: Array(OBJ_POS.length).fill(0), coin: 0});
   objPanel(true); }
-function objDone(id){ if(!test || (VID && !VID.obj) || !test.objList || !test.objList.includes(id)) return; const saved = OBJ_SAVE[test.objKey] || (OBJ_SAVE[test.objKey] = []); if(saved.includes(id)) return;
+const gc = (p, t) => { try{ if(!VID && window.gcEv) window.gcEv(p, t); }catch(e){} };
+function objDone(id){ if(!test || (VID && !VID.obj) || !test.objList || !test.objList.includes(id)) return; gc('objectif/' + id); const saved = OBJ_SAVE[test.objKey] || (OBJ_SAVE[test.objKey] = []); if(saved.includes(id)) return;
   saved.push(id); test.objNew.push(id); if(!VID) try{ localStorage.setItem('dock-obj', JSON.stringify(OBJ_SAVE)); }catch(e){} OBJ_FRESH[test.objKey] = true;
   popUp('🎯 ' + (T.objWin || 'OBJECTIF !') + ' ' + objName(id, test.S, true)); buzz(70); beep(784, 0.09, 'triangle', 0.14); setTimeout(() => beep(1047, 0.09, 'triangle', 0.14), 90); setTimeout(() => beep(1319, 0.16, 'triangle', 0.14), 180);
   objCount(); const c = $('objc'); c.classList.remove('opop'); void c.offsetWidth; c.classList.add('opop'); }   // pas « pop » : c'est déjà la classe des popups (décalage −50 %, penché)
@@ -1097,7 +1113,7 @@ function shareCanvas(d){ const W = 1080, H = 1920, k = document.createElement('c
 function shareData(){ if(!test || !test.share) return null; const sh = test.share, im = $('mini').querySelector('img');
   return Object.assign({title: {fr: 'Le Dock', en: 'The Dock', es: 'El Dock', it: 'Il Dock', de: 'Der Dock'}[LANG] || 'Le Dock',   // pas T.title (= « Choisis ton aile », le titre du garage)
     wing: fullName(), mode: T.tabs[MODE], beat: T.shareBeat || 'Bats mon score !', cta: T.shareCta || '🎮 Joue au Dock : lien dans la bio de @polofoil', prof: im && im.complete ? im : null}, sh); }
-function shareSession(){ const d = shareData(); if(!d || VID) return; const cvs = shareCanvas(d), link = location.origin + location.pathname + '?mode=' + encodeURIComponent(MODE) + '&wing=' + encodeURIComponent(fullName());
+function shareSession(){ const d = shareData(); if(!d || VID) return; gc('partage'); const cvs = shareCanvas(d), link = location.origin + location.pathname + '?mode=' + encodeURIComponent(MODE) + '&wing=' + encodeURIComponent(fullName());
   const text = fill(T.shareText || '{v} au Dock avec la {n}. Bats mon score !', {v: d.value, n: fullName()});
   cvs.toBlob(async blob => { if(!blob) return; const file = new File([blob], 'le-dock-session.png', {type: 'image/png'});
     try{ if(navigator.canShare && navigator.canShare({files: [file]})){ await navigator.share({files: [file], text, url: link}); return; } }catch(e){ if(e && e.name === 'AbortError') return; }
@@ -1266,7 +1282,7 @@ function setKeys(kind){ const ff = kind === 'wave' && test && test.ff; $('pad').
   $('tkeys').innerHTML = kind === 'step' ? K(['␣'], T.kStep || 'steps', 1) + K(['␣'], T.kPumpUp || 'pump to take off', 1)
     : kind === 'flat' ? K(['↓'], T.kPress || 'press') + K(['↑'], T.kUnw || 'unweight') + K(['←', '→'], T.kTurn || 'turn') + K(['␣'], T.kBig || 'big pump', 1)
     : K(['←', '→'], T.kCarve || 'carve') + '<span><kbd class="wide">␣</kbd><kbd>↑</kbd> ' + (T.kPump || 'pump') + '</span>' + (ff ? K(['↓'], T.kFoot || 'front foot') : '') + (test && test.slalom ? '' : '<span>🌊 ' + (T.kRead || T.kFace || 'read the swell') + '</span>'); }
-function startTest(){ $('ntime').classList.remove('hide');
+function startTest(){ $('ntime').classList.remove('hide'); gc('test/' + MODE);
   if(test) return; const [n, b, S] = current(), m = manOf(b, S), L = turnLimits(m);
   const vl = liftoffKmh(S, ST.kg)/3.6, vs = vl/1.15*0.88, g = glideScore(b, S), P = takeoffPower(b, S, ST.kg);
   test = {t0: performance.now(), last: performance.now(), m, n, L, S, x: -5, z: TEST.z0, h: Math.PI/2, om: 0, v: vl*1.4, vl, vs, vmax: 0,
@@ -1324,7 +1340,7 @@ const waveSvg = h => { const A = 6 + 9*h, pts = []; for(let x = 0; x <= 200; x +
 function pickWave(then){ const L = T.waveCards || [], row = $('wprow'); $('wpt').textContent = T.waveTitle || '🌊 Choisis ta vague';
   row.innerHTML = WAVES.map((w, i) => { const c = L[i] || {}; return '<button class="wp-c' + (Math.abs(ST.H - w.h) < 0.01 ? ' on' : '') + '" data-h="' + w.h + '">' + waveSvg(w.h) + '<b>' + (c.n || '') + '</b><em>' + T.swells[i] + '</em><small>' + (c.d || '') + '</small><i style="background:' + LVC[w.lv] + '">' + (c.l || '') + '</i></button>'; }).join('');
   $('wpick').classList.remove('hide'); row.querySelector('.on, .wp-c').focus();
-  row.querySelectorAll('.wp-c').forEach(b => b.onclick = () => { const h = +b.dataset.h; const sb = [...$('swell').querySelectorAll('button')].find(x => +x.dataset.v === h); if(sb) sb.click(); else ST.H = h;
+  row.querySelectorAll('.wp-c').forEach(b => b.onclick = () => { const h = +b.dataset.h; gc('vague/' + h); const sb = [...$('swell').querySelectorAll('button')].find(x => +x.dataset.v === h); if(sb) sb.click(); else ST.H = h;
     try{ localStorage.setItem('dock-houle', String(h)); }catch(e){} $('wpick').classList.add('hide'); then(); }); }
 $('wpx').onclick = () => $('wpick').classList.add('hide');
 addEventListener('keydown', e => { if(e.key === 'Escape' && !$('wpick').classList.contains('hide')) $('wpick').classList.add('hide'); });
@@ -1545,7 +1561,7 @@ function testFrame(now){
 }
 // fin de session (2 min écoulées, ou personne aux commandes) : renvoie true si c'est fini
 // 🏁 carte de fin : titre explicite (retour Paul : « j'ai pas compris comment j'ai accédé à cet écran ») + légende du haut nettoyée
-function endCard(title){ $('ntime').classList.add('hide'); $('etitle').textContent = title; $('tkeys').innerHTML = '<span>' + (T.endHint || '🔁 Rejouer ou ↩ revenir au ponton pour changer d\'aile') + '</span>';
+function endCard(title){ $('ntime').classList.add('hide'); gc('fin/' + MODE); $('etitle').textContent = title; $('tkeys').innerHTML = '<span>' + (T.endHint || '🔁 Rejouer ou ↩ revenir au ponton pour changer d\'aile') + '</span>';
   $('endc').classList.remove('hide'); $('nfs').classList.add('hide'); }
 function sessionTick(now, el){
   const air = test.manual ? (now - test.mt0)/1000 : 0, left = Math.max(0, TEST.dur - air);
@@ -1673,7 +1689,7 @@ function start(k){ $('tabs').classList.remove('pulse'); if(k !== 'intro'){ enter
 document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => {
   document.querySelectorAll('#tabs button').forEach(x => x.classList.toggle('on', x === b));
   if(!$('dlg').classList.contains('hide')) start(b.dataset.k); else enter(b.dataset.k); });
-function enter(k){ MODE = k; $('dlg').classList.add('hide'); $('big').classList.add('hide'); hud(true); $('mode').textContent = T.tabs[MODE];
+function enter(k){ MODE = k; gc('mode/' + k); $('dlg').classList.add('hide'); $('big').classList.add('hide'); hud(true); $('mode').textContent = T.tabs[MODE];
   document.querySelectorAll('#tabs button').forEach(x => x.classList.toggle('on', x.dataset.k === k));
   $('more').href = GO[MODE]; $('more').textContent = fill(T.detail, {p: T.pages[MODE]}); $('cont').href = GO[MODE]; $('cont').textContent = fill(T.detail, {p: T.pages[MODE]}); $('more').style.display = 'none';
   document.body.classList.toggle('learn', learning()); $('test').textContent = MODE === 'apprendre' || MODE === 'loin' ? (T.testFlat || T.test) : T.test;
@@ -1737,7 +1753,7 @@ if(/[?&]video=1/.test(location.search)){
   const WINGS = ['Alpine Foil RSX Carve 1100', 'Axis Spitfire 720', 'Ketos LR 177', 'Alpine Foil RSX 1400 G2', 'Alpine Foil RSX Carve 1100'];
   const goW = full => { for(let i = 0; i < BR.length; i++){ const w = sortW(BR[i]), j = w.findIndex(q => BR[i].n + ' ' + q[0] === full); if(j >= 0){ bi = i; showAll = true; wi = listW(BR[i]).findIndex(q => q[0] === w[j][0]); render(true, false); return; } } };
   const F = (w, sz, it) => (it ? 'italic ' : '') + w + ' ' + sz + 'px system-ui, -apple-system, "Segoe UI", sans-serif';
-  const txt = (t, X, Y, o = {}) => { if(o.z === 0) return; x.save(); x.font = F(o.w || 900, o.s || 64, o.i); x.textAlign = o.a || 'center'; x.fillStyle = o.c || '#fff'; x.translate(X, Y); if(o.r) x.rotate(o.r); if(o.z) x.scale(o.z, o.z);
+  const txt = (t, X, Y, o = {}) => { if(o.z === 0) return; x.save(); x.font = F(o.w || 900, o.s || 64, o.i); x.textAlign = o.a || 'center'; x.fillStyle = o.c || '#fff'; x.translate(X, Y); if(o.r) x.rotate(o.r); if(o.z) x.scale(o.z, o.z); if(o.max){ const mw = x.measureText(t).width; if(mw > o.max) x.scale(o.max/mw, o.max/mw); }
     if(o.sh !== false){ x.shadowColor = 'rgba(0,0,0,.7)'; x.shadowBlur = 18; x.shadowOffsetY = 5; } if(o.sk) x.transform(1, 0, -0.18, 1, 0, 0);
     if(o.st){ x.lineWidth = o.st; x.strokeStyle = '#0b1222'; x.lineJoin = 'round'; x.strokeText(t, 0, 0); } x.fillText(t, 0, 0); x.restore(); };
   const pill = (X, Y, w, h, c) => { x.beginPath(); x.roundRect(X, Y, w, h, h/2); x.fillStyle = c; x.fill(); };
@@ -1924,7 +1940,7 @@ if(/[?&]video=1/.test(location.search)){
   // à vitesse normale. Entre deux extraits, le jeu tourne en coulisse (même pilote, pas d'image) : le chrono saute, score et objectifs sont ceux de la partie.
   // v3 (retour Paul : « capturer quand on attrape les lettres, ou quand il y a des actions ») : le pilote vise les bouées F-O-I-L puis enchaîne les cutbacks ;
   // le montage coupe JUSTE AVANT chaque action (lettre en approche, cutback avant les rouleaux) et reprend 1,3 s après.
-  const nextLetter = () => test.letters ? OBJ_POS.findIndex((p, j) => !test.letters[j]) : -1;
+  const nextLetter = () => test.letters ? OBJ_POS.findIndex((p, j) => j < 4 && !test.letters[j]) : -1;
   function defiBot(vnow){ if(!test || test.done) return;
     if(test.swim || test.crashA || test.takeoff){ keys.l = keys.r = false; if(test.takeoff){ test.takeoff = null; runner.visible = false; rider.visible = true; $('beat').classList.add('hide'); test.x = -30; test.z = -38; test.h = Math.PI - 0.3; test.v = test.vl*1.35; test.last = vnow; VID.leg = 'in'; } return; }
     const li = nextLetter(); let want;
@@ -1936,9 +1952,10 @@ if(/[?&]video=1/.test(location.search)){
     if(test.v < test.vl*1.55 && vnow - VID.lp > 330){ VID.lp = vnow; test.lastPump = 0; pump(); } }
   // une action arrive-t-elle ? (pour démarrer un extrait juste avant)
   const actionSoon = () => { if(!test || test.swim || test.crashA || test.takeoff) return false; const li = nextLetter();
-    if(li >= 0){ const [tx, tz] = OBJ_POS[li], d = Math.hypot(tx - test.x, tz - test.z); return d < 10; }
+    if(li >= 0){ const [tx, tz] = OBJ_POS[li], d = Math.hypot(tx - test.x, tz - test.z); return d < 8; }
     return (VID.turnClips || 0) < 1 && VID.leg === 'in' && test.z > -13; };   // UN extrait de cutback juste avant les rouleaux, puis on file vers la fin
   const evCount = () => (test.letters ? test.letters.reduce((a, b) => a + b, 0) : 0) + test.turns;
+  const VL = (fr, en) => LANG === 'en' ? en : fr;   // vidéo « défi » : français ou anglais (?lang=en)
   function defiFrame(now, s){
     const go = p => { if(phase !== p){ phase = p; ph0 = now; return true; } return false; };
     go('ride');
@@ -1949,46 +1966,48 @@ if(/[?&]video=1/.test(location.search)){
         cam.position.set(test.x - gx*7.2, 1.6, test.z - gz*7.2); cam.lookAt(test.x + gx*1.5, 0.75, test.z + gz*1.5); }; }
     // extrait en cours : il s'arrête 1,3 s après l'action (ou au bout de 5,5 s) ; puis on fait tourner le jeu en coulisse jusqu'à la prochaine action
     if(!test.done && !VID.endT){ const ev = evCount(); if(ev > VID.ev0 && !VID.evT){ VID.evT = now; } 
-      const clipOver = (VID.evT && now - VID.evT > 950) || now - VID.clipT0 > 4500;
-      if(clipOver && s > 3){ let vnow = now + VID.toff; const k0 = performance.now(), gEnd = test.mt0 + 114.5*1000;
-        let n = 0; while(!test.done && vnow < gEnd){ vnow += 1000/30; clock.elapsedTime += 1/30; defiBot(vnow); testFrame(vnow); if(++n > 15 && actionSoon()){ if(nextLetter() < 0) VID.turnClips = (VID.turnClips || 0) + 1; break; } }   // au moins 0,5 s de jeu sauté
+      const clipOver = (VID.evT && now - VID.evT > 700) || now - VID.clipT0 > 3500;
+      if(clipOver && s > 3){ let vnow = now + VID.toff; const k0 = performance.now(), gEnd = test.mt0 + 116*1000;
+        let n = 0; const ev0 = evCount(), lt0 = test.letters ? test.letters.reduce((a, b) => a + b, 0) : 0; while(!test.done && vnow < gEnd){ vnow += 1000/30; clock.elapsedTime += 1/30; defiBot(vnow); testFrame(vnow); if(test.letters && test.letters.reduce((a, b) => a + b, 0) > lt0){ VID.caught = true; break; } if(++n > 6 && actionSoon()){ if(nextLetter() < 0) VID.turnClips = (VID.turnClips || 0) + 1; break; } }   // au moins 0,5 s de jeu sauté
         seaU.t.value = clock.elapsedTime; VID.skipMs = (VID.skipMs || []).concat(Math.round(performance.now() - k0)); const lag = performance.now() - now; VID.toff = vnow - now - lag; now = performance.now();
-        VID.pops = []; VID.cutT = now; VID.ch = test.h; VID.clipT0 = now; VID.ev0 = evCount(); VID.evT = 0; whoosh(); } }
+        if(!VID.caught) VID.pops = []; VID.cutT = now; VID.ch = test.h; VID.clipT0 = now; VID.ev0 = evCount(); VID.evT = VID.caught ? now : 0; VID.caught = false; whoosh(); } }
     const vnow = now + VID.toff; defiBot(vnow);
     if(test && test.done && !VID.endT){ VID.endT = now; keys.l = keys.r = false; }
-    if(VID.endT && now - VID.endT > 4600 && !ended){ ended = true; if(rec) rec.stop(); }
+    if(VID.endT && now - VID.endT > 3700 && !ended){ ended = true; if(rec) rec.stop(); }
     // ---- image ----
     x.drawImage(cv, 0, 0, W, H);
     const g = x.createLinearGradient(0, 0, 0, 560); g.addColorStop(0, 'rgba(11,18,34,.85)'); g.addColorStop(1, 'rgba(11,18,34,0)'); x.fillStyle = g; x.fillRect(0, 0, W, 560);
     if(!test) return;
     const left = Math.max(0, 120 - (vnow - test.mt0)/1000), mm = Math.floor(left/60), ss = String(Math.floor(left % 60)).padStart(2, '0');
     if(!VID.endT){
-      txt('LE DÉFI DES 2 MINUTES', W/2, 170, {s: 66, sk: true, st: 12, c: '#fde68a'});
+      txt(VL('LE DÉFI DES 2 MINUTES', 'THE 2-MINUTE CHALLENGE'), W/2, 170, {s: 66, sk: true, st: 12, c: '#fde68a'});
       txt('⏱ ' + mm + ':' + ss, W/2, 330, {s: 170, sk: true, st: 18, c: left < 15 ? '#fca5a5' : '#fff', z: VID.cutT ? pop(VID.cutT, now) : 1});
+      pill(W/2 - 320, 386, 640, 80, 'rgba(251,191,36,.97)'); txt(VL('🎮 Jeu de pump foil · Le Dock', '🎮 Pump foil game · The Dock'), W/2, 441, {s: 50, sh: false, c: '#0b1222'});
       const n = test.objNew ? test.objNew.length : 0, tot = test.objList ? test.objList.length : 21;
       if(n > VID.nObj){ VID.nObj = n; VID.objT = now; VID.objName = objName(test.objNew[n - 1], test.S, true); }
       pill(70, H - 420, 330, 96, 'rgba(11,18,34,.85)'); txt('🎯 ' + n + '/' + tot, 235, H - 352, {s: 64, sh: false, c: '#fde68a'});
-      if(VID.objT && now - VID.objT < 1800){ const k = pop(VID.objT, now); pill(W/2 - 450, 470, 900, 110, 'rgba(34,197,94,.95)'); txt('✅ ' + VID.objName, W/2, 545, {s: 52, sh: false, z: k, max: 860}); }
-      txt('SCORE', 90, H - 230, {s: 34, a: 'left', c: '#fde68a'}); txt(Math.round(test.score).toLocaleString('fr'), 90, H - 140, {s: 100, a: 'left', sk: true, st: 10});
-      pill(W - 300, H - 230, 210, 80, '#fbbf24'); txt('×' + mult().toFixed(1).replace('.', ','), W - 195, H - 172, {s: 52, c: '#0b1222', sh: false});
-      VID.pops = VID.pops.filter(p => now - p.t0 < 1100 && !/OBJECTIF/.test(p.txt)); VID.pops.slice(-1).forEach(p => { const k = (now - p.t0)/1100; x.globalAlpha = Math.min(1, 2*(1 - k));
+      if(VID.objT && now - VID.objT < 1800 && s >= 2.6){ const k = pop(VID.objT, now); pill(W/2 - 450, 490, 900, 110, 'rgba(34,197,94,.95)'); txt('✅ ' + VID.objName, W/2, 565, {s: 52, sh: false, z: k, max: 860}); }
+      txt('SCORE', 90, H - 230, {s: 34, a: 'left', c: '#fde68a'}); txt(Math.round(test.score).toLocaleString(LANG), 90, H - 140, {s: 100, a: 'left', sk: true, st: 10});
+      pill(W - 300, H - 230, 210, 80, '#fbbf24'); txt('×' + mult().toFixed(1).replace('.', LANG === 'en' ? '.' : ','), W - 195, H - 172, {s: 52, c: '#0b1222', sh: false});
+      VID.pops = VID.pops.filter(p => now - p.t0 < 1100 && p.txt.indexOf(T.objWin || 'OBJECTIF') < 0); if(s >= 2.6) VID.pops.slice(-1).forEach(p => { const k = (now - p.t0)/1100; x.globalAlpha = Math.min(1, 2*(1 - k));
         txt(p.txt + (p.pts ? '  +' + p.pts : ''), W/2, 1000 - k*100, {s: 80, sk: true, st: 12, c: p.bad ? '#fca5a5' : '#fde68a', z: pop(p.t0, now)}); x.globalAlpha = 1; });
       if(VID.cutT && now - VID.cutT < 250){ x.globalAlpha = 1 - (now - VID.cutT)/250; x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); x.globalAlpha = 1; }   // flash de coupe
-      if(s < 2.6){ x.fillStyle = 'rgba(11,18,34,.45)'; x.fillRect(0, 0, W, H); txt('POV :', W/2, 640, {s: 90, sk: true, c: '#fde68a', z: pop(ph0, now)});
-        txt('2 minutes', W/2, 780, {s: 130, sk: true, st: 16, z: pop(ph0 + 150, now)}); txt('pour tout cocher 🎯', W/2, 910, {s: 96, sk: true, st: 14, c: '#7dd3fc', z: pop(ph0 + 450, now)}); }
+      if(s < 2.6){ x.fillStyle = 'rgba(11,18,34,.45)'; x.fillRect(0, 0, W, H); txt(VL('🎮 NOUVEAU JEU', '🎮 NEW GAME'), W/2, 620, {s: 96, sk: true, st: 14, c: '#fde68a', z: pop(ph0, now)});
+        txt(VL('le pump foil', 'pump foil'), W/2, 760, {s: 120, sk: true, st: 16, z: pop(ph0 + 150, now)}); txt(VL('dans ton navigateur', 'in your browser'), W/2, 880, {s: 92, sk: true, st: 14, z: pop(ph0 + 350, now)});
+        if(s > 1.1) txt(VL('2 min pour tout cocher 🎯', '2 min to tick them all 🎯'), W/2, 1030, {s: 76, sk: true, st: 12, c: '#7dd3fc', z: pop(ph0 + 1100, now)}); }
     } else {
       const a = Math.min(1, (now - VID.endT)/300), sc = Math.round(test.score), md = MEDALS.find(([k]) => sc >= k)[1], n = test.objNew.length, tot = test.objList.length;
       x.globalAlpha = a; x.fillStyle = 'rgba(11,18,34,.86)'; x.fillRect(0, 0, W, H);
-      txt('⏱ 2:00 TERMINÉ', W/2, 330, {s: 80, sk: true, st: 12, c: '#fde68a', z: pop(VID.endT, now)}); txt(md, W/2, 500, {s: 130, sh: false, z: pop(VID.endT + 150, now)});
-      txt(sc.toLocaleString('fr'), W/2, 680, {s: 170, sk: true, st: 16, z: pop(VID.endT + 300, now)}); txt('🎯 ' + n + '/' + tot + ' objectifs', W/2, 800, {s: 64, w: 800, c: '#86efac', z: pop(VID.endT + 450, now)});
-      if(now - VID.endT > 1100){ txt('Tu penses', W/2, 1020, {s: 130, sk: true, st: 16, z: pop(VID.endT + 1100, now)}); txt('y arriver ?? 👇', W/2, 1170, {s: 130, sk: true, st: 16, c: '#7dd3fc', z: pop(VID.endT + 1300, now)}); }
-      if(now - VID.endT > 1800) txt('🎮 Le Dock : lien dans la bio de @polofoil', W/2, 1400, {s: 46, w: 800, c: '#fde68a'}); x.globalAlpha = 1; }
+      txt(VL('⏱ 2:00 TERMINÉ', '⏱ 2:00 DONE'), W/2, 330, {s: 80, sk: true, st: 12, c: '#fde68a', z: pop(VID.endT, now)}); txt(md, W/2, 500, {s: 130, sh: false, z: pop(VID.endT + 150, now)});
+      txt(sc.toLocaleString(LANG), W/2, 680, {s: 170, sk: true, st: 16, z: pop(VID.endT + 300, now)}); txt('🎯 ' + n + '/' + tot + VL(' objectifs', ' goals'), W/2, 800, {s: 64, w: 800, c: '#86efac', z: pop(VID.endT + 450, now)});
+      if(now - VID.endT > 600){ txt(VL('Tu penses', 'Think you'), W/2, 1020, {s: 130, sk: true, st: 16, z: pop(VID.endT + 600, now)}); txt(VL('y arriver ?? 👇', 'can beat it?? 👇'), W/2, 1170, {s: 130, sk: true, st: 16, c: '#7dd3fc', z: pop(VID.endT + 800, now)}); }
+      if(now - VID.endT > 1200) { txt(VL('🎮 Joue au Dock : lien dans la bio de @polofoil', '🎮 Play The Dock: link in @polofoil\'s bio'), W/2, 1390, {s: 50, w: 800, c: '#fde68a', max: W - 100}); txt(VL('Sur téléphone et ordi, sans rien installer', 'On phone and computer, nothing to install'), W/2, 1460, {s: 38, w: 700, c: '#cbd5e1', max: W - 120}); } x.globalAlpha = 1; }
   }
   function startRec(){ const mime = ['video/mp4;codecs=avc1,mp4a.40.2', 'video/mp4', 'video/webm'].find(m => MediaRecorder.isTypeSupported(m)) || '';
     const dest = AC.createMediaStreamDestination(); BUS.connect(dest);
     rec = new MediaRecorder(new MediaStream([...comp.captureStream(30).getVideoTracks(), ...dest.stream.getAudioTracks()]), mime ? {mimeType: mime, videoBitsPerSecond: 10e6, audioBitsPerSecond: 160000} : {}); rec.ondataavailable = e => e.data.size && chunks.push(e.data);
     rec.onstop = () => { const blob = new Blob(chunks, {type: rec.mimeType}), ext = rec.mimeType.includes('mp4') ? 'mp4' : 'webm';
-      fetch('/__save/fr-insta-' + ({loin: 'longue-distance', houle: 'lire-la-houle', defi: 'defi-2-minutes'}[SCENE] || 'dock') + '.' + ext, {method: 'PUT', body: blob}).then(() => { document.title = 'SAVED ' + ext + ' ' + Math.round(blob.size/1e5)/10 + ' Mo'; }); };
+      fetch('/__save/' + (LANG === 'en' ? 'en' : 'fr') + '-insta-' + ({loin: 'longue-distance', houle: 'lire-la-houle', defi: 'defi-2-minutes'}[SCENE] || 'dock') + '.' + ext, {method: 'PUT', body: blob}).then(() => { document.title = 'SAVED ' + ext + ' ' + Math.round(blob.size/1e5)/10 + ' Mo'; }); };
     rec.start(500); }
 }
 </script>
