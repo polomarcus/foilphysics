@@ -42,12 +42,12 @@ export function mountProf(bigEl, miniEl, opt = {}){
   [-1, 1].forEach(sd => { const ear = outlined(sph(.075, M.gold), 1.15); ear.position.set(sd*1.0, -.3, .08); ear.scale.set(1, 1.3, 1); head.add(ear); });
 
   // yeux (ovales noirs + reflet), paupières pour cligner
-  const eyes = [];
+  const eyes = [], brows = []; let mouthG = null;
   [-1, 1].forEach(s => { const g = new THREE.Group(); g.position.set(s*.34, .14, .9); head.add(g);
     const e = sph(.11, M.dark); e.scale.set(1, 1.35, .6); g.add(e);
     const h = sph(.035, M.white); h.position.set(.035, .06, .06); g.add(h); eyes.push(g);
     // sourcils blancs broussailleux, levés (bienveillant)
-    const b = outlined(new THREE.Mesh(new THREE.CapsuleGeometry(.035, .26, 6, 12), M.metal), 1.12); b.rotation.z = Math.PI/2 - s*.22; b.position.set(s*.35, .45, .88); head.add(b);
+    const b = outlined(new THREE.Mesh(new THREE.CapsuleGeometry(.035, .26, 6, 12), M.metal), 1.12); b.rotation.z = Math.PI/2 - s*.22; b.position.set(s*.35, .45, .88); head.add(b); brows.push([b, s]);
     [0, 1, 2].forEach(i => { const l = new THREE.Mesh(new THREE.CapsuleGeometry(.014, .07, 4, 6), M.dark); l.position.set(s*(.07 + .045*i), .14 + .02*i, .07); l.rotation.z = -s*(.6 + .35*i); g.add(l); }); });   // cils
   // lunettes rondes
   [-1, 1].forEach(s => { const r = new THREE.Mesh(new THREE.TorusGeometry(.22, .028, 10, 40), M.dark); r.position.set(s*.34, .1, .98); head.add(r);
@@ -58,7 +58,7 @@ export function mountProf(bigEl, miniEl, opt = {}){
   { const n = outlined(sph(.12, M.nose), 1.1); n.position.set(0, -.08, 1.0); n.scale.set(.9, .9, 1); head.add(n); }
   [-1, 1].forEach(s => { const c = sph(.17, M.cheek); c.position.set(s*.55, -.2, .8); c.scale.set(1, .6, .3); head.add(c); });
   // grand sourire ouvert : demi-disque bordeaux, rangée de dents en haut, langue rose
-  { const mouth = new THREE.Group(); mouth.position.set(0, -.36, .955); mouth.rotation.x = -.3; head.add(mouth);
+  { const mouth = mouthG = new THREE.Group(); mouth.position.set(0, -.36, .955); mouth.rotation.x = -.3; head.add(mouth);
     const lip = new THREE.Mesh(new THREE.CircleGeometry(.29, 40, Math.PI, Math.PI), new THREE.MeshBasicMaterial({color: '#db2777'})); lip.position.z = -.002; mouth.add(lip);
     mouth.add(new THREE.Mesh(new THREE.CircleGeometry(.24, 40, Math.PI, Math.PI), new THREE.MeshBasicMaterial({color: '#7f1d1d'})));
     const teeth = new THREE.Mesh(new THREE.PlaneGeometry(.42, .06), new THREE.MeshBasicMaterial({color: '#ffffff'})); teeth.position.set(0, -.035, .002); mouth.add(teeth);
@@ -104,6 +104,13 @@ export function mountProf(bigEl, miniEl, opt = {}){
   renderer.render(scene, cam);
   if(miniEl){ const img = new Image(); img.src = renderer.domElement.toDataURL('image/png'); img.alt = ''; img.style.cssText = 'width:100%;height:100%;object-fit:cover;transform:scale(1.5) translateY(14%);';
     miniEl.innerHTML = ''; miniEl.style.background = '#ffd7a8'; miniEl.appendChild(img); }
+  // 😬 / 😄 expressions pré-calculées (retour Paul : « la Prof doit grimacer quand on se loupe ») : sourcils, yeux, bouche ; images prêtes à afficher
+  { const shot = fn => { fn(true); renderer.render(scene, cam); const u = renderer.domElement.toDataURL('image/png'); fn(false); return u; };
+    const F = {ok: renderer.domElement.toDataURL('image/png')};
+    F.ouch = shot(on => { brows.forEach(([b, sd]) => { b.rotation.z = on ? Math.PI/2 + sd*.45 : Math.PI/2 - sd*.22; b.position.y = on ? .38 : .45; });
+      eyes.forEach(e => e.scale.y = on ? .28 : 1); if(mouthG){ mouthG.rotation.z = on ? Math.PI : 0; mouthG.scale.set(on ? .75 : 1, on ? .55 : 1, 1); mouthG.position.y = on ? -.5 : -.36; } });
+    F.yay = shot(on => { brows.forEach(([b]) => { b.position.y = on ? .53 : .45; }); eyes.forEach(e => e.scale.y = on ? .22 : 1); if(mouthG) mouthG.scale.set(on ? 1.15 : 1, on ? 1.25 : 1, 1); });
+    window.PROF_FACES = F; renderer.render(scene, cam); }
 
   // idle : respiration, clignement, hochement, foil qui se balance (seulement quand le portrait est visible)
   let blinkAt = 1.5;
