@@ -3,10 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Le Dock · Foil House Simulator</title>
-<meta name="description" content="Choisis ton aile de foil comme dans un jeu de course, puis teste-la : départ ponton en rythme, pump, carve dans la houle. Mêmes calculs que le simulateur Foil House.">
-<link rel="canonical" href="https://simulator.foil-house.com/dock.html">
+<title>Le Dock : jeu de pump foil, choisis ton aile et lis la houle | Foil House</title>
+<meta name="description" content="Jeu gratuit de pump foil dans le navigateur : choisis ton aile parmi plus de 300 modèles, départ ponton en rythme, pump et carve dans la houle. Mêmes calculs que le simulateur Foil House.">
+<link rel="alternate" hreflang="fr" href="https://simulator.foil-house.com/dock.html">
+<link rel="alternate" hreflang="en" href="https://simulator.foil-house.com/dock.html?lang=en">
+<link rel="alternate" hreflang="es" href="https://simulator.foil-house.com/dock.html?lang=es">
+<link rel="alternate" hreflang="it" href="https://simulator.foil-house.com/dock.html?lang=it">
+<link rel="alternate" hreflang="de" href="https://simulator.foil-house.com/dock.html?lang=de">
+<link rel="alternate" hreflang="x-default" href="https://simulator.foil-house.com/dock.html">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": ["VideoGame", "WebApplication"], "name": "Le Dock", "alternateName": "The Dock", "url": "https://simulator.foil-house.com/dock.html", "description": "Jeu gratuit de pump foil dans le navigateur : choisis ton aile parmi plus de 300 modèles, départ ponton en rythme, pump et carve dans la houle. Mêmes calculs que le simulateur Foil House.", "inLanguage": ["fr", "en", "es", "it", "de"], "applicationCategory": "GameApplication", "gamePlatform": "Web browser", "operatingSystem": "Any", "genre": ["Sports", "Simulation"], "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "image": "https://simulator.foil-house.com/og-dock.png", "publisher": {"@type": "Organization", "name": "Foil House", "url": "https://simulator.foil-house.com/"}}</script>
+<script>/* 🔎 SEO : titre, description et adresse canonique suivent la langue de l'adresse (FR = adresse nue, sinon ?lang=xx) */
+window.seoLang = function(l){ var M = {"fr": {"t": "Le Dock : jeu de pump foil, choisis ton aile et lis la houle | Foil House", "d": "Jeu gratuit de pump foil dans le navigateur : choisis ton aile parmi plus de 300 modèles, départ ponton en rythme, pump et carve dans la houle. Mêmes calculs que le simulateur Foil House."}, "en": {"t": "The Dock: pump foil game, pick your wing and read the swell | Foil House", "d": "Free pump foil game in your browser: pick your wing among 300+ models, rhythm dock start, pump and carve in the swell. Same physics as the Foil House simulator."}, "es": {"t": "El Dock: juego de pump foil, elige tu ala y lee las olas | Foil House", "d": "Juego gratuito de pump foil en el navegador: elige tu ala entre más de 300 modelos, salida desde el pantalán, pump y carve en las olas. Los mismos cálculos que el simulador Foil House."}, "it": {"t": "Il Dock: gioco di pump foil, scegli la tua ala e leggi l'onda | Foil House", "d": "Gioco gratuito di pump foil nel browser: scegli la tua ala tra più di 300 modelli, partenza dal pontile, pump e carve sull'onda. Gli stessi calcoli del simulatore Foil House."}, "de": {"t": "Der Dock: Pump-Foil-Spiel, wähle deinen Flügel und lies die Welle | Foil House", "d": "Kostenloses Pump-Foil-Spiel im Browser: wähle deinen Flügel aus über 300 Modellen, Steg-Start im Rhythmus, Pumpen und Carven in der Dünung. Dieselbe Physik wie im Foil House Simulator."}}; l = M[l] ? l : 'fr';
+  document.title = M[l].t; var d = document.querySelector('meta[name="description"]'); if(d) d.setAttribute('content', M[l].d);
+  var c = document.querySelector('link[rel="canonical"]'); if(!c){ c = document.createElement('link'); c.rel = 'canonical'; document.head.appendChild(c); }
+  c.href = 'https://simulator.foil-house.com/dock.html' + (l === 'fr' ? '' : '?lang=' + l); };
+seoLang((/[?&]lang=(en|es|it|de)\b/i.exec(location.search) || [])[1] || 'fr');</script>
 <meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="en_GB">
 <meta property="og:title" content="Le Dock · choisis ton aile de foil et lis la houle">
 <meta property="og:description" content="Départ ponton en rythme, pump, carve dans la houle : teste ton aile comme dans un jeu de course. Mêmes calculs que le simulateur Foil House.">
 <meta property="og:url" content="https://simulator.foil-house.com/dock.html">
@@ -1310,7 +1324,8 @@ function pickWave(then){ const L = T.waveCards || [], row = $('wprow'); $('wpt')
     try{ localStorage.setItem('dock-houle', String(h)); }catch(e){} $('wpick').classList.add('hide'); then(); }); }
 $('wpx').onclick = () => $('wpick').classList.add('hide');
 addEventListener('keydown', e => { if(e.key === 'Escape' && !$('wpick').classList.contains('hide')) $('wpick').classList.add('hide'); });
-try{ const h0 = +localStorage.getItem('dock-houle'); if(WAVES.some(w => w.h === h0)){ const sb = [...$('swell').querySelectorAll('button')].find(x => +x.dataset.v === h0); if(sb) sb.click(); } }catch(e){}
+// vague mémorisée : on règle ST.H et le bouton SANS simuler de clic (le clic appelle render() avant que MODE existe : plantage au chargement)
+try{ const h0 = +localStorage.getItem('dock-houle'); if(WAVES.some(w => w.h === h0)){ ST.H = h0; $('swell').querySelectorAll('button').forEach(x => { const on = +x.dataset.v === h0; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on ? 'true' : 'false'); }); } }catch(e){}
 $('test').onclick = () => MODE === 'carve' && !VID ? pickWave(playTest) : playTest();
 if(/[?&]debug=1/.test(location.search)) { window.__dockTest = () => test; window.__dockSW = SW; window.__dockShare = () => { const d = shareData(); return d ? shareCanvas(d) : null; }; window.__dockSET = SET; window.__dockSWG = SWG; window.__dockCam = (x, y, z, tx, ty, tz) => { cam.position.set(x, y, z); cam.lookAt(tx, ty, tz); }; window.__dockFoil = () => foil; window.__dockHold = b => { DBG_HOLD = !!b; }; window.__dockInfo = () => { let meshes = 0, vis = 0; scene.traverse(o => { if(o.isMesh || o.isLine || o.isPoints){ meshes++; let v = true; for(let q = o; q; q = q.parent) if(!q.visible){ v = false; break; } if(v) vis++; } }); return {calls: gl.info.render.calls, tris: gl.info.render.triangles, meshes, visibles: vis, geoms: gl.info.memory.geometries}; }; window.__dockTURN = TURN; window.__dockH = h => { if(h !== undefined) seaU.H.value = h; return seaU.H.value; }; window.__dockK = (k, b) => { SW.K = k; if(b !== undefined) SW.back = b; }; window.__dockFrame = (now, t) => { if(t !== undefined) clock.elapsedTime = t; testFrame(now); }; }   // tests locaux : placer le rider
 function testFrame(now){
@@ -1684,7 +1699,7 @@ gl.setAnimationLoop(now => {
   sea.position.x = Math.round(cam.position.x/SEA_CELL)*SEA_CELL; sea.position.z = Math.round(cam.position.z/SEA_CELL)*SEA_CELL; sky.position.set(cam.position.x, 0, cam.position.z);
   if(!test || test.done || test.swim || test.takeoff || test.crashA) windSnd(0);
   if(test && document.body.classList.contains('rotating')){ const d = now - (test.lastRaf || now); if(test.mt0) test.mt0 += d; test.t0 += d; if(test.takeoff) test.takeoff.t0 += d; if(test.slalom && test.slalom.t0) test.slalom.t0 += d; if(test.beat0) test.beat0 += d; test.last = now; }   // 📱 écran « tourne ton téléphone » : partie en pause
-  else if(test){ if(!DBG_HOLD) testFrame(VID && VID.warp ? VID.w0 + (now - VID.w0)*VID.warp : now); } if(test) test.lastRaf = now;   // DBG_HOLD (?debug=1) : la simulation est avancée à la main, la boucle ne fait qu'afficher
+  else if(test){ if(!DBG_HOLD) testFrame(VID && VID.warp ? VID.w0 + (now - VID.w0)*VID.warp : VID && VID.toff ? now + VID.toff : now); }   // vidéo « défi » : temps de jeu décalé après chaque coupe if(test) test.lastRaf = now;   // DBG_HOLD (?debug=1) : la simulation est avancée à la main, la boucle ne fait qu'afficher
   else { if(autoSpin) turn.rotation.y += dt*0.35;
     // pendant l'accueil, le foil flotte plus haut pour ne pas être caché par le portrait du Prof (retour Paul)
     // + caméra reculée pendant l'accueil (le foil entier tient au-dessus du portrait), puis retour à la vue garage
@@ -1890,40 +1905,46 @@ if(/[?&]video=1/.test(location.search)){
       txt('🎮 Le Dock : lien dans la bio de @polofoil', W/2, 1220, {s: 46, w: 800, c: '#7dd3fc'}); x.globalAlpha = 1; }
   }
 
-  // ⏱ scène « Le défi des 2 minutes » : une vraie session de 2 min en accéléré (×5,5), objectifs qui se cochent, carte de fin, « Tu penses y arriver ?? »
+  // ⏱ scène « Le défi des 2 minutes » (v2, retour Paul : « l'accéléré donne la gerbe ») : une VRAIE session de 2 min, montrée en 4 extraits
+  // à vitesse normale. Entre deux extraits, le jeu tourne en coulisse (même pilote, pas d'image) : le chrono saute, score et objectifs sont ceux de la partie.
+  const CLIPS = [{s: 0, g: 0}, {s: 5.6, g: 38}, {s: 11.2, g: 74}, {s: 16.8, g: 112}];   // s : début de l'extrait (vidéo), g : temps de jeu à ce moment
+  function defiBot(vnow){ if(!test || test.done) return;
+    if(test.swim || test.crashA || test.takeoff){ keys.l = keys.r = false; if(test.takeoff){ test.takeoff = null; runner.visible = false; rider.visible = true; $('beat').classList.add('hide'); test.x = -30; test.z = -38; test.h = Math.PI - 0.3; test.v = test.vl*1.35; test.last = vnow; VID.leg = 'in'; } return; }
+    if(VID.leg === 'in' && test.z > 4){ VID.leg = 'out'; } else if(VID.leg === 'out' && test.z < -6){ VID.leg = 'in'; VID.side = -VID.side; }
+    const want = VID.leg === 'in' ? Math.PI - 0.3*VID.side : 0.55*VID.side, e = wrapA(want - test.h); keys.l = e > 0.08; keys.r = e < -0.08; test.sta = 100;
+    if(test.v < test.vl*(VID.leg === 'in' ? 1.6 : 1.3) && vnow - VID.lp > 330){ VID.lp = vnow; test.lastPump = 0; pump(); } }
   function defiFrame(now, s){
     const go = p => { if(phase !== p){ phase = p; ph0 = now; return true; } return false; };
-    if(go('ride') || false){}
-    if(phase === 'ride' && !VID.started){ VID.started = true; MODE = 'carve'; goW('Alpine Foil RSX Carve 1100'); $('big').classList.add('hide'); VID.obj = true; startTest(); SET.on = SET.gain; SET.period = 13; waveSync();
+    go('ride');
+    if(!VID.started){ if(/[?&]debug=1/.test(location.search)) window.__vid = VID; VID.started = true; MODE = 'carve'; goW('Alpine Foil RSX Carve 1100'); $('big').classList.add('hide'); VID.obj = true; startTest(); SET.on = SET.gain; SET.period = 13; waveSync();
       test.takeoff = null; test.pumpUp = null; runner.visible = false; rider.visible = true; $('beat').classList.add('hide'); $('nfs').classList.remove('hide');
-      VID.warp = 5.5; VID.w0 = now; test.x = -30; test.z = -38; test.h = Math.PI - 0.3; test.v = test.vl*1.35; test.manual = true; test.mt0 = now; test.last = now; test.t0 = now; test.sta = 100; VID.leg = 'in'; VID.side = 1; VID.lp = 0; VID.nObj = 0;
+      VID.toff = 0; test.x = -30; test.z = -38; test.h = Math.PI - 0.3; test.v = test.vl*1.35; test.manual = true; test.mt0 = now; test.last = now; test.t0 = now; test.sta = 100; VID.leg = 'in'; VID.side = 1; VID.lp = 0; VID.nObj = 0; VID.clip = 0;
       VID.cam = (fx, fz, dt) => { VID.ch = VID.ch ?? test.h; VID.ch += wrapA(test.h - VID.ch)*(1 - Math.exp(-dt*1.8)); const gx = -Math.sin(VID.ch), gz = -Math.cos(VID.ch);
         cam.position.set(test.x - gx*7.2, 1.6, test.z - gz*7.2); cam.lookAt(test.x + gx*1.5, 0.75, test.z + gz*1.5); }; }
-    const vnow = VID.w0 + (now - VID.w0)*VID.warp;
-    if(test && !test.done){
-      if(test.swim || test.crashA || test.takeoff){ keys.l = keys.r = false; if(test.takeoff){ test.takeoff = null; runner.visible = false; rider.visible = true; $('beat').classList.add('hide'); test.x = -30; test.z = -38; test.h = Math.PI - 0.3; test.v = test.vl*1.35; test.last = vnow; VID.leg = 'in'; } }
-      else { if(VID.leg === 'in' && test.z > 4){ VID.leg = 'out'; } else if(VID.leg === 'out' && test.z < -6){ VID.leg = 'in'; VID.side = -VID.side; }
-        const want = VID.leg === 'in' ? Math.PI - 0.3*VID.side : 0.55*VID.side, e = wrapA(want - test.h); keys.l = e > 0.08; keys.r = e < -0.08; test.sta = 100;
-        if(test.v < test.vl*(VID.leg === 'in' ? 1.6 : 1.3) && now - VID.lp > 60){ VID.lp = now; test.lastPump = 0; pump(); } } }   // en accéléré : ~1 pump / 0,33 s de jeu, comme à vitesse normale
-    if(test && test.done && !VID.endT){ VID.endT = now; VID.warp = 0; keys.l = keys.r = false; }
+    // coupe vers l'extrait suivant : on fait tourner le jeu en coulisse jusqu'au temps de jeu prévu
+    const nx = CLIPS[VID.clip + 1]; if(nx && s >= nx.s && !test.done){ VID.clip++; let vnow = now + VID.toff; const target = test.mt0 + nx.g*1000;
+      const k0 = performance.now(); while(vnow < target && !test.done){ vnow += 1000/30; clock.elapsedTime += 1/30; defiBot(vnow); testFrame(vnow); } VID.skipMs = (VID.skipMs || []).concat(Math.round(performance.now() - k0));
+      seaU.t.value = clock.elapsedTime; const lag = performance.now() - now; VID.toff = vnow - now - lag; now = performance.now(); VID.pops = []; VID.cutT = now; VID.ch = test.h; whoosh(); }   // le calcul prend du temps : on repart de l'heure réelle
+    const vnow = now + VID.toff; defiBot(vnow);
+    if(test && test.done && !VID.endT){ VID.endT = now; keys.l = keys.r = false; }
     if(VID.endT && now - VID.endT > 4600 && !ended){ ended = true; if(rec) rec.stop(); }
     // ---- image ----
-    const z = 1 + 0.07*VID.punch; x.drawImage(cv, W*(1 - z)/2, H*(1 - z)/2, W*z, H*z);
+    x.drawImage(cv, 0, 0, W, H);
     const g = x.createLinearGradient(0, 0, 0, 560); g.addColorStop(0, 'rgba(11,18,34,.85)'); g.addColorStop(1, 'rgba(11,18,34,0)'); x.fillStyle = g; x.fillRect(0, 0, W, 560);
     if(!test) return;
     const left = Math.max(0, 120 - (vnow - test.mt0)/1000), mm = Math.floor(left/60), ss = String(Math.floor(left % 60)).padStart(2, '0');
     if(!VID.endT){
       txt('LE DÉFI DES 2 MINUTES', W/2, 170, {s: 66, sk: true, st: 12, c: '#fde68a'});
-      txt('⏱ ' + mm + ':' + ss, W/2, 330, {s: 170, sk: true, st: 18, c: left < 15 ? '#fca5a5' : '#fff'}); pill(W/2 + 230, 250, 150, 70, '#ef4444'); txt('×5', W/2 + 305, 300, {s: 48, sh: false});
-      // objectifs cochés
+      txt('⏱ ' + mm + ':' + ss, W/2, 330, {s: 170, sk: true, st: 18, c: left < 15 ? '#fca5a5' : '#fff', z: VID.cutT ? pop(VID.cutT, now) : 1});
       const n = test.objNew ? test.objNew.length : 0, tot = test.objList ? test.objList.length : 21;
-      if(n > VID.nObj){ VID.nObj = n; VID.objT = now; VID.objName = objName(test.objNew[n - 1], test.S, true); VID.punch = 1; }
+      if(n > VID.nObj){ VID.nObj = n; VID.objT = now; VID.objName = objName(test.objNew[n - 1], test.S, true); }
       pill(70, H - 420, 330, 96, 'rgba(11,18,34,.85)'); txt('🎯 ' + n + '/' + tot, 235, H - 352, {s: 64, sh: false, c: '#fde68a'});
-      if(VID.objT && now - VID.objT < 1600){ const k = pop(VID.objT, now); pill(W/2 - 450, 470, 900, 110, 'rgba(34,197,94,.95)'); txt('✅ ' + VID.objName, W/2, 545, {s: 52, sh: false, z: k, max: 860}); }
+      if(VID.objT && now - VID.objT < 1800){ const k = pop(VID.objT, now); pill(W/2 - 450, 470, 900, 110, 'rgba(34,197,94,.95)'); txt('✅ ' + VID.objName, W/2, 545, {s: 52, sh: false, z: k, max: 860}); }
       txt('SCORE', 90, H - 230, {s: 34, a: 'left', c: '#fde68a'}); txt(Math.round(test.score).toLocaleString('fr'), 90, H - 140, {s: 100, a: 'left', sk: true, st: 10});
       pill(W - 300, H - 230, 210, 80, '#fbbf24'); txt('×' + mult().toFixed(1).replace('.', ','), W - 195, H - 172, {s: 52, c: '#0b1222', sh: false});
-      VID.pops = VID.pops.filter(p => now - p.t0 < 900 && !/OBJECTIF/.test(p.txt)); VID.pops.slice(-1).forEach(p => { const k = (now - p.t0)/900; x.globalAlpha = Math.min(1, 2*(1 - k));
+      VID.pops = VID.pops.filter(p => now - p.t0 < 1100 && !/OBJECTIF/.test(p.txt)); VID.pops.slice(-1).forEach(p => { const k = (now - p.t0)/1100; x.globalAlpha = Math.min(1, 2*(1 - k));
         txt(p.txt + (p.pts ? '  +' + p.pts : ''), W/2, 1000 - k*100, {s: 80, sk: true, st: 12, c: p.bad ? '#fca5a5' : '#fde68a', z: pop(p.t0, now)}); x.globalAlpha = 1; });
+      if(VID.cutT && now - VID.cutT < 250){ x.globalAlpha = 1 - (now - VID.cutT)/250; x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); x.globalAlpha = 1; }   // flash de coupe
       if(s < 2.6){ x.fillStyle = 'rgba(11,18,34,.45)'; x.fillRect(0, 0, W, H); txt('POV :', W/2, 640, {s: 90, sk: true, c: '#fde68a', z: pop(ph0, now)});
         txt('2 minutes', W/2, 780, {s: 130, sk: true, st: 16, z: pop(ph0 + 150, now)}); txt('pour tout cocher 🎯', W/2, 910, {s: 96, sk: true, st: 14, c: '#7dd3fc', z: pop(ph0 + 450, now)}); }
     } else {
