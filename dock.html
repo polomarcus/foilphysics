@@ -368,7 +368,7 @@
 <div class="dlg" id="dlg"><div class="face" id="face"></div><div class="box"><div class="whorow"><div class="who">Prof. Foil</div><div class="langs" id="langs" role="group" aria-label="Langue"></div></div><div class="say" id="say"></div><div class="ch" id="ch"></div><div class="next" id="nx">▼ clique pour continuer</div></div></div>
 <div class="tip hide" id="tip"><div class="mini" id="mini"></div><div class="bub" id="bub"></div></div>
 
-<script src="dock-i18n.js?v=42"></script>
+<script src="dock-i18n.js?v=43"></script>
 <script src="ailes.js"></script>
 <script type="module">
 import * as THREE from 'three';
@@ -382,7 +382,7 @@ const D = window.DOCK_I18N[LANG] || window.DOCK_I18N.fr, T = Object.assign({}, D
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 // 📱 mobile : TOUCH = écran tactile (ou ?touch=1 pour tester), MOB = téléphone/tablette tactile → rendu allégé, manette à deux pouces
 const TOUCH = /[?&]touch=1/.test(location.search) || (matchMedia('(pointer: coarse)').matches && !/[?&]video=1/.test(location.search)), MOB = TOUCH;
-document.body.classList.toggle('touch', TOUCH); if(TOUCH) document.body.appendChild(document.getElementById('ntime'));
+document.body.classList.toggle('touch', TOUCH); if(TOUCH){ const nt = document.getElementById('ntime'); nt.classList.add('hide'); document.body.appendChild(nt); }   // caché hors partie
 const buzz = ms => { if(TOUCH && navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) try{ navigator.vibrate(ms); }catch(e){} };   // P2 : vibration (Android ; iPhone l'ignore)
 let VID = null;   // 🎬 mode vidéo Instagram (?video=1), défini en fin de script
 const fill = (str, o) => str.replace(/\{(\w+)\}/g, (_, k) => o[k] !== undefined ? o[k] : '{' + k + '}');
@@ -1248,7 +1248,7 @@ function startTest(){ $('ntime').classList.remove('hide');
   $('tcap').textContent = fill(T.testCap, {n, k: T.turnKinds[m >= 55 ? 0 : m >= 35 ? 1 : 2]}); setKeys('step'); $('pad').classList.remove('hide'); $('tenl').textContent = T.energy || '💪'; $('tstall').textContent = fill(T.stall || '< {v}', {v: Math.round(vs*3.6)}); $('tbar').classList.remove('hide');
 }
 function endTest(silent, keep){ $('ntime').classList.add('hide'); objPts.visible = objBuoys.visible = false; clearTimeout(objPanel.h); $('objp').classList.add('off'); $('objc').classList.add('off'); $('eobj').innerHTML = ''; $('eread').innerHTML = '';
-  if(!keep) unlockLandscape(); showRot(false); document.body.classList.remove('playing');
+  showRot(needRotate()); document.body.classList.remove('playing');   // on reste en paysage (plein écran gardé) : tout le Dock se joue à l'horizontale
   $('pad').classList.add('hide'); slalomG.visible = false;
   test = null; keys.l = keys.r = keys.f = false; trail.visible = false; rider.visible = false; fxL.fill(0); fxP.fill(-99); fxGeo.attributes.position.needsUpdate = true; fxRings.forEach(m => m.visible = false); swimmer.visible = false; runner.visible = false; $('plane').classList.add('hide'); $('beat').classList.add('hide'); $('vig').style.opacity = 0; $('slow').classList.remove('on'); $('foot').classList.remove('on'); $('td').classList.remove('on'); cam.fov = FOV0; cam.updateProjectionMatrix(); windSnd(0); $('nfs').classList.add('hide'); $('endc').classList.add('hide'); $('pops').innerHTML = ''; plate.visible = ring.visible = pole.visible = true;
   foil.position.set(0, 1.86, 0); foil.rotation.set(0, 0, 0); seaU.H.value = 0.4; WAVE.w = WAVE_W0; SET.on = 0; waveSync(); shoreMesh.visible = false; $('shore').classList.remove('on');
@@ -1258,8 +1258,9 @@ function endTest(silent, keep){ $('ntime').classList.add('hide'); objPts.visible
 // 📱 P0 : sur l'eau on joue en paysage (deux pouces, on voit loin). Android : plein écran + verrouillage ; iPhone (Safari ne sait pas verrouiller) :
 // écran « tourne ton téléphone », le test part tout seul une fois tourné. « Jouer en portrait quand même » reste possible.
 const PORTRAIT = matchMedia('(orientation: portrait)');
-let portraitOk = false, rotWait = null;
-const needRotate = () => TOUCH && !portraitOk && PORTRAIT.matches;
+// 🔄 retour Paul : « forcer le mode horizontal dès l'accueil » → tout le Dock se joue en paysage sur téléphone (plus d'option portrait)
+let rotWait = null;
+const needRotate = () => TOUCH && PORTRAIT.matches;
 function showRot(on){ $('rot').classList.toggle('hide', !on); document.body.classList.toggle('rotating', on); }
 const within = (p, ms) => Promise.race([p, new Promise(r => setTimeout(r, ms))]);   // certains navigateurs ne répondent jamais : on n'attend pas plus de 0,7 s
 async function lockLandscape(){ if(!TOUCH) return; try{ if(!document.fullscreenElement && document.documentElement.requestFullscreen) await within(document.documentElement.requestFullscreen({navigationUI: 'hide'}), 700); }catch(e){}
@@ -1269,9 +1270,12 @@ function playTest(){ if(test) return; if(!TOUCH){ startTest(); return; }
   lockLandscape().finally(() => setTimeout(() => { if(needRotate()){ rotWait = startTest; showRot(true); } else startTest(); }, 250)); }
 PORTRAIT.addEventListener('change', () => { if(!TOUCH) return;
   if(!PORTRAIT.matches){ showRot(false); if(rotWait){ const f = rotWait; rotWait = null; setTimeout(f, 200); } }
-  else if(test && !test.done && !portraitOk) showRot(true); });
-$('rotOk').onclick = () => { portraitOk = true; showRot(false); if(rotWait){ const f = rotWait; rotWait = null; f(); } };
-$('rotBack').onclick = () => { rotWait = null; showRot(false); if(test) endTest(); };
+  else showRot(true); });
+// bouton « plein écran » : Android sait verrouiller l'écran en paysage (il faut un appui) ; iPhone non → on le cache, il suffit de tourner
+const canLock = !!(screen.orientation && screen.orientation.lock && document.documentElement.requestFullscreen);
+$('rotOk').style.display = canLock ? '' : 'none'; $('rotBack').style.display = 'none';
+$('rotOk').onclick = () => { lockLandscape(); };
+if(needRotate()) showRot(true);
 $('test').onclick = playTest;
 if(/[?&]debug=1/.test(location.search)) { window.__dockTest = () => test; window.__dockSW = SW; window.__dockShare = () => { const d = shareData(); return d ? shareCanvas(d) : null; }; window.__dockSET = SET; window.__dockSWG = SWG; window.__dockCam = (x, y, z, tx, ty, tz) => { cam.position.set(x, y, z); cam.lookAt(tx, ty, tz); }; window.__dockFoil = () => foil; window.__dockHold = b => { DBG_HOLD = !!b; }; window.__dockInfo = () => { let meshes = 0, vis = 0; scene.traverse(o => { if(o.isMesh || o.isLine || o.isPoints){ meshes++; let v = true; for(let q = o; q; q = q.parent) if(!q.visible){ v = false; break; } if(v) vis++; } }); return {calls: gl.info.render.calls, tris: gl.info.render.triangles, meshes, visibles: vis, geoms: gl.info.memory.geometries}; }; window.__dockTURN = TURN; window.__dockH = h => { if(h !== undefined) seaU.H.value = h; return seaU.H.value; }; window.__dockK = (k, b) => { SW.K = k; if(b !== undefined) SW.back = b; }; window.__dockFrame = (now, t) => { if(t !== undefined) clock.elapsedTime = t; testFrame(now); }; }   // tests locaux : placer le rider
 function testFrame(now){
