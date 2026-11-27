@@ -123,10 +123,11 @@ seoLang((/[?&]lang=(en|es|it|de)\b/i.exec(location.search) || [])[1] || 'fr');</
   #prc{position:absolute; top:-5px; width:6px; height:36px; margin-left:-3px; border-radius:3px; background:#fff; box-shadow:0 0 8px #fff;} #prc.in{background:#22c55e; box-shadow:0 0 14px #22c55e;}
   /* 🎵 lignes de rythme façon PaRappa : grandes, au centre-haut de l'écran */
   .plane{position:fixed; z-index:7; left:50%; top:17%; transform:translateX(-50%); width:min(900px, 86vw); padding:14px 22px; border-radius:14px; background:linear-gradient(#fde047, #facc15); border:4px solid #db2777; box-shadow:0 8px 0 #9d174d, 0 14px 30px rgba(0,0,0,.35);}
-  .ptrack{position:relative; height:64px; border-radius:10px; background:#f472b6; display:flex; align-items:center; justify-content:space-around;}
+  .ptrack{position:relative; height:64px; border-radius:10px; background:#f472b6; overflow:hidden;}   /* 🎼 partition qui DÉFILE (retour Paul : on ratait la 1re note de chaque mesure) : les notes arrivent de la droite vers le 🏄 fixe à 24 % */
+  .ptrack .pk, .ptrack .pd{position:absolute; top:50%; transform:translate(-50%, -50%);}   /* marge d'élan à gauche (retour Paul) : le curseur part de là, comme au départ Piouz */
   .pd{width:12px; height:12px; border-radius:50%; background:#94a3b8; box-shadow:inset 0 -2px 0 #475569;}
   .pk{width:52px; height:52px; border-radius:12px; background:#fff; border:4px solid #0f172a; display:grid; place-items:center; font-weight:900; color:#0f172a; transition:transform .1s;}
-  .pk{font-size:1.7rem;} .pk.p{background:#22c55e; transform:scale(1.25);} .pk.g{background:#fbbf24; transform:scale(1.1);} .pk.m{background:#64748b; opacity:.6;}
+  .pk{font-size:1.7rem;} .pk.p{background:#22c55e; transform:translate(-50%, -50%) scale(1.25);} .pk.g{background:#fbbf24; transform:translate(-50%, -50%) scale(1.1);} .pk.m{background:#64748b; opacity:.6;}
   .pcur{position:absolute; top:-26px; font-size:2rem; margin-left:-16px; filter:drop-shadow(0 2px 0 #0b1222);}
   .pheart{float:right; margin:6px 0 0 14px; font-size:1.5rem; font-weight:900; animation:hb 0.55s ease-in-out infinite;} @keyframes hb{0%,100%{transform:scale(1);} 15%{transform:scale(1.25);} 30%{transform:scale(1.05);}}
   .plg{margin-top:8px; font-weight:800; font-size:.9rem; color:#0f172a; text-align:left; float:left;} .prate{margin-top:8px; text-align:right; font-weight:900; font-style:italic; font-size:1.6rem; color:#0f172a; text-shadow:0 2px 0 #fff;} .prate.c{color:#15803d;} .prate.g{color:#1d4ed8;} .prate.m{color:#c2410c;} .prate.x{color:#b91c1c;}
@@ -224,7 +225,7 @@ seoLang((/[?&]lang=(en|es|it|de)\b/i.exec(location.search) || [])[1] || 'fr');</
   .st .lab{white-space:nowrap; font-size:1rem !important;} .st .lab span{white-space:nowrap;} .st .lab em{font-style:normal; font-weight:900; margin-left:4px;}
   .cmp{margin-top:6px; font-size:.8rem; color:var(--muted); text-align:right;} .tbar button{border:0; border-radius:999px; padding:9px 16px; font-weight:900; background:var(--amber); color:#1e1b0b; cursor:pointer;}
   /* 🧑‍🔬 Prof. Foil : boîte de dialogue de jeu (texte lettre par lettre, choix), puis bulle de commentaires */
-  .dlg{position:fixed; z-index:5; left:calc(50% + 40px); bottom:26px; transform:translateX(-50%); width:min(820px, calc(100vw - 420px)); display:flex; gap:18px; align-items:flex-end;}
+  .dlg{position:fixed; z-index:5; right:24px; bottom:26px; width:min(560px, calc(100vw - 440px)); display:flex; gap:18px; align-items:flex-end;}   /* bulle de la Prof à droite (retour Paul) : le centre-bas reste libre pour voir le foil et la Piouz */
   .dlg .face{flex:none; width:150px; height:150px; border-radius:18px; background:#fff7e6; border:4px solid #0f172a; box-shadow:0 10px 30px rgba(0,0,0,.35); overflow:hidden;}
   .dlg .box{flex:1; min-height:150px; background:#fffdf7; color:#14181f; border:4px solid #0f172a; border-radius:18px; padding:16px 20px 14px; box-shadow:0 10px 30px rgba(0,0,0,.35); display:flex; flex-direction:column; gap:10px;}
   .dlg .who{font-weight:900; font-size:.85rem; letter-spacing:.06em; text-transform:uppercase; color:#b45309;}
@@ -370,7 +371,7 @@ seoLang((/[?&]lang=(en|es|it|de)\b/i.exec(location.search) || [])[1] || 'fr');</
 <div class="pcue" id="pcue">💪 PUMP !</div>
 <div class="nfs hide" id="nfs"><div class="ntime" id="ntime">2:00</div>
   <div class="nfs-wave prhy" id="prhy" style="display:none"><small class="wlab" id="prl">🫀 PUMP</small><div class="prbar"><i id="prz"></i><b id="prc"></b></div></div>
-  <div class="nfs-wave" id="nfswave"><div class="nw-row"><svg viewBox="0 0 200 70" class="nw-svg" aria-hidden="true"><path id="wprof" class="w-line"/><circle id="wdot" r="8" cx="100" cy="35"/></svg>
+  <div class="nfs-wave" id="nfswave"><div class="nw-row"><svg viewBox="0 0 200 70" class="nw-svg" aria-hidden="true"><path id="wprof" class="w-line"/><path id="warr" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><circle id="wdot" r="8" cx="100" cy="35"/></svg>
     <div class="mast" aria-hidden="true"><i class="m-red"></i><i class="m-top"></i><i class="m-pole"></i><i class="m-board" id="mboard"></i></div></div>
     <small id="wlab" class="wlab"></small></div>
   <div class="nfs-score"><small id="nsl">SCORE</small><b id="nscore">0</b><i id="nmult">x1</i></div>
@@ -396,9 +397,9 @@ seoLang((/[?&]lang=(en|es|it|de)\b/i.exec(location.search) || [])[1] || 'fr');</
 <div class="pad hide" id="pad" data-k="step"><button id="tl" class="steer" aria-label="gauche">⬅️</button><button id="td" class="steer lk" aria-label="appuie">↓</button><button id="tu" class="steer lk" aria-label="déleste">↑</button><button id="tp" class="steer pump">💪 Pump</button><button id="tr" class="steer" aria-label="droite">➡️</button></div>
 <div class="wpick hide" id="wpick" role="dialog" aria-modal="true" aria-labelledby="wpt"><div class="wp-box"><b class="wp-t" id="wpt">🌊 Choisis ta vague</b><div class="wp-row" id="wprow"></div><button class="wp-x" id="wpx">↩</button></div></div>
 <div class="rot hide" id="rot"><div><b class="rot-ico">📱</b><p id="rotTxt">Tourne ton téléphone</p><button id="rotOk">Jouer en portrait quand même</button><button id="rotBack" class="alt">↩</button></div></div>
-<div class="tbar hide" id="tbar"><span class="tmid"><b id="tcap">🌊 Test</b><span class="keys" id="tkeys"></span><small id="thint" class="thint" hidden></small><span id="thud" class="thud hide2"><b id="tspd">0 km/h</b><small id="twhy" class="tlab twhy"></small><small id="tstall" class="tlab"></small><span id="tenl" class="tlab">💪</span><i class="tst"><i id="tsta"></i></i></span></span><button id="treplay" class="hide2">🔁</button><button id="tsnd" class="steer" aria-label="son">🔇</button><button id="tback">↩ Revenir au ponton</button></div>
+<div class="tbar hide" id="tbar"><span class="tmid"><b id="tcap">🌊 Test</b><span class="keys" id="tkeys"></span><small id="thint" class="thint" hidden></small><span id="thud" class="thud hide2"><b id="tspd">0 km/h</b><small id="twhy" class="tlab twhy"></small><small id="tstall" class="tlab"></small><span id="tenl" class="tlab">💪</span><i class="tst"><i id="tsta"></i></i></span></span><button id="treplay" class="hide2">🔁</button><button id="tsnd" class="steer" aria-label="son">🔇</button><button id="tback">↩ Revenir au menu principal</button></div>
 <nav class="tabs" id="tabs" aria-label="Que veux-tu faire ?">
-  <button data-k="carve">🔥 Carver à fond</button><button data-k="vite">🚀 Aller vite</button><button data-k="loin">🌊 Me balader longtemps</button><button data-k="apprendre">🎓 Apprendre</button>
+  <button data-k="carve">🔥 Carver à fond (recommandé, le plus fun)</button><button data-k="vite">🚀 Aller vite</button><button data-k="loin">🌊 Me balader longtemps</button><button data-k="apprendre">🎵 Le pump, une histoire de rythme</button>
 </nav>
 <div class="big" id="big"></div>
 <div class="profbtn"><button id="profbtn">🧑‍🔬 Prof. Foil</button></div>
@@ -428,7 +429,7 @@ seoLang((/[?&]lang=(en|es|it|de)\b/i.exec(location.search) || [])[1] || 'fr');</
   var last = 0; document.addEventListener('touchend', function(e){ var n = Date.now(); if(n - last < 300 && !(e.target.closest && e.target.closest('button, a, input, select, [role=button]'))) e.preventDefault(); last = n; }, {passive: false});
   document.addEventListener('wheel', function(e){ if(e.ctrlKey) e.preventDefault(); }, {passive: false}); })();
 </script>
-<script src="dock-i18n.js?v=50"></script>
+<script src="dock-i18n.js?v=20261127r"></script>
 <script src="ailes.js?v=20261122"></script>
 <script type="module">
 import * as THREE from 'three';
@@ -494,7 +495,7 @@ function scores(b, S){
 }
 
 /* ---------- données : ailes.js (marque → ailes) ---------- */
-const BR = (window.FOIL_WINGS || []).filter(B => B.w.length);
+const BR = (window.FOIL_WINGS || []).filter(B => B.w.length).sort((a, b) => a.n.localeCompare(b.n, 'fr', {sensitivity: 'base'}));   // marques dans l'ordre alphabétique (demande Paul)
 let bi = Math.max(0, BR.findIndex(B => B.k === 'alp')), wi = 0;
 BR.forEach((B, i) => { const o = document.createElement('option'); o.value = i; o.textContent = B.n; $('brand').appendChild(o); });
 $('brand').value = bi;
@@ -507,20 +508,21 @@ gl.setPixelRatio(Math.min(MOB ? 1.5 : 2, devicePixelRatio)); gl.outputColorSpace
 gl.shadowMap.enabled = !MOB;   // 📱 téléphone : pas d'ombres portées (le plus gros coût)
 gl.shadowMap.type = THREE.PCFSoftShadowMap;
 const scene = new THREE.Scene(); scene.fog = new THREE.Fog('#e9b48c', 90, 320);
-const cam = new THREE.PerspectiveCamera(38, 1, 0.1, 600); cam.position.set(2.6, 2.3, 3.4);
-const ctl = new OrbitControls(cam, cv); ctl.target.set(0, 1.45, 0); ctl.enableDamping = true; ctl.minDistance = 3; ctl.maxDistance = 11; ctl.maxPolarAngle = Math.PI*0.49; ctl.enablePan = false;
+const cam = new THREE.PerspectiveCamera(38, 1, 0.1, 600); cam.position.set(2.4, 1.45, 5.3);
+const ctl = new OrbitControls(cam, cv); ctl.target.set(0, 1.2, 0); ctl.enableDamping = true; ctl.minDistance = 3; ctl.maxDistance = 11; ctl.maxPolarAngle = Math.PI*0.49; ctl.enablePan = false;
 // ciel : dégradé chaud + soleil bas
 const sky = new THREE.Mesh(new THREE.SphereGeometry(400, 32, 16), new THREE.ShaderMaterial({side: THREE.BackSide, depthWrite: false, fog: false,
-  uniforms: {sun: {value: new THREE.Vector3(-0.55, 0.12, -0.83).normalize()}},
+  uniforms: {sun: {value: new THREE.Vector3(-0.62, 0.07, 0.78).normalize()}},
   vertexShader: 'varying vec3 vP; void main(){ vP = normalize(position); gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }',
   fragmentShader: `uniform vec3 sun; varying vec3 vP; void main(){ float h = clamp(vP.y, -0.1, 1.0);
-    vec3 c = mix(vec3(0.98,0.70,0.48), vec3(0.30,0.42,0.66), pow(max(h,0.0), 0.6));
-    float s = max(dot(vP, sun), 0.0); c += vec3(1.0,0.75,0.45)*pow(s, 18.0)*0.9 + vec3(1.0,0.9,0.7)*pow(s, 900.0)*4.0; gl_FragColor = vec4(c, 1.0); }`}));
+    vec3 c = mix(mix(vec3(1.0,0.62,0.30), vec3(1.0,0.80,0.52), smoothstep(0.0, 0.18, h)), vec3(0.93,0.80,0.66), smoothstep(0.18, 0.8, h));   // coucher de Maguelone : orange à l'horizon, pêche pâle au-dessus
+    float s = max(dot(vP, sun), 0.0); c += vec3(1.0,0.62,0.25)*pow(s, 6.0)*0.55 + vec3(1.0,0.85,0.55)*pow(s, 60.0)*0.8 + vec3(1.0,0.97,0.85)*smoothstep(0.9993, 0.9996, s)*3.0; gl_FragColor = vec4(c, 1.0); }`}));
 scene.add(sky);
 scene.add(new THREE.HemisphereLight('#ffd9b0', '#3a4a66', 0.9));
-const sun = new THREE.DirectionalLight('#ffc48a', 2.6); sun.position.set(-30, 12, -45); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
+const sun = new THREE.DirectionalLight('#ffc48a', 2.6); sun.position.set(-34, 6, 43); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
 Object.assign(sun.shadow.camera, {left: -6, right: 6, top: 6, bottom: -6, near: 1, far: 120}); scene.add(sun);
 const spot = new THREE.SpotLight('#ffffff', 40, 12, 0.5, 0.6); spot.position.set(2, 6, 3); spot.target.position.set(0, 1, 0); scene.add(spot, spot.target);
+const fillL = new THREE.DirectionalLight('#ffe2c4', 1.3); fillL.position.set(4, 2.5, 6); scene.add(fillL);   // appoint côté caméra (retour Paul : « le foil devrait être plus visible » à contre-jour du couchant)
 // mer
 const SAND = {z0: 42, r: 340, a: Math.PI*0.05};   // la plage : secteur de disque centré en (0, z0), bords à l'angle a de l'axe x → bord de l'eau en V très ouvert, sur toute la largeur de la mer
 const shoreZ = x => SAND.z0 + Math.tan(SAND.a)*Math.abs(x);   // z du bord du sable à l'abscisse x
@@ -533,24 +535,52 @@ const wavePh = (x, z, t) => WAVE.w*t - WAVE.k*(WAVE.dx*x + WAVE.dz*z);   // phas
 // Le paquet avance avec la houle : on le voit grossir au large avant qu'il arrive. SET.on = gain effectif (0 hors Carve et en mode vidéo).
 const SET = {period: 26, len: 45, gain: 0.35, on: 0};
 const setEnv = (x, z, t) => { if(!SET.on) return 0; const c = WAVE.w/WAVE.k, L = c*SET.period, s = WAVE.dx*x + WAVE.dz*z - c*t, u = (((s/L) % 1 + 1) % 1 - 0.5)*L/SET.len; return Math.abs(u) < 0.5 ? Math.pow(Math.cos(Math.PI*u), 2) : 0; };   // 0 hors série … 1 au cœur de la série
-const seaU = {t: {value: 0}, sun: {value: new THREE.Vector3(-0.55, 0.12, -0.83).normalize()}, cam: {value: new THREE.Vector3()}, H: {value: 0.4}, WK: {value: new THREE.Vector3()}, WA: {value: WAVE.amp}, WS: {value: new THREE.Vector3(100, 45, 0)}};
-const waveSync = () => { seaU.WK.value.set(-WAVE.k*WAVE.dx, -WAVE.k*WAVE.dz, WAVE.w); seaU.WA.value = WAVE.amp; seaU.WS.value.set(WAVE.w/WAVE.k*SET.period, SET.len, SET.on); }; waveSync();   // à rappeler si WAVE change
+// 🌊 houle irrégulière (retour Paul : « ça force à lire la houle ») : la hauteur des crêtes varie le long de la crête et dans le temps → bosses et zones calmes qui se déplacent. IRR.on : 0 = régulière (petite vague), 1 = très irrégulière (grosse vague)
+const IRR = {on: 0};
+const irrEnv = (x, z, t) => { if(!IRR.on) return 1; const s = WAVE.dx*x + WAVE.dz*z, c = -WAVE.dz*x + WAVE.dx*z; return Math.max(0.15, 1 + IRR.on*(0.55*Math.sin(0.16*c + 0.07*s - 0.35*t) + 0.35*Math.sin(0.09*c - 0.11*s + 0.5*t + 1.3))); };
+const gEnv = (x, z, t) => (1 + SET.on*setEnv(x, z, t))*irrEnv(x, z, t);
+const seaU = {t: {value: 0}, sun: {value: new THREE.Vector3(-0.62, 0.07, 0.78).normalize()}, cam: {value: new THREE.Vector3()}, H: {value: 0.4}, WK: {value: new THREE.Vector3()}, WA: {value: WAVE.amp}, WS: {value: new THREE.Vector3(100, 45, 0)}, IR: {value: 0}};
+const waveSync = () => { seaU.WK.value.set(-WAVE.k*WAVE.dx, -WAVE.k*WAVE.dz, WAVE.w); seaU.WA.value = WAVE.amp; seaU.WS.value.set(WAVE.w/WAVE.k*SET.period, SET.len, SET.on); seaU.IR.value = IRR.on; }; waveSync();   // à rappeler si WAVE change
 // même fonction de hauteur dans les deux shaders (mer, shore break) et dans seaH (JS) : p = position MONDE (x, z)
-const SEA_GLSL = `uniform float t; uniform float H; uniform vec3 WK; uniform float WA; uniform vec3 WS;
+const SEA_GLSL = `uniform float t; uniform float H; uniform vec3 WK; uniform float WA; uniform vec3 WS; uniform float IR;
     float h(vec2 p){ float edge = 1.0 - smoothstep(-6.0, 3.0, p.y - (${SAND.z0.toFixed(1)} + ${Math.tan(SAND.a).toFixed(5)}*abs(p.x)));   // la houle meurt sur le bord : plus de mer par-dessus le sable
       float kk = length(WK.xy), uu = (fract((-dot(p, WK.xy)/kk - WK.z/kk*t)/WS.x) - 0.5)*WS.x/WS.y, env = abs(uu) < 0.5 ? pow(cos(3.14159265*uu), 2.0) : 0.0;   // série : même enveloppe que setEnv (JS)
-      return edge*(H*WA*(1.0 + WS.z*env)*sin(dot(p, WK.xy) + WK.z*t) + 0.05*sin(1.3*p.y - 1.6*t + 0.4*p.x) + 0.03*sin(2.4*p.x + 2.0*p.y + 2.6*t)); }`;
+      vec2 dd = -WK.xy/kk; float ss = dot(p, dd), cc = -dd.y*p.x + dd.x*p.y, irr = max(0.15, 1.0 + IR*(0.55*sin(0.16*cc + 0.07*ss - 0.35*t) + 0.35*sin(0.09*cc - 0.11*ss + 0.5*t + 1.3)));
+      return edge*(H*WA*(1.0 + WS.z*env)*irr*sin(dot(p, WK.xy) + WK.z*t) + 0.05*sin(1.3*p.y - 1.6*t + 0.4*p.x) + 0.03*sin(2.4*p.x + 2.0*p.y + 2.6*t)); }`;
 const sea = new THREE.Mesh(new THREE.PlaneGeometry(600, 600, MOB ? 200 : 300, MOB ? 200 : 300).rotateX(-Math.PI/2), new THREE.ShaderMaterial({uniforms: seaU,
   // mer infinie (bug vu par Paul : au bout de 1 min 30 le rider sortait du plan de 600 m) : le maillage suit la caméra par pas d'une maille,
   // et la houle est calculée en coordonnées MONDE : les vagues restent fixes dans le monde, seul le filet de sommets glisse dessous sans que ça se voie
-  vertexShader: SEA_GLSL + ` varying vec3 vW; varying vec3 vN;
+  vertexShader: SEA_GLSL + ` varying vec3 vW; varying vec3 vN; varying float vH;
     void main(){ vec4 w = modelMatrix*vec4(position, 1.0); float y = h(w.xz), e = 0.2; vN = normalize(vec3(-(h(w.xz + vec2(e,0.0)) - y)/e, 1.0, -(h(w.xz + vec2(0.0,e)) - y)/e));
-      w.y += y; vW = w.xyz; gl_Position = projectionMatrix*viewMatrix*w; }`,
-  fragmentShader: `uniform vec3 sun; uniform vec3 cam; varying vec3 vW; varying vec3 vN;
-    void main(){ vec3 V = normalize(cam - vW), N = normalize(vN); float fr = pow(1.0 - max(dot(N,V),0.0), 3.0);
-      vec3 c = mix(vec3(0.03,0.21,0.34), vec3(0.58,0.62,0.72), fr*0.45);
-      float sp = pow(max(dot(reflect(-sun, N), V), 0.0), 80.0); c += vec3(1.0,0.8,0.55)*sp*2.2;
-      c = mix(c, vec3(0.72,0.66,0.66), smoothstep(90.0, 285.0, length(cam - vW))); gl_FragColor = vec4(c,1.0); }`}));
+      vH = y/max(H*WA*1.6, 0.05); w.y += y; vW = w.xyz; gl_Position = projectionMatrix*viewMatrix*w; }`,
+  // 🌊 rendu « downwind sim » (retour Paul) : clapot fin (8 petites vagues analytiques qui perturbent la normale), eau vert-bleu profond, reflet du ciel (Fresnel), paillettes de soleil, écume sur les plus hautes crêtes
+  fragmentShader: `uniform vec3 sun; uniform vec3 cam; uniform float t; varying vec3 vW; varying vec3 vN; varying float vH;
+    float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7)))*43758.5453); }
+    float noise(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.0 - 2.0*f); return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x), mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y); }
+    void main(){ vec3 V = normalize(cam - vW); float dist = length(cam - vW), fade = exp(-dist/55.0);
+      // clapot « naturel » (retour Paul : le nôtre fait numérique) : vaguelettes douces (plus de crêtes pointues qui crénelaient), directions groupées autour du vent (±50°),
+      // risées : l'intensité varie par grandes plaques (bruit lent), et chaque vaguelette s'efface dès qu'elle devient plus fine qu'un pixel (fwidth) : plus de rayures ni de moiré
+      vec2 px = fwidth(vW.xz); float pxl = max(px.x, px.y) + 1e-4;
+      float gust = 0.35 + 0.9*smoothstep(0.25, 0.8, noise(vW.xz*0.035 + vec2(t*0.02, 0.0))*0.7 + noise(vW.xz*0.11 - t*0.03)*0.3);
+      vec2 g = vec2(0.0); float a = 0.075, k = 3.5;
+      for(int i = 0; i < 12; i++){ float an = 0.35 + 0.9*sin(float(i)*2.4); vec2 d = vec2(cos(an), sin(an));
+        float ph = dot(d, vW.xz)*k + t*sqrt(9.81*k)*0.6 + float(i)*1.7 + 1.8*noise(vW.xz*0.4 + float(i)*3.1);
+        float aa = 1.0 - smoothstep(0.25, 0.75, k*pxl);
+        g -= d*a*cos(ph)*aa; k *= 1.24; a *= 0.9; }
+      vec3 N = normalize(vN + vec3(g.x, 0.0, g.y)*gust*mix(0.5, 1.0, fade));
+      float ndv = max(dot(N, V), 0.0), fr = 0.02 + 0.98*pow(1.0 - ndv, 5.0);
+      vec3 R = reflect(-V, N); float ry = clamp(R.y, 0.0, 1.0);
+      vec3 skyC = mix(vec3(0.80,0.74,0.74), vec3(0.50,0.56,0.74), pow(ry, 0.45)) + vec3(1.0,0.58,0.25)*pow(max(dot(R, sun), 0.0), 8.0)*1.1;
+      float face = clamp(dot(N, normalize(vec3(sun.x, 0.0, sun.z)))*2.0 + 0.5, 0.0, 1.0);
+      float sss = clamp(vH*0.8 + 0.2, 0.0, 1.0)*clamp(dot(vN, -V)*-1.0 + 0.6, 0.0, 1.0);
+      vec3 deep = mix(vec3(0.05,0.22,0.19), vec3(0.18,0.50,0.40), clamp(sss*0.8 + face*0.25, 0.0, 1.0));
+      float dSh = (${SAND.z0.toFixed(1)} + ${Math.tan(SAND.a).toFixed(5)}*abs(vW.x)) - vW.z, shal = 1.0 - smoothstep(4.0, 45.0, dSh);
+      deep = mix(deep, vec3(0.16,0.62,0.62), shal*0.85);
+      vec3 c = mix(deep, skyC, clamp(fr*1.1, 0.0, 0.55));
+      float sp = pow(max(dot(R, sun), 0.0), 350.0); c += vec3(1.0,0.92,0.8)*(sp*5.0 + step(0.997, dot(R, sun))*fade*2.0);
+      float fn = noise(vW.xz*0.9 + t*0.15)*0.6 + noise(vW.xz*3.1 - t*0.2)*0.4, fo = smoothstep(0.88, 1.05, vH + (fn - 0.5)*0.5)*smoothstep(0.45, 0.7, fn)*smoothstep(0.55, 0.75, noise(vW.xz*0.12 + 7.0));
+      c = mix(c, vec3(0.92,0.95,0.95), fo*0.85);
+      c = mix(c, vec3(0.72,0.66,0.66), smoothstep(90.0, 285.0, dist)); gl_FragColor = vec4(c,1.0); }`}));
 sea.position.y = -0.4; sea.frustumCulled = false; scene.add(sea);
 // 🌊 shore break (demande Paul) : devant la plage les vagues déferlent, rouleaux et écume blanche visibles de loin. Entrer dedans = chute certaine (voir testFrame).
 // Le bord de l'eau suit la géométrie du sable (SAND) : un V très ouvert, z = z0 + tan(a)·|x|. Une bande de 17 m de large suit ce bord ;
@@ -583,6 +613,30 @@ sand.rotation.x = Math.PI/2;   // le secteur part vers +z : la plage est DERRIÈ
 sand.position.set(0, -0.32, SAND.z0); sand.receiveShadow = true; scene.add(sand);
 for(let i = 0; i < 9; i++){ const d = new THREE.Mesh(new THREE.SphereGeometry(14 + 6*(i % 3), 24, 12), new THREE.MeshStandardMaterial({color: i % 2 ? '#d7b588' : '#cfa978', roughness: 1}));
   d.scale.y = 0.18; d.position.set(-90 + i*22, -1.5, 95 + 8*Math.sin(i*1.7)); scene.add(d); }
+// 🏰 décor « Villeneuve-lès-Maguelone » (vidéos de Paul) : garrigue et roseaux sur les dunes, pins parasols, la cathédrale de Maguelone en pierre ocre, quelques mas
+{ const vegM = [new THREE.MeshStandardMaterial({color: '#7a8a4a', roughness: 1}), new THREE.MeshStandardMaterial({color: '#9a9a5a', roughness: 1}), new THREE.MeshStandardMaterial({color: '#5f7a3e', roughness: 1})];
+  const bush = new THREE.SphereGeometry(1, 10, 6);
+  for(let i = 0; i < 140; i++){ const x = -260 + (i*37.3) % 520, z = 104 + ((i*13.7) % 26), b = new THREE.Mesh(bush, vegM[i % 3]); b.scale.set(3 + (i % 5), 1.2 + (i % 3)*0.5, 2.5 + (i % 4)); b.position.set(x, 0.2, z); scene.add(b); }
+  const pinT = new THREE.MeshStandardMaterial({color: '#5a4636', roughness: 1}), pinC = new THREE.MeshStandardMaterial({color: '#55703a', roughness: 1});
+  const trunk = new THREE.CylinderGeometry(0.35, 0.5, 1, 6), crown = new THREE.SphereGeometry(1, 14, 8);
+  for(let i = 0; i < 12; i++){ const x = -230 + (i*97.7) % 460, z = 150 + ((i*17.3) % 30), hT = 5 + (i % 3)*1.2, w = 3.2 + (i % 3)*0.8;
+    const tr = new THREE.Mesh(trunk, pinT); tr.scale.y = hT; tr.position.set(x, hT/2, z); const cr = new THREE.Mesh(crown, pinC); cr.scale.set(w, 1.6 + (i % 2)*0.6, w*0.9); cr.position.set(x, hT + 0.8, z); scene.add(tr, cr); }
+  const stone = new THREE.MeshStandardMaterial({color: '#c9a77a', roughness: 0.95}), stoneD = new THREE.MeshStandardMaterial({color: '#a8865c', roughness: 0.95}), roof = new THREE.MeshStandardMaterial({color: '#b5654a', roughness: 0.9});
+  const cath = new THREE.Group(); const nave = new THREE.Mesh(new THREE.BoxGeometry(34, 13, 12), stone); nave.position.y = 6.5;
+  const choir = new THREE.Mesh(new THREE.BoxGeometry(10, 15, 13), stoneD); choir.position.set(-20, 7.5, 0);
+  const tower = new THREE.Mesh(new THREE.BoxGeometry(8, 20, 8), stone); tower.position.set(15, 10, 3);
+  const top = new THREE.Mesh(new THREE.BoxGeometry(35, 0.8, 12.6), stoneD); top.position.y = 13.2; cath.add(nave, choir, tower, top);
+  for(let k = 0; k < 6; k++){ const m = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.2, 0.6), stoneD); m.position.set(-14 + k*5.5, 14, 6.2); cath.add(m); }
+  cath.position.set(-35, 0, 150); cath.rotation.y = 0.12; scene.add(cath);
+  for(let k = 0; k < 5; k++){ const h = new THREE.Group(), wl = new THREE.Mesh(new THREE.BoxGeometry(9, 5, 7), stone), rf = new THREE.Mesh(new THREE.ConeGeometry(6.4, 2.4, 4), roof);
+    wl.position.y = 2.5; rf.position.y = 6.2; rf.rotation.y = Math.PI/4; rf.scale.set(1, 1, 0.8); h.add(wl, rf); h.position.set(30 + k*21, 0, 142 + (k % 2)*9); scene.add(h); } }
+// ⛰️ derrière la plage de Maguelone : l'étang qui brille, puis une ligne de collines mauves au loin (la Gardiole)
+{ const lag = new THREE.Mesh(new THREE.PlaneGeometry(900, 110).rotateX(-Math.PI/2), new THREE.MeshBasicMaterial({color: '#f1b27a'})); lag.position.set(0, -0.05, 215); scene.add(lag);
+  const N = 120, pos = [], idx = []; let sd = 5; const rnd = () => (sd = (sd*16807) % 2147483647)/2147483647; let hh = 10;
+  for(let i = 0; i <= N; i++){ const x = -520 + 1040*i/N; hh = Math.max(3, Math.min(26, hh + (rnd() - 0.5)*5)); pos.push(x, -1, 330, x, hh + 6*Math.sin(i*0.21), 330); }
+  for(let i = 0; i < N; i++){ const a = 2*i; idx.push(a, a + 2, a + 1, a + 1, a + 2, a + 3); }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx);
+  scene.add(new THREE.Mesh(g, new THREE.MeshBasicMaterial({color: '#a0727a', fog: false, side: THREE.DoubleSide}))); }
 // ponton : du sable jusqu'au plateau
 const wood = new THREE.MeshStandardMaterial({color: '#8a6a4a', roughness: 0.85}), woodD = new THREE.MeshStandardMaterial({color: '#5e4630', roughness: 0.9});
 const dock = new THREE.Group(); scene.add(dock);
@@ -609,6 +663,39 @@ const deckL = 30;
   dock.add(posts, caps, bands);
   const cleatM = new THREE.MeshStandardMaterial({color: '#aab3c0', roughness: 0.35, metalness: 0.8}), cleatG = new THREE.CapsuleGeometry(0.022, 0.2, 3, 8).rotateX(Math.PI/2).translate(0, 0.06, 0);
   const cleats = new THREE.InstancedMesh(cleatG, cleatM, 4); [[-1.2, 0.2], [1.2, 0.2], [-1.2, 9.3], [1.2, 9.3]].forEach(([x, z], i) => cleats.setMatrixAt(i, M4.makeTranslation(x, 0.27, z))); dock.add(cleats); }
+// 🪜 échelle Piouz (demande Paul : à la place du long ponton) : planche de tôle perforée rouille, posée sur un cadre alu en échelle qui descend jusqu'au fond, deux roues à l'arrière et un flotteur blanc.
+// Même hauteur et même axe que l'élan de départ (DECK 0,27 m, x = −0,9, de z = −1,2 à +2,6) : la course et le saut ne changent pas. Le long ponton est caché.
+dock.visible = false;
+const piouz = new THREE.Group(); scene.add(piouz);
+{ const k = document.createElement('canvas'); k.width = 128; k.height = 512; const c = k.getContext('2d'); c.fillStyle = '#9c4f2f'; c.fillRect(0, 0, 128, 512);
+  let sd = 11; const rnd = () => (sd = (sd*16807) % 2147483647)/2147483647;
+  for(let i = 0; i < 160; i++){ c.fillStyle = 'rgba(' + (rnd() < 0.5 ? '120,55,30' : '185,110,70') + ',' + (0.15 + 0.3*rnd()).toFixed(2) + ')'; c.beginPath(); c.ellipse(128*rnd(), 512*rnd(), 4 + 10*rnd(), 3 + 8*rnd(), rnd()*3, 0, 7); c.fill(); }
+  c.fillStyle = '#2b1810'; for(let y = 0; y < 22; y++) for(let x = 0; x < 5; x++){ c.beginPath(); c.arc(14 + x*25 + (y % 2)*12, 12 + y*23, 4.5, 0, 7); c.fill(); }
+  const tex = new THREE.CanvasTexture(k); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
+  const L = 3.8, W = 0.55, X = -0.9, Z0 = -1.2, alu = new THREE.MeshStandardMaterial({color: '#c8ccd2', roughness: 0.35, metalness: 0.8});
+  // ✍️ « PIOUZ » sur les deux flancs de la poutre (demande Paul), lisible de loin : lettres bleues sur alu brossé
+  const logo = flip => { const k = document.createElement('canvas'); k.width = 1024; k.height = 64; const c = k.getContext('2d'); c.fillStyle = '#c8ccd2'; c.fillRect(0, 0, 1024, 64);
+    c.fillStyle = '#1f5fbf'; c.font = '900 50px system-ui, sans-serif'; c.textBaseline = 'middle'; c.textAlign = 'center';
+    if(flip){ c.translate(1024, 0); c.scale(-1, 1); } c.font = '900 56px system-ui, sans-serif'; c.fillText('piouz.org', 650, 34); c.font = 'italic 700 28px system-ui, sans-serif'; c.fillText('pump your limit', 895, 36);   // côté avant, loin des échelles : plus rien ne masque le « p »
+    const t = new THREE.CanvasTexture(k); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return new THREE.MeshStandardMaterial({map: t, roughness: 0.4, metalness: 0.5}); };
+  const deck = new THREE.Mesh(new THREE.BoxGeometry(W, 0.13, L), [logo(false), logo(false), new THREE.MeshStandardMaterial({map: tex, roughness: 0.85, metalness: 0.2}), new THREE.MeshStandardMaterial({color: '#5a2c18', roughness: 0.9}), new THREE.MeshStandardMaterial({color: '#7a3c22', roughness: 0.9}), new THREE.MeshStandardMaterial({color: '#7a3c22', roughness: 0.9})]);
+  deck.position.set(X, 0.205, Z0 + L/2); deck.castShadow = deck.receiveShadow = true; piouz.add(deck);
+  const tube = (x0, y0, z0, x1, y1, z1, r) => { const a = new THREE.Vector3(x0, y0, z0), b = new THREE.Vector3(x1, y1, z1), m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, a.distanceTo(b), 8), alu);
+    m.position.copy(a).add(b).multiplyScalar(0.5); m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize()); m.castShadow = true; piouz.add(m); };
+  // vraie Piouz (photos de Paul, Mondial du Vent) : DEUX échelles alu croisées en A forment le pied ; la poutre alu + la planche perforée reposent sur la tête du A et partent en porte-à-faux vers l'avant (on saute du bout).
+  // Les montants des échelles dépassent un peu au-dessus de la planche, chaque échelle a une barre d'appui au pied, et l'échelle arrière porte les deux roues (pneus noirs).
+  const bar = (x0, y0, z0, x1, y1, z1, w, h) => { const a = new THREE.Vector3(x0, y0, z0), b = new THREE.Vector3(x1, y1, z1), m = new THREE.Mesh(new THREE.BoxGeometry(w, a.distanceTo(b), h), alu);
+    m.position.copy(a).add(b).multiplyScalar(0.5); m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize()); m.castShadow = true; piouz.add(m); };
+  // (plus de poutre séparée : elle dépassait sous la tôle et scintillait au bout, retour Paul ; la tôle épaisse à flancs « piouz.org » fait poutre)
+  const zA = Z0 + L - 0.55, yT = 0.5, yB = -1.35, sp = 1.05, hw = 0.3;
+  for(const dir of [-1, 1]){ const zb = zA + dir*sp, top = new THREE.Vector3(0, yT, zA + dir*0.12), bot = new THREE.Vector3(0, yB, zb);
+    for(const sx of [-1, 1]) bar(X + sx*hw, top.y, top.z, X + sx*hw, bot.y, bot.z, 0.035, 0.07);
+    for(let i = 1; i < 7; i++){ const f = i/7; tube(X - hw, top.y + (bot.y - top.y)*f, top.z + (bot.z - top.z)*f, X + hw, top.y + (bot.y - top.y)*f, top.z + (bot.z - top.z)*f, 0.016); }
+    bar(X - hw - 0.25, yB, zb, X + hw + 0.25, yB, zb, 0.07, 0.05);
+    if(dir > 0){ const f = 0.62, wy = top.y + (bot.y - top.y)*f, wz = top.z + (bot.z - top.z)*f;
+      const wheelG = new THREE.CylinderGeometry(0.14, 0.14, 0.08, 18).rotateZ(Math.PI/2), tyre = new THREE.MeshStandardMaterial({color: '#151515', roughness: 0.85}), hub = new THREE.MeshStandardMaterial({color: '#2a2a2a', roughness: 0.5, metalness: 0.4});
+      for(const sx of [-1, 1]){ const w = new THREE.Mesh(wheelG, tyre); w.position.set(X + sx*(hw + 0.09), wy, wz + 0.1); const hb = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.09, 12).rotateZ(Math.PI/2), hub); hb.position.copy(w.position); piouz.add(w, hb); } } }
+  tube(X - hw, 0.2, zA - 0.25, X - hw, 0.2, zA + 0.25, 0.02); tube(X + hw, 0.2, zA - 0.25, X + hw, 0.2, zA + 0.25, 0.02); }
 // plateau tournant (le « garage ») + anneau lumineux
 const turn = new THREE.Group(); scene.add(turn);
 const plate = new THREE.Mesh(new THREE.CylinderGeometry(1.25, 1.3, 0.12, 64), new THREE.MeshStandardMaterial({color: '#1c2232', roughness: 0.35, metalness: 0.6})); plate.position.y = 0.33; plate.receiveShadow = true; scene.add(plate);
@@ -644,7 +731,10 @@ function setWing(b_cm, S_cm2){
   if(stabMesh){ foil.remove(stabMesh); stabMesh.geometry.dispose(); }
   const sa = ST.stab/1e4, ss = Math.sqrt(sa*5.6); stabMesh = new THREE.Mesh(planform(ss, sa, 0.007), carbon); stabMesh.position.set(0, -0.78, 0.42); foil.add(stabMesh);
 }
-foil.position.y = 1.86;   // posé en l'air au-dessus du plateau, comme une voiture au salon
+// 🪜 cohérence avec la Piouz (retour Paul) : plus de plateau tournant noir ; au menu le foil flotte au-dessus de l'eau à côté de l'échelle, vu d'en bas
+const SHOW_Y = 2.0;   // retour Paul : foil entier en plein milieu, planche qui se découpe dans le ciel orange (caméra basse, au ras de l'eau)
+plate.visible = ring.visible = pole.visible = false;
+foil.position.y = SHOW_Y;
 foil.rotation.z = 0;
 
 /* ---------- 🧍 personnages (demande Paul : « plus de détail », fini le bonhomme tout noir en bâtons) ----------
@@ -702,14 +792,15 @@ const lerp = (a, b, k) => a + (b - a)*k, sstep = k => { k = Math.max(0, Math.min
 const rider = new THREE.Group(); rider.visible = false; const RID = makeHuman(); rider.add(RID.g);
 // sq : flexion (−0,6 délesté … 1 écrasé) · pb : rebond du pump (0…1) · bk : gîte (−1 virage à droite/pointes de pieds … +1 à gauche/talons) · press : pied avant chargé · t : temps
 function riderPose(sq, pb, bk, press, t){ const p = RID.p, c = Math.max(-0.6, Math.min(1, sq || 0)), toe = Math.max(0, -bk), heel = Math.max(0, bk);
-  const fl = 0.09 + 0.17*Math.max(0, c) - 0.08*Math.max(0, -c) + 0.05*pb + 0.02*toe + 0.03*press, sw = 0.012*Math.sin(t*2.1);
+  const fl = 0.09 + 0.17*Math.max(0, c) - 0.08*Math.max(0, -c) + 0.05*pb + 0.02*toe + 0.03*press + 0.09*(toe + heel), sw = 0.012*Math.sin(t*2.1);
   p.fL.set(0, 0.075, -0.33); p.fR.set(0, 0.075, 0.33); p.toeL.set(1, 0, -0.3); p.toeR.set(1, 0, 0.08); p.kL.set(1, 0, -0.45); p.kR.set(1, 0, 0.5);
   // en virage la planche (et donc tout ce repère) est déjà inclinée : le bassin reste au-dessus des pieds, les épaules se redressent un peu vers l'extérieur
   p.pel.set(0.04 - 0.03*heel + 0.03*toe, 0.9 - fl, 0.02 - 0.09*press + sw);
   p.neck.set(p.pel.x + 0.09 + 0.16*fl + 0.12*heel - 0.27*toe, p.pel.y + 0.5, p.pel.z - 0.07 - 0.05*press);
   p.face.set(1, 0, -0.75 - 0.25*heel + 0.2*toe); p.look.set(0.25 - 0.3*heel + 0.2*toe, -0.05, -1);
-  p.hL.set(0.26 - 0.12*heel + 0.05*toe, p.pel.y + 0.3 + 0.14*pb + 0.14*heel + 0.04*toe, -0.5 + 0.06*heel);
-  p.hR.set(0.2 + 0.1*heel + 0.14*toe, p.pel.y + 0.24 + 0.12*pb + 0.08*heel - 0.16*toe, 0.5 + 0.02*Math.sin(t*1.7));
+  // 🏄 virage (retour Paul : bonhomme plus vivant dans les tournants) : genoux plus fléchis, bras avant qui montre la sortie du virage, bras arrière bas derrière
+  p.hL.set(0.26 - 0.2*heel + 0.22*toe, p.pel.y + 0.3 + 0.14*pb + 0.06*heel + 0.04*toe, -0.5 - 0.16*(toe + heel));
+  p.hR.set(0.2 + 0.1*heel + 0.14*toe, p.pel.y + 0.24 + 0.12*pb - 0.08*(toe + heel), 0.5 + 0.12*(toe + heel) + 0.02*Math.sin(t*1.7));
   p.eL.set(0.2, -1, 0.3); p.eR.set(0.2, -1, -0.3); RID.apply(); }
 riderPose(0, 0, 0, 0, 0); rider.position.y = 0.036; foil.add(rider);
 
@@ -768,17 +859,18 @@ function fxStep(dt, t){ for(let k = 0; k < FX_N; k++){ if(fxL[k] <= 0) continue;
   fxRings.forEach(m => { if(!m.visible) return; const u = m.userData; u.t += dt; const k = u.t/1.1; if(k >= 1){ m.visible = false; return; } const s = u.s*(0.25 + 1.6*k); m.scale.set(s, 1, s); m.position.y = seaVis(m.position.x, m.position.z, t) + 0.03; m.material.opacity = 0.5*(1 - k)*(1 - k); }); }
 // 💥 chute réaliste sur le ponton : vol plané du rider (culbute), réception sur le bois (glisse, reste allongé) ou dans l'eau ;
 // la planche rebondit en arrière nez en l'air puis retombe sur le côté ; la caméra tremble au choc
-const onDeckXZ = (x, z) => Math.abs(x) < 1.6 && z > -1.2 && z < 28.8;
+const onDeckXZ = (x, z) => Math.abs(x + 0.9) < 0.3 && z > -1.2 && z < 2.6;   // 🪜 la tôle de la Piouz (0,55 m de large, de z = −1,2 à 2,6)
 function crashFrame(now){ const c = test.crashA, dt = Math.max(0, Math.min(VID ? 0.2 : 0.05, (now - test.last)/1000)), t = clock.elapsedTime, el = (now - c.t0)/1000; test.last = Math.max(test.last, now);
   // planche : recul + cabré puis à plat sur le côté
-  const kb = Math.min(1, el/0.45), bx = c.x + (c.bx - c.x)*kb, bz = c.z + (c.bz - c.z)*kb;
-  foil.position.set(bx, seaH(bx, bz, t) + 0.06 + 0.35*Math.sin(Math.PI*kb), bz); foil.rotation.set(0.7*Math.sin(Math.PI*Math.min(1, el/0.6)), c.h, Math.min(1.25, el*2.2));
+  const kb = Math.min(1, el/(c.toon ? 1.2 : 0.45)), bx = c.x + (c.bx - c.x)*kb, bz = c.z + (c.bz - c.z)*kb;
+  if(c.toon){ foil.position.set(bx, seaH(bx, bz, t) + 0.06 + 2.6*Math.sin(Math.PI*kb), bz); foil.rotation.set(kb < 1 ? el*7 : 0, c.h + (kb < 1 ? el*5 : 0), kb < 1 ? el*3 : 1.25); }   // la planche tourbillonne en l'air puis retombe sur le flanc
+  else { foil.position.set(bx, seaH(bx, bz, t) + 0.06 + 0.35*Math.sin(Math.PI*kb), bz); foil.rotation.set(0.7*Math.sin(Math.PI*Math.min(1, el/0.6)), c.h, Math.min(1.25, el*2.2)); }
   // rider : balistique + culbute jusqu'à la réception
-  if(!c.land){ c.vy -= 9.81*dt; c.x += c.vx*dt; c.z += c.vz*dt; c.y += c.vy*dt; c.rot = Math.min(Math.PI/2, c.rot + 3.2*dt);   // plongeon vers l'avant, à plat ventre à la réception
+  if(!c.land){ c.vy -= 9.81*dt; c.x += c.vx*dt; c.z += c.vz*dt; c.y += c.vy*dt; c.rot = c.toon ? c.rot + 11*dt : Math.min(Math.PI/2, c.rot + 3.2*dt);   // plongeon vers l'avant, à plat ventre à la réception (cartoon : l'hélice)
     const deck = onDeckXZ(c.x, c.z), floor = deck ? DECK : seaH(c.x, c.z, t) - 0.25;
-    if(c.y <= floor && c.vy < 0){ c.y = floor; c.land = deck ? 'deck' : 'water'; c.lt = el; if(!deck){ splash(c.x, floor + 0.25, c.z, 28, 3.2, c.vx*0.2, c.vz*0.2); ripple(c.x, c.z, 1.7); } popUp(deck ? (T.pDeckHit || 'OUCH') : (T.pFall || '💦'), 0, true); beep(90, 0.25, 'sawtooth', 0.15); } }
+    if(c.y <= floor && c.vy < 0){ c.y = floor; c.land = deck ? 'deck' : 'water'; c.lt = el; if(!deck){ splash(c.x, floor + 0.25, c.z, c.toon ? 90 : 28, c.toon ? 5.5 : 3.2, c.vx*0.2, c.vz*0.2); ripple(c.x, c.z, c.toon ? 3.2 : 1.7); } if(c.toon){ c.rot = Math.PI/2; c.shake = 1.4; } popUp(deck ? (T.pDeckHit || 'OUCH') : c.toon ? (T.pPlouf || '💦 PLOUF !') : (T.pFall || '💦'), 0, true); beep(c.toon ? 70 : 90, c.toon ? 0.5 : 0.25, 'sawtooth', 0.15); } }
   else if(c.land === 'deck'){ const sp = Math.max(0, 1 - (el - c.lt)/0.6); c.x += c.vx*dt*sp; c.z += c.vz*dt*sp; if(!onDeckXZ(c.x, c.z)){ c.land = null; } c.rot = Math.PI/2; }   // glisse sur le bois, finit à plat
-  runner.position.set(c.x, c.y + 0.13*Math.sin(c.rot), c.z); runner.rotation.set(-c.rot, c.h, 0); runnerPose('dive', 0, c.land ? 0 : el*9);
+  runner.position.set(c.x, c.y + 0.13*Math.sin(c.rot), c.z); runner.rotation.set(-c.rot, c.h + (c.toon && !c.land ? el*4 : 0), c.toon && !c.land ? Math.sin(el*9)*0.8 : 0); runnerPose('dive', 0, c.land ? 0 : el*(c.toon ? 16 : 9));   // cartoon : bras et jambes qui moulinent
   // caméra : recul + tremblement au choc
   c.shake *= Math.exp(-dt*5); const fx0 = -Math.sin(c.h), fz0 = -Math.cos(c.h), want = new THREE.Vector3(c.x + fz0*5.5 - fx0*2.5, 2.4, c.z - fx0*5.5 - fz0*2.5);   // caméra de côté, un peu en arrière
   cam.position.lerp(want, 1 - Math.exp(-dt*2.5)); cam.position.x += (Math.random() - 0.5)*0.25*c.shake; cam.position.y += (Math.random() - 0.5)*0.25*c.shake; cam.lookAt(c.x + fx0*0.8, 0.5, c.z + fz0*0.8);
@@ -943,9 +1035,9 @@ const toast = txt => { $('toast').textContent = txt; $('toast').classList.add('o
 // réécrit (retour Paul : « buggy ») : trajet loin du ponton (plus de traversée), cap = sens de la marche (nez de la planche vers −z local),
 // gîte physique (tan φ = ω·v/g), hauteur = surface de la mer (même formule que le shader), caméra de côté lissée, interface masquée, sortie possible.
 let test = null, pop = 0, foilLift = 0.9, camBack = 0, foilBig = 2.1;
-const CAM_VID = new THREE.Vector3(5.6, 3.0, 7.6), CAM_HOME = new THREE.Vector3(2.6, 2.3, 3.4), CAM_INTRO = new THREE.Vector3(3.9, 2.6, 5.3);
+const CAM_VID = new THREE.Vector3(5.6, 3.0, 7.6), CAM_HOME = new THREE.Vector3(2.4, 1.45, 5.3), CAM_INTRO = new THREE.Vector3(3.1, 1.6, 6.9);
 const seaEdge = (x, z) => { const k = Math.max(0, Math.min(1, (z - shoreZ(x) + 6)/9)); return 1 - k*k*(3 - 2*k); };   // même amortissement au bord que dans les shaders
-const seaH = (x, z, t) => sea.position.y + seaEdge(x, z)*(seaU.H.value*WAVE.amp*(1 + SET.on*setEnv(x, z, t))*Math.sin(wavePh(x, z, t)) + 0.05*Math.sin(1.3*z - 1.6*t + 0.4*x) + 0.03*Math.sin(2.4*x + 2.0*z + 2.6*t));
+const seaH = (x, z, t) => sea.position.y + seaEdge(x, z)*(seaU.H.value*WAVE.amp*gEnv(x, z, t)*Math.sin(wavePh(x, z, t)) + 0.05*Math.sin(1.3*z - 1.6*t + 0.4*x) + 0.03*Math.sin(2.4*x + 2.0*z + 2.6*t));
 // hauteur de la mer TELLE QU'ELLE EST DESSINÉE : le maillage a des mailles de 2 m (3 m sur mobile), il lisse les petites rides ; un objet qui flotte posé sur seaH
 // se retrouvait jusqu'à ~10 cm au-dessus ou en dessous de l'eau visible (planche invisible, mât qui dépasse). Même découpage en deux triangles que PlaneGeometry.
 const SEA_CELL = 600/(MOB ? 200 : 300);   // le maillage est recalé sur des multiples de SEA_CELL (boucle d'affichage) : ses sommets restent sur cette grille monde
@@ -963,7 +1055,7 @@ let DBG_HOLD = false; const TEST = {dur: 120, z0: -15}, ZONE = {warn: 190, max: 
 // trough : frein du creux · cap : au-delà, l'accélération due à la vague est écrasée (pas de coup de pied) · vRef : la poussée orbitale ne croît plus sous vRef × décollage
 const TURN = {k: 0.35, bank0: 45*Math.PI/180, bank1: 58*Math.PI/180, bankFlat: 0.7, fade0: 1.05, fadeW: 0.25};   // virage en Carve : k = coût de la gîte (m/s² à tan² = 1, à 1,15 × décollage) · bank0 → bank1 = gîte maxi tenable, d'une aile pas maniable (0/100) à très maniable (100/100) : à vitesse égale une aile notée « Tourner » haut vire vraiment plus serré · bankFlat = gîte maxi affichée hors Carve · fade0, fadeW : sous fade0 × décollage le surcoût s'efface (il ralentit, il ne fait pas tomber)
 const FOOT_S = 1300;   // cm² : à partir de cette surface le foil veut sortir de l'eau (pied avant)
-const SW = {K: 0.46, back: 0.8, cruise: 0.6, cruiseMax: 0.4, trough: 0.7, cap: 1.5, vRef: 1.2, safe0: 0.95, safeW: 0.25};   // safe0, safeW : sous safe0 × décollage les freins de houle ajoutés s'effacent
+const SW = {K: 0.46, back: 0.8, cruise: 0.6, cruiseMax: 0.75, trough: 0.7, cap: 1.5, vRef: 1.2, safe0: 0.95, safeW: 0.25};   // safe0, safeW : sous safe0 × décollage les freins de houle ajoutés s'effacent
 // gain selon la hauteur de houle choisie : multiplie des termes déjà proportionnels à la hauteur (maintenant crête à creux = l'étiquette : 0,5 / 1 / 1,75 m)
 // pour garder l'effet total calibré, ×0,3 / ×1 / ×1,3. SWG.lo = gain à 0,5 m, SWG.hi = gain à 1,75 m, 1 à 1 m, linéaire entre les trois.
 const SWG = {lo: 0.66, hi: 0.64};
@@ -989,6 +1081,8 @@ const heartK = () => !test || !test.hr ? 1 : test.hr >= 195 ? 0.35 : test.hr >= 
 const laneOn = () => test && test.flat && test.beat0 && !test.pumpUp && !test.swim && !test.done;
 const LKEYS = {' ': '␣', arrowup: '↑', arrowdown: '↓', arrowleft: '←', arrowright: '→'}, LK = Object.keys(LKEYS);
 const slotDt = () => test.I/2*(test.tempoK || 1);
+// ⏳ élan avant la 1re note (retour Paul : « on n'a pas le temps de voir venir ») : le curseur part du bord gauche et traverse la marge (24 %) au tempo, ~3 temps pour se préparer
+const LANE_PAD = 24, laneLead = () => { const sd = slotDt(); return 8*sd*LANE_PAD/(100 - LANE_PAD) + sd/2; };
 // 🦵 le vrai geste : ↓ APPUIE (fléchis, écrase la planche = propulsion) puis ↑ DÉLESTE (relève-toi, la planche remonte) ;
 // ← → = pump en virage ; ␣ = gros pump avec les bras. Slots pairs = appuis, impairs = délestages.
 function lanePat(pg){ test.pat = test.pat || {}; if(test.pat[pg]) return test.pat[pg];
@@ -997,12 +1091,19 @@ function lanePat(pg){ test.pat = test.pat || {}; if(test.pat[pg]) return test.pa
     const x = Math.random(), pr = Math.min(0.75, 0.15 + 0.06*lv);   // de plus en plus de virages et de gros pumps
     r.push({k: x < pr*0.4 ? ' ' : x < pr*0.7 ? 'arrowleft' : x < pr ? 'arrowright' : 'arrowdown'}); }
   return test.pat[pg] = r; }
-function laneEls(pg){ const tr = $('ptrack'); tr.innerHTML = lanePat(pg).map((n, i) => n ? '<i class="pk" data-i="' + i + '">' + LKEYS[n.k] + '</i>' : '<i class="pd"></i>').join('') + '<b class="pcur" id="pcur">🏄</b>'; }
+function laneEls(){ $('ptrack').innerHTML = '<b class="pcur" id="pcur">🏄</b>'; test.lanePool = {}; $('pcur').style.left = LANE_PAD + '%'; }
+// chaque note se place selon son temps : x = 24 % + (temps de la note − maintenant)/(une mesure) × 76 % ; on voit toujours une mesure d'avance, y compris par-dessus la barre de mesure
+function laneScroll(tt, sd){ const tr = $('ptrack'), P = 8*sd, pool = test.lanePool, i0 = Math.max(0, Math.floor(tt/sd) - 3), i1 = Math.ceil((tt + P)/sd) + 1;
+  for(const k in pool) if(+k < i0){ pool[k].remove(); delete pool[k]; }
+  for(let idx = i0; idx <= i1; idx++){ let el = pool[idx]; const n = lanePat(Math.floor(idx/8))[idx % 8]; if(!n) continue;
+    if(!el){ el = document.createElement('i'); el.className = 'pk' + (n.res === undefined ? '' : n.res === 1 ? ' p' : n.res ? ' g' : ' m'); el.dataset.x = idx; el.textContent = LKEYS[n.k]; tr.appendChild(el); pool[idx] = el; }
+    el.style.left = (LANE_PAD + (idx*sd - tt)/P*(100 - LANE_PAD)) + '%'; } }
 // 📱 P2 : calibrage automatique de la latence tactile (l'écran tactile + l'affichage ajoutent ~40-80 ms) : on décale la fenêtre de jugement
 // vers ton retard moyen, borné à [−20, +110] ms, mémorisé. Seulement au doigt : au clavier, rien ne change.
 let LAT = 0; if(TOUCH) try{ LAT = Math.max(-0.02, Math.min(0.11, +localStorage.getItem('dock-lat') || 0.04)); }catch(e){ LAT = 0.04; }
 const learnLat = d => { if(!TOUCH || VID) return; LAT = Math.max(-0.02, Math.min(0.11, LAT + 0.15*d)); try{ localStorage.setItem('dock-lat', LAT.toFixed(3)); }catch(e){} };
 function laneHit(key, dFix, iFix){ const now = performance.now(), sd = slotDt(), tt = (now - test.beat0)/1000 - (dFix === undefined ? LAT : 0), idx = iFix ?? Math.round(tt/sd), d = dFix ?? tt - idx*sd;   // dFix : vidéo, note jouée pile
+  if(tt < -0.16 && dFix === undefined) return;
   const pg = Math.floor(idx/8), slot = ((idx % 8) + 8) % 8, n = lanePat(pg)[slot];
   const objQ = () => { test.perfRow = q === 1 ? (test.perfRow || 0) + 1 : 0; if(test.perfRow >= 8) objDone('perf8'); };
   let q = 0, msg; if(n && !n.done && Math.abs(d) < 0.16){ n.done = true; if(dFix === undefined) learnLat(d); if(n.k === key){ q = Math.abs(d) < 0.07 ? 1 : 0.6; } else msg = T.pWrong || 'WRONG'; n.res = q; }
@@ -1014,7 +1115,7 @@ function laneHit(key, dFix, iFix){ const now = performance.now(), sd = slotDt(),
       if(!test.unweighted){ popUp(T.pCrush || 'CRUSH', 0, true); rFace('ouch', 800); } test.unweighted = false; test.squatT = 1; test.pushGain = g; test.pushT = .25; test.pumps++;
       test.sta = Math.max(0, test.sta - test.pumpCost*(big ? 1 : 0.5)); } }
   else { popUp(msg, 0, true); beep(150, 0.15, 'sawtooth'); rFace('ouch', 800); }
-  if(n && pg === test.page){ const el = document.querySelector('#ptrack .pk[data-i="' + slot + '"]'); if(el) el.className = 'pk ' + (q === 1 ? 'p' : q ? 'g' : 'm'); } }
+  if(n){ const el = document.querySelector('#ptrack .pk[data-x="' + idx + '"]'); if(el) el.className = 'pk ' + (q === 1 ? 'p' : q ? 'g' : 'm'); } }
 const pump = () => { if(!test || test.done || test.swim || test.crashA) return; test.manual = true; const now = performance.now();
   if(now - (test.lastPump || 0) < 350 || (test.sta < test.pumpCost && !test.speedUp)) return;
   // 🫀 eau plate (Apprendre, Longue distance) : tout est dans le rythme ; trop tôt ou trop tard, le pump pousse moins
@@ -1160,7 +1261,7 @@ function objTick(dt, v, ride, fx, fz){ if(!test.objList || test.pumpUp) return;
   if(test.surf){ OBJ.score.forEach((s, i) => { if(test.score >= s) objDone('s' + (i + 1)); }); if(mult() >= 2.95) objDone('x3');
     if(test.onFace && fx*WAVE.dx + fz*WAVE.dz > 0.3 && v >= (ST.H < 1 ? 1.3 : 1.5)*test.vl) objDone('face');
     const sd = shoreZ(test.x) - test.z; if(sd < OBJ.shoreIn) test.objShore = 1; else if(test.objShore && sd > OBJ.shoreOut){ test.objShore = 0; objDone('shore'); }
-    // le tour du propriétaire : longer un côté du ponton, passer devant sa tête, longer l'autre côté (on ne peut pas passer côté plage : c'est le shore break)
+    // le tour du propriétaire : longer un côté (derrière la Piouz, côté plage), passer devant le bout de la Piouz, revenir par l'autre côté (on ne peut pas passer côté plage : c'est le shore break)
     { const side = test.z > 4 && Math.abs(test.x) > 2.1 && Math.abs(test.x) < 14 ? Math.sign(test.x) : 0; if(side){ if(test.tourS && side === -test.tourS && test.tourF) objDone('tour'); if(side !== test.tourS){ test.tourS = side; test.tourF = 0; } }
       else if(test.tourS && test.z < DOCK_END - 0.8 && Math.abs(test.x) < 2.1) test.tourF = 1; }
     OBJ_POS.forEach(([x, z], i) => { if(!test.letters[i] && Math.hypot(test.x - x, test.z - z) < OBJ.catchR){ test.letters[i] = 1; const w = Math.floor(i/4); popUp(OBJ_WORDS[w].split('').map((c, j) => test.letters[4*w + j] ? c : '·').join(' ')); beep(660 + 110*i, 0.1, 'triangle', 0.13); splash(x, seaH(x, z, clock.elapsedTime) + 1, z, 8, 1.6); if(test.letters.slice(0, 4).every(Boolean)) objDone('foil'); if(test.letters.slice(4, 8).every(Boolean)) objDone('pump'); } });
@@ -1178,7 +1279,9 @@ let BEST = {}; try{ BEST = JSON.parse(localStorage.getItem('dock-best') || '{}')
 const B_LEAD = 1.2, B_SPAN = B_LEAD + 1.02 + 0.35, bX = v => Math.max(0, Math.min(100, 100*(v + B_LEAD)/B_SPAN));
 const STEPS = [0, 0.42, 0.76, 1.02], STEP_D = [0.9, 1.9, 3.0, 3.4], DOCK_END = -1.2, RUN_Z0 = DOCK_END + 3.4, RUN_X = -0.9, DECK = 0.27, BEAT = 0.45;
 // 🔊 petit synthé WebAudio (coupé par défaut, bouton 🔊 dans la barre)
-let SND = false; try{ SND = localStorage.getItem('dock-snd') === '1'; }catch(e){}
+// 🔇 ?mute=1 : aucun son (tests automatiques), même en mode vidéo
+const MUTE = /[?&]mute=1\b/.test(location.search);
+let SND = false; try{ SND = !MUTE && localStorage.getItem('dock-snd') === '1'; }catch(e){}
 let AC = null, BUS = null; const beep = (f, d = 0.09, type = 'square', vol = 0.12) => { if(!SND) return; try{ AC = AC || new (window.AudioContext || window.webkitAudioContext)(); const o = AC.createOscillator(), g = AC.createGain();
   o.type = type; o.frequency.value = f; g.gain.setValueAtTime(vol, AC.currentTime); g.gain.exponentialRampToValueAtTime(0.0001, AC.currentTime + d); o.connect(g).connect(BUS || AC.destination); o.start(); o.stop(AC.currentTime + d + 0.02); }catch(e){} };
 const NOTE_F = [523, 659, 784, 1047];
@@ -1306,9 +1409,9 @@ function startTest(){ $('ntime').classList.remove('hide'); gc('test/' + MODE);
   $('mboard').parentNode.classList.toggle('ff', test.ff); $('mboard').classList.remove('hot'); $('foot').classList.remove('on');
   $('gstall').setAttribute('d', arcPath(0, Math.min(1, vs*3.6/GMAX))); $('nfs').classList.remove('hide'); $('nfs').classList.toggle('slalom', MODE === 'vite'); $('nsl').textContent = T.pScore || 'SCORE'; $('endc').classList.add('hide'); $('pops').innerHTML = ''; swimmer.visible = false;
   keys.l = keys.r = keys.f = false; ['tl', 'tr', 'tp', 'td', 'tu'].forEach(id => $(id).classList.remove('on', 'hide2')); $('thud').classList.remove('hide2');
-  turn.rotation.y = 0; foil.scale.setScalar(1); foil.rotation.order = 'YXZ'; rider.visible = true; ctl.enabled = false; test.surf = !test.flat && !test.slalom; test.bankMax = TURN.bank0 + (TURN.bank1 - TURN.bank0)*m/100;   // Carve : houle calibrée, virage réaliste, pied avant, shore break
+  turn.rotation.y = 0; turn.rotation.x = 0; foil.scale.setScalar(1); foil.rotation.order = 'YXZ'; rider.visible = true; ctl.enabled = false; test.surf = !test.flat && !test.slalom; test.bankMax = TURN.bank0 + (TURN.bank1 - TURN.bank0)*m/100;   // Carve : houle calibrée, virage réaliste, pied avant, shore break
   seaU.H.value = test.flat ? 0.12 : test.slalom ? 0.3 : 2*ST.H; shoreMesh.visible = test.surf;   // Carve : hauteur crête à creux = 2 × amp × H = l'étiquette choisie
-  WAVE.w = test.surf ? WAVE.k*waveSpeed(ST.H) : WAVE_W0; SET.on = test.surf && !VID ? SET.gain : 0; waveSync(); test.read = {g: 0, b: 0, n: 0, a: 0}; trail.visible = true; trailGeo.setDrawRange(0, 0); $('treplay').classList.add('hide2');
+  WAVE.w = test.surf ? WAVE.k*waveSpeed(ST.H) : WAVE_W0; SET.on = test.surf && !VID ? SET.gain : 0; { const wi = WAVES.findIndex(w => Math.abs(w.h - ST.H) < 0.01); IRR.on = test.surf && wi > 0 ? wi/(WAVES.length - 1) : 0; } waveSync(); test.read = {g: 0, b: 0, n: 0, a: 0}; trail.visible = true; trailGeo.setDrawRange(0, 0); $('treplay').classList.add('hide2');
   plate.visible = ring.visible = pole.visible = false;
   $('nfswave').style.display = test.flat ? 'none' : ''; $('prhy').style.display = 'none'; $('plane').classList.add('hide'); test.beat0 = 0; $('prz').style.left = (100*(test.I - 0.14)/2.5) + '%'; $('prz').style.width = (100*0.28/2.5) + '%';
   objStart(); if(!VID) beginTakeoff(); document.body.classList.add('playing');
@@ -1318,9 +1421,9 @@ function startTest(){ $('ntime').classList.remove('hide'); gc('test/' + MODE);
 function endTest(silent, keep){ ['good', 'shore', 'slow', 'foot'].forEach(id => $(id) && $(id).classList.remove('on')); $('ntime').classList.add('hide'); objPts.visible = objBuoys.visible = false; clearTimeout(objPanel.h); $('objp').classList.add('off'); $('objc').classList.add('off'); $('eobj').innerHTML = ''; $('eread').innerHTML = '';
   showRot(needRotate()); document.body.classList.remove('playing');   // on reste en paysage (plein écran gardé) : tout le Dock se joue à l'horizontale
   $('pad').classList.add('hide'); slalomG.visible = false;
-  test = null; keys.l = keys.r = keys.f = false; trail.visible = false; rider.visible = false; fxL.fill(0); fxP.fill(-99); fxGeo.attributes.position.needsUpdate = true; fxRings.forEach(m => m.visible = false); swimmer.visible = false; runner.visible = false; $('plane').classList.add('hide'); $('beat').classList.add('hide'); $('vig').style.opacity = 0; $('slow').classList.remove('on'); $('foot').classList.remove('on'); $('td').classList.remove('on'); cam.fov = FOV0; cam.updateProjectionMatrix(); windSnd(0); $('nfs').classList.add('hide'); $('endc').classList.add('hide'); $('pops').innerHTML = ''; plate.visible = ring.visible = pole.visible = true;
-  foil.position.set(0, 1.86, 0); foil.rotation.set(0, 0, 0); seaU.H.value = 0.4; WAVE.w = WAVE_W0; SET.on = 0; waveSync(); shoreMesh.visible = false; $('shore').classList.remove('on');
-  cam.position.set(2.6, 2.3, 3.4); ctl.target.set(0, 1.45, 0); ctl.enabled = true; ctl.update();
+  test = null; keys.l = keys.r = keys.f = false; trail.visible = false; rider.visible = false; fxL.fill(0); fxP.fill(-99); fxGeo.attributes.position.needsUpdate = true; fxRings.forEach(m => m.visible = false); swimmer.visible = false; runner.visible = false; $('plane').classList.add('hide'); $('beat').classList.add('hide'); $('vig').style.opacity = 0; $('slow').classList.remove('on'); $('foot').classList.remove('on'); $('td').classList.remove('on'); cam.fov = FOV0; cam.updateProjectionMatrix(); windSnd(0); $('nfs').classList.add('hide'); $('endc').classList.add('hide'); $('pops').innerHTML = ''; plate.visible = ring.visible = pole.visible = false;
+  foil.position.set(0, SHOW_Y, 0); foil.rotation.set(0, 0, 0); seaU.H.value = 0.4; WAVE.w = WAVE_W0; SET.on = 0; waveSync(); shoreMesh.visible = false; $('shore').classList.remove('on');
+  cam.position.set(2.4, 1.45, 5.3); ctl.target.set(0, 1.2, 0); ctl.enabled = true; ctl.update();
   $('pcue').classList.remove('on'); $('tbar').classList.add('hide'); document.querySelectorAll('.sel,.right,.statsbar,.tabs,.go').forEach(e => e.classList.remove('hide')); objGarage(); if(!silent) comment();
 }
 // 📱 P0 : sur l'eau on joue en paysage (deux pouces, on voit loin). Android : plein écran + verrouillage ; iPhone (Safari ne sait pas verrouiller) :
@@ -1408,13 +1511,15 @@ function testFrame(now){
     // et pas à contre-sens, la vague te tire vers ~1,45× ta vitesse de décollage ; elle avance à ~15 km/h, donc avec un bon angle tu restes dessus
     // (au-dessus de la croisière la vague ne retient presque plus : sur une belle face on peut vraiment prendre de la vitesse)
     // calibrage : en Carve le rappel est doux et plafonné (avant : 1,3 × l'écart, soit +2,3 m/s² au décollage, un coup de pied irréaliste)
-    if(!test.flat && !test.pumpUp && slope < -0.01 && along > -0.3){ const vc = test.vl*1.45, d = vc - test.v;
+    // ⚖️ retour Paul (2026-11-27) : « la vague me double alors que je suis bien placé ». Cause : la croisière visait 1,45 × décollage (~12 km/h) alors que la houle avance à √(22·H) m/s (17 à 27 km/h).
+    // Bien placé dans la pente, la vague te tire maintenant jusqu'à SA vitesse projetée sur ton cap (c / cos de l'angle à la houle), plafonné à 3 × décollage : tu restes dessus, sauf si tu coupes trop en travers.
+    if(!test.flat && !test.pumpUp && slope < -0.01 && along > -0.3){ const cw = WAVE.w/WAVE.k, vc = surf ? Math.max(test.vl*1.45, Math.min(cw/Math.max(along, 0.55), test.vl*3)) : test.vl*1.45, d = vc - test.v;
       a += Math.min(1, -slope/0.08)*(surf ? (d > 0 ? Math.min(SW.cruiseMax, SW.cruise*d) : 0.3*d)*Math.min(1, gH) : 1.3*d); }
     test.inTrough = !test.flat && hn < -0.2; test.against = !test.flat && along < -0.3 && !backDown;
     // 🌊 force de houle réaliste (demande Paul : « ça accélère, et ça ralentit ») : vitesse orbitale de la houle. Sur la face avant, devant la crête,
     // l'eau MONTE (w > 0) : le foil plane dans une ascendance et la vague pousse (≈ g·w/v, comme un planeur) ; sur le dos de la vague l'eau redescend
     // et ça freine d'autant. w = dη/dt = A·ω·cos(phase), même phase que seaH (0,35·x + 1,5·t), A = 0,25·Hs.
-    let aw = 0; if(surf && !test.pumpUp){ const w = Hs*WAVE.amp*(1 + SET.on*setEnv(test.x, test.z, t))*WAVE.w*Math.cos(wavePh(test.x, test.z, t)); aw = SW.K*gH*9.81*w/Math.max(test.v, test.vl*SW.vRef); if(aw < 0) aw *= along > 0 ? SW.back*safe : 0; a += aw; }   // le frein du dos ne vaut qu'en remontant le dos dans le sens de la houle   // le frein du dos de vague s'efface près du décrochage : il ralentit, il ne fait pas tomber
+    let aw = 0; if(surf && !test.pumpUp){ const w = Hs*WAVE.amp*gEnv(test.x, test.z, t)*WAVE.w*Math.cos(wavePh(test.x, test.z, t)); aw = SW.K*gH*9.81*w/Math.max(test.v, test.vl*SW.vRef); if(aw < 0) aw *= along > 0 ? SW.back*safe : 0; a += aw; }   // le frein du dos ne vaut qu'en remontant le dos dans le sens de la houle   // le frein du dos de vague s'efface près du décrochage : il ralentit, il ne fait pas tomber
     test.onBack = aw < -0.25 && !test.inTrough;   // dos de la vague : l'eau redescend
     if(surf && a > SW.cap) a = SW.cap + 0.1*(a - SW.cap);   // pointe écrasée : la vague pousse fort, elle ne catapulte pas
     const swA = a - a0; test.swA = swA; test.aNet = a; test.swS = (test.swS || 0) + (swA - (test.swS || 0))*(1 - Math.exp(-dt*5));   // force de houle lissée (m/s²) : > 0 pousse, < 0 freine
@@ -1448,7 +1553,7 @@ function testFrame(now){
   const bkMax = test.surf ? test.bankMax + 0.03 : TURN.bankFlat, bank = Math.max(-bkMax, Math.min(bkMax, Math.atan(test.om*v/9.81)));   // en Carve la gîte affichée = la gîte physique (plafond 50°)   // penché vers l'intérieur du virage
   // hauteur de vol : plus on ralentit, plus la planche descend vers l'eau ; le pump fait rebondir
   if(test.speedUp){ test.speedUp.el += dt; if(v >= test.speedUp.target){ test.speedUp = null; popUp(T.pGo || 'GO!'); bumpFlow(10); } else if(test.speedUp.el > 8) test.speedUp = null; }
-  if(test.pumpUp && v >= test.vl){ if((test.puPumps || 0) < 3) objDone('pumps'); test.pumpUp = null; if(test.surf && !VID && !test.readTip && T.readTip){ test.readTip = 1; toast(T.readTip); } setKeys(test.flat ? 'flat' : 'wave'); if(test.slalom && !test.slalom.t0){ test.slalom.t0 = performance.now(); placeGates(test.x, test.z); } if(!test.flat) test.speedUp = {target: test.vl*1.3, el: 0}; if(test.flat){ test.beat0 = performance.now(); test.page = -1; test.pat = {}; test.unweighted = true; test.hr = test.hr || 110; $('plane').classList.remove('hide'); } popUp(T.pAirborne || 'AIRBORNE!'); bumpFlow(15); }
+  if(test.pumpUp && v >= test.vl){ if((test.puPumps || 0) < 3) objDone('pumps'); test.pumpUp = null; if(test.surf && !VID && !test.readTip && T.readTip){ test.readTip = 1; toast(T.readTip); } setKeys(test.flat ? 'flat' : 'wave'); if(test.slalom && !test.slalom.t0){ test.slalom.t0 = performance.now(); placeGates(test.x, test.z); } if(!test.flat) test.speedUp = {target: test.vl*1.3, el: 0}; if(test.flat){ test.beat0 = performance.now() + (VID ? 0 : laneLead()*1000); test.page = -1; test.pat = {}; test.unweighted = true; test.hr = test.hr || 110; $('plane').classList.remove('hide'); } popUp(T.pAirborne || 'AIRBORNE!'); bumpFlow(15); }
   const ride = test.pumpUp ? 0 : Math.max(0, Math.min(1, (v - test.vs)/(test.vl*0.35))), pb = test.pushT > 0 ? Math.sin((0.3 - test.pushT)/0.3*Math.PI) : 0;
   const up = test.ff ? test.up : 0, upP = Math.max(0, up), dive = Math.max(0, -up)*2;   // 🦶 gros foil : upP = la planche grimpe vers la sortie d'eau, dive = on pique (0 à 1)
   foil.position.set(test.x, seaVis(test.x, test.z, t) + 0.06 + 0.5*ride*(1 - 0.6*dive) + 0.24*upP - 0.07*pb + 0.02*Math.sin(t*5) + (upP > 0.6 ? 0.025*Math.sin(t*31)*(upP - 0.6)/0.4 : 0), test.z);   // hauteur sur le mât bien visible : haut = vite, ras de l'eau = décrochage ; tout en haut ça tremble (le foil ventile)
@@ -1499,8 +1604,14 @@ function testFrame(now){
   if(test.manual) objTick(dt, v, ride, fx, fz);
   $('nscore').textContent = Math.round(test.score).toLocaleString(LANG); $('nmult').textContent = '×' + mult().toFixed(1).replace('.', LANG === 'en' ? '.' : ',');
   // 🌊 mini profil de la houle (dans le sens de la houle, qui avance vers la gauche) : où tu es = pente (tu accélères), crête, creux (tu ralentis)
-  { const ph = wavePh(test.x, test.z, t), pts = []; for(let i = 0; i <= 40; i++){ const dx = (i - 20)*0.5, y = 35 - Math.min(31, 22*(1 + SET.on*setEnv(test.x - WAVE.dx*dx, test.z - WAVE.dz*dx, t)))*Math.sin(ph + WAVE.k*dx); pts.push((i*5) + ' ' + y.toFixed(1)); }
-    $('wprof').setAttribute('d', 'M' + pts.join(' L')); const hy = 35 - 22*Math.sin(ph); $('wdot').setAttribute('cy', hy.toFixed(1));
+  { const ph = wavePh(test.x, test.z, t), pts = []; for(let i = 0; i <= 40; i++){ const dx = (i - 20)*0.5, y = 35 - Math.min(31, 22*gEnv(test.x - WAVE.dx*dx, test.z - WAVE.dz*dx, t))*Math.sin(ph + WAVE.k*dx); pts.push((i*5) + ' ' + y.toFixed(1)); }
+    $('wprof').setAttribute('d', 'M' + pts.join(' L')); const hy = 35 - Math.min(31, 22*gEnv(test.x, test.z, t))*Math.sin(ph); $('wdot').setAttribute('cy', hy.toFixed(1));
+    // ➡️ flèche = force de la HOULE seule (test.swS, pas l'accélération totale : sinon la traînée la faisait virer au rouge en pleine pente alors que le texte dit « tu accélères ») · flèche de force sur le profil (retour Paul : pente plus parlante) : verte vers l'avant le long de la pente quand la houle pousse, rouge vers l'arrière quand elle freine, longueur = force
+    { const ac = test.manual && !test.flat ? (test.swS || 0) : 0, wa = $('warr'), mag = Math.min(1, Math.abs(ac)/1.2);
+      if(Math.abs(ac) < 0.15){ wa.setAttribute('d', ''); } else { const sl = -22*WAVE.k*Math.cos(ph)/10, sg = ac > 0 ? -1 : 1, n = Math.hypot(1, sl), ux = sg/n, uy = sg*sl/n, L = 14 + 40*mag;
+        const x0 = 100 + ux*10, y0 = hy + uy*10, x1 = x0 + ux*L, y1 = y0 + uy*L, hx = -ux*9, hyy = -uy*9;
+        wa.setAttribute('d', `M${x0.toFixed(1)} ${y0.toFixed(1)} L${x1.toFixed(1)} ${y1.toFixed(1)} M${(x1 + hx - uy*6).toFixed(1)} ${(y1 + hyy + ux*6).toFixed(1)} L${x1.toFixed(1)} ${y1.toFixed(1)} L${(x1 + hx + uy*6).toFixed(1)} ${(y1 + hyy - ux*6).toFixed(1)}`);
+        wa.style.stroke = ac > 0 ? '#22c55e' : '#ef4444'; } }
     const good = test.swellT > 0.2 || (!test.inTrough && !test.against && test.v > test.vs*1.15);
     $('wdot').style.fill = test.inTrough || test.against || test.onBack ? '#ef4444' : good ? '#22c55e' : '#fbbf24';
     $('wlab').textContent = test.inTrough ? (T.trough || '🕳️') : test.backDown ? (T.backDown || '⬇️ derrière la crête : la pente t\'aide') : test.against ? (T.against || '↩️') : test.swellT > 0.2 ? (T.onFace || '🏄') : test.onBack ? (T.onBack || '⛰️ dos de la vague') : ''; if(test.setIn && !test.inTrough && !test.against) $('wlab').textContent = (T.setNow || '🌊🌊 SÉRIE !') + ' ' + $('wlab').textContent;
@@ -1521,16 +1632,16 @@ function testFrame(now){
     $('good').classList.toggle('on', test.goodT > 0.35 && ride >= 0.4 && !test.footCue && performance.now() - (test.popT || 0) > 1300); $('good').textContent = T.goodPos || '🏄 GOOD SPOT';
     const cause = test.inTrough || test.against || test.onBack || Math.abs(test.om) > 1.5; test.slowT = ac < -0.5 && cause ? (test.slowT || 0) + dt : 0; const sl = $('slow'); sl.classList.toggle('on', test.slowT > 0.4 && !$('pcue').classList.contains('on') && performance.now() - (test.popT || 0) > 1300);
     sl.textContent = (T.slowing || '▼ TU RALENTIS') + (test.inTrough ? ' · ' + (T.whyTrough || '') : test.against ? ' · ' + (T.whyAgainst || '') : test.onBack ? ' · ' + (T.whyBack || 'dos de la vague') : Math.abs(test.om) > 1.5 ? ' · ' + (T.whyTurn || '') : ''); }
-  if(laneOn()){ const sd = slotDt(), tt = (performance.now() - test.beat0)/1000, P = 8*sd, page = Math.floor((tt + sd/2)/P);
+  if(laneOn()){ const sd = slotDt(), tt = (performance.now() - test.beat0)/1000, P = 8*sd, page = Math.max(0, Math.floor((tt + sd/2)/P));
     // ⏩ de plus en plus dur : toutes les 4 mesures, le tempo accélère de 10 % (jusqu'à −40 %) et la partition se complique
-    if(page !== test.page && page > 0 && page % 4 === 0 && !VID && (test.tempoK || 1) > 0.61){ test.beat0 += page*P*1000; test.level = (test.level || 0) + page; test.tempoK = Math.max(0.6, (test.tempoK || 1)*0.9); test.tempoUps = (test.tempoUps || 0) + 1; if(test.tempoUps >= 4) objDone('tempo'); test.pat = {}; test.page = -1;
+    if(page !== test.page && page > 0 && page % 4 === 0 && !VID && (test.tempoK || 1) > 0.61){ test.beat0 += page*P*1000 + 2*P/8*0.9*1000; test.lanePool = null; test.level = (test.level || 0) + page; test.tempoK = Math.max(0.6, (test.tempoK || 1)*0.9); test.tempoUps = (test.tempoUps || 0) + 1; if(test.tempoUps >= 4) objDone('tempo'); test.pat = {}; test.page = -1;
       popUp(fill(T.pTempo || 'TEMPO {p}%', {p: Math.round(100/test.tempoK)})); return; }
-    if(page !== test.page){ test.page = page; laneEls(page); $('plg').textContent = T.laneLegend || ''; }
+    if(!test.lanePool) laneEls(); if(page !== test.page){ test.page = page; $('plg').textContent = T.laneLegend || ''; } laneScroll(tt, sd);
     test.hr = Math.max(110, (test.hr || 110) - dt*1.2); rFace(); const hb = $('pheart'); hb.textContent = '❤️ ' + Math.round(test.hr) + ' BPM'; hb.style.animationDuration = (60/test.hr) + 's';
     hb.style.color = 'hsl(' + Math.round(140 - 140*(test.hr - 110)/90) + ',80%,' + (test.hr > 165 ? 45 : 35) + '%)';
-    $('pcur').style.left = (100*((tt + sd/2 - page*P)/P)) + '%';
+    
     // cases ratées (passées sans appui)
-    const idx = Math.round(tt/sd) - 1; if(idx >= 0 && !VID){ const n = lanePat(Math.floor(idx/8))[idx % 8]; if(n && !n.done && tt - LAT - idx*sd > 0.16){ n.done = true; test.perfRow = 0; test.rq = (test.rq ?? 0.6)*0.75; heart(9); popUp(T.pMiss || 'MISS', 0, true); rFace('ouch', 800); const el = document.querySelector('#ptrack .pk[data-i="' + (idx % 8) + '"]'); if(el && Math.floor(idx/8) === test.page) el.className = 'pk m'; } }
+    const idx = Math.round(tt/sd) - 1; if(idx >= 0 && !VID){ const n = lanePat(Math.floor(idx/8))[idx % 8]; if(n && !n.done && tt - LAT - idx*sd > 0.16){ n.done = true; test.perfRow = 0; test.rq = (test.rq ?? 0.6)*0.75; heart(9); popUp(T.pMiss || 'MISS', 0, true); rFace('ouch', 800); n.res = 0; const el = document.querySelector('#ptrack .pk[data-x="' + idx + '"]'); if(el) el.className = 'pk m'; } }
     const rq = test.rq ?? 0.6, r = $('prate'); r.textContent = (T.uPump || "U foilin'") + ' ' + (rq >= 0.85 ? (T.rCool || 'COOL') : rq >= 0.55 ? (T.rGood || 'GOOD') : rq >= 0.3 ? (T.rMeh || 'BAD') : (T.rBad || 'AWFUL')); r.className = 'prate ' + (rq >= 0.85 ? 'c' : rq >= 0.55 ? 'g' : rq >= 0.3 ? 'm' : 'x'); }
   $('nspd').textContent = Math.round(v*3.6); $('garc').setAttribute('d', arcPath(0, Math.max(0.005, Math.min(1, v*3.6/GMAX)))); $('garc').style.stroke = ride < .35 ? '#ef4444' : ride < .7 ? '#fbbf24' : '#22d3ee';
   // HUD : vitesse (rouge près du décrochage) + énergie pour pumper
@@ -1541,7 +1652,7 @@ function testFrame(now){
   $('pcue').textContent = test.pumpUp ? (TOUCH ? (T.pumpUpTap || '👆 TAPE POUR PUMPER !') : (T.pumpUpKey || '␣ ESPACE POUR PUMPER !')) : test.speedUp ? fill(T.speedUpCue || '💪 {v} km/h', {v: Math.round(test.speedUp.target*3.6)}) : test.sta < test.pumpCost ? (T.noEnergy || '😮‍💨') : (T.pumpNow || '💪 PUMP !');
   if(test.manual && !test.mt0) test.mt0 = now;   // le chrono démarre à la première action
   // 💥 ponton (retour Paul : « il doit chuter s'il touche le ponton ») : platelage 3,2 m de large de z = −1,2 à 28,8 m, + marge planche/aile
-  const crash = Math.abs(test.x) < 1.6 + 0.45 && test.z > -1.2 - 0.45 && test.z < 28.8;
+  const crash = Math.abs(test.x + 0.9) < 0.42 + 0.45 && test.z > -1.2 - 0.45 && test.z < 2.6 + 1.1 + 0.45;   // 🪜 la Piouz (planche + échelles + roues), plus le long ponton de 30 m
   // décollage depuis l'eau (pump-up) : on chute si on n'a pas décollé à temps
   const pu = test.pumpUp; if(pu) pu.el = (pu.el || 0) + dt; const puFail = pu && (pu.el > 6 || v < test.vl*0.45);   // 6 s pour décoller (retour Paul : « frustrant »)   // délai en temps de simulation (robuste si l'ordi rame)
   // 🌊 shore break : à moins de SHORE.warn m du sable, alerte ; à moins de SHORE.kill m, le rouleau te ramasse (Carve seulement)
@@ -1566,6 +1677,13 @@ function testFrame(now){
     if(crash){ // 💥 le foil tape les piliers sous l'eau : la planche s'arrête net, le rider est projeté vers l'avant
       rider.visible = false; runner.visible = true; runner.rotation.order = 'YXZ'; runner.rotation.set(0, test.h, 0); runnerPose('dive', 0, 0);
       test.crashA = {t0: now, x: test.x, z: test.z, y: foil.position.y + 0.1, vx: fx*v*0.8, vz: fz*v*0.8, vy: 2.2, rot: 0, land: null, bx: test.x - fx*0.9, bz: test.z - fz*0.9, h: test.h, shake: 1};
+      test.accS = 0; $('vig').style.opacity = 0; $('slow').classList.remove('on'); $('ntrend').textContent = ''; return; }
+    // 🤪 shore break = PURE CHUTE DE CARTOON (demande Paul) : le rouleau catapulte le rider très haut vers la plage, il fait l'hélice, la planche tourbillonne,
+    // sifflet qui descend pendant la chute, gros PLOUF à l'arrivée, puis retour à la nage comme d'habitude
+    if(shore){ rider.visible = false; runner.visible = true; runner.rotation.order = 'YXZ'; runnerPose('dive', 0, 0);
+      test.crashA = {t0: now, x: test.x, z: test.z, y: foil.position.y + 0.3, vx: fx*v*0.25, vz: 2.6, vy: 7.5, rot: 0, land: null, bx: test.x + fx*0.6, bz: test.z + 2.2, h: test.h, shake: 1.6, toon: true};
+      popUp(T.pToon || '🌊💫 WIPEOUT !', 0, true); [0, 1, 2, 3].forEach(i => setTimeout(() => beep(260 + i*140, 0.06, 'square', 0.12), i*45));
+      for(let i = 0; i < 14; i++) setTimeout(() => beep(1500 - i*85, 0.07, 'sine', 0.1), 260 + i*70);
       test.accS = 0; $('vig').style.opacity = 0; $('slow').classList.remove('on'); $('ntrend').textContent = ''; return; }
     rider.visible = false; swimmer.visible = true; swimHud(true); test.respawnAt = now + SWIM_T; test.accS = 0; $('vig').style.opacity = 0; $('slow').classList.remove('on'); $('ntrend').textContent = '';
     test.swim = {x: test.x - fx*1.2 + fz*1.0, z: test.z - fz*1.2 - fx*1.0, h: test.h, bx: test.x, bz: test.z, bh: test.h}; }
@@ -1748,7 +1866,7 @@ gl.setAnimationLoop(now => {
     const intro = !$('big').classList.contains('hide'), k = RM ? 1 : 1 - Math.exp(-dt*4);
     foilLift += ((intro ? (VID ? -0.2 : 0.9) : 0) - foilLift)*k; foilBig += ((intro ? 2.1 : 1) - foilBig)*k; if(pop <= 0) foil.scale.setScalar(foilBig);   // plus gros pendant l'accueil (retour Paul)
     if(intro){ cam.position.lerp(VID ? CAM_VID : CAM_INTRO, k); camBack = 1; } else if(camBack > 0){ cam.position.lerp(CAM_HOME, k); camBack -= dt*1.2; }
-    foil.position.y = 1.86 + foilLift + 0.04*Math.sin(t*1.6);
+    foil.position.y = SHOW_Y + foilLift + 0.04*Math.sin(t*1.6); turn.rotation.x = 0.3;   // vitrine penchée vers la caméra (retour Paul : on voyait l'aile en tranche)
     if(pop > 0){ pop = Math.max(0, pop - dt*2.5); const s = 1 + 0.06*Math.sin(pop*Math.PI); foil.scale.setScalar(s); ring.material.emissive = ring.material.emissive || new THREE.Color(); ring.material.emissive.setRGB(pop*0.6, pop*0.45, 0); }
     ctl.update(); }
   gl.render(scene, cam); if(VID) VID.frame(t);
@@ -1760,7 +1878,7 @@ if(/[?&]video=1/.test(location.search)){
   const W = 1080, H = 1920, SC = 2/3, REC = /[?&]rec=1/.test(location.search), comp = document.createElement('canvas'); comp.width = W*SC; comp.height = H*SC;   // rendu 720×1280 (fluide), dessin en unités 1080×1920
   const x = comp.getContext('2d'); comp.className = 'vidc'; document.body.appendChild(comp); const st = document.createElement('style'); st.textContent = 'body > *:not(.vidc){visibility:hidden !important;} #scene{position:fixed; left:-9999px;}'; document.head.appendChild(st);
   comp.style.cssText = 'position:fixed; inset:0; height:100vh; width:auto; margin:0 auto; z-index:99; background:#000; visibility:visible; cursor:pointer;'; document.body.style.background = '#000';
-  gl.setPixelRatio(1); gl.setSize(W*SC, H*SC, false); cam.aspect = W/H; cam.updateProjectionMatrix(); autoSpin = true; SND = true;
+  gl.setPixelRatio(1); gl.setSize(W*SC, H*SC, false); cam.aspect = W/H; cam.updateProjectionMatrix(); autoSpin = true; SND = !MUTE;
   const WINGS = ['Alpine Foil RSX Carve 1100', 'Axis Spitfire 720', 'Ketos LR 177', 'Alpine Foil RSX 1400 G2', 'Alpine Foil RSX Carve 1100'];
   const goW = full => { for(let i = 0; i < BR.length; i++){ const w = sortW(BR[i]), j = w.findIndex(q => BR[i].n + ' ' + q[0] === full); if(j >= 0){ bi = i; showAll = true; wi = listW(BR[i]).findIndex(q => q[0] === w[j][0]); render(true, false); return; } } };
   const F = (w, sz, it) => (it ? 'italic ' : '') + w + ' ' + sz + 'px system-ui, -apple-system, "Segoe UI", sans-serif';
@@ -1771,7 +1889,7 @@ if(/[?&]video=1/.test(location.search)){
   const pop = (t0, now) => { const k = Math.min(1, (now - t0)/220); return k < 0 ? 0 : k < 1 ? 0.4 + 0.75*k + 0.2*Math.sin(k*Math.PI) : 1; };   // 0 = pas encore affiché   // tampon qui « claque »
   let t0 = null, phase = '', lastW = -1, rec = null, chunks = [], ended = false, profCv = null, ph0 = 0, take = 0;
   // 🎵 musique : beat 120 BPM synthétisé (kick, caisse claire, charley, basse) + sons du jeu, tout passe par BUS (enregistré)
-  function music(){ AC = AC || new (window.AudioContext || window.webkitAudioContext)(); BUS = AC.createGain(); BUS.gain.value = 0.9; BUS.connect(AC.destination);
+  function music(){ AC = AC || new (window.AudioContext || window.webkitAudioContext)(); BUS = AC.createGain(); BUS.gain.value = MUTE ? 0 : 0.9; BUS.connect(AC.destination);
     const T0 = AC.currentTime + 0.05, B = 0.5, noise = AC.createBuffer(1, AC.sampleRate*0.2, AC.sampleRate), nd = noise.getChannelData(0); for(let i = 0; i < nd.length; i++) nd[i] = Math.random()*2 - 1;
     const kick = t => { const o = AC.createOscillator(), g = AC.createGain(); o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(45, t + 0.12); g.gain.setValueAtTime(0.9, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.25); o.connect(g).connect(BUS); o.start(t); o.stop(t + 0.3); };
     const hit = (t, f, d, v) => { const n = AC.createBufferSource(), fl = AC.createBiquadFilter(), g = AC.createGain(); n.buffer = noise; fl.type = 'highpass'; fl.frequency.value = f; g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(0.001, t + d); n.connect(fl).connect(g).connect(BUS); n.start(t); n.stop(t + d + 0.02); };

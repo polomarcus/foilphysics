@@ -1,29 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  <url><loc>https://simulator.foil-house.com/</loc><lastmod>2026-10-20</lastmod>
+  <url><loc>https://simulator.foil-house.com/</loc><lastmod>2026-11-27</lastmod>
     <xhtml:link rel="alternate" hreflang="fr" href="https://simulator.foil-house.com/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://simulator.foil-house.com/?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://simulator.foil-house.com/?lang=es"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://simulator.foil-house.com/?lang=it"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://simulator.foil-house.com/"/></url>
-  <url><loc>https://simulator.foil-house.com/?lang=en</loc><lastmod>2026-10-20</lastmod>
+  <url><loc>https://simulator.foil-house.com/?lang=en</loc><lastmod>2026-11-27</lastmod>
     <xhtml:link rel="alternate" hreflang="fr" href="https://simulator.foil-house.com/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://simulator.foil-house.com/?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://simulator.foil-house.com/?lang=es"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://simulator.foil-house.com/?lang=it"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://simulator.foil-house.com/"/></url>
-  <url><loc>https://simulator.foil-house.com/?lang=es</loc><lastmod>2026-10-20</lastmod>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://simulator.foil-house.com/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://simulator.foil-house.com/?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://simulator.foil-house.com/?lang=es"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://simulator.foil-house.com/?lang=it"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://simulator.foil-house.com/"/></url>
-  <url><loc>https://simulator.foil-house.com/?lang=it</loc><lastmod>2026-10-20</lastmod>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://simulator.foil-house.com/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://simulator.foil-house.com/?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://simulator.foil-house.com/?lang=es"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://simulator.foil-house.com/?lang=it"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://simulator.foil-house.com/"/></url>
+  <url><loc>https://simulator.foil-house.com/long-distance.html</loc><lastmod>2026-10-20</lastmod>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://simulator.foil-house.com/long-distance.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://simulator.foil-house.com/long-distance.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://simulator.foil-house.com/long-distance.html?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://simulator.foil-house.com/long-distance.html?lang=it"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://simulator.foil-house.com/long-distance.html"/></url>
+  <url><loc>https://simulator.foil-house.com/long-distance.html?lang=en</loc><lastmod>2026-10-20</lastmod>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://simulator.foil-house.com/long-distance.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://simulator.foil-house.com/long-distance.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://simulator.foil-house.com/long-distance.html?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://simulator.foil-house.com/long-distance.html?lang=it"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://simulator.foil-house.com/long-distance.html"/></url>
+  <url><loc>https://simulator.foil-house.com/long-distance.html?lang=es</loc><lastmod>2026-10-20</lastmod>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://simulator.foil-house.com/long-distance.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://simulator.foil-house.com/long-distance.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://simulator.foil-house.com/long-distance.html?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://simulator.foil-house.com/long-distance.html?lang=it"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://simulator.foil-house.com/long-distance.html"/></url>
+  <url><loc>https://simulator.foil-house.com/long-distance.html?lang=it</loc><lastmod>2026-10-20</lastmod>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://simulator.foil-house.com/long-distance.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://simulator.foil-house.com/long-distance.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://simulator.foil-house.com/long-distance.html?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://simulator.foil-house.com/long-distance.html?lang=it"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://simulator.foil-house.com/long-distance.html"/></url>
   <url><loc>https://simulator.foil-house.com/carve.html</loc><lastmod>2026-10-20</lastmod>
     <xhtml:link rel="alternate" hreflang="fr" href="https://simulator.foil-house.com/carve.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://simulator.foil-house.com/carve.html?lang=en"/>
