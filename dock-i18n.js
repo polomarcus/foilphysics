@@ -536,11 +536,11 @@ window.DOCK_I18N_EXTRA = {
   it: {pBonus: '🎳 BONUS!', surfHey: '😤 EHI! MA SEI MATTO?!', surfProf: '👵 Prof Foil: non nella vita vera, eh! 😅', surfScold: 'Ma SEI MATTO?! Non nella vita vera, eh! I surfisti si evitano.', surfEnd: '🏄 Nella vita vera, i surfisti si evitano!'},
   de: {pBonus: '🎳 BONUS!', surfHey: '😤 HEY! GEHT\'S NOCH?!', surfProf: '👵 Prof Foil: aber nicht im echten Leben! 😅', surfScold: 'Bist du VERRÜCKT?! Niemals im echten Leben! Surfern weicht man aus.', surfEnd: '🏄 Im echten Leben: Surfern ausweichen!'}};
   const objN = {
-    fr: {surfer: 'Fais tomber le surfeur 🎳', gate: 'Passe entre les bouées', dolph: 'Va voir les dauphins au large 🐬', rase: 'Frôle l\'échelle Piouz', t360: 'Pit style\u00a0: un 360 complet sans tomber'},
-    en: {surfer: 'Knock the surfer off 🎳', gate: 'Fly between the buoys', dolph: 'Visit the dolphins out at sea 🐬', rase: 'Buzz the Piouz ladder', t360: 'Pit style: a full 360 without falling'},
-    es: {surfer: 'Tumba al surfista 🎳', gate: 'Pasa entre las boyas', dolph: 'Ve a ver los delfines mar adentro 🐬', rase: 'Roza la escalera Piouz', t360: 'Pit style: un 360 completo sin caer'},
-    it: {surfer: 'Fai cadere il surfista 🎳', gate: 'Passa tra le boe', dolph: 'Vai a trovare i delfini al largo 🐬', rase: 'Sfiora la scala Piouz', t360: 'Pit style: un 360 completo senza cadere'},
-    de: {surfer: 'Wirf den Surfer vom Brett 🎳', gate: 'Flieg zwischen den Bojen durch', dolph: 'Besuch die Delfine draußen auf See 🐬', rase: 'Streif die Piouz-Leiter', t360: 'Pit style: eine volle 360 ohne Sturz'}};
+    fr: {surfer: 'Fais tomber le surfeur 🎳', gate: 'Passe entre les bouées', dolph: 'Va voir les dauphins au large 🐬', lowpump: 'Moins de 100 pumps en 2 min : laisse la vague te porter', rase: 'Frôle l\'échelle Piouz', t360: 'Pit style\u00a0: un 360 complet sans tomber'},
+    en: {surfer: 'Knock the surfer off 🎳', gate: 'Fly between the buoys', dolph: 'Visit the dolphins out at sea 🐬', lowpump: 'Under 100 pumps in 2 min: let the wave carry you', rase: 'Buzz the Piouz ladder', t360: 'Pit style: a full 360 without falling'},
+    es: {surfer: 'Tumba al surfista 🎳', gate: 'Pasa entre las boyas', dolph: 'Ve a ver los delfines mar adentro 🐬', lowpump: 'Menos de 100 pumps en 2 min: deja que la ola te lleve', rase: 'Roza la escalera Piouz', t360: 'Pit style: un 360 completo sin caer'},
+    it: {surfer: 'Fai cadere il surfista 🎳', gate: 'Passa tra le boe', dolph: 'Vai a trovare i delfini al largo 🐬', lowpump: 'Meno di 100 pump in 2 min: lascia che l\'onda ti porti', rase: 'Sfiora la scala Piouz', t360: 'Pit style: un 360 completo senza cadere'},
+    de: {surfer: 'Wirf den Surfer vom Brett 🎳', gate: 'Flieg zwischen den Bojen durch', dolph: 'Besuch die Delfine draußen auf See 🐬', lowpump: 'Unter 100 Pumps in 2 Min: lass dich von der Welle tragen', rase: 'Streif die Piouz-Leiter', t360: 'Pit style: eine volle 360 ohne Sturz'}};
   for(const l in add){ const E = window.DOCK_I18N_EXTRA[l] = Object.assign(window.DOCK_I18N_EXTRA[l] || {}, add[l]); E.objN = Object.assign(E.objN || {}, objN[l]); } })();
 
 // 🚦 windsurfs qui tiennent leur ligne : collision et règle de priorité

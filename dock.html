@@ -447,7 +447,7 @@ seoLang((/[?&]lang=(en|es|it|de)\b/i.exec(location.search) || [])[1] || 'fr');</
   var last = 0; document.addEventListener('touchend', function(e){ var n = Date.now(); if(n - last < 300 && !(e.target.closest && e.target.closest('button, a, input, select, [role=button]'))) e.preventDefault(); last = n; }, {passive: false});
   document.addEventListener('wheel', function(e){ if(e.ctrlKey) e.preventDefault(); }, {passive: false}); })();
 </script>
-<script src="dock-i18n.js?v=20261128z"></script>
+<script src="dock-i18n.js?v=20261128n2"></script>
 <script src="ailes.js?v=20261122"></script>
 <script type="module">
 import * as THREE from 'three';
@@ -936,11 +936,12 @@ const dolphins = [0, 1, 2].map(i => { const g = new THREE.Group(), gm = new THRE
   const tail = new THREE.Mesh(DOLPH_G.tail, gm); tail.position.set(0, 0, 1.12); g.add(tail);
   for(const sx of [-1, 1]){ const pf = new THREE.Mesh(DOLPH_G.pec, gm); pf.position.set(sx*0.2, -0.14, -0.45); pf.rotation.set(0.5, sx*0.5, sx*0.7); g.add(pf); }
   g.scale.setScalar(0.95 + 0.1*i); g.visible = false; scene.add(g); return {g, ph: i*2.1}; });
-function dolphTick(t, on){ dolphins.forEach((d, i) => { d.g.visible = on; if(!on) return; const a = t*0.12 + i*0.5, x = DOLPH.cx + DOLPH.r*Math.cos(a) + i*1.6, z = DOLPH.cz + DOLPH.r*Math.sin(a);
-  const k = ((t*0.55 + d.ph) % 3)/3, jump = k < 0.33 ? Math.sin(Math.PI*k/0.33) : 0, sea = seaVis(x, z, t);
-  d.g.position.set(x, sea - 0.25 + 1.6*jump, z); d.g.rotation.set(jump > 0 ? -0.9*Math.cos(Math.PI*k/0.33) : 0.05*Math.sin(t + i), -a, 0); });
+function dolphTick(t, on){ const esc = VID && VID.missions && test && VID.seg === 2, fx = test ? -Math.sin(test.h) : 0, fz = test ? -Math.cos(test.h) : 0;   // vidéo : le banc nage avec la rideuse, devant et sur les côtés
+  dolphins.forEach((d, i) => { d.g.visible = on; if(!on) return; const a = esc ? -test.h + Math.PI/2 : t*0.12 + i*0.5, side = (i - 1)*2.6, ahead = 5 + (i === 1 ? 2.5 : 0), x = esc ? test.x + fx*ahead - fz*side : DOLPH.cx + DOLPH.r*Math.cos(a) + i*1.6, z = esc ? test.z + fz*ahead + fx*side : DOLPH.cz + DOLPH.r*Math.sin(a);
+  const k = ((t*(VID ? 0.9 : 0.55) + d.ph) % 3)/3, jump = k < 0.33 ? Math.sin(Math.PI*k/0.33) : 0, sea = seaVis(x, z, t);
+  d.g.position.set(x, sea - (VID ? 0.1 : 0.25) + 1.6*jump, z); d.g.rotation.set(jump > 0 ? -0.9*Math.cos(Math.PI*k/0.33) : 0.05*Math.sin(t + i), -a, 0); });
   if(on && test && test.surf && !test.done && Math.hypot(test.x - DOLPH.cx, test.z - DOLPH.cz) < DOLPH.r + 14) objDone('dolph'); }
-function missionTick(t, dt, now){ const on = (test && test.surf && !VID) || POSECAM === 'surfer' || POSECAM === 'wind' || POSECAM === 'dolph'; surfer.visible = on; dolphTick(t, on);
+function missionTick(t, dt, now){ const on = (test && test.surf && (!VID || VID.missions)) || POSECAM === 'surfer' || POSECAM === 'wind' || POSECAM === 'dolph'; surfer.visible = on; dolphTick(t, on);
   buoys.forEach((b, i) => { b.visible = on; const q = i ? GATE.b : GATE.a; b.position.set(q[0], seaVis(q[0], q[1], t) - 0.12, q[1]); b.rotation.z = 0.09*Math.sin(t*1.7 + i*2); });
   WINDS.forEach(w => { w.g.visible = on; if(!on) return; w.x += w.dir*5*dt; if(Math.abs(w.x) > 45){ w.x = Math.sign(w.x)*45; w.dir = -w.dir; } w.g.position.set(w.x, seaVis(w.x, w.z, t) - 0.04, w.z); w.g.rotation.set(0, w.dir > 0 ? 0 : Math.PI, 0.05*Math.sin(t*1.3 + w.z)); });
   if(!on) return; const S = SURF;
@@ -1302,7 +1303,7 @@ const award = (key, base, extra) => { const pts = Math.round(base*mult()); test.
 const bumpFlow = d => { test.flow = Math.max(0, Math.min(100, test.flow + d)); if(d > 0){ const m = $('nmult'); m.classList.remove('up'); void m.offsetWidth; m.classList.add('up'); } };
 /* ---------- 🎯 objectifs de session (demande Paul) : une liste par mode, cochée en jeu, mémorisée pour toujours par aile et par mode ----------
    Rien ici ne touche à la physique : on observe l'état du test (score, virages, position, cœur...) et on coche. Désactivé en mode vidéo. */
-const OBJ_LIST = {carve: ['s1', 's2', 's3', 's4', 's5', 'carve', 'big', 'cut', 'snake', 'x3', 'face', 'waves', 'read70', 'set', 'foil', 'pump', 'shore', 'tamed', 'nofall', 'kiss', 'tour', 'surfer', 'gate', 'rase', 't360', 'dolph', 'secret'],
+const OBJ_LIST = {carve: ['s1', 's2', 's3', 's4', 's5', 'carve', 'big', 'cut', 'snake', 'x3', 'face', 'waves', 'read70', 'set', 'foil', 'pump', 'shore', 'tamed', 'nofall', 'kiss', 'tour', 'surfer', 'gate', 'rase', 't360', 'dolph', 'lowpump', 'secret'],
   vite: ['t30', 't25', 't21', 'nopen', 'peak'], flat: ['d1', 'd2', 'd3', 'perf8', 'zen', 'cardio', 'tempo']}, OBJ_DOCK = ['p4', 'first', 'pumps'];
 const OBJ = {score: [5000, 12000, 20000, 50000, 100000], dist: [150, 300, 450], shoreIn: 30, shoreOut: 45, catchR: 1.7, peak: 1.12};   // seuils (dist en m : en 2 min on ne dépasse pas ~550 m en eau plate)
 let OBJ_SAVE = {}; try{ OBJ_SAVE = JSON.parse(localStorage.getItem('dock-obj') || '{}') || {}; }catch(e){ OBJ_SAVE = {}; }
@@ -1616,7 +1617,7 @@ try{ const h0 = +localStorage.getItem('dock-houle'); if(WAVES.some(w => w.h === 
 // 🌊 retour Paul : choisir sa vague à chaque lancement, c'est lourd → seulement tant qu'aucune vague n'est mémorisée ; ensuite on la change dans le menu (« La houle »)
 const waveKnown = () => { try{ return !!localStorage.getItem('dock-houle'); }catch(e){ return false; } };
 $('test').onclick = () => MODE === 'carve' && !VID && !waveKnown() ? pickWave(playTest) : playTest();
-if(/[?&]debug=1/.test(location.search)) { window.__dockTest = () => test; window.__RID = RID; window.__WINDS = WINDS; window.__surf = () => surferHit(performance.now(), 2, 9); window.__scold = profScold; window.__dockStep = (n, ms) => { const n0 = test.last || performance.now(); for(let k = 1; k <= n; k++){ testFrame(n0 + k*(ms || 33)); missionTick(clock.elapsedTime + k*(ms || 33)/1000, (ms || 33)/1000, n0 + k*(ms || 33)); } gl.render(scene, cam); }; window.__dockFly = (x, z, h) => { const now = performance.now(); test.takeoff = null; test.pumpUp = null; runner.visible = false; rider.visible = true; $('beat').classList.add('hide'); test.x = x; test.z = z; test.h = h; test.v = test.vl*1.5; test.manual = true; test.mt0 = now - 10000; test.last = now; test.sta = 100; }; window.__dockSW = SW; window.__dockShare = () => { const d = shareData(); return d ? shareCanvas(d) : null; }; window.__dockSET = SET; window.__dockSWG = SWG; window.__dockCam = (x, y, z, tx, ty, tz) => { cam.position.set(x, y, z); cam.lookAt(tx, ty, tz); }; window.__dockFoil = () => foil; window.__dockHold = b => { DBG_HOLD = !!b; }; window.__dockInfo = () => { let meshes = 0, vis = 0; scene.traverse(o => { if(o.isMesh || o.isLine || o.isPoints){ meshes++; let v = true; for(let q = o; q; q = q.parent) if(!q.visible){ v = false; break; } if(v) vis++; } }); return {calls: gl.info.render.calls, tris: gl.info.render.triangles, meshes, visibles: vis, geoms: gl.info.memory.geometries}; }; window.__dockTURN = TURN; window.__dockH = h => { if(h !== undefined) seaU.H.value = h; return seaU.H.value; }; window.__dockK = (k, b) => { SW.K = k; if(b !== undefined) SW.back = b; }; window.__dockFrame = (now, t) => { if(t !== undefined) clock.elapsedTime = t; testFrame(now); }; }   // tests locaux : placer le rider
+if(/[?&]debug=1/.test(location.search)) { window.__dockTest = () => test; window.__RID = RID; window.__WINDS = WINDS; window.__surf = () => surferHit(performance.now(), 2, 9); window.__scold = profScold; window.__dolph = dolphins; window.__dockStep = (n, ms) => { const n0 = test.last || performance.now(); for(let k = 1; k <= n; k++){ testFrame(n0 + k*(ms || 33)); missionTick(clock.elapsedTime + k*(ms || 33)/1000, (ms || 33)/1000, n0 + k*(ms || 33)); } gl.render(scene, cam); }; window.__dockFly = (x, z, h) => { const now = performance.now(); test.takeoff = null; test.pumpUp = null; runner.visible = false; rider.visible = true; $('beat').classList.add('hide'); test.x = x; test.z = z; test.h = h; test.v = test.vl*1.5; test.manual = true; test.mt0 = now - 10000; test.last = now; test.sta = 100; }; window.__dockSW = SW; window.__dockShare = () => { const d = shareData(); return d ? shareCanvas(d) : null; }; window.__dockSET = SET; window.__dockSWG = SWG; window.__dockCam = (x, y, z, tx, ty, tz) => { cam.position.set(x, y, z); cam.lookAt(tx, ty, tz); }; window.__dockFoil = () => foil; window.__dockHold = b => { DBG_HOLD = !!b; }; window.__dockInfo = () => { let meshes = 0, vis = 0; scene.traverse(o => { if(o.isMesh || o.isLine || o.isPoints){ meshes++; let v = true; for(let q = o; q; q = q.parent) if(!q.visible){ v = false; break; } if(v) vis++; } }); return {calls: gl.info.render.calls, tris: gl.info.render.triangles, meshes, visibles: vis, geoms: gl.info.memory.geometries}; }; window.__dockTURN = TURN; window.__dockH = h => { if(h !== undefined) seaU.H.value = h; return seaU.H.value; }; window.__dockK = (k, b) => { SW.K = k; if(b !== undefined) SW.back = b; }; window.__dockFrame = (now, t) => { if(t !== undefined) clock.elapsedTime = t; testFrame(now); }; }   // tests locaux : placer le rider
 // 🌊 la houle change pendant le run (retour Paul) : la vague choisie est celle du départ, puis toutes les 25 à 37 s elle forcit ou se calme
 // d'un cran (au plus un cran autour du choix), en douceur (0,25 m/s). Seule la hauteur varie : la vitesse des vagues reste (sinon elles « sauteraient »).
 const SWELL_LV = [0.5, 1, 1.75, 2.5];
@@ -1872,7 +1873,7 @@ function sessionTick(now, el){
   $('erec').textContent = rec ? (T.newBest || 'NEW BEST!') : fill(T.best || 'best {b}', {b: old.toLocaleString(LANG)}); $('erec').className = 'rec' + (rec ? '' : ' old');
   const rd = test.surf ? readScore() : 0; if(test.surf && rd >= 70 && air >= 60) objDone('read70');
   $('eread').innerHTML = test.surf ? '🌊 ' + (T.readLbl || 'Lecture de houle') + ' ' + rd + '/100 <em>· ' + readWord(rd) + '</em>' : '';
-  if(!test.falls) objDone('nofall'); if(test.surf && !test.cols) objDone('nocol'); if(test.flat && (test.hr || 110) < 130) objDone('zen'); objEnd();
+  if(!test.falls) objDone('nofall'); if(test.surf && test.pumps < 100) objDone('lowpump'); if(test.surf && !test.cols) objDone('nocol'); if(test.flat && (test.hr || 110) < 130) objDone('zen'); objEnd();
   { const sv = test.objList ? (OBJ_SAVE[test.objKey] || []) : [], dist = Math.round(test.dist || 0);
     test.share = {medal: $('emedal').textContent, label: test.flat ? (T.shDist || 'DISTANCE') : (T.pScore || 'SCORE'), value: test.flat ? dist.toLocaleString(LANG) + ' m' : sc.toLocaleString(LANG),
       rec: rec ? '🏆 ' + (T.newBest || 'NEW BEST!') : '', obj: test.objList ? '🎯 ' + test.objList.filter(id => sv.includes(id)).length + '/' + test.objList.length : '', read: test.surf ? '🌊 ' + (T.readShort || 'Houle') + ' ' + rd + '/100' : (test.flat ? '⭐ ' + sc.toLocaleString(LANG) + ' ' + (T.pts || 'pts') : '')}; }
@@ -2040,6 +2041,7 @@ gl.setAnimationLoop(now => {
   // 🧪 labo de pose (outil, ?poselab=flexion,gîte,bras : flexion −0,6…1, gîte −1…1, bras −1 derrière…1 devant) : rider figé sur le foil du menu, à filmer avec posecam
   if(POSELAB){ const [sq, bk, arm] = POSELAB.split(',').map(Number); rider.visible = true; foil.scale.setScalar(1); if(!document.body.classList.contains('plab')){ document.body.classList.add('plab'); const st = document.createElement('style'); st.textContent = 'body.plab > *:not(#scene){visibility:hidden !important}'; document.head.appendChild(st); } ARM_S = arm || 0; riderPose(sq || 0, 0, bk || 0, 0, t); turn.rotation.set(0, 0, 0); foil.rotation.set(0, 0, (bk || 0)*0.7); }
   // caméra « face » : suit la tête du rider et la filme de face, légèrement de 3/4 (le visage regarde vers −z local de la tête)
+  if(VID && VID.camOverride) VID.camOverride();
   if(POSECAM === 'wind' && WINDS[0]){ const wp = WINDS[0].g.position; cam.position.set(wp.x - 2.5, wp.y + 2.2, wp.z + 8); cam.lookAt(wp.x, wp.y + 1.6, wp.z); }
   else if(POSECAM === 'dolph'){ const dp = dolphins[0].g.position; cam.position.set(dp.x + 6, dp.y + 2.4, dp.z + 7); cam.lookAt(dp.x, dp.y, dp.z); }
   else if(POSECAM === 'surfer'){ const sp = surfer.position; cam.position.set(sp.x + 2.6, sp.y + 0.7, sp.z - 3.2); cam.lookAt(sp.x, sp.y + 0.2, sp.z); }
@@ -2084,6 +2086,7 @@ if(/[?&]video=1/.test(location.search)){
     if(SCENE === 'loin') return loinFrame(now, s);
     if(SCENE === 'houle') return houleFrame(now, s);
     if(SCENE === 'defi') return defiFrame(now, s);
+    if(SCENE === 'news') return newsFrame(now, s);
     // ---- pilotage ----
     const go = p => { if(phase !== p){ phase = p; ph0 = now; return true; } return false; };
     if(s < 2.2){ if(go('hook')){ MODE = 'carve'; goW(WINGS[0]); } }
@@ -2262,6 +2265,54 @@ if(/[?&]video=1/.test(location.search)){
     return (VID.turnClips || 0) < 1 && VID.leg === 'in' && test.z > -13; };   // UN extrait de cutback juste avant les rouleaux, puis on file vers la fin
   const evCount = () => (test.letters ? test.letters.reduce((a, b) => a + b, 0) : 0) + test.turns;
   const VL = (fr, en) => LANG === 'en' ? en : fr;   // vidéo « défi » : français ou anglais (?lang=en)
+  // 📣 vidéo « nouveautés Carve » (~25 s, à fond) : dauphins, glisse plus réaliste, le surfeur qui valdingue + la Prof qui gronde, appel à jouer
+  function newsReset(now, x0, z0, h, v){ test.swim = null; test.crashA = null; swimmer.visible = false; runner.visible = false; rider.visible = true; test.done = false; test.takeoff = null; test.pumpUp = null;
+    test.x = x0; test.z = z0; test.h = h; test.v = test.vl*v; test.om = 0; test.manual = true; test.sta = 100; test.last = now; keys.l = keys.r = keys.f = false; VID.cutT = now; whoosh(); }
+  function newsFrame(now, s){
+    if(!VID.started){ VID.started = true; VID.missions = true; VID.obj = true; MODE = 'carve'; ST.H = 1; goW('Alpine Foil RSX Carve 1100'); $('big').classList.add('hide'); startTest(); SET.on = SET.gain; waveSync();
+      $('beat').classList.add('hide'); $('nfs').classList.add('hide'); test.mt0 = now; test.t0 = now; VID.seg = -1; VID.pi = new Image(); }
+    const seg = s < 5.5 ? 0 : s < 11 ? 1 : s < 15.5 ? 2 : s < 21.5 ? 3 : 4;   // glisse, départ Piouz, dauphins (4,5 s), surfeur, fin
+    if(seg !== VID.seg){ VID.seg = seg; VID.segT = now;
+      if(seg === 0){ newsReset(now, -30, -38, Math.PI - 0.3, 1.4); VID.ch = test.h; }
+      if(seg === 1){ VID.cutT = now; whoosh(); VID.beatOff = () => 0.01; startTest(); test.didDemo = true; beginTakeoff(); VID.lp = 0; }
+      if(seg === 2){ const x0 = DOLPH.cx - 8, z0 = DOLPH.cz + 13; newsReset(now, x0, z0, Math.atan2(-(DOLPH.cx - x0), -(DOLPH.cz - z0)), 1.5); VID.lp = 0; }
+      if(seg === 3){ SURF.ko = null; newsReset(now, SURF.x + 0.3, SURF.z + 12, 0, 1.55); VID.hitT = 0; VID.lp = 0; }
+      if(seg === 4){ VID.endT = now; keys.l = keys.r = false; } }
+    const dt = 1/30;
+    if(!VID.piSet && window.PROF_FACES && window.PROF_FACES.ouch){ VID.piSet = true; VID.pi.src = window.PROF_FACES.ouch; }
+    if(seg === 0){ test.sta = 100; test.mt0 = now; defiBot(now); }
+    if(seg === 1 && test){ test.mt0 = now; if(test.pumpUp && now - (VID.lp || 0) > 380){ VID.lp = now; pump(); } }
+    if(seg === 2){ test.sta = 100; test.mt0 = now; keys.l = keys.r = false; if(now - (VID.lp || 0) > 650 && !test.crashA && !test.swim){ VID.lp = now; pump(); } }
+    if(seg === 3){ test.sta = 100; test.mt0 = now; keys.l = keys.r = false; if(!VID.hitT && !SURF.ko && now - (VID.lp || 0) > 650 && !test.crashA && !test.swim){ VID.lp = now; pump(); } if(!VID.hitT && SURF.ko) VID.hitT = now; }
+    VID.camOverride = () => { if(!test) return;
+      const behind = (tx, tz, d, h) => { const px = test.crashA ? test.crashA.x : test.x, pz = test.crashA ? test.crashA.z : test.z, dx = tx - px, dz = tz - pz, n = Math.hypot(dx, dz) || 1; if(!VID.camLock){ VID.camLock = [px - dx/n*d + dz/n*1.2, pz - dz/n*d - dx/n*1.2]; } cam.position.set(VID.camLock[0], h, VID.camLock[1]); cam.lookAt((px + tx)/2, 0.5, (pz + tz)/2); };
+      if(seg !== VID.camSeg){ VID.camSeg = seg; VID.camLock = null; }
+      if(seg === 1) return;
+      if(seg === 2){ const gx = -Math.sin(test.h), gz = -Math.cos(test.h); cam.position.set(test.x - gx*5.5 + gz*1.4, 1.7, test.z - gz*5.5 - gx*1.4); cam.lookAt(test.x + gx*5, 0.4, test.z + gz*5); }
+      else if(seg === 0){ VID.ch = VID.ch ?? test.h; VID.ch += wrapA(test.h - VID.ch)*(1 - Math.exp(-dt*1.8)); const gx = -Math.sin(VID.ch), gz = -Math.cos(VID.ch); cam.position.set(test.x - gx*5.5 + gz*1.6, 0.9, test.z - gz*5.5 - gx*1.6); cam.lookAt(test.x + gx*2, 0.7, test.z + gz*2); }
+      else if(seg === 3) behind(SURF.x, SURF.z, 5, 1.5);
+      else { cam.position.set(test.x + 4, 2.2, test.z + 4); cam.lookAt(test.x, 0.6, test.z); } };
+    if(VID.endT && now - VID.endT > 3600 && !ended){ ended = true; if(rec) rec.stop(); }
+    x.drawImage(cv, 0, 0, W, H);
+    const g = x.createLinearGradient(0, 0, 0, 520); g.addColorStop(0, 'rgba(11,18,34,.8)'); g.addColorStop(1, 'rgba(11,18,34,0)'); x.fillStyle = g; x.fillRect(0, 0, W, 520);
+    const k0 = VID.segT || now, ss = (now - k0)/1000;
+    if(VID.cutT && now - VID.cutT < 220){ x.globalAlpha = 1 - (now - VID.cutT)/220; x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); x.globalAlpha = 1; }
+    if(seg === 0){ txt(VL('🔥 NOUVEAU DANS LE DOCK', '🔥 NEW IN THE DOCK'), W/2, 150, {s: 54, sk: true, st: 10, c: '#fbbf24', z: pop(k0, now)});
+      txt(VL('UNE GLISSE', 'WAY MORE'), W/2, 280, {s: 110, sk: true, st: 16, c: '#fde68a', z: pop(k0 + 150, now)}); txt(VL('PLUS RÉALISTE !!!', 'REALISTIC GLIDE!!!'), W/2, 420, {s: 104, sk: true, st: 16, z: pop(k0 + 350, now)});
+      if(ss > 1.6) txt(VL('houle irrégulière · vraie mer · vrai pump', 'messy swell · real sea · real pumping'), W/2, 530, {s: 46, w: 800, c: '#7dd3fc', z: pop(k0 + 1600, now), max: W - 80}); }
+    if(seg === 1){ txt(VL('DÉPART DEPUIS', 'TAKE OFF FROM'), W/2, 230, {s: 100, sk: true, st: 16, c: '#fde68a', z: pop(k0, now)}); txt(VL('L\'ÉCHELLE PIOUZ !!!', 'THE PIOUZ LADDER!!!'), W/2, 370, {s: 100, sk: true, st: 16, z: pop(k0 + 200, now)}); }
+    if(seg === 2){ txt(VL('VIENS VOIR', 'COME SEE'), W/2, 230, {s: 110, sk: true, st: 16, c: '#fde68a', z: pop(k0, now)}); txt(VL('LES DAUPHINS !!! 🐬', 'THE DOLPHINS!!! 🐬'), W/2, 370, {s: 110, sk: true, st: 16, z: pop(k0 + 200, now)}); }
+    if(seg === 3){ if(!VID.hitT){ txt(VL('LE SURFEUR QUI POIREAUTE...', 'THE SURFER JUST CHILLING...'), W/2, 230, {s: 70, sk: true, st: 12, c: '#fde68a', z: pop(k0, now), max: W - 60}); if(ss > 0.9) txt(VL('ESQUIVE-LE !!!! 😱', 'DODGE HIM!!!! 😱'), W/2, 380, {s: 110, sk: true, st: 16, c: '#fca5a5', z: pop(k0 + 900, now)}); }
+      else { const e = (now - VID.hitT)/1000; 
+        if(e > 0.8){ const z = pop(VID.hitT + 800, now), R = 230, cx = W/2 + 8*Math.sin(now/40)*(e < 1.6 ? 1 : 0), cy = 820; x.save(); x.beginPath(); x.arc(cx, cy, R*z, 0, 7); x.fillStyle = '#fde68a'; x.fill(); x.lineWidth = 12; x.strokeStyle = '#b91c1c'; x.stroke(); x.clip();
+          if(VID.pi && VID.pi.complete && VID.pi.naturalWidth) x.drawImage(VID.pi, cx - R*z, cy - R*z, 2*R*z, 2*R*z); x.restore();
+          pill(W/2 - 430, 1080, 860, 150, 'rgba(255,253,247,.97)'); txt(VL('PROF FOIL : « ÇA VA PAS ?! »', 'PROF FOIL: "ARE YOU CRAZY?!"'), W/2, 1150, {s: 50, sh: false, c: '#7f1d1d', max: 820}); txt(VL('(pas dans la vraie vie, hein !)', '(never in real life, OK!)'), W/2, 1205, {s: 38, w: 700, sh: false, c: '#7f1d1d', max: 820}); } } }
+    if(seg === 4){ const a = Math.min(1, (now - VID.endT)/300); x.globalAlpha = a; x.fillStyle = 'rgba(11,18,34,.86)'; x.fillRect(0, 0, W, H);
+      txt('+ MISSIONS', W/2, 420, {s: 110, sk: true, st: 16, c: '#fde68a', z: pop(VID.endT, now)}); txt(VL('façon jeux vidéo 🎯', 'video-game style 🎯'), W/2, 540, {s: 80, sk: true, st: 12, z: pop(VID.endT + 150, now)});
+      txt(VL('bouées · pit style · foil secret', 'buoys · pit style · secret foil'), W/2, 650, {s: 50, w: 800, c: '#7dd3fc', z: pop(VID.endT + 300, now), max: W - 80});
+      if(now - VID.endT > 700){ txt(VL('Tu les fais', 'Can you get'), W/2, 880, {s: 120, sk: true, st: 16, z: pop(VID.endT + 700, now)}); txt(VL('toutes ?? 👇', 'them all?? 👇'), W/2, 1020, {s: 120, sk: true, st: 16, c: '#7dd3fc', z: pop(VID.endT + 900, now)}); }
+      if(now - VID.endT > 1300) txt(VL('🎮 Le Dock : lien dans la bio de @polofoil', '🎮 The Dock: link in @polofoil\'s bio'), W/2, 1300, {s: 50, w: 800, c: '#fde68a', max: W - 100}); x.globalAlpha = 1; }
+  }
   function defiFrame(now, s){
     const go = p => { if(phase !== p){ phase = p; ph0 = now; return true; } return false; };
     go('ride');
@@ -2313,7 +2364,7 @@ if(/[?&]video=1/.test(location.search)){
     const dest = AC.createMediaStreamDestination(); BUS.connect(dest);
     rec = new MediaRecorder(new MediaStream([...comp.captureStream(30).getVideoTracks(), ...dest.stream.getAudioTracks()]), mime ? {mimeType: mime, videoBitsPerSecond: 10e6, audioBitsPerSecond: 160000} : {}); rec.ondataavailable = e => e.data.size && chunks.push(e.data);
     rec.onstop = () => { const blob = new Blob(chunks, {type: rec.mimeType}), ext = rec.mimeType.includes('mp4') ? 'mp4' : 'webm';
-      fetch('/__save/' + (LANG === 'en' ? 'en' : 'fr') + '-insta-' + ({loin: 'longue-distance', houle: 'lire-la-houle', defi: 'defi-2-minutes'}[SCENE] || 'dock') + '.' + ext, {method: 'PUT', body: blob}).then(() => { document.title = 'SAVED ' + ext + ' ' + Math.round(blob.size/1e5)/10 + ' Mo'; }); };
+      fetch('/__save/' + (LANG === 'en' ? 'en' : 'fr') + '-insta-' + ({loin: 'longue-distance', houle: 'lire-la-houle', defi: 'defi-2-minutes', news: 'nouveautes-carve'}[SCENE] || 'dock') + '.' + ext, {method: 'PUT', body: blob}).then(() => { document.title = 'SAVED ' + ext + ' ' + Math.round(blob.size/1e5)/10 + ' Mo'; }); };
     rec.start(500); }
 }
 </script>
