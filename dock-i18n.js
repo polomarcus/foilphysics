@@ -426,38 +426,38 @@ window.DOCK_I18N_EXTRA = {
 
 // 🎯 objectifs de session : titres, et le nom de chaque objectif ({v} km/h, {f} × décollage, {a} {b} {c} m sont remplis par le jeu)
 (function(){ const add = {
-  fr: {objTitle: 'OBJECTIFS', objWin: 'OBJECTIF !', objNew: 'nouveau !', objSecret: '???', objN: {
-    s1: 'Score 5 000', s2: 'Score 12 000', s3: 'Score 20 000', carve: 'Petit carve (50°)', big: 'Gros carve (100°)', cut: 'Cutback (160°)', snake: 'Le serpent : 3 carves alternés', x3: 'Multiplicateur ×3',
-    face: 'Avale la face : {f} × ta vitesse de décollage', waves: '3 vagues d\'affilée sans toucher l\'eau', foil: 'Attrape les lettres F-O-I-L', pump: 'Attrape les lettres P-U-M-P', shore: 'Frôle le shore break et ressors', tamed: 'Foil dompté au pied avant',
-    nofall: 'Zéro chute en 2 min', kiss: 'Bisou à la Piouz 💥', tour: 'Tour du propriétaire (tête de la Piouz)', secret: 'Le médaillon de la Prof',
+  fr: {objTitle: 'OBJECTIFS', objWin: 'OBJECTIF !', objNew: 'nouveau !', objSecret: '??? (la Prof a perdu quelque chose près de la plage)', objN: {
+    s1: 'Score 5 000', s2: 'Score 12 000', s3: 'Score 20 000', s4: 'Score 50 000', s5: 'Score 100 000', carve: 'Petit carve (50°)', big: 'Gros carve (100°)', cut: 'Cutback (160°)', snake: 'Le serpent : 3 carves alternés', x3: 'Multiplicateur ×3',
+    face: 'Dévale la vague à {f} × ta vitesse de décollage', waves: '3 vagues d\'affilée sans toucher l\'eau', foil: 'Attrape les lettres F-O-I-L', pump: 'Attrape les lettres P-U-M-P', shore: 'Frôle le shore break et ressors', tamed: 'Foil dompté au pied avant',
+    nofall: 'Zéro chute en 2 min', kiss: 'Bisou à la Piouz 💥', tour: 'Tour du propriétaire (tête de la Piouz)', secret: 'Le foil de la Prof',
     t30: 'Finir le slalom (moins de 30 s)', t25: 'Slalom en moins de 25 s', t21: 'Slalom en moins de 21 s', nopen: '8/8 portes, zéro pénalité', peak: 'Pointe à {v} km/h',
     d1: '{a} m', d2: '{b} m', d3: '{c} m', perf8: 'Mesure parfaite : 8 PARFAIT d\'affilée', zen: 'Cœur zen : finir sous 130 BPM', cardio: 'Cardio : 10 s au-dessus de 180 BPM', tempo: 'Tenir 4 accélérations de tempo',
     p4: '4 PARFAIT au départ', first: 'Décoller du premier coup', pumps: 'Décoller en moins de 3 pumps'}},
-  en: {objTitle: 'GOALS', objWin: 'GOAL!', objNew: 'new!', objSecret: '???', objN: {
-    s1: 'Score 5,000', s2: 'Score 12,000', s3: 'Score 20,000', carve: 'Small carve (50°)', big: 'Big carve (100°)', cut: 'Cutback (160°)', snake: 'The snake: 3 alternating carves', x3: '×3 multiplier',
-    face: 'Eat the face: {f} × your take-off speed', waves: '3 waves in a row without touching down', foil: 'Grab the letters F-O-I-L', pump: 'Grab the letters P-U-M-P', shore: 'Brush the shore break and get out', tamed: 'Foil tamed with the front foot',
-    nofall: 'No wipeout for 2 min', kiss: 'Kiss the Piouz 💥', tour: 'Grand tour: round the Piouz', secret: 'The Prof\'s medallion',
+  en: {objTitle: 'GOALS', objWin: 'GOAL!', objNew: 'new!', objSecret: '??? (the Prof lost something near the beach)', objN: {
+    s1: 'Score 5,000', s2: 'Score 12,000', s3: 'Score 20,000', s4: 'Score 50,000', s5: 'Score 100,000', carve: 'Small carve (50°)', big: 'Big carve (100°)', cut: 'Cutback (160°)', snake: 'The snake: 3 alternating carves', x3: '×3 multiplier',
+    face: 'Race down the wave at {f} × your take-off speed', waves: '3 waves in a row without touching down', foil: 'Grab the letters F-O-I-L', pump: 'Grab the letters P-U-M-P', shore: 'Brush the shore break and get out', tamed: 'Foil tamed with the front foot',
+    nofall: 'No wipeout for 2 min', kiss: 'Kiss the Piouz 💥', tour: 'Grand tour: round the Piouz', secret: 'The Prof\'s foil',
     t30: 'Finish the slalom (under 30 s)', t25: 'Slalom under 25 s', t21: 'Slalom under 21 s', nopen: '8/8 gates, no penalty', peak: 'Top speed {v} km/h',
     d1: '{a} m', d2: '{b} m', d3: '{c} m', perf8: 'Perfect bar: 8 PERFECT in a row', zen: 'Zen heart: finish under 130 BPM', cardio: 'Cardio: 10 s above 180 BPM', tempo: 'Hold 4 tempo speed-ups',
     p4: '4 PERFECT on the run-up', first: 'Take off on the first try', pumps: 'Take off in fewer than 3 pumps'}},
-  es: {objTitle: 'OBJETIVOS', objWin: '¡OBJETIVO!', objNew: '¡nuevo!', objSecret: '???', objN: {
-    s1: 'Puntuación 5 000', s2: 'Puntuación 12 000', s3: 'Puntuación 20 000', carve: 'Carve pequeño (50°)', big: 'Gran carve (100°)', cut: 'Cutback (160°)', snake: 'La serpiente: 3 carves alternos', x3: 'Multiplicador ×3',
-    face: 'Trágate la pared: {f} × tu velocidad de despegue', waves: '3 olas seguidas sin tocar el agua', foil: 'Atrapa las letras F-O-I-L', pump: 'Atrapa las letras P-U-M-P', shore: 'Roza la rompiente y sal', tamed: 'Foil domado con el pie delantero',
-    nofall: 'Cero caídas en 2 min', kiss: 'Beso a la Piouz 💥', tour: 'Vuelta del propietario (punta dla Piouz)', secret: 'El medallón de la Profe',
+  es: {objTitle: 'OBJETIVOS', objWin: '¡OBJETIVO!', objNew: '¡nuevo!', objSecret: '??? (la Profe perdió algo cerca de la playa)', objN: {
+    s1: 'Puntuación 5 000', s2: 'Puntuación 12 000', s3: 'Puntuación 20 000', s4: 'Puntuación 50 000', s5: 'Puntuación 100 000', carve: 'Carve pequeño (50°)', big: 'Gran carve (100°)', cut: 'Cutback (160°)', snake: 'La serpiente: 3 carves alternos', x3: 'Multiplicador ×3',
+    face: 'Baja la ola a {f} × tu velocidad de despegue', waves: '3 olas seguidas sin tocar el agua', foil: 'Atrapa las letras F-O-I-L', pump: 'Atrapa las letras P-U-M-P', shore: 'Roza la rompiente y sal', tamed: 'Foil domado con el pie delantero',
+    nofall: 'Cero caídas en 2 min', kiss: 'Beso a la Piouz 💥', tour: 'Vuelta del propietario (punta dla Piouz)', secret: 'El foil de la Profe',
     t30: 'Terminar el slalom (menos de 30 s)', t25: 'Slalom en menos de 25 s', t21: 'Slalom en menos de 21 s', nopen: '8/8 puertas, sin penalización', peak: 'Punta de {v} km/h',
     d1: '{a} m', d2: '{b} m', d3: '{c} m', perf8: 'Compás perfecto: 8 PERFECTO seguidos', zen: 'Corazón zen: terminar por debajo de 130 BPM', cardio: 'Cardio: 10 s por encima de 180 BPM', tempo: 'Aguantar 4 aceleraciones de tempo',
     p4: '4 PERFECTO en la salida', first: 'Despegar a la primera', pumps: 'Despegar con menos de 3 bombeos'}},
-  it: {objTitle: 'OBIETTIVI', objWin: 'OBIETTIVO!', objNew: 'nuovo!', objSecret: '???', objN: {
-    s1: 'Punteggio 5 000', s2: 'Punteggio 12 000', s3: 'Punteggio 20 000', carve: 'Piccolo carve (50°)', big: 'Grande carve (100°)', cut: 'Cutback (160°)', snake: 'Il serpente: 3 carve alternati', x3: 'Moltiplicatore ×3',
-    face: 'Divora la parete: {f} × la tua velocità di decollo', waves: '3 onde di fila senza toccare l\'acqua', foil: 'Prendi le lettere F-O-I-L', pump: 'Prendi le lettere P-U-M-P', shore: 'Sfiora lo shore break ed esci', tamed: 'Foil domato col piede anteriore',
-    nofall: 'Zero cadute in 2 min', kiss: 'Bacio alla Piouz 💥', tour: 'Giro del proprietario (testa della Piouz)', secret: 'Il medaglione della Prof',
+  it: {objTitle: 'OBIETTIVI', objWin: 'OBIETTIVO!', objNew: 'nuovo!', objSecret: '??? (la Prof ha perso qualcosa vicino alla spiaggia)', objN: {
+    s1: 'Punteggio 5 000', s2: 'Punteggio 12 000', s3: 'Punteggio 20 000', s4: 'Punteggio 50 000', s5: 'Punteggio 100 000', carve: 'Piccolo carve (50°)', big: 'Grande carve (100°)', cut: 'Cutback (160°)', snake: 'Il serpente: 3 carve alternati', x3: 'Moltiplicatore ×3',
+    face: 'Scendi l\'onda a {f} × la tua velocità di decollo', waves: '3 onde di fila senza toccare l\'acqua', foil: 'Prendi le lettere F-O-I-L', pump: 'Prendi le lettere P-U-M-P', shore: 'Sfiora lo shore break ed esci', tamed: 'Foil domato col piede anteriore',
+    nofall: 'Zero cadute in 2 min', kiss: 'Bacio alla Piouz 💥', tour: 'Giro del proprietario (testa della Piouz)', secret: 'Il foil della Prof',
     t30: 'Finire lo slalom (meno di 30 s)', t25: 'Slalom in meno di 25 s', t21: 'Slalom in meno di 21 s', nopen: '8/8 porte, zero penalità', peak: 'Punta a {v} km/h',
     d1: '{a} m', d2: '{b} m', d3: '{c} m', perf8: 'Battuta perfetta: 8 PERFETTO di fila', zen: 'Cuore zen: finire sotto i 130 BPM', cardio: 'Cardio: 10 s sopra i 180 BPM', tempo: 'Reggere 4 accelerazioni di tempo',
     p4: '4 PERFETTO alla partenza', first: 'Decollare al primo colpo', pumps: 'Decollare con meno di 3 pompate'}},
-  de: {objTitle: 'ZIELE', objWin: 'ZIEL!', objNew: 'neu!', objSecret: '???', objN: {
-    s1: 'Punktzahl 5 000', s2: 'Punktzahl 12 000', s3: 'Punktzahl 20 000', carve: 'Kleiner Carve (50°)', big: 'Großer Carve (100°)', cut: 'Cutback (160°)', snake: 'Die Schlange: 3 Carves im Wechsel', x3: 'Multiplikator ×3',
-    face: 'Friss die Welle: {f} × dein Abhebetempo', waves: '3 Wellen am Stück ohne Aufsetzen', foil: 'Schnapp dir die Buchstaben F-O-I-L', pump: 'Schnapp dir die Buchstaben P-U-M-P', shore: 'Streif den Shorebreak und komm raus', tamed: 'Foil gezähmt mit dem vorderen Fuß',
-    nofall: 'Kein Sturz in 2 min', kiss: 'Küsschen für die Piouz 💥', tour: 'Große Runde um die Piouzkopf', secret: 'Das Medaillon der Professorin',
+  de: {objTitle: 'ZIELE', objWin: 'ZIEL!', objNew: 'neu!', objSecret: '??? (die Prof hat am Strand etwas verloren)', objN: {
+    s1: 'Punktzahl 5 000', s2: 'Punktzahl 12 000', s3: 'Punktzahl 20 000', s4: 'Punktzahl 50 000', s5: 'Punktzahl 100 000', carve: 'Kleiner Carve (50°)', big: 'Großer Carve (100°)', cut: 'Cutback (160°)', snake: 'Die Schlange: 3 Carves im Wechsel', x3: 'Multiplikator ×3',
+    face: 'Fahr die Welle runter mit {f} × deinem Abhebetempo', waves: '3 Wellen am Stück ohne Aufsetzen', foil: 'Schnapp dir die Buchstaben F-O-I-L', pump: 'Schnapp dir die Buchstaben P-U-M-P', shore: 'Streif den Shorebreak und komm raus', tamed: 'Foil gezähmt mit dem vorderen Fuß',
+    nofall: 'Kein Sturz in 2 min', kiss: 'Küsschen für die Piouz 💥', tour: 'Große Runde um die Piouzkopf', secret: 'Das Foil der Professorin',
     t30: 'Slalom beenden (unter 30 s)', t25: 'Slalom unter 25 s', t21: 'Slalom unter 21 s', nopen: '8/8 Tore, keine Strafe', peak: 'Spitze {v} km/h',
     d1: '{a} m', d2: '{b} m', d3: '{c} m', perf8: 'Perfekter Takt: 8 PERFEKT am Stück', zen: 'Zen-Herz: unter 130 BPM ins Ziel', cardio: 'Cardio: 10 s über 180 BPM', tempo: '4 Tempo-Steigerungen durchhalten',
     p4: '4 PERFEKT beim Anlauf', first: 'Beim ersten Versuch abheben', pumps: 'Mit weniger als 3 Pumps abheben'}}};
@@ -527,3 +527,28 @@ window.DOCK_I18N_EXTRA = {
   it: {swellUp: '🌊 L\'onda cresce: {h}', swellDown: '🌊 L\'onda si calma: {h}'},
   de: {swellUp: '🌊 Die Dünung legt zu: {h}', swellDown: '🌊 Die Dünung lässt nach: {h}'}};
   for(const l in add) window.DOCK_I18N_EXTRA[l] = Object.assign(window.DOCK_I18N_EXTRA[l] || {}, add[l]); })();
+
+// 🎮 missions façon THPS2 (Carve) : le surfeur à percuter, la porte de bouées, frôler la Piouz, le 360
+(function(){ const add = {
+  fr: {pBonus: '🎳 BONUS !', surfHey: '😤 HÉ ! ÇA VA PAS ?!', surfProf: '👵 Prof Foil : pas dans la vraie vie, hein ! 😅', surfScold: 'Non mais ÇA VA PAS\u00a0?! Pas dans la vraie vie, hein\u00a0! On contourne les surfeurs.', surfEnd: '🏄 En vrai, on contourne les surfeurs !'},
+  en: {pBonus: '🎳 BONUS!', surfHey: '😤 OI! WATCH IT!', surfProf: '👵 Prof Foil: not in real life, OK? 😅', surfScold: 'Are you CRAZY?! Never in real life! You steer around surfers.', surfEnd: '🏄 In real life, go around surfers!'},
+  es: {pBonus: '🎳 ¡BONUS!', surfHey: '😤 ¡EH! ¿¡PERO QUÉ HACES!?', surfProf: '👵 Prof Foil: ¡en la vida real, ni se te ocurra! 😅', surfScold: '¿¡ESTÁS LOCO?! ¡En la vida real, ni se te ocurra! A los surfistas se les esquiva.', surfEnd: '🏄 En la vida real, se esquiva a los surfistas.'},
+  it: {pBonus: '🎳 BONUS!', surfHey: '😤 EHI! MA SEI MATTO?!', surfProf: '👵 Prof Foil: non nella vita vera, eh! 😅', surfScold: 'Ma SEI MATTO?! Non nella vita vera, eh! I surfisti si evitano.', surfEnd: '🏄 Nella vita vera, i surfisti si evitano!'},
+  de: {pBonus: '🎳 BONUS!', surfHey: '😤 HEY! GEHT\'S NOCH?!', surfProf: '👵 Prof Foil: aber nicht im echten Leben! 😅', surfScold: 'Bist du VERRÜCKT?! Niemals im echten Leben! Surfern weicht man aus.', surfEnd: '🏄 Im echten Leben: Surfern ausweichen!'}};
+  const objN = {
+    fr: {surfer: 'Fais tomber le surfeur 🎳', gate: 'Passe entre les bouées', dolph: 'Va voir les dauphins au large 🐬', rase: 'Frôle l\'échelle Piouz', t360: 'Pit style\u00a0: un 360 complet sans tomber'},
+    en: {surfer: 'Knock the surfer off 🎳', gate: 'Fly between the buoys', dolph: 'Visit the dolphins out at sea 🐬', rase: 'Buzz the Piouz ladder', t360: 'Pit style: a full 360 without falling'},
+    es: {surfer: 'Tumba al surfista 🎳', gate: 'Pasa entre las boyas', dolph: 'Ve a ver los delfines mar adentro 🐬', rase: 'Roza la escalera Piouz', t360: 'Pit style: un 360 completo sin caer'},
+    it: {surfer: 'Fai cadere il surfista 🎳', gate: 'Passa tra le boe', dolph: 'Vai a trovare i delfini al largo 🐬', rase: 'Sfiora la scala Piouz', t360: 'Pit style: un 360 completo senza cadere'},
+    de: {surfer: 'Wirf den Surfer vom Brett 🎳', gate: 'Flieg zwischen den Bojen durch', dolph: 'Besuch die Delfine draußen auf See 🐬', rase: 'Streif die Piouz-Leiter', t360: 'Pit style: eine volle 360 ohne Sturz'}};
+  for(const l in add){ const E = window.DOCK_I18N_EXTRA[l] = Object.assign(window.DOCK_I18N_EXTRA[l] || {}, add[l]); E.objN = Object.assign(E.objN || {}, objN[l]); } })();
+
+// 🚦 windsurfs qui tiennent leur ligne : collision et règle de priorité
+(function(){ const add = {
+  fr: {pCollide: '💥 COLLISION !', ruleWind: '🚦 Les windsurfs tiennent leur ligne : regarde loin et contourne tôt !'},
+  en: {pCollide: '💥 COLLISION!', ruleWind: '🚦 Windsurfers hold their line: look far ahead and go around early!'},
+  es: {pCollide: '💥 ¡CHOQUE!', ruleWind: '🚦 Los windsurfistas mantienen su rumbo: mira lejos y esquiva pronto.'},
+  it: {pCollide: '💥 COLLISIONE!', ruleWind: '🚦 I windsurf tengono la loro rotta: guarda lontano e gira presto!'},
+  de: {pCollide: '💥 KOLLISION!', ruleWind: '🚦 Windsurfer halten ihren Kurs: weit vorausschauen und früh ausweichen!'}};
+  const objN = {fr: {nocol: 'Zéro collision en 2 min'}, en: {nocol: 'Zero collisions in 2 min'}, es: {nocol: 'Cero choques en 2 min'}, it: {nocol: 'Zero collisioni in 2 min'}, de: {nocol: 'Null Kollisionen in 2 min'}};
+  for(const l in add){ const E = window.DOCK_I18N_EXTRA[l] = Object.assign(window.DOCK_I18N_EXTRA[l] || {}, add[l]); E.objN = Object.assign(E.objN || {}, objN[l]); } })();

@@ -157,7 +157,7 @@ seoLang((/[?&]lang=(en|es|it|de)\b/i.exec(location.search) || [])[1] || 'fr');</
   .wp-x{position:absolute; top:10px; right:12px; border:0; border-radius:999px; padding:6px 12px; background:#334155; color:#fff; font-weight:900; cursor:pointer;}
   @media (max-height:500px){ .wp-box{padding:12px;} .wp-t{font-size:1.15rem; margin-bottom:8px;} .wp-c{padding:8px 6px;} .wp-c svg{height:40px;} .wp-c small{display:none;} }
   @media (max-width:700px) and (orientation:portrait){ .wp-row{grid-template-columns:1fr 1fr;} }
-  .beat{position:fixed; z-index:7; left:50%; top:17%; bottom:auto; transform:translateX(-50%) skewX(-8deg); width:min(1000px, 92vw); background:rgba(11,18,34,.88); border:2px solid #fbbf24; border-radius:18px; padding:14px 22px 16px 16px; display:grid; grid-template-columns:164px 1fr; column-gap:20px; align-items:center;}
+  .beat{position:fixed; z-index:7; left:64%; top:auto; bottom:22px; transform:translateX(-50%) skewX(-8deg); width:min(820px, 54vw); background:rgba(11,18,34,.88); border:2px solid #fbbf24; border-radius:18px; padding:14px 22px 16px 16px; display:grid; grid-template-columns:164px 1fr; column-gap:20px; align-items:center;}
   /* le Prof en grand DANS le panneau (colonne de gauche, buste entier : tête, lunettes, moustache, médaillon), le rythme à droite */
   .bface{grid-column:1; grid-row:1 / span 3; width:164px; height:164px; border-radius:16px; overflow:hidden; background:radial-gradient(circle at 50% 38%, #fff1c9, #ffc08a 55%, #e07a5f); border:3px solid #fbbf24; box-shadow:0 6px 18px rgba(0,0,0,.4); transform:skewX(8deg); transform-origin:50% 100%;}
   .bface img, .bface svg{width:100%; height:100%; display:block; object-fit:fill;} .bface.ouch{animation:rshake .25s linear 3; border-color:#ef4444 !important;} .bface.yay{animation:rwin .35s ease-out; border-color:#22c55e !important;} .bface.talk{animation:btalk .3s ease-in-out infinite alternate;} @keyframes btalk{to{transform:skewX(8deg) translateY(-7px) rotate(-2.5deg) scale(1.03);}}
@@ -193,6 +193,9 @@ seoLang((/[?&]lang=(en|es|it|de)\b/i.exec(location.search) || [])[1] || 'fr');</
   body.touch > .ntime{position:fixed; z-index:8; left:50%; top:calc(4px + env(safe-area-inset-top)); transform:translateX(-50%); font-size:1.7rem; pointer-events:none; transition:opacity .3s;}   /* ⏱ chrono au centre en haut sur mobile (retour Paul) */
   body.touch .tbar{max-width:calc(50vw - 64px);}
   .eread{flex-basis:100%; text-align:center; font-size:.95rem; font-weight:800; color:#7dd3fc; margin-top:4px; max-width:min(86vw, 520px);} .eread em{font-style:normal; font-weight:700; color:#cbd5e1;}
+  .estats{font-weight:800; color:#cbd5e1; font-size:.95rem; margin:2px 0 6px;} .estats em{display:block; font-style:normal; color:#fca5a5; margin-top:4px;}
+  .erow{display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-top:12px;} .erow .eshare{margin:0;}
+  .ebtn{border:2px solid #fbbf24; border-radius:999px; padding:9px 18px; font:900 1rem/1.2 inherit; font-family:inherit; cursor:pointer; color:#fde68a; background:rgba(15,23,42,.9);} .ebtn:hover{background:#fbbf24; color:#0f172a;}
   .eshare{display:block; margin:12px auto 2px; border:0; border-radius:999px; padding:11px 22px; font:900 1rem/1.2 inherit; font-family:inherit; cursor:pointer; color:#fff; background:linear-gradient(90deg, #f97316, #db2777 55%, #7c3aed); box-shadow:0 4px 0 rgba(0,0,0,.35); pointer-events:auto;} .eshare:active{transform:translateY(2px);} body.touch .eshare{padding:8px 16px; font-size:.85rem; margin-top:6px;}
   .eobj{flex-basis:100%; text-align:center; font-size:.85rem; color:#cbd5e1; margin-top:6px; max-width:min(86vw, 520px);} .eobj .eo-n{font-weight:900; color:#fde68a; font-size:1.05rem;} .eobj .eo-new{background:#fbbf24; color:#0b1222; font-weight:900; border-radius:999px; padding:1px 8px; font-size:.75rem;} .eobj .eo-l{display:block; color:#fde68a; font-weight:700; margin-top:3px;}
   .fitrow .wfit.objg{background:#1e293b; color:#fde68a;} .fitrow .wfit.objg.new{box-shadow:0 0 0 2px #fbbf24;}
@@ -264,6 +267,19 @@ seoLang((/[?&]lang=(en|es|it|de)\b/i.exec(location.search) || [])[1] || 'fr');</
   @media (prefers-reduced-motion: reduce){ .tabs.pulse button, .dlg .next{animation:none !important;} .st .bar i, .st .bar b{transition:none !important;} }
   .tabs.pulse button{animation:tabp 1.2s ease-in-out infinite;} .tabs.pulse button:nth-child(2){animation-delay:.15s} .tabs.pulse button:nth-child(3){animation-delay:.3s} .tabs.pulse button:nth-child(4){animation-delay:.45s}
   @keyframes tabp{50%{transform:translateX(12px); box-shadow:0 0 0 3px #fbbf24, 0 6px 18px rgba(0,0,0,.35);}}
+  /* 👵 la Prof qui gronde (percuter le surfeur) : portrait géant au centre, bulle, petit tremblement */
+  .scold{position:fixed; z-index:9; left:50%; top:50%; transform:translate(-50%, -50%); display:flex; flex-direction:column; align-items:center; gap:14px; pointer-events:none; transition:opacity .3s, transform .3s;}
+  .scold.hide{opacity:0; transform:translate(-50%, -50%) scale(.7);}
+  .scold .sc-face{width:min(46vh, 420px); height:min(46vh, 420px); border-radius:50%; overflow:hidden; border:6px solid #b91c1c; background:#fde68a; box-shadow:0 20px 70px rgba(0,0,0,.55); animation:scshake .18s 6;}
+  .scold .sc-face img{width:100%; height:100%; object-fit:cover;}
+  .scold .sc-bub{max-width:min(620px, 90vw); background:#fffdf7; color:#7f1d1d; border:4px solid #0f172a; border-radius:18px; padding:12px 20px; font-weight:900; font-size:clamp(1.1rem, 3.2vh, 1.7rem); text-align:center; box-shadow:0 10px 30px rgba(0,0,0,.4);}
+  @keyframes scshake{0%,100%{transform:rotate(0)} 25%{transform:rotate(-5deg)} 75%{transform:rotate(5deg)}}
+  /* 🎯 objectifs réussis pendant la session (retour Paul : une notif qui reste) : pile à GAUCHE (à droite elle cachait le profil de houle), le plus récent en haut, jusqu'à la fin de la session */
+  .ofeed{position:fixed; z-index:6; left:14px; top:24%; display:flex; flex-direction:column; gap:6px; max-width:min(300px, 34vw); pointer-events:none;}
+  .ofeed div{background:rgba(11,18,34,.86); color:#fde68a; border:2px solid #22c55e; border-radius:12px; padding:6px 10px; font-weight:800; font-size:.85rem; line-height:1.25; box-shadow:0 4px 14px rgba(0,0,0,.35); animation:ofin .4s ease-out;}
+  .ofeed div:nth-child(n+6){display:none;}
+  @keyframes ofin{from{transform:translateX(-40px); opacity:0} to{transform:none; opacity:1}}
+  body.touch .ofeed{top:calc(96px + env(safe-area-inset-top)); left:8px; max-width:40vw;} body.touch .ofeed div{font-size:.72rem; padding:4px 8px;}
   .big{position:fixed; z-index:4; left:auto; right:5%; bottom:200px; transform:none; width:330px; height:330px; border-radius:50%; overflow:hidden; border:5px solid #0f172a; box-shadow:0 20px 60px rgba(0,0,0,.45); transition:opacity .35s, transform .35s;}
   .big.hide{transform:scale(.6);}
 
@@ -297,7 +313,7 @@ seoLang((/[?&]lang=(en|es|it|de)\b/i.exec(location.search) || [])[1] || 'fr');</
   body.touch .tbar b{font-size:.85rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;} body.touch .tbar button{padding:8px 11px; font-size:.85rem;}
   body.touch .tst{width:80px;} body.touch .tlab{font-size:.7rem;}
   body.touch .nfs{right:calc(8px + env(safe-area-inset-right)); top:calc(6px + env(safe-area-inset-top)); bottom:auto; transform:scale(.55); transform-origin:top right; gap:6px;}
-  body.touch .plane, body.touch .beat{top:calc(54px + env(safe-area-inset-top)); width:min(620px, 66vw); padding:6px 12px 8px;}
+  body.touch .plane, body.touch .beat{top:calc(54px + env(safe-area-inset-top)); bottom:auto; left:50%; width:min(620px, 66vw); padding:6px 12px 8px;}
   body.touch .plane{border-width:3px; box-shadow:0 5px 0 #9d174d;} body.touch .ptrack{height:44px;} body.touch .pk{width:36px; height:36px; font-size:1.2rem; border-width:3px;}
   body.touch .pcur{top:-18px; font-size:1.4rem;} body.touch .plg{display:none;} body.touch .prate{font-size:1.1rem; margin-top:4px;} body.touch .pheart{font-size:.95rem; margin-top:4px;}
   body.touch .beatlbl{font-size:.95rem; margin-bottom:6px;} body.touch .brate{font-size:1.1rem; margin-top:4px;}
@@ -393,7 +409,7 @@ seoLang((/[?&]lang=(en|es|it|de)\b/i.exec(location.search) || [])[1] || 'fr');</
 <div class="beat hide" id="beat"><div class="bface" id="bface" aria-hidden="true"></div><div class="beatlbl" id="beatlbl"></div><div class="lane"><i class="note"></i><i class="note"></i><i class="note"></i><i class="note hop"></i><b class="bhead" id="bhead"></b></div><div class="brate" id="brate"></div></div>
 <div class="vig" id="vig"></div><div class="slow good" id="good"></div><div class="slow foot" id="foot"></div><div class="slow shore" id="shore"></div><div class="fade" id="fade"></div><div class="objp off" id="objp"></div><div class="objc off" id="objc" role="button" tabindex="0"></div><div class="slow" id="slow"></div>
 <div class="pops" id="pops"></div>
-<div class="endc hide" id="endc"><div class="etitle" id="etitle"></div><div class="medal" id="emedal">🥇</div><small id="esl">SCORE</small><b id="escore">0</b><div class="rec" id="erec"></div><div class="eread" id="eread"></div><div class="eobj" id="eobj"></div><button class="eshare" id="eshare" type="button"></button></div>
+<div class="endc hide" id="endc"><div class="etitle" id="etitle"></div><div class="medal" id="emedal">🥇</div><small id="esl">SCORE</small><b id="escore">0</b><div class="estats" id="estats"></div><div class="rec" id="erec"></div><div class="eread" id="eread"></div><div class="eobj" id="eobj"></div><div class="erow"><button class="eshare" id="eshare" type="button"></button><button class="ebtn" id="eagain" type="button"></button><button class="ebtn" id="ewave" type="button"></button><button class="ebtn" id="emenu" type="button"></button></div></div>
 <div class="pad hide" id="pad" data-k="step"><button id="tl" class="steer" aria-label="gauche">⬅️</button><button id="td" class="steer lk" aria-label="appuie">↓</button><button id="tu" class="steer lk" aria-label="déleste">↑</button><button id="tp" class="steer pump">💪 Pump</button><button id="tr" class="steer" aria-label="droite">➡️</button></div>
 <div class="wpick hide" id="wpick" role="dialog" aria-modal="true" aria-labelledby="wpt"><div class="wp-box"><b class="wp-t" id="wpt">🌊 Choisis ta vague</b><div class="wp-row" id="wprow"></div><button class="wp-x" id="wpx">↩</button></div></div>
 <div class="rot hide" id="rot"><div><b class="rot-ico">📱</b><p id="rotTxt">Tourne ton téléphone</p><button id="rotOk">Jouer en portrait quand même</button><button id="rotBack" class="alt">↩</button></div></div>
@@ -402,6 +418,8 @@ seoLang((/[?&]lang=(en|es|it|de)\b/i.exec(location.search) || [])[1] || 'fr');</
   <button data-k="carve">🔥 Carver à fond (recommandé, le plus fun)</button><button data-k="vite">🚀 Aller vite</button><button data-k="loin">🌊 Me balader longtemps</button><button data-k="apprendre">🎵 Le pump, une histoire de rythme</button>
 </nav>
 <div class="big" id="big"></div>
+<div class="ofeed" id="ofeed" aria-live="polite"></div>
+<div class="scold hide" id="scold"><div class="sc-face"><img id="scimg" alt=""></div><div class="sc-bub" id="scbub"></div></div>
 <div class="profbtn"><button id="profbtn">🧑‍🔬 Prof. Foil</button></div>
 <div class="dlg" id="dlg"><div class="face" id="face"></div><div class="box"><div class="whorow"><div class="who">Prof. Foil</div><div class="langs" id="langs" role="group" aria-label="Langue"></div></div><div class="say" id="say"></div><div class="ch" id="ch"></div><div class="next" id="nx">▼ clique pour continuer</div></div></div>
 <div class="tip hide" id="tip"><div class="mini" id="mini"></div><div class="bub" id="bub"></div></div>
@@ -429,7 +447,7 @@ seoLang((/[?&]lang=(en|es|it|de)\b/i.exec(location.search) || [])[1] || 'fr');</
   var last = 0; document.addEventListener('touchend', function(e){ var n = Date.now(); if(n - last < 300 && !(e.target.closest && e.target.closest('button, a, input, select, [role=button]'))) e.preventDefault(); last = n; }, {passive: false});
   document.addEventListener('wheel', function(e){ if(e.ctrlKey) e.preventDefault(); }, {passive: false}); })();
 </script>
-<script src="dock-i18n.js?v=20261127r"></script>
+<script src="dock-i18n.js?v=20261128z"></script>
 <script src="ailes.js?v=20261122"></script>
 <script type="module">
 import * as THREE from 'three';
@@ -713,9 +731,10 @@ function roundBoard(){ const L = BOARD_L, n = 3.4, hw = z => 0.205 - 0.022*Math.
   for(let i = 0; i <= 96; i++){ const a = i/96*Math.PI*2, ca = Math.cos(a), sa = Math.sin(a), z = Math.sign(sa)*Math.abs(sa)**(2/n)*L/2, x = Math.sign(ca)*Math.abs(ca)**(2/n)*hw(z); i ? sh.lineTo(x, z) : sh.moveTo(x, z); }
   const g = new THREE.ExtrudeGeometry(sh, {depth: 0.046, bevelEnabled: true, bevelThickness: 0.012, bevelSize: 0.012, bevelSegments: 3, curveSegments: 48}); g.rotateX(Math.PI/2); g.translate(0, 0.023, 0); return g; }
 const foil = new THREE.Group(); turn.add(foil);
-const board = new THREE.Mesh(roundBoard(), boardM); board.castShadow = true; foil.add(board);
-[[-0.12, 0.1, 0.11], [0.12, 0.1, 0.11], [0, -0.45, 0.13]].forEach(([x, z, w]) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w, 0.004, 0.012), blue); m.position.set(x, 0.037, z); foil.add(m); });
-{ const pad = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.007, 0.78), new THREE.MeshStandardMaterial({color: '#2b6f8c', roughness: 0.95})); pad.position.set(0, 0.0345, 0.02); foil.add(pad);
+const BOARD_DZ = -0.2;   // 📸 photos : le mât est à ~25 cm de la queue, pas au milieu de la planche → la planche (et son pad) avance de 20 cm sur le mât
+const board = new THREE.Mesh(roundBoard(), boardM); board.castShadow = true; board.position.z = BOARD_DZ; foil.add(board);
+[[-0.12, 0.1, 0.11], [0.12, 0.1, 0.11], [0, -0.45, 0.13]].forEach(([x, z, w]) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w, 0.004, 0.012), blue); m.position.set(x, 0.037, z + BOARD_DZ); foil.add(m); });
+{ const pad = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.007, 0.78), new THREE.MeshStandardMaterial({color: '#2b6f8c', roughness: 0.95})); pad.position.set(0, 0.0345, 0.02 + BOARD_DZ); foil.add(pad);
   const plate = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.014, 0.2), carbon); plate.position.set(0, -0.04, 0.05); foil.add(plate); }
 const mast = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.75, 0.12), carbon); mast.position.set(0, -0.41, 0.05); mast.castShadow = true; foil.add(mast);
 const fus = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.016, 0.7, 12).rotateX(Math.PI/2), carbon); fus.position.set(0, -0.78, 0.07); foil.add(fus);
@@ -742,15 +761,43 @@ foil.rotation.z = 0;
    bras (bras, avant-bras, main) et jambes (cuisse, tibia, chausson) posés par cinématique inverse : on donne où sont les pieds et les mains,
    les genoux et les coudes se plient tout seuls. Géométries et matériaux partagés entre les trois (peu de mémoire, mêmes appels de dessin qu'avant ou presque). */
 const suit = new THREE.MeshStandardMaterial({color: '#1d3147', roughness: 0.6}), suit2 = new THREE.MeshStandardMaterial({color: '#1787a8', roughness: 0.55}),
-  vestM = new THREE.MeshStandardMaterial({color: '#e4572e', roughness: 0.7}), skin = new THREE.MeshStandardMaterial({color: '#c98f6b', roughness: 0.7}),
-  helmet = new THREE.MeshStandardMaterial({color: '#f4f6f8', roughness: 0.25}), bootM = new THREE.MeshStandardMaterial({color: '#0f1318', roughness: 0.8}),
+  vestM = new THREE.MeshStandardMaterial({color: '#e4572e', roughness: 0.7}), skin = new THREE.MeshStandardMaterial({color: '#d8a07a', roughness: 0.65, emissive: '#5a3020', emissiveIntensity: 0.35}),   // un peu d'émissif : le visage reste lisible à contre-jour du couchant
+  helmet = new THREE.MeshStandardMaterial({color: '#f4f6f8', roughness: 0.25}), bootM = new THREE.MeshStandardMaterial({color: '#eceef0', roughness: 0.7}),   // chaussons blancs (photos)
   visorM = new THREE.MeshStandardMaterial({color: '#0b0f14', roughness: 0.15, metalness: 0.6});
+// 👤 bonhomme v2 (retour Paul : « moche ») d'après ses photos : combinaison noire en haut, jambes grises avec genouillères noires, casquette grise, lunettes ;
+// membres en LATHE effilés (cuisse/mollet galbés, poignets et chevilles fins) au lieu de tubes ; torse en V (épaules larges, taille fine) ; tête plus petite, cou court
+const suitTop = new THREE.MeshStandardMaterial({color: '#16191f', roughness: 0.55}), suitLeg = new THREE.MeshStandardMaterial({color: '#1b1f26', roughness: 0.5}),
+  suitTopB = new THREE.MeshStandardMaterial({color: '#16191f', roughness: 0.55, side: THREE.BackSide}), suitLegB = new THREE.MeshStandardMaterial({color: '#1b1f26', roughness: 0.5, side: THREE.BackSide}),   // formes en lathe : enroulement inversé → BackSide (éclairage juste, sans couture claire du DoubleSide)
+  padM = new THREE.MeshStandardMaterial({color: '#4b5563', roughness: 0.6}), eyeM = new THREE.MeshStandardMaterial({color: '#f8fafc', roughness: 0.3}), pupilM = new THREE.MeshStandardMaterial({color: '#1e293b', roughness: 0.2}),
+  hairM = new THREE.MeshStandardMaterial({color: '#3a2a1f', roughness: 0.9, side: THREE.DoubleSide}), stubM = new THREE.MeshStandardMaterial({color: '#80583f', roughness: 1, side: THREE.DoubleSide, emissive: '#3a2218', emissiveIntensity: 0.3}), lipM = new THREE.MeshStandardMaterial({color: '#8a4b3c', roughness: 0.6}), whiteM = new THREE.MeshStandardMaterial({color: '#eef0f2', roughness: 0.5}), capM = new THREE.MeshStandardMaterial({color: '#e5e7eb', roughness: 0.7}),
+  capD = new THREE.MeshStandardMaterial({color: '#0ea5b7', roughness: 0.6}), shadesM = new THREE.MeshStandardMaterial({color: '#07090c', roughness: 0.1, metalness: 0.7});
+// segment de membre galbé : rayon r1 en haut (articulation à y = 0), r2 en bas (y = −l), bosse « bul » (muscle) au tiers haut, bouts arrondis
+const limbG = (r1, r2, l, bul) => { const k = 'L' + r1 + '_' + r2 + '_' + l + '_' + bul; if(HG[k]) return HG[k];
+  // capsule déformée (enroulement standard, normales justes) : rayon r1 en haut → r2 en bas, bosse musculaire « bul » au tiers haut
+  const g = new THREE.CapsuleGeometry(1, l, 6, 16).translate(0, -l/2, 0), P = g.attributes.position;
+  for(let i = 0; i < P.count; i++){ const y = P.getY(i), t = Math.max(0, Math.min(1, (y + l)/l)), r = (r2 + (r1 - r2)*t)*(1 + bul*Math.sin(Math.PI*Math.min(1, t*1.25)));
+    const yy = y > 0 ? y*r1 : y < -l ? -l + (y + l)*r2 : y; P.setXYZ(i, P.getX(i)*r, yy, P.getZ(i)*r); }
+  g.computeVertexNormals(); return HG[k] = g; };
 const HG = {}, capG = (r, l) => { const k = r + '_' + l; return HG[k] || (HG[k] = new THREE.CapsuleGeometry(r, l, 4, 10).translate(0, -l/2, 0)); };
-HG.pelvis = new THREE.SphereGeometry(0.15, 14, 10).scale(0.96, 0.76, 0.76);
-HG.chest = new THREE.CapsuleGeometry(0.13, 0.22, 5, 14).scale(1.25, 1, 0.76);
-HG.vest = new THREE.CylinderGeometry(0.174, 0.148, 0.25, 14).scale(1, 1, 0.72);
-HG.neck = new THREE.CylinderGeometry(0.05, 0.056, 0.11, 10);
-HG.head = new THREE.SphereGeometry(0.1, 16, 12).scale(0.93, 1.08, 1);
+HG.pelvis = new THREE.SphereGeometry(0.14, 18, 12).scale(1.12, 0.95, 0.6);
+HG.chest = new THREE.LatheGeometry([[0, 0.04], [0.118, 0.06], [0.122, 0.16], [0.15, 0.3], [0.17, 0.41], [0.16, 0.47], [0.1, 0.52], [0.05, 0.545], [0, 0.55]].map(([r, y]) => new THREE.Vector2(r, y)), 20).scale(1, 1, 0.64);
+HG.shoulder = new THREE.SphereGeometry(0.058, 12, 8);
+HG.cap = new THREE.SphereGeometry(0.106, 22, 12, 0, Math.PI*2, 0, Math.PI*0.56).scale(1, 0.98, 1.08);   // casque de watersport, coque simple
+HG.capBrim = new THREE.CylinderGeometry(0.1, 0.1, 0.012, 18, 1, false, Math.PI*0.62, Math.PI*0.76).scale(0.95, 1, 1.9);   // visière longue vers l'avant (−z) : casquette, plus béret
+HG.shades = new THREE.BoxGeometry(0.15, 0.028, 0.02);
+HG.knee = new THREE.SphereGeometry(0.06, 12, 8).scale(1, 1.1, 0.8);
+HG.stripe = new THREE.BoxGeometry(0.02, 0.34, 0.07);
+// 🙂 visage (retour Paul : « il n'a pas de tête ») : yeux, sourcils, nez, bouche, oreilles, barbe de quelques jours, mèches qui dépassent du casque
+HG.eyeW = new THREE.SphereGeometry(0.0095, 10, 8).scale(1.3, 0.55, 0.4); HG.pupil = new THREE.SphereGeometry(0.0068, 8, 6).scale(1.15, 0.85, 0.7);
+HG.brow = new THREE.BoxGeometry(0.032, 0.0085, 0.01); HG.nose = new THREE.SphereGeometry(0.0135, 10, 8).scale(0.62, 1.45, 0.95);
+HG.mouth = new THREE.SphereGeometry(0.012, 10, 6).scale(1.1, 0.55, 0.35);   // bouche entrouverte HG.strap = new THREE.BoxGeometry(0.005, 0.105, 0.01); HG.ear = new THREE.SphereGeometry(0.022, 10, 8).scale(0.4, 1, 0.75);
+HG.beard = new THREE.SphereGeometry(0.0935, 18, 8, Math.PI*1.1, Math.PI*0.8, Math.PI*0.67, Math.PI*0.3).scale(0.93, 1.1, 1.01);
+HG.hair = new THREE.SphereGeometry(0.098, 18, 6, -Math.PI*0.05, Math.PI*1.1, Math.PI*0.46, Math.PI*0.18).scale(0.95, 1.05, 1.05);
+HG.vent = new THREE.BoxGeometry(0.012, 0.008, 0.05); HG.chestBand = new THREE.CylinderGeometry(0.162, 0.162, 0.02, 24, 1, true, Math.PI*0.72, Math.PI*0.56).scale(1, 1, 0.66);   // bande blanche qui épouse la poitrine
+HG.watch = new THREE.CylinderGeometry(0.042, 0.042, 0.03, 12); HG.thumb = new THREE.CapsuleGeometry(0.011, 0.03, 3, 8).translate(0, -0.015, 0); HG.sole = new THREE.BoxGeometry(0.085, 0.018, 0.26);
+HG.shoe = new THREE.CapsuleGeometry(0.043, 0.16, 4, 10).rotateX(Math.PI/2).scale(1.1, 0.6, 1).translate(0, -0.045, -0.06);
+HG.neck = new THREE.CylinderGeometry(0.048, 0.06, 0.09, 14);
+HG.head = new THREE.SphereGeometry(0.092, 18, 14).scale(0.88, 1.12, 0.98);
 HG.helmet = new THREE.SphereGeometry(0.113, 16, 8, 0, Math.PI*2, 0, Math.PI*0.55);
 HG.brim = new THREE.CylinderGeometry(0.115, 0.115, 0.014, 16, 1, false, Math.PI*0.6, Math.PI*0.8);
 HG.visor = new THREE.BoxGeometry(0.15, 0.036, 0.03);
@@ -759,13 +806,22 @@ HG.foot = new THREE.CapsuleGeometry(0.044, 0.17, 4, 8).rotateX(Math.PI/2).scale(
 function makeHuman(){
   const g = new THREE.Group(), M = (geo, mat, par, sh) => { const m = new THREE.Mesh(geo, mat); m.castShadow = sh !== false; par.add(m); return m; };   // sh = false : petite pièce, pas d'ombre portée (moins d'appels de dessin)
   const torso = new THREE.Group(); g.add(torso);
-  M(HG.pelvis, suit, torso).position.y = 0.02; M(HG.chest, suit, torso).position.y = 0.27; M(HG.vest, vestM, torso, false).position.y = 0.33; M(HG.neck, skin, torso, false).position.y = 0.54;
-  const head = new THREE.Group(); g.add(head); M(HG.head, skin, head); M(HG.helmet, helmet, head, false).position.y = 0.014; M(HG.brim, helmet, head, false).position.set(0, 0.012, 0);
-  M(HG.visor, visorM, head, false).position.set(0, 0.012, -0.086);
-  const limb = (L1, L2, r1, r2, m1, m2, endGeo, endMat) => { const a = new THREE.Group(), b = new THREE.Group(), e = new THREE.Group(); g.add(a); a.add(b); b.position.y = -L1; b.add(e); e.position.y = -L2;
-    M(capG(r1, L1), m1, a); M(capG(r2, L2), m2, b, r2 > 0.045); M(endGeo, endMat, e, false); return {a, b, e, L1, L2}; };
-  const H = {g, torso, head, aL: limb(0.27, 0.25, 0.041, 0.034, suit, suit2, HG.hand, skin), aR: limb(0.27, 0.25, 0.041, 0.034, suit, suit2, HG.hand, skin),
-    lL: limb(0.43, 0.42, 0.066, 0.047, suit, suit, HG.foot, bootM), lR: limb(0.43, 0.42, 0.066, 0.047, suit, suit, HG.foot, bootM)};
+  M(HG.pelvis, suitLeg, torso).position.set(0, 0.03, 0.02); M(HG.chest, suitTopB, torso).position.y = 0.0; M(HG.neck, suitTop, torso, false).position.y = 0.55;
+  for(const sx of [-1, 1]){ M(HG.shoulder, suitTop, torso, false).position.set(sx*0.175, 0.46, 0); }
+  M(HG.chestBand, whiteM, torso, false).position.set(0, 0.37, 0);   // bande blanche sur la poitrine (photos)
+  const head = new THREE.Group(); g.add(head); M(HG.head, skin, head); { const hm = M(HG.cap, capM, head, false); hm.position.set(0, 0.016, 0.004); hm.rotation.x = 0.3; }   // casque basculé vers l'arrière : le front et les yeux restent dégagés, la nuque est couverte
+  for(let k = -1; k <= 1; k++) M(HG.vent, pupilM, head, false).position.set(k*0.028, 0.104, 0.01);
+  for(const sx of [-1, 1]){ const st = M(HG.strap, pupilM, head, false); st.position.set(sx*0.05, -0.062, -0.022); st.rotation.set(0.3, 0, sx*0.62); }   // jugulaire du casque
+  M(HG.hair, hairM, head, false).position.y = 0.0; M(HG.beard, stubM, head, false).position.y = 0.0;
+  for(const sx of [-1, 1]){ M(HG.eyeW, eyeM, head, false).position.set(sx*0.03, 0.01, -0.0805); M(HG.pupil, pupilM, head, false).position.set(sx*0.03, 0.0095, -0.084);
+    { const bw = M(HG.brow, hairM, head, false); bw.position.set(sx*0.031, 0.024, -0.085); bw.rotation.z = sx*0.2; } M(HG.ear, skin, head, false).position.set(sx*0.086, 0.0, 0.004); }
+  M(HG.nose, skin, head, false).position.set(0, -0.01, -0.093); M(HG.mouth, pupilM, head, false).position.set(0, -0.043, -0.085);   // bouche entrouverte, concentré
+  const limb = (L1, L2, r1, r2, m1, m2, endGeo, endMat, leg) => { const a = new THREE.Group(), b = new THREE.Group(), e = new THREE.Group(); g.add(a); a.add(b); b.position.y = -L1; b.add(e); e.position.y = -L2;
+    const B = m => m; M(limbG(r1, r1*0.74, L1, leg ? 0.1 : 0.06), B(m1), a); M(limbG(r2, r2*0.62, L2, leg ? 0.16 : 0.08), B(m2), b, leg); M(endGeo, endMat, e, false); { const jA = M(new THREE.SphereGeometry(r1*(leg ? 1.12 : 1.08), 14, 10), m1, a, false); jA.scale.set(1, 0.9, 1); M(new THREE.SphereGeometry(r2*1.16, 14, 10), m2, b, false); } return {a, b, e, L1, L2}; };   // 🦴 rotules (hanche/épaule, genou/coude) dans la même matière : plus de trou ni de marche aux articulations (retour Paul)
+  const H = {g, torso, head, aL: limb(0.27, 0.25, 0.046, 0.037, suitTop, suitTop, HG.hand, skin), aR: limb(0.27, 0.25, 0.046, 0.037, suitTop, suitTop, HG.hand, skin),
+    lL: limb(0.43, 0.42, 0.082, 0.058, suitLeg, suitLeg, HG.shoe, bootM, true), lR: limb(0.43, 0.42, 0.082, 0.058, suitLeg, suitLeg, HG.shoe, bootM, true)};
+  for(const A of [H.aL, H.aR]){ const th = M(HG.thumb, skin, A.e, false); th.position.set(0, -0.025, -0.022); th.rotation.x = 0.6; }   // pouce
+  M(HG.watch, pupilM, H.aR.b, false).position.y = -0.21;   // montre GPS au poignet
   const V = () => new THREE.Vector3();
   // la pose : des points dans le repère du personnage (y vers le haut). face = vers où regarde le torse, look = vers où regarde la tête
   H.p = {pel: V().set(0, 0.92, 0), neck: V().set(0, 1.45, 0), face: V().set(0, 0, -1), look: V().set(0, 0, -1), fL: V().set(-0.1, 0.07, 0), fR: V().set(0.1, 0.07, 0), toeL: V().set(0, 0, -1), toeR: V().set(0, 0, -1),
@@ -782,7 +838,7 @@ function makeHuman(){
   H.tx = V(); H.ty = V(); H.tz = V();
   H.apply = () => { const p = H.p; up.copy(p.neck).sub(p.pel).normalize(); f.copy(p.face).addScaledVector(up, -p.face.dot(up)); if(f.lengthSq() < 1e-6) f.set(0, 0, -1); f.normalize();
     H.ty.copy(up); H.tz.copy(f).negate(); H.tx.crossVectors(H.ty, H.tz).normalize(); m4.makeBasis(H.tx, H.ty, H.tz); torso.quaternion.setFromRotationMatrix(m4); torso.position.copy(p.pel);
-    pt(0, 0.68, 0); head.position.copy(o); if(p.hu) u.copy(p.hu).normalize(); else u.copy(up).add(UP).normalize(); f.copy(p.look).addScaledVector(u, -p.look.dot(u)); if(f.lengthSq() < 1e-6) f.copy(H.tz).negate(); basis(f, u, head.quaternion);
+    pt(0, 0.63, 0); head.position.copy(o); if(p.hu) u.copy(p.hu).normalize(); else u.copy(up).add(UP).normalize(); f.copy(p.look).addScaledVector(u, -p.look.dot(u)); if(f.lengthSq() < 1e-6) f.copy(H.tz).negate(); basis(f, u, head.quaternion);
     pt(-0.2, 0.45, 0); solve(H.aL, p.hL, p.eL); pt(0.2, 0.45, 0); solve(H.aR, p.hR, p.eR);
     pt(-0.095, 0, 0); solve(H.lL, p.fL, p.kL); foot(H.lL, p.toeL); pt(0.095, 0, 0); solve(H.lR, p.fR, p.kR); foot(H.lR, p.toeR); };
   H.apply(); return H; }
@@ -791,29 +847,111 @@ const lerp = (a, b, k) => a + (b - a)*k, sstep = k => { k = Math.max(0, Math.min
 /* le rider sur sa planche : pieds en travers (pied gauche devant), torse tourné vers l'avant, genoux qui plient au pump, bras qui équilibrent en virage */
 const rider = new THREE.Group(); rider.visible = false; const RID = makeHuman(); rider.add(RID.g);
 // sq : flexion (−0,6 délesté … 1 écrasé) · pb : rebond du pump (0…1) · bk : gîte (−1 virage à droite/pointes de pieds … +1 à gauche/talons) · press : pied avant chargé · t : temps
-function riderPose(sq, pb, bk, press, t){ const p = RID.p, c = Math.max(-0.6, Math.min(1, sq || 0)), toe = Math.max(0, -bk), heel = Math.max(0, bk);
-  const fl = 0.09 + 0.17*Math.max(0, c) - 0.08*Math.max(0, -c) + 0.05*pb + 0.02*toe + 0.03*press + 0.09*(toe + heel), sw = 0.012*Math.sin(t*2.1);
-  p.fL.set(0, 0.075, -0.33); p.fR.set(0, 0.075, 0.33); p.toeL.set(1, 0, -0.3); p.toeR.set(1, 0, 0.08); p.kL.set(1, 0, -0.45); p.kR.set(1, 0, 0.5);
-  // en virage la planche (et donc tout ce repère) est déjà inclinée : le bassin reste au-dessus des pieds, les épaules se redressent un peu vers l'extérieur
-  p.pel.set(0.04 - 0.03*heel + 0.03*toe, 0.9 - fl, 0.02 - 0.09*press + sw);
-  p.neck.set(p.pel.x + 0.09 + 0.16*fl + 0.12*heel - 0.27*toe, p.pel.y + 0.5, p.pel.z - 0.07 - 0.05*press);
-  p.face.set(1, 0, -0.75 - 0.25*heel + 0.2*toe); p.look.set(0.25 - 0.3*heel + 0.2*toe, -0.05, -1);
-  // 🏄 virage (retour Paul : bonhomme plus vivant dans les tournants) : genoux plus fléchis, bras avant qui montre la sortie du virage, bras arrière bas derrière
-  p.hL.set(0.26 - 0.2*heel + 0.22*toe, p.pel.y + 0.3 + 0.14*pb + 0.06*heel + 0.04*toe, -0.5 - 0.16*(toe + heel));
-  p.hR.set(0.2 + 0.1*heel + 0.14*toe, p.pel.y + 0.24 + 0.12*pb - 0.08*(toe + heel), 0.5 + 0.12*(toe + heel) + 0.02*Math.sin(t*1.7));
-  p.eL.set(0.2, -1, 0.3); p.eR.set(0.2, -1, -0.3); RID.apply(); }
+// 📸 posture réelle (14 photos de Paul décomposées, 2026-11-27) :
+//  1. la TÊTE est à l'aplomb du PIED ARRIÈRE : le triangle tête / pied arrière / pied avant est vertical côté arrière (le poids est sur le pied arrière, au-dessus du mât)
+//  2. le pied arrière est AU-DESSUS DU MÂT (pas entre les pieds), pied avant vers le nez, écart ~55 cm ; pied arrière perpendiculaire, pied avant ouvert ~30°
+//  3. genoux TOUJOURS fléchis (jamais tendus), genou arrière rentré vers l'avant ; fesses un peu en arrière, buste penché vers les orteils, regard vers le nez
+//  4. bras BAS et détendus, mains à hauteur des hanches, coudes un peu pliés : bras avant devant la cuisse, bras arrière le long du corps ou un peu derrière
+//  5. le pump (photo ✅ / ❌) : on pousse VERS LE BAS au-dessus du mât, la tête reste au-dessus du pied arrière ; se pencher sur le pied avant = erreur (le nez plonge)
+let ARM_S = 0;   // balancier des bras lissé : +1 devant (mains jointes à la poitrine), −1 derrière le dos, 0 le long du corps
+const FOOT_B = 0.09, FOOT_F = -0.46;   // z des pieds sur la planche : arrière juste derrière le mât (z = 0,05), avant vers le nez
+function riderPose(sq, pb, bk, press, t){ const p = RID.p, c = Math.max(-0.6, Math.min(1, sq || 0)), toe = Math.max(0, -bk), heel = Math.max(0, bk), ext = Math.max(0, -c)/0.6;
+  // 🧍 retour Paul : au repos le rider est DROIT, jambes tendues (pas de flexion) ; les genoux ne plient QUE pendant le pump (flexion) et se tendent à l'extension
+  const fl = 0.025 + 0.17*Math.max(0, c) - 0.02*ext + 0.03*pb + 0.03*press + 0.05*(toe + heel), sw = 0.008*Math.sin(t*2.1);
+  p.fL.set(0, 0.075, FOOT_F); p.fR.set(0, 0.075 + 0.075*ext, FOOT_B + 0.02*ext); p.toeL.set(1, 0, -0.6); p.toeR.set(1, -0.85*ext, 0.05);
+  p.kL.set(1, 0, -0.4); p.kR.set(1, 0, -0.3);   // genoux vers l'avant du corps (ce réglage était avalé par un commentaire en milieu de ligne : genoux tordus vers le nez)
+  // bassin au-dessus du pied arrière (jambe arrière quasi verticale, jambe avant en diagonale : le triangle des photos), fesses en arrière seulement quand on écrase
+  p.pel.set(-0.01 - 0.08*Math.max(0, c) - 0.03*heel + 0.04*toe, 0.9 - fl, FOOT_B - 0.08 - 0.08*press + sw);
+  // buste droit : le cou est au-dessus du bassin (légère inclinaison vers les orteils, plus marquée en flexion)
+  p.neck.set(p.pel.x + 0.05 + 0.3*Math.max(0, c) + 0.1*heel - 0.22*toe, p.pel.y + 0.5 - 0.08*Math.max(0, c), p.pel.z + 0.01 - 0.05*press - 0.1*Math.max(0, c));
+  p.face.set(1, 0, -0.8 - 0.25*heel + 0.2*toe); p.look.set(0.35 - 0.3*heel + 0.2*toe, -0.08, -1);
+  // 🙌 balancier des bras = le geste d'un SAUT, calé image par image sur la vidéo de Paul (Pierra Manta, 57-59 s, cycle ~1,2 s) :
+  //    flexion → bras ouverts en T, un peu vers l'arrière ; extension → les mains se rejoignent DEVANT, à hauteur de poitrine ; repos → bras le long du corps
+  const cmp = Math.max(0, c);
+  const af = Math.max(0, ARM_S), ab = Math.max(0, -ARM_S);
+  // bras devant : les mains vont DEVANT LA POITRINE (le torse regarde vers (1, 0, −0,8)), chacune de son côté ; avant elles visaient +x seul et le bras avant passait derrière le corps (retour Paul)
+  p.hL.set(0.1 + af*(p.pel.x + 0.17) - 0.3*ab - 0.16*heel + 0.22*toe, p.pel.y - 0.1 + 0.42*af + 0.06*ab + 0.04*pb + 0.12*(toe + heel), -0.24 + af*(p.pel.z - 0.1) - 0.04*ab - 0.18*(toe + heel));
+  p.hR.set(0.0 + af*(p.pel.x + 0.39) - 0.3*ab + 0.1*heel + 0.14*toe, p.pel.y - 0.12 + 0.44*af + 0.06*ab + 0.04*pb - 0.04*(toe + heel), 0.24 + af*(p.pel.z - 0.42) + 0.04*ab + 0.12*(toe + heel));
+  p.eL.set(-1, -0.25, 0.2); p.eR.set(-1, -0.25, -0.2); RID.apply(); }   // coudes vers l'arrière du corps (bras qui pendent : un axe presque vertical rendait l'IK instable, bras levés)
 riderPose(0, 0, 0, 0, 0); rider.position.y = 0.036; foil.add(rider);
 
 // 🏊 le nageur (retour Paul : « il faut que le bonhomme nage quand il est tombé ») : vrai crawl, à plat ventre, vers sa planche retournée
 const swimmer = new THREE.Group(); swimmer.visible = false; scene.add(swimmer); const SWM = makeHuman(); SWM.p.hu = new THREE.Vector3(0, 0.45, 1); swimmer.add(SWM.g);
 // th : phase des bras · kick : phase du battement de jambes · k : 1 = il nage, < 1 = au ralenti · pr : 0 = crawl dans l'eau … 1 = à plat ventre sur la planche, il rame de chaque côté
 // tilt : inclinaison du corps (tête plus haute que les pieds) · y0, z0 : place du corps dans le groupe du nageur
-function swimPose(th, kick, k, pr, tilt, y0, z0){ const p = SWM.p, r = lerp(0.5, 0.42, pr || 0), w = lerp(0.24, 0.35, pr || 0), zc = lerp(0.04, -0.07, pr || 0), za = lerp(0.36, 0.27, pr || 0), kk = lerp(0.13, 0.03, pr || 0);
-  SWM.g.rotation.x = -Math.PI/2 + (tilt === undefined ? 0.38 : tilt); SWM.g.position.set(0, y0 === undefined ? -0.45 : y0, z0 === undefined ? 0.95 : z0);
+function swimPose(th, kick, k, pr, tilt, y0, z0, HH){ const H = HH || SWM, p = H.p, r = lerp(0.5, 0.42, pr || 0), w = lerp(0.24, 0.35, pr || 0), zc = lerp(0.04, -0.07, pr || 0), za = lerp(0.36, 0.27, pr || 0), kk = lerp(0.13, 0.03, pr || 0);
+  H.g.rotation.x = -Math.PI/2 + (tilt === undefined ? 0.38 : tilt); H.g.position.set(0, y0 === undefined ? -0.45 : y0, z0 === undefined ? 0.95 : z0);
   p.pel.set(0, 0.92, 0.05); p.neck.set(0.03*Math.sin(th), 1.44, 0.0); p.face.set(0.3*Math.sin(th)*(1 - 0.6*(pr || 0)), 0, -1); p.look.set(0, 1, -0.5);
   p.hL.set(-w, 1.37 + r*Math.cos(th), zc - za*Math.sin(th)); p.hR.set(w, 1.37 + r*Math.cos(th + Math.PI), zc - za*Math.sin(th + Math.PI)); p.eL.set(-1, 0, 0.5); p.eR.set(1, 0, 0.5);
-  p.fL.set(-0.1, 0.08, 0.06 + kk*Math.sin(kick)); p.fR.set(0.1, 0.08, 0.06 - kk*Math.sin(kick)); p.toeL.set(0, -1, 0.15); p.toeR.set(0, -1, 0.15); p.kL.set(0, 0, -1); p.kR.set(0, 0, -1); SWM.apply(); }
+  p.fL.set(-0.1, 0.08, 0.06 + kk*Math.sin(kick)); p.fR.set(0.1, 0.08, 0.06 - kk*Math.sin(kick)); p.toeL.set(0, -1, 0.15); p.toeR.set(0, -1, 0.15); p.kL.set(0, 0, -1); p.kR.set(0, 0, -1); H.apply(); }
 swimPose(0, 0, 1);
+
+// 🏄 le surfeur du line-up (mission façon THPS2 : « Fais tomber le surfeur ») : allongé sur sa planche, il rame doucement en attendant la série ; percuté, il valdingue en cartoon, plouf, remonte en râlant et revient 10 s plus tard
+const SURF = {x: 20, z: -12, h: Math.PI, ko: null, back: 0, th: 0};
+const surfer = new THREE.Group(); surfer.visible = false; scene.add(surfer);
+{ const sb = new THREE.Mesh(new THREE.CapsuleGeometry(0.27, 1.6, 4, 14).rotateX(Math.PI/2).scale(1, 0.17, 1), new THREE.MeshStandardMaterial({color: '#f4efd8', roughness: 0.45})); sb.castShadow = true; surfer.add(sb);
+  const st = new THREE.Mesh(new THREE.BoxGeometry(0.022, 0.012, 2.0), new THREE.MeshStandardMaterial({color: '#e4572e', roughness: 0.6})); st.position.y = 0.05; surfer.add(st); }
+{ const FACE = [HG.eyeW, HG.pupil, HG.brow, HG.nose, HG.mouth, HG.beard]; [RID, SWM].forEach(H => H.head.children.forEach(m => { if(FACE.includes(m.geometry)) m.visible = false; })); }   // 😶 tête lisse sous le casque (style sans visage, plus propre que des traits en primitives)
+const SRF = makeHuman(); surfer.add(SRF.g);
+SRF.head.children.forEach(m => { if(m.geometry === HG.cap || m.geometry === HG.vent || m.geometry === HG.strap) m.visible = false; else if(m.geometry === HG.hair) m.scale.set(1.04, 1.9, 1.04); });   // un surfeur ne porte pas de casque : cheveux à la place
+// 🟠 la porte : deux bouées à franchir en vol (mission « Passe entre les bouées »)
+const GATE = {a: [-1.0, -36], b: [1.0, -36]};   // très rapprochées (retour Paul) : 2 m entre les deux bouées, il faut viser
+const buoys = [0, 1].map(i => { const g = new THREE.Group(), m = new THREE.Mesh(new THREE.SphereGeometry(0.42, 16, 12).scale(1, 0.85, 1), new THREE.MeshStandardMaterial({color: '#f97316', roughness: 0.5, emissive: '#7c2d12', emissiveIntensity: 0.3}));
+  const st = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 1.4, 6), new THREE.MeshStandardMaterial({color: '#e5e7eb'})), fl = new THREE.Mesh(new THREE.PlaneGeometry(0.5, 0.32), new THREE.MeshStandardMaterial({color: '#fde047', side: THREE.DoubleSide}));
+  st.position.y = 0.9; fl.position.set(0.26, 1.42, 0); g.add(m, st, fl); g.visible = false; scene.add(g); return g; });
+// 🏄‍♂️ windsurfs qui tiennent leur ligne (collisions, piste 3 du brief) : aller-retour au large à cap constant ; les percuter = chute + rappel de la règle de priorité
+const WINDS = [].map(   // windsurfs retirés (retour Paul : trop « l'autre jeu ») ; le code reste pour plus tard
+  w => { const g = new THREE.Group(); g.visible = false; scene.add(g);
+  const b = new THREE.Mesh(new THREE.CapsuleGeometry(0.3, 2.0, 4, 10).rotateZ(Math.PI/2).scale(1, 0.2, 1), new THREE.MeshStandardMaterial({color: '#f8fafc', roughness: 0.5})); b.castShadow = true; g.add(b);
+  const ms = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.035, 4.6, 6), new THREE.MeshStandardMaterial({color: '#e5e7eb', roughness: 0.4})); ms.position.set(0.2, 2.3, 0); ms.rotation.z = 0.1; g.add(ms);
+  const sh = new THREE.Shape(); sh.moveTo(0, 0); sh.lineTo(0, 4.3); sh.lineTo(-2.2, 0.35); sh.lineTo(0, 0);
+  const sl = new THREE.Mesh(new THREE.ShapeGeometry(sh), new THREE.MeshStandardMaterial({color: w.c, side: THREE.DoubleSide, roughness: 0.6})); sl.position.set(0.18, 0.45, 0); sl.rotation.z = 0.1; g.add(sl);
+  const bm = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 1.8, 6).rotateZ(Math.PI/2), new THREE.MeshStandardMaterial({color: '#111827'})); bm.position.set(-0.7, 1.45, 0); g.add(bm);
+  const H = makeHuman(); H.g.position.set(-0.6, 0.05, 0); H.g.rotation.y = -Math.PI/2; g.add(H.g); const p = H.p;
+  p.pel.set(0, 0.88, 0.06); p.neck.set(0, 1.4, 0.16); p.face.set(0, 0, -1); p.look.set(0, 0, -1); p.fL.set(-0.22, 0.07, 0.02); p.fR.set(0.22, 0.07, 0.02); p.toeL.set(0, 0, -1); p.toeR.set(0, 0, -1);
+  p.kL.set(0, 0, -1); p.kR.set(0, 0, -1); p.hL.set(-0.25, 1.4, -0.5); p.hR.set(0.25, 1.4, -0.5); p.eL.set(-1, -0.3, 0); p.eR.set(1, -0.3, 0); H.apply();
+  return Object.assign(w, {g}); });
+// 🍵 assis sur sa planche comme un sachet de thé (retour Paul) : à califourchon, jambes qui pendent dans l'eau, mains sur la planche, il regarde le large en attendant la série
+// photos de Paul : assis sur l'arrière, la planche s'enfonce et pointe le nez hors de l'eau, l'eau arrive à la taille
+function sitPose(H, t){ const p = H.p, TL = 0.24, b = surfer.children; b[0].rotation.x = b[1].rotation.x = TL; b[0].position.set(0, 0.03, -0.3); b[1].position.set(0, 0.03 + 0.05*Math.cos(TL), -0.3 - 0.05*Math.sin(TL));
+  H.g.rotation.set(0, 0, 0); H.g.position.set(0, -0.22 + 0.02*Math.sin(t*1.1), 0.26);
+  p.pel.set(0, 0.1, 0.12); p.neck.set(0.01*Math.sin(t*0.5), 0.61, 0.17); p.face.set(0, 0, -1); p.look.set(0.5*Math.sin(t*0.27), 0, -1);
+  p.fL.set(-0.3, -0.52, -0.08 + 0.05*Math.sin(t*1.3)); p.fR.set(0.3, -0.52, -0.08 - 0.05*Math.sin(t*1.3)); p.toeL.set(0, -0.5, -1); p.toeR.set(0, -0.5, -1); p.kL.set(-0.3, 0, -1); p.kR.set(0.3, 0, -1);
+  p.hL.set(-0.2, 0.06, -0.12); p.hR.set(0.2, 0.06, -0.12); p.eL.set(-1, 0, 0.3); p.eR.set(1, 0, 0.3); H.apply(); }
+function surferHit(now, vx, vz){ const S = SURF; S.ko = {t0: now, x: S.x, y: 0.2, z: S.z, vx: vx*0.55, vz: vz*0.55, vy: 7.5, r: 0, land: 0}; }
+// 🐬 les dauphins au large (mission, retour Paul) : un banc de 3 qui tourne lentement à ~150 m du large et saute à tour de rôle ; s'en approcher à moins de 14 m valide l'objectif
+const DOLPH = {cx: 22, cz: -150, r: 9};
+// dauphin v2 (retour Paul : « on dirait des sous-marins ») : corps fuselé en lathe (melon bombé, rostre, pédoncule fin), aileron dorsal en faucille, nageoires pectorales, caudale en croissant
+const DOLPH_G = (() => { const prof = [[0, -1.2], [0.045, -1.12], [0.075, -0.85], [0.15, -0.45], [0.25, -0.05], [0.3, 0.3], [0.29, 0.62], [0.24, 0.88], [0.18, 1.02], [0.1, 1.1], [0.062, 1.16], [0.05, 1.33], [0, 1.4]].map(([r, y]) => new THREE.Vector2(r, y));
+  const body = new THREE.LatheGeometry(prof, 20).rotateX(-Math.PI/2).scale(0.82, 1, 1);
+  const fs = new THREE.Shape(); fs.moveTo(0.2, 0); fs.quadraticCurveTo(0.05, 0.08, -0.13, 0.33); fs.quadraticCurveTo(-0.08, 0.14, -0.2, 0); fs.lineTo(0.2, 0);
+  const fin = new THREE.ExtrudeGeometry(fs, {depth: 0.03, bevelEnabled: false}).translate(0, 0, -0.015).rotateY(Math.PI/2);
+  const ts = new THREE.Shape(); ts.moveTo(0, -0.02); ts.quadraticCurveTo(0.24, 0.02, 0.4, 0.2); ts.quadraticCurveTo(0.2, 0.13, 0, 0.15); ts.quadraticCurveTo(-0.2, 0.13, -0.4, 0.2); ts.quadraticCurveTo(-0.24, 0.02, 0, -0.02);
+  const tail = new THREE.ExtrudeGeometry(ts, {depth: 0.025, bevelEnabled: false}).translate(0, 0, -0.0125).rotateX(Math.PI/2);
+  const pec = new THREE.SphereGeometry(0.1, 10, 6).scale(0.3, 0.12, 1.7); return {body, fin, tail, pec}; })();
+const dolphins = [0, 1, 2].map(i => { const g = new THREE.Group(), gm = new THREE.MeshStandardMaterial({color: '#5f7381', roughness: 0.3, metalness: 0.05, side: THREE.DoubleSide}), wm = new THREE.MeshStandardMaterial({color: '#cfd6dc', roughness: 0.45});
+  g.add(new THREE.Mesh(DOLPH_G.body, gm));
+  const belly = new THREE.Mesh(DOLPH_G.body, wm); belly.scale.set(0.86, 0.75, 0.93); belly.position.set(0, -0.06, -0.02); g.add(belly);
+  const fin = new THREE.Mesh(DOLPH_G.fin, gm); fin.position.set(0, 0.22, 0.12); g.add(fin);
+  const tail = new THREE.Mesh(DOLPH_G.tail, gm); tail.position.set(0, 0, 1.12); g.add(tail);
+  for(const sx of [-1, 1]){ const pf = new THREE.Mesh(DOLPH_G.pec, gm); pf.position.set(sx*0.2, -0.14, -0.45); pf.rotation.set(0.5, sx*0.5, sx*0.7); g.add(pf); }
+  g.scale.setScalar(0.95 + 0.1*i); g.visible = false; scene.add(g); return {g, ph: i*2.1}; });
+function dolphTick(t, on){ dolphins.forEach((d, i) => { d.g.visible = on; if(!on) return; const a = t*0.12 + i*0.5, x = DOLPH.cx + DOLPH.r*Math.cos(a) + i*1.6, z = DOLPH.cz + DOLPH.r*Math.sin(a);
+  const k = ((t*0.55 + d.ph) % 3)/3, jump = k < 0.33 ? Math.sin(Math.PI*k/0.33) : 0, sea = seaVis(x, z, t);
+  d.g.position.set(x, sea - 0.25 + 1.6*jump, z); d.g.rotation.set(jump > 0 ? -0.9*Math.cos(Math.PI*k/0.33) : 0.05*Math.sin(t + i), -a, 0); });
+  if(on && test && test.surf && !test.done && Math.hypot(test.x - DOLPH.cx, test.z - DOLPH.cz) < DOLPH.r + 14) objDone('dolph'); }
+function missionTick(t, dt, now){ const on = (test && test.surf && !VID) || POSECAM === 'surfer' || POSECAM === 'wind' || POSECAM === 'dolph'; surfer.visible = on; dolphTick(t, on);
+  buoys.forEach((b, i) => { b.visible = on; const q = i ? GATE.b : GATE.a; b.position.set(q[0], seaVis(q[0], q[1], t) - 0.12, q[1]); b.rotation.z = 0.09*Math.sin(t*1.7 + i*2); });
+  WINDS.forEach(w => { w.g.visible = on; if(!on) return; w.x += w.dir*5*dt; if(Math.abs(w.x) > 45){ w.x = Math.sign(w.x)*45; w.dir = -w.dir; } w.g.position.set(w.x, seaVis(w.x, w.z, t) - 0.04, w.z); w.g.rotation.set(0, w.dir > 0 ? 0 : Math.PI, 0.05*Math.sin(t*1.3 + w.z)); });
+  if(!on) return; const S = SURF;
+  if(S.ko){ const k = S.ko, el = (now - k.t0)/1000;
+    if(!k.land){ k.vy -= 9.81*dt; k.x += k.vx*dt; k.z += k.vz*dt; k.y += k.vy*dt; k.r += 10*dt; const fl = seaVis(k.x, k.z, t);
+      if(k.y < fl && k.vy < 0){ k.land = el; splash(k.x, fl, k.z, 70, 4.5, 0, 0); ripple(k.x, k.z, 2.8); popUp(T.surfHey || '😤 HÉ !', 0, true); } }
+    surfer.position.set(k.x, k.land ? seaVis(k.x, k.z, t) + 0.05 : k.y, k.z); surfer.rotation.set(k.land ? 0.05*Math.sin(t*2) : k.r, S.h + (k.land ? 0.6 : k.r*0.6), k.land ? 0.08*Math.sin(t*3) : k.r*0.45);
+    if(k.land) swimPose(t*4, t*9, 1, 0, 0.38, -0.41, 0.95, SRF); else swimPose(t*16, t*14, 1, 1, 0.07, 0.1, 0.78, SRF);   // en l'air : il mouline ; à l'eau : il nage à côté de sa planche, la tête dehors
+    if(el > 10){ S.ko = null; surfer.rotation.set(0, S.h, 0); } return; }
+  S.th += dt*2.4; surfer.position.set(S.x, seaVis(S.x, S.z, t) - 0.03, S.z); surfer.rotation.set(0.03*Math.sin(t*1.3), S.h + 0.08*Math.sin(t*0.4), 0.04*Math.sin(t*1.7));
+  sitPose(SRF, t); }
 
 // 🏃 le coureur du départ ponton : court sur le bois (foulées, buste penché), la planche tenue à deux mains côté eau, puis saute et se pose en travers dessus
 const runner = new THREE.Group(); runner.visible = false; scene.add(runner); const RUN = makeHuman(); runner.add(RUN.g);
@@ -1019,6 +1157,7 @@ const segBind = (id, key) => $(id).querySelectorAll('button').forEach(bt => bt.o
     $('bub').textContent = fill(T.stabMsg, {a: before, b: ST.stab, dt: sg(B2.sc[0].v - A.sc[0].v, T.pts), dv: sg(B2.sc[1].v - A.sc[1].v, T.pts), ds: sg(dm, 'min')}); $('tip').classList.remove('hide'); }
   keepWing(() => { ST[key] = +bt.dataset.v; }); render(false); });
 segBind('stab', 'stab'); segBind('swell', 'H');
+$('swell').addEventListener('click', e => { const b = e.target.closest('button'); if(b) try{ localStorage.setItem('dock-houle', b.dataset.v); }catch(err){} });   // la houle choisie dans le menu est retenue pour les prochains Carve
 initStats();
 // UI simplifiée (retour Paul) : la rotation s'arrête dès qu'on fait pivoter le foil à la main ; réglages repliés derrière ⚙️
 let autoSpin = !RM; ctl.addEventListener('start', () => { autoSpin = false; });
@@ -1121,7 +1260,7 @@ const pump = () => { if(!test || test.done || test.swim || test.crashA) return; 
   // 🫀 eau plate (Apprendre, Longue distance) : tout est dans le rythme ; trop tôt ou trop tard, le pump pousse moins
   if(test.pumpUp){ test.pushGain = 2.1; test.puPumps = (test.puPumps || 0) + 1; }   // retour Paul (« frustrant ») : chaque pump compte plus pour décoller
   else test.pushGain = 1;
-  test.lastPump = now; test.pushT = .3; test.squatT = 1; test.sta -= test.speedUp ? 0 : test.pumpCost; test.pumps++; if(!test.flat && test.onFace) bumpFlow(-6);   // pumper pour relier les vagues n'est pas puni, seulement dans la pente
+  test.lastPump = now; test.pushT = .3; test.squatT = 1; test.extAt = now + 200; test.armT = test.armT > 0 ? -1 : 1;   // 🙌 bras en balancier : 1er pump devant, 2e derrière (retour Paul) test.sta -= test.speedUp ? 0 : test.pumpCost; test.pumps++; if(!test.flat && test.onFace) bumpFlow(-6);   // pumper pour relier les vagues n'est pas puni, seulement dans la pente
   $('tp').classList.add('on'); setTimeout(() => $('tp').classList.remove('on'), 160); };
 // 🦶 pied avant (demande Paul) : seulement en vague, avec une aile ≥ 1300 cm², une fois en vol
 const footOn = () => test && test.ff && !test.takeoff && !test.pumpUp && !test.done;
@@ -1163,9 +1302,9 @@ const award = (key, base, extra) => { const pts = Math.round(base*mult()); test.
 const bumpFlow = d => { test.flow = Math.max(0, Math.min(100, test.flow + d)); if(d > 0){ const m = $('nmult'); m.classList.remove('up'); void m.offsetWidth; m.classList.add('up'); } };
 /* ---------- 🎯 objectifs de session (demande Paul) : une liste par mode, cochée en jeu, mémorisée pour toujours par aile et par mode ----------
    Rien ici ne touche à la physique : on observe l'état du test (score, virages, position, cœur...) et on coche. Désactivé en mode vidéo. */
-const OBJ_LIST = {carve: ['s1', 's2', 's3', 'carve', 'big', 'cut', 'snake', 'x3', 'face', 'waves', 'read70', 'set', 'foil', 'pump', 'shore', 'tamed', 'nofall', 'kiss', 'tour', 'secret'],
+const OBJ_LIST = {carve: ['s1', 's2', 's3', 's4', 's5', 'carve', 'big', 'cut', 'snake', 'x3', 'face', 'waves', 'read70', 'set', 'foil', 'pump', 'shore', 'tamed', 'nofall', 'kiss', 'tour', 'surfer', 'gate', 'rase', 't360', 'dolph', 'secret'],
   vite: ['t30', 't25', 't21', 'nopen', 'peak'], flat: ['d1', 'd2', 'd3', 'perf8', 'zen', 'cardio', 'tempo']}, OBJ_DOCK = ['p4', 'first', 'pumps'];
-const OBJ = {score: [5000, 12000, 20000], dist: [150, 300, 450], shoreIn: 30, shoreOut: 45, catchR: 1.7, peak: 1.12};   // seuils (dist en m : en 2 min on ne dépasse pas ~550 m en eau plate)
+const OBJ = {score: [5000, 12000, 20000, 50000, 100000], dist: [150, 300, 450], shoreIn: 30, shoreOut: 45, catchR: 1.7, peak: 1.12};   // seuils (dist en m : en 2 min on ne dépasse pas ~550 m en eau plate)
 let OBJ_SAVE = {}; try{ OBJ_SAVE = JSON.parse(localStorage.getItem('dock-obj') || '{}') || {}; }catch(e){ OBJ_SAVE = {}; }
 const OBJ_FRESH = {};   // ailes/modes où la dernière session a coché du nouveau (affiché « nouveau ! » au garage jusqu'au rechargement)
 const objMode = () => MODE === 'carve' ? 'carve' : MODE === 'vite' ? 'vite' : 'flat', objKey = () => fullName() + '|' + objMode();
@@ -1183,9 +1322,12 @@ function objStart(){ if(VID && !VID.obj){ test.objList = null; return; } test.ob
   Object.assign(test, {snake: 0, wavesRow: 0, objShore: 0, tourS: 0, dist: 0, perfRow: 0, cardioT: 0, tempoUps: 0, ploufs: 0, tkOk: 0, puPumps: 0, letters: Array(OBJ_POS.length).fill(0), coin: 0});
   objPanel(true); }
 const gc = (p, t) => { try{ if(!VID && window.gcEv) window.gcEv(p, t); }catch(e){} };
-function objDone(id){ if(!test || (VID && !VID.obj) || !test.objList || !test.objList.includes(id)) return; gc('objectif/' + id); const saved = OBJ_SAVE[test.objKey] || (OBJ_SAVE[test.objKey] = []); if(saved.includes(id)) return;
+function objDone(id){ if(!test || (VID && !VID.obj) || !test.objList || !test.objList.includes(id)) return; gc('objectif/' + id); const saved = OBJ_SAVE[test.objKey] || (OBJ_SAVE[test.objKey] = []);
+  const paid = test.objPaid || (test.objPaid = []), bonus = paid.includes(id) || /^s\d$/.test(id) ? 0 : ['surfer', 't360', 'secret', 'gate', 'rase', 'dolph'].includes(id) ? 5000 : 2000;   // 💰 objectif (hors paliers de score) = points, une fois par session
+  if(bonus){ paid.push(id); test.score += bonus; }
+  if(saved.includes(id)){ if(bonus){ popUp('🎯 ' + objName(id, test.S, true) + ' +' + bonus.toLocaleString(LANG)); const d = document.createElement('div'); d.textContent = '✅ ' + objName(id, test.S, true) + ' +' + bonus.toLocaleString(LANG); $('ofeed').prepend(d); } return; }
   saved.push(id); test.objNew.push(id); if(!VID) try{ localStorage.setItem('dock-obj', JSON.stringify(OBJ_SAVE)); }catch(e){} OBJ_FRESH[test.objKey] = true;
-  popUp('🎯 ' + (T.objWin || 'OBJECTIF !') + ' ' + objName(id, test.S, true)); buzz(70); beep(784, 0.09, 'triangle', 0.14); setTimeout(() => beep(1047, 0.09, 'triangle', 0.14), 90); setTimeout(() => beep(1319, 0.16, 'triangle', 0.14), 180);
+  popUp('🎯 ' + (T.objWin || 'OBJECTIF !') + ' ' + objName(id, test.S, true) + (bonus ? ' +' + bonus.toLocaleString(LANG) : '')); { const f = $('ofeed'), d = document.createElement('div'); d.textContent = '✅ ' + objName(id, test.S, true) + (bonus ? ' +' + bonus.toLocaleString(LANG) : ''); f.prepend(d); } buzz(70); beep(784, 0.09, 'triangle', 0.14); setTimeout(() => beep(1047, 0.09, 'triangle', 0.14), 90); setTimeout(() => beep(1319, 0.16, 'triangle', 0.14), 180);
   objCount(); const c = $('objc'); c.classList.remove('opop'); void c.offsetWidth; c.classList.add('opop'); }   // pas « pop » : c'est déjà la classe des popups (décalage −50 %, penché)
 // garage : compteur d'objectifs de l'aile affichée, pour le mode choisi, à côté du badge ; « nouveau ! » si la dernière session en a coché
 function objGarage(){ if(!$('fitb')) return; let g = $('objg'); if(!g){ $('fitb').insertAdjacentHTML('afterend', '<span id="objg" class="wfit objg"></span>'); g = $('objg'); }
@@ -1232,10 +1374,15 @@ function shareSession(){ const d = shareData(); if(!d || VID) return; gc('partag
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'le-dock-session.png'; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
     toast(T.shareSaved || 'Image enregistrée : ajoute-la à ta story Instagram'); }, 'image/png'); }
 $('eshare').onclick = shareSession;
+// 🔁 fin de session (retour Paul) : à côté de « Partager », rejouer, changer de vague (Carve) et revenir au menu
+$('eagain').onclick = () => $('treplay').click();
+$('ewave').onclick = () => pickWave(() => { if(test){ endTest(true, true); startTest(); } });
+$('emenu').onclick = () => $('tback').click();
+const endBtns = () => { $('eagain').textContent = T.replay || '🔁 Rejouer'; $('ewave').textContent = T.waveTitle || '🌊 Choisis ta vague'; $('emenu').textContent = T.back || '↩ Menu'; $('ewave').style.display = MODE === 'carve' && !VID ? '' : 'none'; ['eagain', 'emenu'].forEach(id => $(id).style.display = VID ? 'none' : ''); };
 // fin de session : récap dans la carte de fin, les nouveaux du jour en surbrillance
 function objEnd(){ const e = $('eobj'); if(!test || !test.objList){ e.innerHTML = ''; return; } const saved = OBJ_SAVE[test.objKey] || [], n = test.objList.filter(id => saved.includes(id)).length; objPanel(false); $('objc').classList.add('off');
   e.innerHTML = '<span class="eo-n">🎯 ' + n + '/' + test.objList.length + '</span>' + (test.objNew.length ? ' <span class="eo-new">' + (T.objNew || 'nouveau !') + '</span><span class="eo-l">' + test.objNew.map(id => '✅ ' + objName(id, test.S, true)).join(' · ') + '</span>' : ''); }
-// les objets à attraper en vol (Carve) : 4 bouées-lettres F-O-I-L dans la zone de surf et le médaillon du Prof caché derrière le ponton.
+// les objets à attraper en vol (Carve) : 4 bouées-lettres F-O-I-L dans la zone de surf et le foil de la Prof caché derrière la Piouz.
 // 1 InstancedMesh pour les bouées + 1 nuage de 5 points texturés (atlas dessiné au canvas) : 2 appels de dessin.
 // + 4 bouées P-U-M-P (retour Paul), plus au large sur les côtés, loin du ponton et des rouleaux
 const OBJ_POS = [[-16, -24], [14, -44], [-13, -66], [17, -88], [-38, -12], [36, -30], [-40, -52], [38, -74]], OBJ_WORDS = ['FOIL', 'PUMP'], OBJ_COIN = [3.9, 13], OBJ_N = 9;
@@ -1243,7 +1390,9 @@ const objTex = (() => { const k = document.createElement('canvas'); k.width = 64
   'FOILPUMP'.split('').forEach((ch, i) => { const x = i*64 + 32; c.fillStyle = '#0b1222'; c.beginPath(); c.arc(x, 32, 29, 0, 7); c.fill(); c.fillStyle = ['#f97316', '#22d3ee', '#a3e635', '#f472b6', '#facc15', '#60a5fa', '#fb7185', '#34d399'][i]; c.beginPath(); c.arc(x, 32, 25, 0, 7); c.fill();
     c.fillStyle = '#0b1222'; c.font = '900 40px system-ui, sans-serif'; c.fillText(ch, x, 35); });
   { const x = 8*64 + 32, g = c.createRadialGradient(x - 8, 24, 3, x, 32, 28); g.addColorStop(0, '#fff7c2'); g.addColorStop(0.5, '#fbbf24'); g.addColorStop(1, '#b45309'); c.fillStyle = '#78350f'; c.beginPath(); c.arc(x, 32, 29, 0, 7); c.fill(); c.fillStyle = g; c.beginPath(); c.arc(x, 32, 26, 0, 7); c.fill();
-    c.fillStyle = '#78350f'; c.font = '900 34px system-ui, sans-serif'; c.fillText('P', x, 35); }
+    // le foil de la Prof (retour Paul) : petite silhouette de foil (planche, mât, aile) dans la pastille dorée
+    c.fillStyle = '#3b1d08'; c.beginPath(); c.ellipse(x, 18, 15, 3.5, 0, 0, 7); c.fill(); c.fillRect(x - 2, 18, 4, 22);
+    c.beginPath(); c.moveTo(x - 17, 42); c.quadraticCurveTo(x, 36, x + 17, 42); c.quadraticCurveTo(x, 46, x - 17, 42); c.fill(); c.fillRect(x - 2, 40, 13, 3); c.fillRect(x + 8, 38, 7, 2.5); }
   const t = new THREE.CanvasTexture(k); t.colorSpace = THREE.SRGBColorSpace; return t; })();
 const objGeo = new THREE.BufferGeometry(); objGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(3*OBJ_N).fill(-99), 3)); objGeo.setAttribute('idx', new THREE.BufferAttribute(new Float32Array([...Array(OBJ_N).keys()]), 1));
 const objPts = new THREE.Points(objGeo, new THREE.ShaderMaterial({uniforms: {map: {value: objTex}, sc: {value: 400}}, transparent: true,
@@ -1270,7 +1419,7 @@ function objTick(dt, v, ride, fx, fz){ if(!test.objList || test.pumpUp) return;
   else { test.dist += v*dt; OBJ.dist.forEach((d, i) => { if(test.dist >= d) objDone('d' + (i + 1)); }); test.cardioT = (test.hr || 110) >= 180 ? test.cardioT + dt : 0; if(test.cardioT >= 10) objDone('cardio'); } }
 // un carve vient d'être validé (angle en degrés, same = même sens que le précédent)
 function objCarve(ang, same){ objDone('carve'); if(ang >= 100) objDone('big'); if(ang >= 160) objDone('cut'); test.snake = same ? 1 : test.snake + 1; if(test.snake >= 3) objDone('snake'); }
-const MEDALS = [[20000, '🥇'], [12000, '🥈'], [5000, '🥉'], [0, '🌊']];   // session de 2 min
+const MEDALS = [[50000, '🥇'], [20000, '🥈'], [8000, '🥉'], [0, '🌊']];   // relevés : les objectifs rapportent maintenant des points   // session de 2 min
 let BEST = {}; try{ BEST = JSON.parse(localStorage.getItem('dock-best') || '{}'); }catch(e){}
 // 🎵 départ du ponton façon PaRappa (retours Paul + relecture rider) : Prof. Foil montre le rythme, puis « à toi ! »
 // 3 foulées qui accélèrent + l'impulsion (HOP), planche portée à la hanche, posée à plat sous les pieds au saut ;
@@ -1280,7 +1429,7 @@ const B_LEAD = 1.2, B_SPAN = B_LEAD + 1.02 + 0.35, bX = v => Math.max(0, Math.mi
 const STEPS = [0, 0.42, 0.76, 1.02], STEP_D = [0.9, 1.9, 3.0, 3.4], DOCK_END = -1.2, RUN_Z0 = DOCK_END + 3.4, RUN_X = -0.9, DECK = 0.27, BEAT = 0.45;
 // 🔊 petit synthé WebAudio (coupé par défaut, bouton 🔊 dans la barre)
 // 🔇 ?mute=1 : aucun son (tests automatiques), même en mode vidéo
-const MUTE = /[?&]mute=1\b/.test(location.search);
+const MUTE = /[?&]mute=1\b/.test(location.search), POSELAB = (/[?&]poselab=([-\d.,]+)/.exec(location.search) || [])[1], POSECAM = (/[?&]posecam=(\w+)/.exec(location.search) || [])[1];
 let SND = false; try{ SND = !MUTE && localStorage.getItem('dock-snd') === '1'; }catch(e){}
 let AC = null, BUS = null; const beep = (f, d = 0.09, type = 'square', vol = 0.12) => { if(!SND) return; try{ AC = AC || new (window.AudioContext || window.webkitAudioContext)(); const o = AC.createOscillator(), g = AC.createGain();
   o.type = type; o.frequency.value = f; g.gain.setValueAtTime(vol, AC.currentTime); g.gain.exponentialRampToValueAtTime(0.0001, AC.currentTime + d); o.connect(g).connect(BUS || AC.destination); o.start(); o.stop(AC.currentTime + d + 0.02); }catch(e){} };
@@ -1300,6 +1449,10 @@ function beginTakeoff(){ setKeys('step'); swimHud(false); if(test.didDemo) camCu
   $('beat').classList.remove('hide'); $('nfs').classList.add('hide'); $('brate').textContent = ''; $('brate').className = 'brate';
   document.querySelectorAll('#beat .note').forEach((n, i) => { n.className = 'note' + (i === 3 ? ' hop' : ''); n.style.left = bX(STEPS[i]) + '%'; }); { const im = $('mini').querySelector('img'); $('bface').innerHTML = im ? '<img src="' + im.src + '" alt="">' : $('mini').innerHTML; } }
 // 😬 la Prof réagit à tes notes : grimace sur un raté, ravie sur un PARFAIT (images calculées par prof3d.js)
+// 👵 la Prof gronde en très grand (retour Paul) : portrait « ouch » au centre de l'écran, qui tremble, avec sa bulle ; disparaît après 5 s
+const profScold = () => { const F = window.PROF_FACES, el = $('scold'); if(!el) return; if(F) $('scimg').src = F.ouch || F.ok; $('scbub').textContent = T.surfScold || T.surfProf || 'Pas dans la vraie vie, hein !';
+  el.classList.remove('hide'); const fc = el.querySelector('.sc-face'); fc.style.animation = 'none'; void fc.offsetWidth; fc.style.animation = ''; beep(330, 0.12, 'square', 0.12); setTimeout(() => beep(262, 0.2, 'square', 0.12), 140);
+  clearTimeout(profScold.h); profScold.h = setTimeout(() => el.classList.add('hide'), 5000); };
 const profReact = (mood, ms) => { const f = $('bface'), im = f && f.querySelector('img'), F = window.PROF_FACES; if(!im || !F || !F[mood]) return; im.src = F[mood];
   f.classList.remove('ouch', 'yay'); void f.offsetWidth; f.classList.add(mood); clearTimeout(profReact.h); profReact.h = setTimeout(() => { im.src = F.ok; f.classList.remove('ouch', 'yay'); }, ms || 900); };
 function judge(k, q){ const tk = test.takeoff; tk.hits[k] = q; profReact(q >= 1 ? 'yay' : q < 0.6 ? 'ouch' : ''); const el = document.querySelectorAll('#beat .note')[k];
@@ -1388,7 +1541,7 @@ function endSlalom(el, finished){ test.done = true; $('pad').classList.add('hide
   { const sv = test.objList ? (OBJ_SAVE[test.objKey] || []) : []; $('eread').innerHTML = '';
     test.share = {medal: $('emedal').textContent, label: T.slChrono || 'CHRONO', value: $('escore').textContent, rec: rec ? '🏆 ' + (T.newBest || 'NEW BEST!') : '',
       obj: test.objList ? '🎯 ' + test.objList.filter(id => sv.includes(id)).length + '/' + test.objList.length : '', read: fill(T.slGates || '{i}/{n}', {i: GATES - test.slalom.pen/2, n: GATES})}; }
-  $('eshare').textContent = T.shareBtn || '📲 Partager ma session'; $('eshare').style.display = VID ? 'none' : '';
+  $('eshare').textContent = T.shareBtn || '📲 Partager ma session'; $('eshare').style.display = VID ? 'none' : ''; endBtns();
   endCard(finished ? (T.endSlalom || '🏁 Slalom terminé') : (T.endSlalomDnf || '⏱ 30 s écoulées')); $('treplay').textContent = T.replay; $('treplay').classList.remove('hide2'); }
 // ⌨️ légende des touches selon la phase (départ, vague, eau plate)
 function setKeys(kind){ const ff = kind === 'wave' && test && test.ff; $('pad').dataset.k = kind; $('pad').dataset.ff = ff ? '1' : '0'; $('td').textContent = ff ? '🦶' : '↓'; $('td').setAttribute('aria-label', ff ? (T.kFoot || 'pied avant') : (T.aPress || 'appuie')); $('tp').textContent = kind === 'step' ? '👟 ' + (T.kTap || 'TAP') : kind === 'flat' ? '␣ 💪' : (T.pump || '💪 Pump');
@@ -1418,7 +1571,7 @@ function startTest(){ $('ntime').classList.remove('hide'); gc('test/' + MODE);
   document.querySelectorAll('.sel,.right,.statsbar,.tabs,.go').forEach(e => e.classList.add('hide')); $('tip').classList.add('hide');
   $('tcap').textContent = fill(T.testCap, {n, k: T.turnKinds[m >= 55 ? 0 : m >= 35 ? 1 : 2]}) + (MODE === 'carve' ? ' · 🌊 ' + (((T.waveCards || [])[[0.5, 1, 1.75, 2.5].indexOf(ST.H)] || {}).n || '') + ' ' + (T.swells[[0.5, 1, 1.75, 2.5].indexOf(ST.H)] || '') : ''); setKeys('step'); $('pad').classList.remove('hide'); $('tenl').textContent = T.energy || '💪'; $('tstall').textContent = fill(T.stall || '< {v}', {v: Math.round(vs*3.6)}); $('tbar').classList.remove('hide');
 }
-function endTest(silent, keep){ ['good', 'shore', 'slow', 'foot'].forEach(id => $(id) && $(id).classList.remove('on')); $('ntime').classList.add('hide'); objPts.visible = objBuoys.visible = false; clearTimeout(objPanel.h); $('objp').classList.add('off'); $('objc').classList.add('off'); $('eobj').innerHTML = ''; $('eread').innerHTML = '';
+function endTest(silent, keep){ $('ofeed').innerHTML = ''; ['good', 'shore', 'slow', 'foot'].forEach(id => $(id) && $(id).classList.remove('on')); $('ntime').classList.add('hide'); objPts.visible = objBuoys.visible = false; clearTimeout(objPanel.h); $('objp').classList.add('off'); $('objc').classList.add('off'); $('eobj').innerHTML = ''; $('eread').innerHTML = '';
   showRot(needRotate()); document.body.classList.remove('playing');   // on reste en paysage (plein écran gardé) : tout le Dock se joue à l'horizontale
   $('pad').classList.add('hide'); slalomG.visible = false;
   test = null; keys.l = keys.r = keys.f = false; trail.visible = false; rider.visible = false; fxL.fill(0); fxP.fill(-99); fxGeo.attributes.position.needsUpdate = true; fxRings.forEach(m => m.visible = false); swimmer.visible = false; runner.visible = false; $('plane').classList.add('hide'); $('beat').classList.add('hide'); $('vig').style.opacity = 0; $('slow').classList.remove('on'); $('foot').classList.remove('on'); $('td').classList.remove('on'); cam.fov = FOV0; cam.updateProjectionMatrix(); windSnd(0); $('nfs').classList.add('hide'); $('endc').classList.add('hide'); $('pops').innerHTML = ''; plate.visible = ring.visible = pole.visible = false;
@@ -1460,8 +1613,10 @@ $('wpx').onclick = () => $('wpick').classList.add('hide');
 addEventListener('keydown', e => { if(e.key === 'Escape' && !$('wpick').classList.contains('hide')) $('wpick').classList.add('hide'); });
 // vague mémorisée : on règle ST.H et le bouton SANS simuler de clic (le clic appelle render() avant que MODE existe : plantage au chargement)
 try{ const h0 = +localStorage.getItem('dock-houle'); if(WAVES.some(w => w.h === h0)){ ST.H = h0; $('swell').querySelectorAll('button').forEach(x => { const on = +x.dataset.v === h0; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on ? 'true' : 'false'); }); } }catch(e){}
-$('test').onclick = () => MODE === 'carve' && !VID ? pickWave(playTest) : playTest();
-if(/[?&]debug=1/.test(location.search)) { window.__dockTest = () => test; window.__dockSW = SW; window.__dockShare = () => { const d = shareData(); return d ? shareCanvas(d) : null; }; window.__dockSET = SET; window.__dockSWG = SWG; window.__dockCam = (x, y, z, tx, ty, tz) => { cam.position.set(x, y, z); cam.lookAt(tx, ty, tz); }; window.__dockFoil = () => foil; window.__dockHold = b => { DBG_HOLD = !!b; }; window.__dockInfo = () => { let meshes = 0, vis = 0; scene.traverse(o => { if(o.isMesh || o.isLine || o.isPoints){ meshes++; let v = true; for(let q = o; q; q = q.parent) if(!q.visible){ v = false; break; } if(v) vis++; } }); return {calls: gl.info.render.calls, tris: gl.info.render.triangles, meshes, visibles: vis, geoms: gl.info.memory.geometries}; }; window.__dockTURN = TURN; window.__dockH = h => { if(h !== undefined) seaU.H.value = h; return seaU.H.value; }; window.__dockK = (k, b) => { SW.K = k; if(b !== undefined) SW.back = b; }; window.__dockFrame = (now, t) => { if(t !== undefined) clock.elapsedTime = t; testFrame(now); }; }   // tests locaux : placer le rider
+// 🌊 retour Paul : choisir sa vague à chaque lancement, c'est lourd → seulement tant qu'aucune vague n'est mémorisée ; ensuite on la change dans le menu (« La houle »)
+const waveKnown = () => { try{ return !!localStorage.getItem('dock-houle'); }catch(e){ return false; } };
+$('test').onclick = () => MODE === 'carve' && !VID && !waveKnown() ? pickWave(playTest) : playTest();
+if(/[?&]debug=1/.test(location.search)) { window.__dockTest = () => test; window.__RID = RID; window.__WINDS = WINDS; window.__surf = () => surferHit(performance.now(), 2, 9); window.__scold = profScold; window.__dockStep = (n, ms) => { const n0 = test.last || performance.now(); for(let k = 1; k <= n; k++){ testFrame(n0 + k*(ms || 33)); missionTick(clock.elapsedTime + k*(ms || 33)/1000, (ms || 33)/1000, n0 + k*(ms || 33)); } gl.render(scene, cam); }; window.__dockFly = (x, z, h) => { const now = performance.now(); test.takeoff = null; test.pumpUp = null; runner.visible = false; rider.visible = true; $('beat').classList.add('hide'); test.x = x; test.z = z; test.h = h; test.v = test.vl*1.5; test.manual = true; test.mt0 = now - 10000; test.last = now; test.sta = 100; }; window.__dockSW = SW; window.__dockShare = () => { const d = shareData(); return d ? shareCanvas(d) : null; }; window.__dockSET = SET; window.__dockSWG = SWG; window.__dockCam = (x, y, z, tx, ty, tz) => { cam.position.set(x, y, z); cam.lookAt(tx, ty, tz); }; window.__dockFoil = () => foil; window.__dockHold = b => { DBG_HOLD = !!b; }; window.__dockInfo = () => { let meshes = 0, vis = 0; scene.traverse(o => { if(o.isMesh || o.isLine || o.isPoints){ meshes++; let v = true; for(let q = o; q; q = q.parent) if(!q.visible){ v = false; break; } if(v) vis++; } }); return {calls: gl.info.render.calls, tris: gl.info.render.triangles, meshes, visibles: vis, geoms: gl.info.memory.geometries}; }; window.__dockTURN = TURN; window.__dockH = h => { if(h !== undefined) seaU.H.value = h; return seaU.H.value; }; window.__dockK = (k, b) => { SW.K = k; if(b !== undefined) SW.back = b; }; window.__dockFrame = (now, t) => { if(t !== undefined) clock.elapsedTime = t; testFrame(now); }; }   // tests locaux : placer le rider
 // 🌊 la houle change pendant le run (retour Paul) : la vague choisie est celle du départ, puis toutes les 25 à 37 s elle forcit ou se calme
 // d'un cran (au plus un cran autour du choix), en douceur (0,25 m/s). Seule la hauteur varie : la vitesse des vagues reste (sinon elles « sauteraient »).
 const SWELL_LV = [0.5, 1, 1.75, 2.5];
@@ -1565,6 +1720,8 @@ function testFrame(now){
   // 🌬️ souffle : plus fort avec la vitesse et quand la houle pousse
   windSnd(test.manual && !test.pumpUp ? Math.max(0, Math.min(1, 0.3*(v/test.vl - 0.85) + 0.25*Math.max(0, test.swS || 0))) : 0);
   // 🦵 le rider fléchit sur l'appui (↓) et se relève sur le délestage (↑)
+  if(test.extAt && now >= test.extAt){ test.extAt = 0; test.squatT = -0.75; }   // 🦵 le pump = flexion (écrase) PUIS extension complète, talon arrière levé (retour Paul)
+  ARM_S += ((test.armT || 0) - ARM_S)*(1 - Math.exp(-dt*7));
   test.squat = (test.squat || 0) + ((test.squatT || 0) - (test.squat || 0))*(1 - Math.exp(-dt*18)); test.squatT = (test.squatT || 0)*Math.exp(-dt*5);
   riderPose(test.squat, pb, bank/0.9, test.ff && keys.f ? 1 : 0, t);
   // 💦 sillage : un peu d'écume au mât en vol, beaucoup quand la planche touche l'eau (pump de décollage, vol au ras de l'eau)
@@ -1665,16 +1822,25 @@ function testFrame(now){
   if(farD > ZONE.warn && test.x*fx + (test.z - DOCK_END)*fz > 0 && !far && !test.done && !test.shoreOn){ const e = $('shore'); e.textContent = T.farWarn || '⚠️ Trop au large, reviens !'; e.classList.add('on'); test.farOn = true; test.shoreB = (test.shoreB || 0) + dt; if(test.shoreB > 0.7){ test.shoreB = 0; beep(620, 0.08, 'square', 0.09); buzz(25); } }
   else if(test.farOn){ test.farOn = false; if(!test.shoreOn) $('shore').classList.remove('on'); }
   const vent = test.ff && !pu && test.up >= 1;   // 💨 le gros foil est sorti de l'eau : il ventile, plus de portance
-  const fell = (!pu && v <= test.vs) || crash || puFail || vent || shore || beached || far;
+  // 🎮 missions façon THPS2 (Carve) : percuter le surfeur, passer entre les bouées, frôler la Piouz à fond, un 360
+  const srfHit = test.surf && !pu && !SURF.ko && Math.hypot(test.x - SURF.x, test.z - SURF.z) < 1.5, wHit = test.surf && !pu && WINDS.some(w => Math.abs(test.x - w.x) < 1.6 && Math.abs(test.z - w.z) < 1.0);
+  if(test.surf && !pu){ const ax = GATE.a[0], az = GATE.a[1], bx = GATE.b[0], bz = GATE.b[1], px = test.gpx ?? test.x, pz = test.gpz ?? test.z;
+    const cr = (ox, oz, ux, uz, wx, wz) => (ux - ox)*(wz - oz) - (uz - oz)*(wx - ox), d1 = cr(ax, az, bx, bz, px, pz), d2 = cr(ax, az, bx, bz, test.x, test.z), d3 = cr(px, pz, test.x, test.z, ax, az), d4 = cr(px, pz, test.x, test.z, bx, bz);
+    if(d1*d2 < 0 && d3*d4 < 0) objDone('gate');
+    const rdx = Math.max(Math.abs(test.x + 0.9) - 0.3, 0), rdz = Math.max(-1.2 - test.z, test.z - 3.7, 0), rd = Math.hypot(rdx, rdz);
+    if(rd > 0.6 && rd < 1.7 && v > test.vl*1.35 && test.mt0 && now - test.mt0 > 6000) objDone('rase');
+    let dh = test.h - (test.gph ?? test.h); dh = Math.atan2(Math.sin(dh), Math.cos(dh)); test.spinAcc = (test.spinAcc || 0) + dh; if(Math.abs(test.spinAcc) >= Math.PI*2) objDone('t360'); }
+  test.gpx = test.x; test.gpz = test.z; test.gph = test.h;
+  const fell = (!pu && v <= test.vs) || crash || puFail || vent || shore || beached || far || srfHit || wHit;
   if(test.slalom ? slalomFrame(now, t) : sessionTick(now, el)) return;
   // ⏱ session de 2 min (retour Paul) : une chute ne termine plus le test → on nage jusqu'à la planche, on repart (combo perdu, temps perdu)
-  if(fell){ keys.l = keys.r = keys.f = false; test.falls++; test.snake = 0; test.wavesRow = 0; test.objShore = 0; test.tourS = 0; test.perfRow = 0; if(crash) objDone('kiss'); test.flow = 0; test.tAng = 0; test.tDir = 0; $('pcue').classList.remove('on');
-    $('plane').classList.add('hide'); test.beat0 = 0; test.speedUp = null; test.pumpUp = null; popUp(crash ? (T.pCrash || '💥') : puFail ? (T.pNoTakeoff || '💦') : shore ? (T.pShore || '🌊 SHORE BREAK !') : beached ? (T.pBeach || '🏖️ ÉCHOUÉ !') : far ? (T.pFar || '🧭 TROP LOIN !') : vent ? (T.pVent || '💨 VENTILÉ !') : (T.pFall || '💦'), 0, true);
-    test.lastFall = crash ? 'crash' : shore ? 'shore' : beached ? 'beach' : far ? 'far' : vent ? 'vent' : 'stall'; if(!crash){ splash(test.x, seaH(test.x, test.z, t), test.z, shore ? 60 : vent ? 36 : 26, shore ? 4.2 : 3.1, fx*v*0.25, fz*v*0.25); ripple(test.x, test.z, shore ? 2.6 : 1.8); }
+  if(fell){ test.spinAcc = 0; if(wHit){ test.cols = (test.cols || 0) + 1; setTimeout(() => toast(T.ruleWind || '🚦 Les windsurfs tiennent leur ligne : regarde loin et contourne tôt !'), 900); } if(srfHit){ const had = (test.objPaid || []).includes('surfer'); objDone('surfer'); if(had) popUp('🎯 ' + (T.objWin || 'OBJECTIF !') + ' ' + objName('surfer', test.S, true)); surferHit(now, fx*v, fz*v); test.surfHit = true; setTimeout(profScold, 700); } keys.l = keys.r = keys.f = false; test.falls++; test.snake = 0; test.wavesRow = 0; test.objShore = 0; test.tourS = 0; test.perfRow = 0; if(crash) objDone('kiss'); test.flow = 0; test.tAng = 0; test.tDir = 0; $('pcue').classList.remove('on');
+    $('plane').classList.add('hide'); test.beat0 = 0; test.speedUp = null; test.pumpUp = null; popUp(srfHit ? (T.pBonus || '🎳 BONUS !') : wHit ? (T.pCollide || '💥 COLLISION !') : crash ? (T.pCrash || '💥') : puFail ? (T.pNoTakeoff || '💦') : shore ? (T.pShore || '🌊 SHORE BREAK !') : beached ? (T.pBeach || '🏖️ ÉCHOUÉ !') : far ? (T.pFar || '🧭 TROP LOIN !') : vent ? (T.pVent || '💨 VENTILÉ !') : (T.pFall || '💦'), 0, true);
+    test.lastFall = srfHit ? 'surfer' : wHit ? 'collision' : crash ? 'crash' : shore ? 'shore' : beached ? 'beach' : far ? 'far' : vent ? 'vent' : 'stall'; if(!crash){ splash(test.x, seaH(test.x, test.z, t), test.z, shore ? 60 : vent ? 36 : 26, shore ? 4.2 : 3.1, fx*v*0.25, fz*v*0.25); ripple(test.x, test.z, shore ? 2.6 : 1.8); }
     if(shore && !crash){ beep(110, 0.45, 'sawtooth', 0.16); buzz(140); } $('shore').classList.remove('on'); test.shoreOn = false; $('nspd').textContent = '0'; $('garc').setAttribute('d', arcPath(0, 0.005)); if(vent && !crash){ beep(240, 0.3, 'sawtooth', 0.14); if(!test.ventTip){ test.ventTip = true; toast(T.ventTip || 'Gros foil + vitesse = il veut sortir de l\'eau. Appuie sur le pied avant (↓) quand la planche monte.'); } }
     test.up = 0; test.upHigh = false; test.footCue = false; test.fovK = 0; $('foot').classList.remove('on'); $('td').classList.remove('on', 'need'); $('mboard').classList.remove('hot'); if(!VID && !RM){ cam.fov = FOV0; cam.updateProjectionMatrix(); } windSnd(0);
     ['good', 'shore', 'foot'].forEach(id => $(id) && $(id).classList.remove('on'));
-    if(crash){ // 💥 le foil tape les piliers sous l'eau : la planche s'arrête net, le rider est projeté vers l'avant
+    if(crash || srfHit || wHit){ // 💥 le foil tape les piliers sous l'eau (ou le surfeur) : la planche s'arrête net, le rider est projeté vers l'avant
       rider.visible = false; runner.visible = true; runner.rotation.order = 'YXZ'; runner.rotation.set(0, test.h, 0); runnerPose('dive', 0, 0);
       test.crashA = {t0: now, x: test.x, z: test.z, y: foil.position.y + 0.1, vx: fx*v*0.8, vz: fz*v*0.8, vy: 2.2, rot: 0, land: null, bx: test.x - fx*0.9, bz: test.z - fz*0.9, h: test.h, shake: 1};
       test.accS = 0; $('vig').style.opacity = 0; $('slow').classList.remove('on'); $('ntrend').textContent = ''; return; }
@@ -1690,7 +1856,7 @@ function testFrame(now){
 }
 // fin de session (2 min écoulées, ou personne aux commandes) : renvoie true si c'est fini
 // 🏁 carte de fin : titre explicite (retour Paul : « j'ai pas compris comment j'ai accédé à cet écran ») + légende du haut nettoyée
-function endCard(title){ $('ntime').classList.add('hide'); gc('fin/' + MODE); $('etitle').textContent = title; $('tkeys').innerHTML = '<span>' + (T.endHint || '🔁 Rejouer ou ↩ revenir au ponton pour changer d\'aile') + '</span>';
+function endCard(title){ $('ntime').classList.add('hide'); gc('fin/' + MODE); $('etitle').textContent = title; $('estats').textContent = $('tcap').textContent.replace(/^🏁\s*/, ''); if(test && test.surfHit){ const em = document.createElement('em'); em.textContent = T.surfEnd || '🏄 En vrai, on contourne les surfeurs !'; $('estats').appendChild(em); } $('tbar').classList.add('hide');
   $('endc').classList.remove('hide'); $('nfs').classList.add('hide'); }
 function sessionTick(now, el){
   const air = test.manual ? (now - test.mt0)/1000 : 0, left = Math.max(0, TEST.dur - air);
@@ -1706,11 +1872,11 @@ function sessionTick(now, el){
   $('erec').textContent = rec ? (T.newBest || 'NEW BEST!') : fill(T.best || 'best {b}', {b: old.toLocaleString(LANG)}); $('erec').className = 'rec' + (rec ? '' : ' old');
   const rd = test.surf ? readScore() : 0; if(test.surf && rd >= 70 && air >= 60) objDone('read70');
   $('eread').innerHTML = test.surf ? '🌊 ' + (T.readLbl || 'Lecture de houle') + ' ' + rd + '/100 <em>· ' + readWord(rd) + '</em>' : '';
-  if(!test.falls) objDone('nofall'); if(test.flat && (test.hr || 110) < 130) objDone('zen'); objEnd();
+  if(!test.falls) objDone('nofall'); if(test.surf && !test.cols) objDone('nocol'); if(test.flat && (test.hr || 110) < 130) objDone('zen'); objEnd();
   { const sv = test.objList ? (OBJ_SAVE[test.objKey] || []) : [], dist = Math.round(test.dist || 0);
     test.share = {medal: $('emedal').textContent, label: test.flat ? (T.shDist || 'DISTANCE') : (T.pScore || 'SCORE'), value: test.flat ? dist.toLocaleString(LANG) + ' m' : sc.toLocaleString(LANG),
       rec: rec ? '🏆 ' + (T.newBest || 'NEW BEST!') : '', obj: test.objList ? '🎯 ' + test.objList.filter(id => sv.includes(id)).length + '/' + test.objList.length : '', read: test.surf ? '🌊 ' + (T.readShort || 'Houle') + ' ' + rd + '/100' : (test.flat ? '⭐ ' + sc.toLocaleString(LANG) + ' ' + (T.pts || 'pts') : '')}; }
-  $('eshare').textContent = T.shareBtn || '📲 Partager ma session'; $('eshare').style.display = VID ? 'none' : '';
+  $('eshare').textContent = T.shareBtn || '📲 Partager ma session'; $('eshare').style.display = VID ? 'none' : ''; endBtns();
   endCard(T.endSession || '⏱ Fin de la session : 2 min de vol');
   $('treplay').textContent = T.replay; $('treplay').classList.remove('hide2'); return true;
 }
@@ -1869,6 +2035,17 @@ gl.setAnimationLoop(now => {
     foil.position.y = SHOW_Y + foilLift + 0.04*Math.sin(t*1.6); turn.rotation.x = 0.3;   // vitrine penchée vers la caméra (retour Paul : on voyait l'aile en tranche)
     if(pop > 0){ pop = Math.max(0, pop - dt*2.5); const s = 1 + 0.06*Math.sin(pop*Math.PI); foil.scale.setScalar(s); ring.material.emissive = ring.material.emissive || new THREE.Color(); ring.material.emissive.setRGB(pop*0.6, pop*0.45, 0); }
     ctl.update(); }
+  // 🔍 caméra d'étude de la posture (outil, ?posecam=side|front|nose) : filme le rider comme les photos de référence (side = de face côté orteils, front = depuis le nez, nose = 3/4 avant)
+  missionTick(t, dt, now);
+  // 🧪 labo de pose (outil, ?poselab=flexion,gîte,bras : flexion −0,6…1, gîte −1…1, bras −1 derrière…1 devant) : rider figé sur le foil du menu, à filmer avec posecam
+  if(POSELAB){ const [sq, bk, arm] = POSELAB.split(',').map(Number); rider.visible = true; foil.scale.setScalar(1); if(!document.body.classList.contains('plab')){ document.body.classList.add('plab'); const st = document.createElement('style'); st.textContent = 'body.plab > *:not(#scene){visibility:hidden !important}'; document.head.appendChild(st); } ARM_S = arm || 0; riderPose(sq || 0, 0, bk || 0, 0, t); turn.rotation.set(0, 0, 0); foil.rotation.set(0, 0, (bk || 0)*0.7); }
+  // caméra « face » : suit la tête du rider et la filme de face, légèrement de 3/4 (le visage regarde vers −z local de la tête)
+  if(POSECAM === 'wind' && WINDS[0]){ const wp = WINDS[0].g.position; cam.position.set(wp.x - 2.5, wp.y + 2.2, wp.z + 8); cam.lookAt(wp.x, wp.y + 1.6, wp.z); }
+  else if(POSECAM === 'dolph'){ const dp = dolphins[0].g.position; cam.position.set(dp.x + 6, dp.y + 2.4, dp.z + 7); cam.lookAt(dp.x, dp.y, dp.z); }
+  else if(POSECAM === 'surfer'){ const sp = surfer.position; cam.position.set(sp.x + 2.6, sp.y + 0.7, sp.z - 3.2); cam.lookAt(sp.x, sp.y + 0.2, sp.z); }
+  else if(POSECAM === 'face' && rider.visible){ const hp = RID.head.getWorldPosition(new THREE.Vector3()), q = RID.head.getWorldQuaternion(new THREE.Quaternion()), fwd = new THREE.Vector3(0.35, 0.12, -1).normalize().applyQuaternion(q);
+    cam.position.copy(hp).addScaledVector(fwd, 0.75); cam.lookAt(hp); }
+  else if(POSECAM && rider.visible){ const P = {side: [5.2, 0.9, -0.2], front: [0.4, 0.95, -5.4], nose: [3.8, 0.95, -3.8], back: [0.3, 0.95, 5.4], close: [3.4, 1.05, -0.9], face: [1.5, 1.72, -0.75]}[POSECAM] || [5.2, 0.9, -0.2]; cam.position.copy(foil.localToWorld(new THREE.Vector3(...P))); cam.lookAt(foil.localToWorld(new THREE.Vector3(0, POSECAM === "face" ? 1.65 : POSECAM === "close" ? 0.95 : 0.75, -0.18))); }
   gl.render(scene, cam); if(VID) VID.frame(t);
 });
 
