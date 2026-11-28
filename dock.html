@@ -447,7 +447,7 @@ seoLang((/[?&]lang=(en|es|it|de)\b/i.exec(location.search) || [])[1] || 'fr');</
   var last = 0; document.addEventListener('touchend', function(e){ var n = Date.now(); if(n - last < 300 && !(e.target.closest && e.target.closest('button, a, input, select, [role=button]'))) e.preventDefault(); last = n; }, {passive: false});
   document.addEventListener('wheel', function(e){ if(e.ctrlKey) e.preventDefault(); }, {passive: false}); })();
 </script>
-<script src="dock-i18n.js?v=20261128n2"></script>
+<script src="dock-i18n.js?v=20261128f1"></script>
 <script src="ailes.js?v=20261122"></script>
 <script type="module">
 import * as THREE from 'three';
@@ -941,7 +941,38 @@ function dolphTick(t, on){ const esc = VID && VID.missions && test && VID.seg ==
   const k = ((t*(VID ? 0.9 : 0.55) + d.ph) % 3)/3, jump = k < 0.33 ? Math.sin(Math.PI*k/0.33) : 0, sea = seaVis(x, z, t);
   d.g.position.set(x, sea - (VID ? 0.1 : 0.25) + 1.6*jump, z); d.g.rotation.set(jump > 0 ? -0.9*Math.cos(Math.PI*k/0.33) : 0.05*Math.sin(t + i), -a, 0); });
   if(on && test && test.surf && !test.done && Math.hypot(test.x - DOLPH.cx, test.z - DOLPH.cz) < DOLPH.r + 14) objDone('dolph'); }
-function missionTick(t, dt, now){ const on = (test && test.surf && (!VID || VID.missions)) || POSECAM === 'surfer' || POSECAM === 'wind' || POSECAM === 'dolph'; surfer.visible = on; dolphTick(t, on);
+// 🎣 le pêcheur sur la plage (demande Paul) : canne de surfcasting tendue vers le large, sa ligne plonge à ~34 m du bord ; si on la prend dans le foil, on tombe et il nous ramène jusqu'à la plage
+const FISH = (() => { const bx = -24, bz = shoreZ(-24) + 3, hx = -14, hz = shoreZ(-14) - 62; return {bx, bz, hx, hz, h: Math.atan2(-(hx - bx), -(hz - bz))}; })();   // ligne longue (retour Paul) : ~60 m vers le large
+const fisher = new THREE.Group(); fisher.visible = false; scene.add(fisher);
+const FSH = makeHuman(); fisher.add(FSH.g);
+{ const pant = new THREE.MeshStandardMaterial({color: '#a3a8ae', roughness: 0.9, side: THREE.DoubleSide}), vest = new THREE.MeshStandardMaterial({color: '#1d4ed8', roughness: 0.75, side: THREE.DoubleSide}), sleeve = vest, bootF = new THREE.MeshStandardMaterial({color: '#14532d', roughness: 0.7});
+  FSH.g.traverse(m => { if(!m.isMesh) return; if(m.material === suitLeg) m.material = pant; else if(m.material === suitTop || m.material === suitTopB) m.material = FSH.aL.a.children.includes(m) || FSH.aL.b.children.includes(m) || FSH.aR.a.children.includes(m) || FSH.aR.b.children.includes(m) ? sleeve : vest; else if(m.material === bootM) m.material = bootF; });
+  FSH.torso.children.forEach(m => { if(m.geometry === HG.chestBand) m.visible = false; });
+  const belly = new THREE.Mesh(new THREE.SphereGeometry(0.17, 16, 10).scale(1.05, 1, 0.9), vest); belly.position.set(0, 0.2, -0.06); FSH.torso.add(belly); }   // tenue de pêcheur : pantalon gris, gilet sombre, manches bleues
+FSH.head.children.forEach(m => { if(m.geometry === HG.cap || m.geometry === HG.vent || m.geometry === HG.strap) m.visible = false; });
+// 🎣 un vrai pêcheur, pas un clone du rider (retour Paul) : bob rouge à bord rabattu, veste bleue, pantalon gris, gros ventre, bottes
+{ const red = new THREE.MeshStandardMaterial({color: '#dc2626', roughness: 0.85, side: THREE.DoubleSide});
+  const crown = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.1, 0.09, 18, 1, true), red); crown.position.y = 0.075; FSH.head.add(crown);
+  const topB = new THREE.Mesh(new THREE.CircleGeometry(0.085, 18).rotateX(-Math.PI/2), red); topB.position.y = 0.12; FSH.head.add(topB);
+  const brim = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.15, 0.05, 20, 1, true), red); brim.position.y = 0.02; FSH.head.add(brim); }
+{ const p = FSH.p; p.pel.set(0, 0.92, 0.05); p.neck.set(0, 1.44, 0.12); p.face.set(0, 0, -1); p.look.set(0, 0.35, -1); p.fL.set(-0.14, 0.07, -0.08); p.fR.set(0.14, 0.07, 0.12);
+  p.toeL.set(0, 0, -1); p.toeR.set(0.2, 0, -1); p.kL.set(0, 0, -1); p.kR.set(0, 0, -1); p.hL.set(-0.04, 1.28, -0.22); p.hR.set(0.05, 1.05, -0.1); p.eL.set(-1, -0.2, 0); p.eR.set(1, -0.2, 0); FSH.apply(); }
+const ROD = {L: 4.6, a: 1.05, y0: 1.05, z0: -0.08};
+{ const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.022, ROD.L, 6).translate(0, ROD.L/2, 0), new THREE.MeshStandardMaterial({color: '#1e3a8a', roughness: 0.4}));
+  rod.position.set(0, ROD.y0, ROD.z0); rod.rotation.x = -(Math.PI/2 - ROD.a); fisher.add(rod);
+  const pique = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 1.2, 6), new THREE.MeshStandardMaterial({color: '#cbd5e1'})); pique.position.set(0.9, 0.5, 0.3); pique.rotation.z = 0.15; fisher.add(pique);
+  const bag = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.35, 0.25), new THREE.MeshStandardMaterial({color: '#d6d3c4'})); bag.position.set(-0.9, 0.17, 0.5); fisher.add(bag); }
+fisher.position.set(FISH.bx, -0.3, FISH.bz); fisher.rotation.y = FISH.h;
+const fishLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints(Array.from({length: 24}, () => new THREE.Vector3())), new THREE.LineBasicMaterial({color: '#f8fafc', transparent: true, opacity: 0.85}));
+fishLine.frustumCulled = false; fishLine.visible = false; scene.add(fishLine);
+const rodTip = () => fisher.localToWorld(new THREE.Vector3(0, ROD.y0 + ROD.L*Math.sin(ROD.a), ROD.z0 - ROD.L*Math.cos(ROD.a)));
+function fishTick(t, on){ fisher.visible = fishLine.visible = on; if(!on) return; fisher.updateMatrixWorld(true);
+  const a = rodTip(), S = test && test.swim && test.swim.reel ? test.swim : null, ex = S ? swimmer.position.x : FISH.hx, ez = S ? swimmer.position.z : FISH.hz, ey = S ? swimmer.position.y + 0.3 : seaVis(FISH.hx, FISH.hz, t) - 0.2;
+  const P = fishLine.geometry.attributes.position; for(let i = 0; i < 24; i++){ const k = i/23, sag = (S ? 0.3 : 2.4)*Math.sin(Math.PI*k); P.setXYZ(i, a.x + (ex - a.x)*k, a.y + (ey - a.y)*k - sag, a.z + (ez - a.z)*k); } P.needsUpdate = true; }
+// distance du foil à la ligne (dans l'eau seulement, à plus de 6 m du sable)
+function fishLineHit(x, z){ const ax = FISH.bx, az = FISH.bz, bx = FISH.hx, bz = FISH.hz, ux = bx - ax, uz = bz - az, k = Math.max(0, Math.min(1, ((x - ax)*ux + (z - az)*uz)/(ux*ux + uz*uz))), px = ax + ux*k, pz = az + uz*k;
+  return Math.hypot(x - px, z - pz) < 0.9 && z < shoreZ(x) - 6; }
+function missionTick(t, dt, now){ const on = (test && test.surf && (!VID || VID.missions)) || POSECAM === 'surfer' || POSECAM === 'wind' || POSECAM === 'dolph'; surfer.visible = on; dolphTick(t, on); fishTick(t, on);
   buoys.forEach((b, i) => { b.visible = on; const q = i ? GATE.b : GATE.a; b.position.set(q[0], seaVis(q[0], q[1], t) - 0.12, q[1]); b.rotation.z = 0.09*Math.sin(t*1.7 + i*2); });
   WINDS.forEach(w => { w.g.visible = on; if(!on) return; w.x += w.dir*5*dt; if(Math.abs(w.x) > 45){ w.x = Math.sign(w.x)*45; w.dir = -w.dir; } w.g.position.set(w.x, seaVis(w.x, w.z, t) - 0.04, w.z); w.g.rotation.set(0, w.dir > 0 ? 0 : Math.PI, 0.05*Math.sin(t*1.3 + w.z)); });
   if(!on) return; const S = SURF;
@@ -1028,6 +1059,12 @@ function swimFrame(now){
   const dt = Math.max(0, Math.min(VID ? 0.2 : 0.05, (now - test.last)/1000)), t = clock.elapsedTime; test.last = Math.max(test.last, now); const S = test.swim;
   if(S.t0 === undefined){ S.t0 = now; S.r0 = foil.rotation.z; S.p0 = foil.rotation.x; S.th = 0; S.sp = 0; S.hx = S.x; S.hz = S.z; S.hh = S.h; }
   const el = (now - S.t0)/1000, A = 0.4, B = 1.2, C = 1.8, up = sstep(el/0.45), load = sstep((el - B)/(C - B));
+  // 🎣 pris dans la ligne : le pêcheur mouline, on est tiré sur le dos jusqu'au bord (la planche reste où elle est), puis on repart du départ
+  if(S.reel){ const tx = FISH.bx + (FISH.hx - FISH.bx)*0.12, tz = shoreZ(FISH.bx) - 3, k = sstep(Math.max(0, el - 0.6)/4.6), x = S.x + (tx - S.x)*k, z = S.z + (tz - S.z)*k;
+    foil.position.set(S.bx, seaVis(S.bx, S.bz, t) + 0.05, S.bz); foil.rotation.set(0.03*Math.sin(t*1.9), S.bh, 1.3);
+    swimmer.position.set(x, seaVis(x, z, t) + 0.02, z); swimmer.rotation.set(0, Math.atan2(-(FISH.bx - x), -(FISH.bz - z)), 0); swimPose(Math.PI*0.5, t*9, 1, 0, 0.12, -0.12, 0.95);   // à plat ventre, bras tendus vers le pêcheur, tiré par la ligne
+    S.th = (S.th || 0) + dt; if(S.th > 0.35 && k < 0.98){ S.th = 0; splash(x, seaVis(x, z, t), z, 5, 1.2); }
+    const fx0 = -Math.sin(FISH.h), fz0 = -Math.cos(FISH.h); cam.position.set(x + fx0*8, 3.8, z + fz0*8); cam.lookAt(x + (FISH.bx - x)*0.3, 0.3, z + (FISH.bz - z)*0.3); return; }   // caméra au large, derrière le nageur : on voit la ligne tendue et le pêcheur qui mouline
   // la planche : se remet à plat, flotte, s'enfonce un peu sous le poids du rider, avance quand il rame (vers le large devant le ponton)
   if(el > C){ const want = Math.atan2(-(RUN_X - 2.5 - S.bx), -(DOCK_END - 6 - S.bz)); let dh = want - S.bh; dh = Math.atan2(Math.sin(dh), Math.cos(dh)); S.bh += Math.max(-1, Math.min(1, dh))*dt*1.1;
     const sp = 0.8*(0.7 + 0.3*Math.abs(Math.sin(S.th))); S.bx -= Math.sin(S.bh)*sp*dt; S.bz -= Math.cos(S.bh)*sp*dt; }
@@ -1303,7 +1340,7 @@ const award = (key, base, extra) => { const pts = Math.round(base*mult()); test.
 const bumpFlow = d => { test.flow = Math.max(0, Math.min(100, test.flow + d)); if(d > 0){ const m = $('nmult'); m.classList.remove('up'); void m.offsetWidth; m.classList.add('up'); } };
 /* ---------- 🎯 objectifs de session (demande Paul) : une liste par mode, cochée en jeu, mémorisée pour toujours par aile et par mode ----------
    Rien ici ne touche à la physique : on observe l'état du test (score, virages, position, cœur...) et on coche. Désactivé en mode vidéo. */
-const OBJ_LIST = {carve: ['s1', 's2', 's3', 's4', 's5', 'carve', 'big', 'cut', 'snake', 'x3', 'face', 'waves', 'read70', 'set', 'foil', 'pump', 'shore', 'tamed', 'nofall', 'kiss', 'tour', 'surfer', 'gate', 'rase', 't360', 'dolph', 'lowpump', 'secret'],
+const OBJ_LIST = {carve: ['s1', 's2', 's3', 's4', 's5', 'carve', 'big', 'cut', 'snake', 'x3', 'face', 'waves', 'read70', 'set', 'foil', 'pump', 'shore', 'tamed', 'nofall', 'kiss', 'tour', 'surfer', 'gate', 'rase', 't360', 'dolph', 'lowpump', 'fished', 'secret'],
   vite: ['t30', 't25', 't21', 'nopen', 'peak'], flat: ['d1', 'd2', 'd3', 'perf8', 'zen', 'cardio', 'tempo']}, OBJ_DOCK = ['p4', 'first', 'pumps'];
 const OBJ = {score: [5000, 12000, 20000, 50000, 100000], dist: [150, 300, 450], shoreIn: 30, shoreOut: 45, catchR: 1.7, peak: 1.12};   // seuils (dist en m : en 2 min on ne dépasse pas ~550 m en eau plate)
 let OBJ_SAVE = {}; try{ OBJ_SAVE = JSON.parse(localStorage.getItem('dock-obj') || '{}') || {}; }catch(e){ OBJ_SAVE = {}; }
@@ -1324,7 +1361,7 @@ function objStart(){ if(VID && !VID.obj){ test.objList = null; return; } test.ob
   objPanel(true); }
 const gc = (p, t) => { try{ if(!VID && window.gcEv) window.gcEv(p, t); }catch(e){} };
 function objDone(id){ if(!test || (VID && !VID.obj) || !test.objList || !test.objList.includes(id)) return; gc('objectif/' + id); const saved = OBJ_SAVE[test.objKey] || (OBJ_SAVE[test.objKey] = []);
-  const paid = test.objPaid || (test.objPaid = []), bonus = paid.includes(id) || /^s\d$/.test(id) ? 0 : ['surfer', 't360', 'secret', 'gate', 'rase', 'dolph'].includes(id) ? 5000 : 2000;   // 💰 objectif (hors paliers de score) = points, une fois par session
+  const paid = test.objPaid || (test.objPaid = []), bonus = paid.includes(id) || /^s\d$/.test(id) ? 0 : ['surfer', 't360', 'secret', 'gate', 'rase', 'dolph', 'fished'].includes(id) ? 5000 : 2000;   // 💰 objectif (hors paliers de score) = points, une fois par session
   if(bonus){ paid.push(id); test.score += bonus; }
   if(saved.includes(id)){ if(bonus){ popUp('🎯 ' + objName(id, test.S, true) + ' +' + bonus.toLocaleString(LANG)); const d = document.createElement('div'); d.textContent = '✅ ' + objName(id, test.S, true) + ' +' + bonus.toLocaleString(LANG); $('ofeed').prepend(d); } return; }
   saved.push(id); test.objNew.push(id); if(!VID) try{ localStorage.setItem('dock-obj', JSON.stringify(OBJ_SAVE)); }catch(e){} OBJ_FRESH[test.objKey] = true;
@@ -1617,7 +1654,7 @@ try{ const h0 = +localStorage.getItem('dock-houle'); if(WAVES.some(w => w.h === 
 // 🌊 retour Paul : choisir sa vague à chaque lancement, c'est lourd → seulement tant qu'aucune vague n'est mémorisée ; ensuite on la change dans le menu (« La houle »)
 const waveKnown = () => { try{ return !!localStorage.getItem('dock-houle'); }catch(e){ return false; } };
 $('test').onclick = () => MODE === 'carve' && !VID && !waveKnown() ? pickWave(playTest) : playTest();
-if(/[?&]debug=1/.test(location.search)) { window.__dockTest = () => test; window.__RID = RID; window.__WINDS = WINDS; window.__surf = () => surferHit(performance.now(), 2, 9); window.__scold = profScold; window.__dolph = dolphins; window.__dockStep = (n, ms) => { const n0 = test.last || performance.now(); for(let k = 1; k <= n; k++){ testFrame(n0 + k*(ms || 33)); missionTick(clock.elapsedTime + k*(ms || 33)/1000, (ms || 33)/1000, n0 + k*(ms || 33)); } gl.render(scene, cam); }; window.__dockFly = (x, z, h) => { const now = performance.now(); test.takeoff = null; test.pumpUp = null; runner.visible = false; rider.visible = true; $('beat').classList.add('hide'); test.x = x; test.z = z; test.h = h; test.v = test.vl*1.5; test.manual = true; test.mt0 = now - 10000; test.last = now; test.sta = 100; }; window.__dockSW = SW; window.__dockShare = () => { const d = shareData(); return d ? shareCanvas(d) : null; }; window.__dockSET = SET; window.__dockSWG = SWG; window.__dockCam = (x, y, z, tx, ty, tz) => { cam.position.set(x, y, z); cam.lookAt(tx, ty, tz); }; window.__dockFoil = () => foil; window.__dockHold = b => { DBG_HOLD = !!b; }; window.__dockInfo = () => { let meshes = 0, vis = 0; scene.traverse(o => { if(o.isMesh || o.isLine || o.isPoints){ meshes++; let v = true; for(let q = o; q; q = q.parent) if(!q.visible){ v = false; break; } if(v) vis++; } }); return {calls: gl.info.render.calls, tris: gl.info.render.triangles, meshes, visibles: vis, geoms: gl.info.memory.geometries}; }; window.__dockTURN = TURN; window.__dockH = h => { if(h !== undefined) seaU.H.value = h; return seaU.H.value; }; window.__dockK = (k, b) => { SW.K = k; if(b !== undefined) SW.back = b; }; window.__dockFrame = (now, t) => { if(t !== undefined) clock.elapsedTime = t; testFrame(now); }; }   // tests locaux : placer le rider
+if(/[?&]debug=1/.test(location.search)) { window.__dockTest = () => test; window.__RID = RID; window.__WINDS = WINDS; window.__surf = () => surferHit(performance.now(), 2, 9); window.__scold = profScold; window.__dolph = dolphins; window.__FISH = FISH; window.__dockStep = (n, ms) => { const n0 = test.last || performance.now(); for(let k = 1; k <= n; k++){ testFrame(n0 + k*(ms || 33)); missionTick(clock.elapsedTime + k*(ms || 33)/1000, (ms || 33)/1000, n0 + k*(ms || 33)); } gl.render(scene, cam); }; window.__dockFly = (x, z, h) => { const now = performance.now(); test.takeoff = null; test.pumpUp = null; runner.visible = false; rider.visible = true; $('beat').classList.add('hide'); test.x = x; test.z = z; test.h = h; test.v = test.vl*1.5; test.manual = true; test.mt0 = now - 10000; test.last = now; test.sta = 100; }; window.__dockSW = SW; window.__dockShare = () => { const d = shareData(); return d ? shareCanvas(d) : null; }; window.__dockSET = SET; window.__dockSWG = SWG; window.__dockCam = (x, y, z, tx, ty, tz) => { cam.position.set(x, y, z); cam.lookAt(tx, ty, tz); }; window.__dockFoil = () => foil; window.__dockHold = b => { DBG_HOLD = !!b; }; window.__dockInfo = () => { let meshes = 0, vis = 0; scene.traverse(o => { if(o.isMesh || o.isLine || o.isPoints){ meshes++; let v = true; for(let q = o; q; q = q.parent) if(!q.visible){ v = false; break; } if(v) vis++; } }); return {calls: gl.info.render.calls, tris: gl.info.render.triangles, meshes, visibles: vis, geoms: gl.info.memory.geometries}; }; window.__dockTURN = TURN; window.__dockH = h => { if(h !== undefined) seaU.H.value = h; return seaU.H.value; }; window.__dockK = (k, b) => { SW.K = k; if(b !== undefined) SW.back = b; }; window.__dockFrame = (now, t) => { if(t !== undefined) clock.elapsedTime = t; testFrame(now); }; }   // tests locaux : placer le rider
 // 🌊 la houle change pendant le run (retour Paul) : la vague choisie est celle du départ, puis toutes les 25 à 37 s elle forcit ou se calme
 // d'un cran (au plus un cran autour du choix), en douceur (0,25 m/s). Seule la hauteur varie : la vitesse des vagues reste (sinon elles « sauteraient »).
 const SWELL_LV = [0.5, 1, 1.75, 2.5];
@@ -1824,7 +1861,7 @@ function testFrame(now){
   else if(test.farOn){ test.farOn = false; if(!test.shoreOn) $('shore').classList.remove('on'); }
   const vent = test.ff && !pu && test.up >= 1;   // 💨 le gros foil est sorti de l'eau : il ventile, plus de portance
   // 🎮 missions façon THPS2 (Carve) : percuter le surfeur, passer entre les bouées, frôler la Piouz à fond, un 360
-  const srfHit = test.surf && !pu && !SURF.ko && Math.hypot(test.x - SURF.x, test.z - SURF.z) < 1.5, wHit = test.surf && !pu && WINDS.some(w => Math.abs(test.x - w.x) < 1.6 && Math.abs(test.z - w.z) < 1.0);
+  const fishHit = test.surf && !pu && fishLineHit(test.x, test.z), srfHit = test.surf && !pu && !SURF.ko && Math.hypot(test.x - SURF.x, test.z - SURF.z) < 1.5, wHit = test.surf && !pu && WINDS.some(w => Math.abs(test.x - w.x) < 1.6 && Math.abs(test.z - w.z) < 1.0);
   if(test.surf && !pu){ const ax = GATE.a[0], az = GATE.a[1], bx = GATE.b[0], bz = GATE.b[1], px = test.gpx ?? test.x, pz = test.gpz ?? test.z;
     const cr = (ox, oz, ux, uz, wx, wz) => (ux - ox)*(wz - oz) - (uz - oz)*(wx - ox), d1 = cr(ax, az, bx, bz, px, pz), d2 = cr(ax, az, bx, bz, test.x, test.z), d3 = cr(px, pz, test.x, test.z, ax, az), d4 = cr(px, pz, test.x, test.z, bx, bz);
     if(d1*d2 < 0 && d3*d4 < 0) objDone('gate');
@@ -1832,12 +1869,12 @@ function testFrame(now){
     if(rd > 0.6 && rd < 1.7 && v > test.vl*1.35 && test.mt0 && now - test.mt0 > 6000) objDone('rase');
     let dh = test.h - (test.gph ?? test.h); dh = Math.atan2(Math.sin(dh), Math.cos(dh)); test.spinAcc = (test.spinAcc || 0) + dh; if(Math.abs(test.spinAcc) >= Math.PI*2) objDone('t360'); }
   test.gpx = test.x; test.gpz = test.z; test.gph = test.h;
-  const fell = (!pu && v <= test.vs) || crash || puFail || vent || shore || beached || far || srfHit || wHit;
+  const fell = (!pu && v <= test.vs) || crash || puFail || vent || shore || beached || far || srfHit || wHit || fishHit;
   if(test.slalom ? slalomFrame(now, t) : sessionTick(now, el)) return;
   // ⏱ session de 2 min (retour Paul) : une chute ne termine plus le test → on nage jusqu'à la planche, on repart (combo perdu, temps perdu)
-  if(fell){ test.spinAcc = 0; if(wHit){ test.cols = (test.cols || 0) + 1; setTimeout(() => toast(T.ruleWind || '🚦 Les windsurfs tiennent leur ligne : regarde loin et contourne tôt !'), 900); } if(srfHit){ const had = (test.objPaid || []).includes('surfer'); objDone('surfer'); if(had) popUp('🎯 ' + (T.objWin || 'OBJECTIF !') + ' ' + objName('surfer', test.S, true)); surferHit(now, fx*v, fz*v); test.surfHit = true; setTimeout(profScold, 700); } keys.l = keys.r = keys.f = false; test.falls++; test.snake = 0; test.wavesRow = 0; test.objShore = 0; test.tourS = 0; test.perfRow = 0; if(crash) objDone('kiss'); test.flow = 0; test.tAng = 0; test.tDir = 0; $('pcue').classList.remove('on');
-    $('plane').classList.add('hide'); test.beat0 = 0; test.speedUp = null; test.pumpUp = null; popUp(srfHit ? (T.pBonus || '🎳 BONUS !') : wHit ? (T.pCollide || '💥 COLLISION !') : crash ? (T.pCrash || '💥') : puFail ? (T.pNoTakeoff || '💦') : shore ? (T.pShore || '🌊 SHORE BREAK !') : beached ? (T.pBeach || '🏖️ ÉCHOUÉ !') : far ? (T.pFar || '🧭 TROP LOIN !') : vent ? (T.pVent || '💨 VENTILÉ !') : (T.pFall || '💦'), 0, true);
-    test.lastFall = srfHit ? 'surfer' : wHit ? 'collision' : crash ? 'crash' : shore ? 'shore' : beached ? 'beach' : far ? 'far' : vent ? 'vent' : 'stall'; if(!crash){ splash(test.x, seaH(test.x, test.z, t), test.z, shore ? 60 : vent ? 36 : 26, shore ? 4.2 : 3.1, fx*v*0.25, fz*v*0.25); ripple(test.x, test.z, shore ? 2.6 : 1.8); }
+  if(fell){ test.spinAcc = 0; if(fishHit){ objDone('fished'); setTimeout(() => toast(T.fishSay || '🎣 Le pêcheur : « Belle prise ! Allez, je te ramène au bord. »'), 700); } if(wHit){ test.cols = (test.cols || 0) + 1; setTimeout(() => toast(T.ruleWind || '🚦 Les windsurfs tiennent leur ligne : regarde loin et contourne tôt !'), 900); } if(srfHit){ const had = (test.objPaid || []).includes('surfer'); objDone('surfer'); if(had) popUp('🎯 ' + (T.objWin || 'OBJECTIF !') + ' ' + objName('surfer', test.S, true)); surferHit(now, fx*v, fz*v); test.surfHit = true; setTimeout(profScold, 700); } keys.l = keys.r = keys.f = false; test.falls++; test.snake = 0; test.wavesRow = 0; test.objShore = 0; test.tourS = 0; test.perfRow = 0; if(crash) objDone('kiss'); test.flow = 0; test.tAng = 0; test.tDir = 0; $('pcue').classList.remove('on');
+    $('plane').classList.add('hide'); test.beat0 = 0; test.speedUp = null; test.pumpUp = null; popUp(fishHit ? (T.pFished || '🎣 PÊCHÉ !') : srfHit ? (T.pBonus || '🎳 BONUS !') : wHit ? (T.pCollide || '💥 COLLISION !') : crash ? (T.pCrash || '💥') : puFail ? (T.pNoTakeoff || '💦') : shore ? (T.pShore || '🌊 SHORE BREAK !') : beached ? (T.pBeach || '🏖️ ÉCHOUÉ !') : far ? (T.pFar || '🧭 TROP LOIN !') : vent ? (T.pVent || '💨 VENTILÉ !') : (T.pFall || '💦'), 0, true);
+    test.lastFall = fishHit ? 'fished' : srfHit ? 'surfer' : wHit ? 'collision' : crash ? 'crash' : shore ? 'shore' : beached ? 'beach' : far ? 'far' : vent ? 'vent' : 'stall'; if(!crash){ splash(test.x, seaH(test.x, test.z, t), test.z, shore ? 60 : vent ? 36 : 26, shore ? 4.2 : 3.1, fx*v*0.25, fz*v*0.25); ripple(test.x, test.z, shore ? 2.6 : 1.8); }
     if(shore && !crash){ beep(110, 0.45, 'sawtooth', 0.16); buzz(140); } $('shore').classList.remove('on'); test.shoreOn = false; $('nspd').textContent = '0'; $('garc').setAttribute('d', arcPath(0, 0.005)); if(vent && !crash){ beep(240, 0.3, 'sawtooth', 0.14); if(!test.ventTip){ test.ventTip = true; toast(T.ventTip || 'Gros foil + vitesse = il veut sortir de l\'eau. Appuie sur le pied avant (↓) quand la planche monte.'); } }
     test.up = 0; test.upHigh = false; test.footCue = false; test.fovK = 0; $('foot').classList.remove('on'); $('td').classList.remove('on', 'need'); $('mboard').classList.remove('hot'); if(!VID && !RM){ cam.fov = FOV0; cam.updateProjectionMatrix(); } windSnd(0);
     ['good', 'shore', 'foot'].forEach(id => $(id) && $(id).classList.remove('on'));
@@ -1853,7 +1890,7 @@ function testFrame(now){
       for(let i = 0; i < 14; i++) setTimeout(() => beep(1500 - i*85, 0.07, 'sine', 0.1), 260 + i*70);
       test.accS = 0; $('vig').style.opacity = 0; $('slow').classList.remove('on'); $('ntrend').textContent = ''; return; }
     rider.visible = false; swimmer.visible = true; swimHud(true); test.respawnAt = now + SWIM_T; test.accS = 0; $('vig').style.opacity = 0; $('slow').classList.remove('on'); $('ntrend').textContent = '';
-    test.swim = {x: test.x - fx*1.2 + fz*1.0, z: test.z - fz*1.2 - fx*1.0, h: test.h, bx: test.x, bz: test.z, bh: test.h}; }
+    test.swim = {x: test.x - fx*1.2 + fz*1.0, z: test.z - fz*1.2 - fx*1.0, h: test.h, bx: test.x, bz: test.z, bh: test.h}; if(fishHit){ test.swim.reel = true; test.respawnAt = now + 6200; } }
 }
 // fin de session (2 min écoulées, ou personne aux commandes) : renvoie true si c'est fini
 // 🏁 carte de fin : titre explicite (retour Paul : « j'ai pas compris comment j'ai accédé à cet écran ») + légende du haut nettoyée
@@ -2273,16 +2310,18 @@ if(/[?&]video=1/.test(location.search)){
       $('beat').classList.add('hide'); $('nfs').classList.add('hide'); test.mt0 = now; test.t0 = now; VID.seg = -1; VID.pi = new Image(); }
     const seg = s < 5.5 ? 0 : s < 11 ? 1 : s < 15.5 ? 2 : s < 21.5 ? 3 : 4;   // glisse, départ Piouz, dauphins (4,5 s), surfeur, fin
     if(seg !== VID.seg){ VID.seg = seg; VID.segT = now;
-      if(seg === 0){ newsReset(now, -30, -38, Math.PI - 0.3, 1.4); VID.ch = test.h; }
+      if(seg === 0){ newsReset(now, -30, -38, Math.PI - 0.3, 1.5); VID.ch = test.h; VID.cutT = 0; VID.c0 = s; }   // pas de flash blanc au tout début (retour Paul)
       if(seg === 1){ VID.cutT = now; whoosh(); VID.beatOff = () => 0.01; startTest(); test.didDemo = true; beginTakeoff(); VID.lp = 0; }
       if(seg === 2){ const x0 = DOLPH.cx - 8, z0 = DOLPH.cz + 13; newsReset(now, x0, z0, Math.atan2(-(DOLPH.cx - x0), -(DOLPH.cz - z0)), 1.5); VID.lp = 0; }
       if(seg === 3){ SURF.ko = null; newsReset(now, SURF.x + 0.3, SURF.z + 12, 0, 1.55); VID.hitT = 0; VID.lp = 0; }
       if(seg === 4){ VID.endT = now; keys.l = keys.r = false; } }
     const dt = 1/30;
     if(!VID.piSet && window.PROF_FACES && window.PROF_FACES.ouch){ VID.piSet = true; VID.pi.src = window.PROF_FACES.ouch; }
-    if(seg === 0){ test.sta = 100; test.mt0 = now; defiBot(now); }
+    // 🏄 gros carves dans la vague (retour Paul) : virages alternés amples, sans pumper, et jamais de décrochage dans la vidéo
+    if(seg === 0 && !test.crashA && !test.swim){ test.sta = 100; test.mt0 = now; const ph = Math.floor((s - (VID.c0 || 0))/1.35) % 2; keys.l = ph === 0; keys.r = ph === 1;
+      test.v = Math.max(test.v, test.vl*1.35); }   // pas de pump : la vague porte la rideuse (retour Paul)
     if(seg === 1 && test){ test.mt0 = now; if(test.pumpUp && now - (VID.lp || 0) > 380){ VID.lp = now; pump(); } }
-    if(seg === 2){ test.sta = 100; test.mt0 = now; keys.l = keys.r = false; if(now - (VID.lp || 0) > 650 && !test.crashA && !test.swim){ VID.lp = now; pump(); } }
+    if(seg === 2){ test.sta = 100; test.mt0 = now; keys.l = keys.r = false; if(now - (VID.lp || 0) > 650 && !test.crashA && !test.swim){ VID.lp = now; pump(); } if(!test.crashA && !test.swim) test.v = Math.max(test.v, test.vl*1.3); }
     if(seg === 3){ test.sta = 100; test.mt0 = now; keys.l = keys.r = false; if(!VID.hitT && !SURF.ko && now - (VID.lp || 0) > 650 && !test.crashA && !test.swim){ VID.lp = now; pump(); } if(!VID.hitT && SURF.ko) VID.hitT = now; }
     VID.camOverride = () => { if(!test) return;
       const behind = (tx, tz, d, h) => { const px = test.crashA ? test.crashA.x : test.x, pz = test.crashA ? test.crashA.z : test.z, dx = tx - px, dz = tz - pz, n = Math.hypot(dx, dz) || 1; if(!VID.camLock){ VID.camLock = [px - dx/n*d + dz/n*1.2, pz - dz/n*d - dx/n*1.2]; } cam.position.set(VID.camLock[0], h, VID.camLock[1]); cam.lookAt((px + tx)/2, 0.5, (pz + tz)/2); };
@@ -2293,6 +2332,7 @@ if(/[?&]video=1/.test(location.search)){
       else if(seg === 3) behind(SURF.x, SURF.z, 5, 1.5);
       else { cam.position.set(test.x + 4, 2.2, test.z + 4); cam.lookAt(test.x, 0.6, test.z); } };
     if(VID.endT && now - VID.endT > 3600 && !ended){ ended = true; if(rec) rec.stop(); }
+    if(s < 0.25){ x.fillStyle = '#0b1222'; x.fillRect(0, 0, W, H); return; }   // les toutes premières images montraient encore le garage : on attend que la caméra soit en place
     x.drawImage(cv, 0, 0, W, H);
     const g = x.createLinearGradient(0, 0, 0, 520); g.addColorStop(0, 'rgba(11,18,34,.8)'); g.addColorStop(1, 'rgba(11,18,34,0)'); x.fillStyle = g; x.fillRect(0, 0, W, 520);
     const k0 = VID.segT || now, ss = (now - k0)/1000;
